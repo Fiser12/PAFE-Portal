@@ -1,5 +1,5 @@
 {
-  "name": "Escohotado-WEB",
+  "name": "Pafe-Portal",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "forwardPorts": [3000, 6006, 5432],

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import { authenticated } from '@/payload/access/authenticated'
 import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
+import { COLLECTION_SLUG_RESERVATION } from '../Catalog/Reservation'
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
@@ -21,6 +22,12 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+    },
+    {
+      name: 'reservations',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_RESERVATION,
+      hasMany: true,
     },
     buildTaxonomyRelationship({
       label: 'Roles',

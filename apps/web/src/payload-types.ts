@@ -67,6 +67,8 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    reservation: Reservation;
+    'catalog-item': CatalogItem;
     taxonomy: Taxonomy;
     media: Media;
     users: User;
@@ -82,8 +84,14 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'catalog-item': {
+      reservations: 'reservation';
+    };
+  };
   collectionsSelect: {
+    reservation: ReservationSelect<false> | ReservationSelect<true>;
+    'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -145,22 +153,46 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "taxonomy".
+ * via the `definition` "reservation".
  */
-export interface Taxonomy {
+export interface Reservation {
   id: number;
-  singular_name: string;
-  payload?:
-    | {
+  item: number | CatalogItem;
+  user: string | User;
+  reservationDate: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-item".
+ */
+export interface CatalogItem {
+  id: number;
+  cover: number | Media;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
         [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  quantity?: number | null;
+  reservations?: {
+    docs?: (number | Reservation)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  categories: (number | Taxonomy)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -259,6 +291,27 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "taxonomy".
+ */
+export interface Taxonomy {
+  id: number;
+  singular_name: string;
+  payload?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -267,6 +320,7 @@ export interface User {
   emailVerified?: string | null;
   name?: string | null;
   image?: string | null;
+  reservations?: (number | Reservation)[] | null;
   roles?: (number | Taxonomy)[] | null;
   accounts?:
     | {
@@ -336,7 +390,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | CatalogListBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -743,6 +797,15 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CatalogListBlock".
+ */
+export interface CatalogListBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'catalogList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pdf".
  */
 export interface Pdf {
@@ -944,6 +1007,14 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'reservation';
+        value: number | Reservation;
+      } | null)
+    | ({
+        relationTo: 'catalog-item';
+        value: number | CatalogItem;
+      } | null)
+    | ({
         relationTo: 'taxonomy';
         value: number | Taxonomy;
       } | null)
@@ -1028,6 +1099,31 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reservation_select".
+ */
+export interface ReservationSelect<T extends boolean = true> {
+  item?: T;
+  user?: T;
+  reservationDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-item_select".
+ */
+export interface CatalogItemSelect<T extends boolean = true> {
+  cover?: T;
+  title?: T;
+  content?: T;
+  quantity?: T;
+  reservations?: T;
+  categories?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1145,6 +1241,7 @@ export interface UsersSelect<T extends boolean = true> {
   emailVerified?: T;
   name?: T;
   image?: T;
+  reservations?: T;
   roles?: T;
   accounts?:
     | T
@@ -1200,6 +1297,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        catalogList?: T | CatalogListBlockSelect<T>;
       };
   meta?:
     | T
@@ -1296,6 +1394,14 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CatalogListBlock_select".
+ */
+export interface CatalogListBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }
