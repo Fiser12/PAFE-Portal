@@ -45,8 +45,9 @@ const CatalogListClient = ({ catalogItems, categories }: CatalogListClientProps)
                     return (
                         <div
                             key={item.id}
-                            className="bg-white rounded shadow p-3 flex flex-col items-center mx-auto"
+                            className="bg-white rounded shadow p-3 flex flex-col items-center mx-auto cursor-pointer hover:shadow-lg transition-shadow"
                             style={{ width: 200, minHeight: 340 }}
+                            onClick={() => window.location.href = `/catalog/${item.id}`}
                         >
                             {cover?.url && (
                                 <div className="relative w-full mb-2" style={{ aspectRatio: '1 / 1.414', width: 180, minHeight: 254 }}>

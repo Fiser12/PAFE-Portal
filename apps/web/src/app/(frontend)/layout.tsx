@@ -12,6 +12,8 @@ import { Providers } from '@/components/providers'
 import { InitTheme } from '@/components/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { PayloadSessionProvider } from "payload-authjs/client";
+import { getPayloadSession } from "payload-authjs";
 
 import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -33,10 +35,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
+        <PayloadSessionProvider session={await getPayloadSession()}>
 
           <Header />
           {children}
           <Footer />
+          </PayloadSessionProvider>
+
         </Providers>
       </body>
     </html>
