@@ -1,5 +1,6 @@
 import { Taxonomy, User } from '@/payload-types'
 import { ClientUser, PayloadRequest } from 'payload'
+import "@nexo-labs/hegel";
 
 const admin = 'admin'
 const gestor = 'gestor'
