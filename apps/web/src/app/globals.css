@@ -7,11 +7,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --container-2xl: 86rem;
-  --container-lg: 64rem;
-  --container-md: 48rem;
-  --container-sm: 40rem;
-  --container-xl: 80rem;
 
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));

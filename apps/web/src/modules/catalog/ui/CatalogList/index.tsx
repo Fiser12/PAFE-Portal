@@ -23,8 +23,7 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
     }, [catalogItems, selectedCategory])
 
     return (
-        <div className="px-4">
-            <ReservationsTable />
+        <div className="px-4 container">
             <h2 className="text-2xl font-bold mb-4 mt-4">Catálogo</h2>
             <div className="mb-4 w-full max-w-xs">
                 <select
@@ -38,7 +37,7 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
                     ))}
                 </select>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 justify-center">
                 {filteredItems.map(item => (
                     <CatalogItemCard key={item.id} item={item} />
                 ))}

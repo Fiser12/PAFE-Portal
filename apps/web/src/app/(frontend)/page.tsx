@@ -1,4 +1,9 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
-export default PageTemplate
+import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 
-export { generateMetadata }
+export default function Home() {
+  return (
+    <div className="container">
+      <ReservationsTable />
+    </div>
+  )
+}
