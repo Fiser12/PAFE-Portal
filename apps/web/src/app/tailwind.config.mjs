@@ -39,7 +39,7 @@ const config = {
       },
       screens: {
         '2xl': '86rem',
-        lg: '64rem',
+        lg: '72rem',
       },
     },
     extend: {
