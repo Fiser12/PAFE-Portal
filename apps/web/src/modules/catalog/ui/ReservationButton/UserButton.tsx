@@ -1,14 +1,14 @@
 'use client'
 
 import { useTransition } from 'react'
-import { createReservation } from '../actions'
+import { createReservation } from '../../actions'
 
 interface Props {
     itemId: number
     userId: string
 }
 
-export function ReservationButton({ itemId, userId }: Props) {
+export function UserButton({ itemId, userId }: Props) {
     const [isPending, startTransition] = useTransition()
 
     const handleReservation = () => {

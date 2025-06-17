@@ -57,15 +57,21 @@ export function ReservationsTable({ itemId }: Props) {
         return <div>Cargando reservas...</div>
     }
 
+    const h2Title = <h2 className="text-2xl font-bold mb-4">
+        {itemId ? 'Reservas actuales' : 'Mis reservas'}
+    </h2>
+
+
     if (reservations.length === 0) {
-        return <div>No hay reservas {itemId ? 'para este libro' : 'activas'}</div>
+        return <div>
+            {h2Title}
+            No hay reservas {itemId ? 'para este libro' : 'activas'}
+        </div>
     }
 
     return (
         <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">
-                {itemId ? 'Reservas actuales' : 'Mis reservas'}
-            </h2>
+            {h2Title}
             <div className="overflow-x-auto">
                 <div className="min-w-full divide-y divide-gray-200">
                     {/* Desktop view */}
