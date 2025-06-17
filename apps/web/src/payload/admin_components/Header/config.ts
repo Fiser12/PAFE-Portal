@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { isAdminHidden } from '@/core/permissions'
+import { checkRoleHidden } from '@/core/permissions'
 import { link } from '@/payload/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
@@ -9,7 +9,7 @@ export const Header: GlobalConfig = {
     read: () => true,
   },
   admin: {
-    hidden: isAdminHidden,
+    hidden: checkRoleHidden("admin"),
   },
   fields: [
     {

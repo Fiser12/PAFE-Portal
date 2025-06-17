@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '../CatalogItem'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { checkRoleHidden } from '@/core/permissions'
 
 export const COLLECTION_SLUG_RESERVATION = 'reservation'
 
@@ -11,6 +12,8 @@ export const Reservation: CollectionConfig = {
     plural: 'Reservas',
   },
   admin: {
+    group: 'Catálogo',
+    hidden: checkRoleHidden("catalog-admin"),
     components: {
       views: {
         list: {

@@ -14,6 +14,7 @@ import { authenticated } from '../../access/authenticated'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { handleSvgUpload } from '@/payload/hooks/handleSvgUploadHook'
 import { updateCacheControl } from '@/payload/hooks/updateCacheControl'
+import { checkRoleHidden } from '@/core/permissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,6 +26,9 @@ export const Media: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  admin: {
+    hidden: checkRoleHidden('catalog-admin'),
   },
   hooks: {
     beforeOperation: [addContentHashToFile],

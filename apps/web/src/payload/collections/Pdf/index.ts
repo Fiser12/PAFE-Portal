@@ -1,4 +1,5 @@
 import { COLLECTION_SLUG_PDF } from '@/core/collections-slugs'
+import { checkRoleHidden } from '@/core/permissions'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { CollectionConfig } from 'payload'
 
@@ -9,6 +10,7 @@ export const Pdf: CollectionConfig = {
     plural: 'PDFs',
   },
   admin: {
+    hidden: checkRoleHidden("admin"),
     useAsTitle: 'title',
     components: {
       views: {

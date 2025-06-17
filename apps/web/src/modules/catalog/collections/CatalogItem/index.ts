@@ -1,3 +1,4 @@
+import { checkRoleHidden } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -6,10 +7,12 @@ export const COLLECTION_SLUG_CATALOG_ITEM = 'catalog-item'
 export const CatalogItem: CollectionConfig = {
   slug: COLLECTION_SLUG_CATALOG_ITEM,
   labels: {
-    singular: 'Catalog Item',
-    plural: 'Catalog Items',
+    singular: 'Item del catálogo',
+    plural: 'Items del catálogo',
   },
   admin: {
+    group: 'Catálogo',
+    hidden: checkRoleHidden("catalog-admin"),
     useAsTitle: 'title',
     components: {
       views: {

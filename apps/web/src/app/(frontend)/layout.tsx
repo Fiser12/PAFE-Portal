@@ -35,11 +35,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-        <PayloadSessionProvider session={await getPayloadSession()}>
+          <PayloadSessionProvider session={await getPayloadSession()}>
 
-          <Header />
-          {children}
-          <Footer />
+            <Header />
+            {children}
+            <Footer />
           </PayloadSessionProvider>
 
         </Providers>

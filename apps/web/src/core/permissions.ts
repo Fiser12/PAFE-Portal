@@ -1,5 +1,5 @@
 import { Taxonomy, User } from '@/payload-types'
-import { ClientUser, PayloadRequest } from 'payload'
+import { Access, ClientUser, PayloadRequest } from 'payload'
 import "@nexo-labs/hegel";
 
 const admin = 'admin'
@@ -21,29 +21,27 @@ export const isSuperAdminEnabled = () => process.env.ENABLED_SUPER_ADMIN === 'tr
 export const isSuperAdmin = ({ user }: { user?: User | null }): boolean => {
   const _isSuperAdminEnabled =
     isSuperAdminEnabled() && process.env.SUPER_ADMIN_EMAIL === user?.email
-  console.warn(`isSuperAdminEnabled: ${_isSuperAdminEnabled}`)
   return _isSuperAdminEnabled
 }
 
 export const isAdmin = ({ user }: { user?: User | null }): boolean => {
   const isAdmin = checkRole({ roleSlug: admin, user }) || isSuperAdmin({ user })
-  console.warn(`isAdmin: ${isAdmin}`)
   return isAdmin
 }
 
-export type IsAdminHiddenProps =
+export type HiddenFieldProps =
   | ((args: { user: PayloadRequest['user'] | ClientUser }) => boolean)
-  | boolean
 
-export const isAdminHidden: IsAdminHiddenProps = ({ user }) => {
+export const checkRoleHidden: (roleSlug: RoleSlug) => HiddenFieldProps = (roleSlug) => ({ user }) => {
   const isAdminEnabled = isAdmin({ user: user as unknown as User })
-  console.warn(`isAdminEnabled: ${isAdminEnabled}`)
-  return !isAdminEnabled
+  const isRoleEnabled = checkRole({ roleSlug, user: user as unknown as User }) || isAdminEnabled
+  return !isRoleEnabled
 }
 
 export const isAdminAccess: CommonAccess = ({ req }): boolean => {
   return isAdmin({ user: req.user })
 }
+
 
 interface CheckRoleProps {
   roleSlug: RoleSlug
@@ -53,6 +51,7 @@ interface CheckRoleProps {
 export const checkRoleAccess: (props: Omit<CheckRoleProps, 'user'>) => CommonAccess =
   ({ roleSlug }) =>
   ({ req }): boolean => {
+    if (isAdmin({ user: req.user })) return true
     return checkRole({ roleSlug, user: req.user })
   }
 

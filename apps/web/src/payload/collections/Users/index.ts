@@ -3,6 +3,7 @@ import { authenticated } from '@/payload/access/authenticated'
 import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
+import { checkRoleHidden } from '@/core/permissions'
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
@@ -14,6 +15,7 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    hidden: checkRoleHidden("admin"),
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
   },

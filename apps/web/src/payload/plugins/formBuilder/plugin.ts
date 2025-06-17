@@ -1,17 +1,17 @@
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder"
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from "@payloadcms/richtext-lexical"
-import { isAdminHidden } from "@/core/permissions"
+import { checkRoleHidden } from "@/core/permissions"
 
 export const plugin = formBuilderPlugin({
     fields: {
       payment: false,
     },
     formSubmissionOverrides: {
-      admin: { hidden: isAdminHidden  }
+      admin: { hidden: checkRoleHidden("admin")  }
     },
     formOverrides: {
       admin: {
-        hidden: isAdminHidden,
+        hidden: checkRoleHidden("admin"),
       },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {

@@ -20,7 +20,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { isAdminHidden } from '@/core/permissions'
+import { isAdminAccess, checkRoleHidden } from '@/core/permissions'
 import { CatalogList } from '@/payload/blocks/CatalogList/config'
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -40,7 +40,7 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
-    hidden: isAdminHidden,
+    hidden: checkRoleHidden("admin"),
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
