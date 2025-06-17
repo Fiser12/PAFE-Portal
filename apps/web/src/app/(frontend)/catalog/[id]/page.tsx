@@ -1,21 +1,24 @@
+import { checkRole } from '@/core/permissions'
 import { CatalogItem } from '@/payload-types'
-import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
-import { ReservationForm } from './ReservationForm'
 import configPromise from '@payload-config'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { notFound } from 'next/navigation'
+import { getPayload } from 'payload'
+import { getPayloadSession } from 'payload-authjs'
+import { ReservationForm } from './ReservationForm'
+import { ReservationsTable } from './ReservationsTable'
 
 interface Props {
-    params: {
-        id: string
-    }
+    params: Promise<{ id: string }>
 }
 
 export default async function CatalogItemPage({ params }: Props) {
     const payload = await getPayload({ config: configPromise })
+    const session = await getPayloadSession()
     const catalogItem = await payload.findByID({
         collection: 'catalog-item',
-        id: params.id,
+        id: (await params).id,
+        depth: 2,
     })
 
     if (!catalogItem) {
@@ -23,11 +26,12 @@ export default async function CatalogItemPage({ params }: Props) {
     }
 
     const item = catalogItem as CatalogItem
+    const isCatalogAdmin = session?.user ? checkRole({ roleSlug: 'catalog-admin', user: session.user }) : false
 
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div>
                         {item.cover && typeof item.cover !== 'number' && (
                             <img
@@ -51,6 +55,7 @@ export default async function CatalogItemPage({ params }: Props) {
                         <ReservationForm itemId={item.id} />
                     </div>
                 </div>
+                { isCatalogAdmin && <ReservationsTable itemId={item.id} /> }
             </div>
         </div>
     )

@@ -296,15 +296,10 @@ export interface Media {
 export interface Taxonomy {
   id: number;
   singular_name: string;
-  payload?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  payload?: {
+    types?: string[];
+    [k: string]: unknown;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
