@@ -4,9 +4,9 @@ import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import CatalogListClient from './CatalogListClient'
+import { CatalogList } from '@/modules/catalog/ui/CatalogList'
 
-export const CatalogListBlock: React.FC<CTABlockProps> = async ({ links, richText }) => {
+export const CatalogListBlock: React.FC<CTABlockProps> = async () => {
   const payload = await getPayload({ config: configPromise })
   const catalogItems = await payload.find({
     collection: 'catalog-item',
@@ -17,6 +17,6 @@ export const CatalogListBlock: React.FC<CTABlockProps> = async ({ links, richTex
     pagination: false
   })
   return (
-    <CatalogListClient catalogItems={catalogItems.docs} categories={categories.docs} />
+    <CatalogList catalogItems={catalogItems.docs} categories={categories.docs} />
   )
 }

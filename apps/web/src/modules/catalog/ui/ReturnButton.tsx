@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import { returnBook } from './actions'
+import { returnBook } from '../actions'
 
 interface Props {
     reservationId: number

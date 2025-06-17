@@ -3,7 +3,7 @@
 import type { User } from '@/payload-types'
 import { usePayloadSession } from 'payload-authjs/client'
 import { useEffect, useState } from 'react'
-import { checkUserReservation } from './actions'
+import { checkUserReservation } from '../actions'
 import { ReservationButton } from './ReservationButton'
 
 interface Props {

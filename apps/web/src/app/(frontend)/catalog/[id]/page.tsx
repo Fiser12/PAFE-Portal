@@ -1,9 +1,8 @@
-import { CatalogItem } from '@/payload-types'
 import configPromise from '@payload-config'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
-import { CatalogItemClient } from './page.client'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { CatalogItemClient } from '@/modules/catalog/ui/DetailPage'
 
 interface Props {
     params: Promise<{ id: string }>

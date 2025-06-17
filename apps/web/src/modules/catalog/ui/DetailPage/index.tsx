@@ -5,9 +5,9 @@ import { CatalogItem } from '@/payload-types'
 import Image from 'next/image'
 import { usePayloadSession } from 'payload-authjs/client'
 import { useEffect, useState } from 'react'
-import { getItemAvailability } from './actions/getItemAvailability'
-import { ReservationForm } from './ReservationForm'
-import { ReservationsTable } from './ReservationsTable'
+import { getItemAvailability } from '../../actions'
+import { ReservationForm } from '../ReservationForm'
+import { ReservationsTable } from '../ReservationsTable'
 
 interface Props {
     item: CatalogItem
