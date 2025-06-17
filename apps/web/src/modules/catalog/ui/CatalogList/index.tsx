@@ -23,7 +23,7 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
     }, [catalogItems, selectedCategory])
 
     return (
-        <div className="px-4 container">
+        <div className="container">
             <h2 className="text-2xl font-bold mb-4 mt-4">Catálogo</h2>
             <div className="mb-4 w-full max-w-xs">
                 <select
