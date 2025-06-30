@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+The project is composed by 2 main apps in turborepo:
+- web: Our backend in payloadCMS
+- app-expo: Our ios/android/web client
+
+Web has this main technologies
+- next-auth
+- payloadcms
+- lexical (the custom version)
+- graphql
+
+## App Expo
+We need to develop it yet, It will be connected using graphql client using the schema that PayloadCMS exports using.
+
+```shell
+pnpm generate:graphql
+# executes: cross-env NODE_OPTIONS=--no-deprecation payload generate:graphql
+```
+
+
+# Main documentation links
+https://next-auth.js.org/getting-started/introduction
+https://payloadcms.com/docs/getting-started/what-is-payload
