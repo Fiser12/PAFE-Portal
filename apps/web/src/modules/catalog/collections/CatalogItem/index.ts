@@ -1,6 +1,8 @@
 import { checkRoleHidden } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
 import { CollectionConfig } from 'payload'
+import { authenticated } from '@/payload/access/authenticated'
+import { anyone } from '@/payload/access/anyone'
 
 export const COLLECTION_SLUG_CATALOG_ITEM = 'catalog-item'
 
@@ -10,9 +12,15 @@ export const CatalogItem: CollectionConfig = {
     singular: 'Item del catálogo',
     plural: 'Items del catálogo',
   },
+  access: {
+    create: authenticated,
+    read: authenticated,
+    update: authenticated,
+    delete: authenticated,
+  },
   admin: {
     group: 'Catálogo',
-    hidden: checkRoleHidden("catalog-admin"),
+    hidden: checkRoleHidden('catalog-admin'),
     useAsTitle: 'title',
     components: {
       views: {
@@ -24,11 +32,11 @@ export const CatalogItem: CollectionConfig = {
   },
   fields: [
     {
-        label: 'Caratula',
-        name: 'cover',
-        type: 'upload',
-        relationTo: 'media',
-        required: true,
+      label: 'Caratula',
+      name: 'cover',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
     },
     {
       label: 'Título',
@@ -53,12 +61,12 @@ export const CatalogItem: CollectionConfig = {
       type: 'join',
       on: 'item',
       name: 'reservations',
-      collection: 'reservation'
+      collection: 'reservation',
     },
     buildTaxonomyRelationship({
       name: 'categories',
       label: 'Categorías',
-      required: true,
+      required: false,
       defaultValue: [],
       filterOptions: () => {
         return {

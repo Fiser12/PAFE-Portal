@@ -169,7 +169,7 @@ export interface Reservation {
  */
 export interface CatalogItem {
   id: number;
-  cover: number | Media;
+  cover?: (number | null) | Media;
   title: string;
   content: {
     root: {
@@ -192,7 +192,7 @@ export interface CatalogItem {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  categories: (number | Taxonomy)[];
+  categories?: (number | Taxonomy)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -323,13 +323,6 @@ export interface User {
         provider: string;
         providerAccountId: string;
         type: string;
-      }[]
-    | null;
-  sessions?:
-    | {
-        id?: string | null;
-        sessionToken: string;
-        expires: string;
       }[]
     | null;
   updatedAt: string;
@@ -1245,13 +1238,6 @@ export interface UsersSelect<T extends boolean = true> {
         provider?: T;
         providerAccountId?: T;
         type?: T;
-      };
-  sessions?:
-    | T
-    | {
-        id?: T;
-        sessionToken?: T;
-        expires?: T;
       };
   updatedAt?: T;
   createdAt?: T;

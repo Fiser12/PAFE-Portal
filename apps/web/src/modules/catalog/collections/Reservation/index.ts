@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '../CatalogItem'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import { checkRoleHidden } from '@/core/permissions'
+import { authenticated } from '@/payload/access/authenticated'
 
 export const COLLECTION_SLUG_RESERVATION = 'reservation'
 
@@ -10,6 +11,12 @@ export const Reservation: CollectionConfig = {
   labels: {
     singular: 'Reserva',
     plural: 'Reservas',
+  },
+  access: {
+    create: authenticated,
+    read: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   admin: {
     group: 'Catálogo',

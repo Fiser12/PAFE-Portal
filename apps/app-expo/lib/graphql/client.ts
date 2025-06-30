@@ -1,9 +1,10 @@
 import { Platform } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 const DEV_HOST_IP = Platform.OS === "android" ? "10.0.2.2" : "localhost";
 const GRAPHQL_ENDPOINT =
   process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT ||
-  `http://${DEV_HOST_IP}:3000/api/graphql`;
+  `http://${DEV_HOST_IP}:8081/api/graphql`;
 
 export type GraphQLResponse<T> = {
   data?: T;
@@ -19,20 +20,46 @@ export type GraphQLResponse<T> = {
 
 type FetchOptions = {
   headers?: HeadersInit;
+  includeAuth?: boolean;
 };
+
+async function getToken(): Promise<string | null> {
+  if (Platform.OS === "web") {
+    return localStorage.getItem("jwt_token");
+  }
+  return await SecureStore.getItemAsync("jwt_token");
+}
+
+async function getAuthHeaders(): Promise<HeadersInit> {
+  try {
+    const token = await getToken();
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+  } catch (error) {
+    console.error("Error getting auth headers:", error);
+  }
+  return {};
+}
 
 export async function graphQLClient<T = any>(
   query: string,
   variables?: Record<string, any>,
   options: FetchOptions = {}
 ): Promise<GraphQLResponse<T>> {
-  const { headers: customHeaders } = options;
+  const { headers: customHeaders, includeAuth = true } = options;
+
+  let authHeaders: HeadersInit = {};
+  if (includeAuth) {
+    authHeaders = await getAuthHeaders();
+  }
 
   try {
     const res = await fetch(GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders,
         ...customHeaders,
       },
       body: JSON.stringify({
