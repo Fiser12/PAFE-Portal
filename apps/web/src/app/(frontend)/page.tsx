@@ -4,7 +4,7 @@ import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 import CalendarView from '@/components/CalendarView'
 import { usePayloadSession } from 'payload-authjs/client';
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from 'tamagui';
 import { signInAction } from '@/payload/plugins/authjs/signIn';
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
       ) : (
         <React.Fragment>
           <h1 className="text-2xl font-bold">Bienvenido a PAFE</h1>
-          <Button className='max-w-xs' onClick={async () => await signInAction()}>Entrar</Button>
+          <Button className='max-w-xs' onPress={async () => await signInAction()}>Entrar</Button>
         </React.Fragment>
       )}
     </div>

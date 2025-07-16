@@ -43,6 +43,9 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
+    "@tamagui/config": "^1.132.7",
+    "@tamagui/next-plugin": "^1.132.7",
+    "@tamagui/next-theme": "^1.132.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -59,9 +62,11 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "7.45.4",
+    "react-native": "^0.80.1",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tamagui": "^1.132.7"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",

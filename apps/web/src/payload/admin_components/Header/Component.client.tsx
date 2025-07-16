@@ -8,6 +8,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { SwitchThemeButton } from '@/components/SwitchToggleButton'
 
 interface HeaderClientProps {
   data: Header
@@ -36,6 +37,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <h1 className="text-2xl font-bold">PAFE</h1>
         </Link>
         <HeaderNav data={data} />
+        <SwitchThemeButton/>
       </div>
     </header>
   )

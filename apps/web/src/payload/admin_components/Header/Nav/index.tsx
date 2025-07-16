@@ -7,7 +7,7 @@ import type { Header as HeaderType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { usePayloadSession } from 'payload-authjs/client'
 import { signInAction } from '@/payload/plugins/authjs/signIn'
-import { Button, type ButtonProps } from '@/components/ui/button'
+import { Button } from 'tamagui'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const { session } = usePayloadSession()
@@ -31,7 +31,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       />
 
       {!user && (
-        <Button onClick={async () => await signInAction()}>Entrar</Button>
+        <Button onPress={async () => await signInAction()}>Entrar</Button>
       )}
       {navItems.map(({ link }, i) => {
         return <CMSLink key={i} {...link} appearance="link" />
