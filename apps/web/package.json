@@ -59,6 +59,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "7.45.4",
     "sharp": "^0.33.5",
+    "swr": "^2.3.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -102,4 +103,3 @@
     ]
   }
 }
-

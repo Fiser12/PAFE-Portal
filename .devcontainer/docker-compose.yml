@@ -7,18 +7,13 @@ services:
       - ..:/workspace:cached
       - node_modules:/workspace/node_modules:delegated
     command: sleep infinity
-    ports:
-      - "3000:3000"
-      - "6006:6006"
     environment:
-      - DATABASE_URL=postgresql://devuser:devsecret@devcontainer_db/devcontainer_db
       - NODE_ENV=development
     env_file:
-      - ../.devcontainer.env
+      - ./.devcontainer.env
     depends_on:
       - devcontainer_db
-    networks:
-      - outside
+    network_mode: host
 
   devcontainer_db:
     container_name: devcontainer_db
@@ -30,13 +25,8 @@ services:
       - POSTGRES_PASSWORD=devsecret
       - POSTGRES_USER=devuser
       - POSTGRES_DB=devcontainer_db
-    ports:
-      - "5432:5432"
-    networks:
-      - outside
+    network_mode: host
 
 volumes:
   postgres-data:
   node_modules:
-networks:
-  outside:

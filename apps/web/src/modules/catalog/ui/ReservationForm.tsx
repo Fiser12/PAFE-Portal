@@ -1,8 +1,7 @@
 'use client'
 
 import { usePayloadSession } from 'payload-authjs/client'
-import { useEffect, useState } from 'react'
-import { checkUserReservation } from '../actions'
+import { useUserReservation } from '../hooks/useUserReservation'
 import { ReservationButton } from './ReservationButton'
 
 interface Props {
@@ -12,30 +11,11 @@ interface Props {
 export function ReservationForm({ itemId }: Props) {
     const { session } = usePayloadSession()
     const user = session?.user
-    const [hasReservation, setHasReservation] = useState(false)
-    const [reservationDate, setReservationDate] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        const checkReservation = async () => {
-            if (!user?.id) {
-                setIsLoading(false)
-                return
-            }
-
-            try {
-                const { hasReservation, reservationDate } = await checkUserReservation(itemId, user.id)
-                setHasReservation(hasReservation)
-                setReservationDate(reservationDate)
-            } catch (error) {
-                console.error('Error al verificar la reserva:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        checkReservation()
-    }, [user?.id, itemId])
+    
+    const { hasReservation, reservationDate, isLoading, refetch } = useUserReservation(
+        itemId,
+        user?.id
+    )
 
     if (!user?.id) {
         return (
@@ -65,7 +45,7 @@ export function ReservationForm({ itemId }: Props) {
                     </p>
                 </div>
             ) : (
-                <ReservationButton itemId={itemId} userId={user.id} />
+                <ReservationButton itemId={itemId} userId={user.id} onReservationSuccess={refetch} />
             )}
         </div>
     )

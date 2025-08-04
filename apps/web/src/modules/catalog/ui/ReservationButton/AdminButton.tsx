@@ -6,9 +6,10 @@ import { UserSelectionModal } from './UserSelectionModal'
 
 interface Props {
     itemId: number
+    onReservationSuccess?: () => void
 }
 
-export function AdminButton({ itemId }: Props) {
+export function AdminButton({ itemId, onReservationSuccess }: Props) {
     const [isPending, startTransition] = useTransition()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -17,7 +18,7 @@ export function AdminButton({ itemId }: Props) {
             try {
                 await createReservation(itemId, selectedUserId)
                 setIsModalOpen(false)
-                window.location.reload()
+                onReservationSuccess?.()
             } catch (error) {
                 console.error('Error al crear la reserva:', error)
             }

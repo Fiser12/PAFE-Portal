@@ -2,7 +2,7 @@
 
 import type { Reservation } from '@/payload-types'
 import { usePayloadSession } from 'payload-authjs/client'
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { getItemReservations, getUserReservations, returnBook } from '../../actions'
 import { Card } from './Card'
 import { Row } from './Row'
@@ -11,43 +11,42 @@ interface Props {
     itemId?: number
 }
 
+const fetcher = async (key: [string, number | string]) => {
+    const [type, id] = key
+    if (type === 'item-reservations') {
+        const result = await getItemReservations(id as number)
+        return result.docs
+    } else if (type === 'user-reservations') {
+        const result = await getUserReservations(id as string)
+        return result.docs
+    }
+    return []
+}
+
 export function ReservationsTable({ itemId }: Props) {
-    const [reservations, setReservations] = useState<Reservation[]>([])
-    const [isLoading, setIsLoading] = useState(true)
     const { session } = usePayloadSession()
     const user = session?.user
 
-    useEffect(() => {
-        const loadReservations = async () => {
-            try {
-                if (itemId) {
-                    const result = await getItemReservations(itemId)
-                    setReservations(result.docs)
-                } else if (user) {
-                    const result = await getUserReservations(user.id)
-                    setReservations(result.docs)
-                }
-            } catch (error) {
-                console.error('Error al cargar las reservas:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
+    const swrKey = itemId 
+        ? ['item-reservations', itemId] as const
+        : user?.id 
+            ? ['user-reservations', user.id] as const
+            : null
 
-        loadReservations()
-    }, [itemId, user])
+    const { data: reservations, mutate, isLoading, error } = useSWR(
+        swrKey,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: true,
+        }
+    )
 
     const handleReturn = async (reservationId: number) => {
         try {
             await returnBook(reservationId)
-            if (itemId) {
-                const result = await getItemReservations(itemId)
-                setReservations(result.docs)
-            } else if (user) {
-                const result = await getUserReservations(user.id)
-                setReservations(result.docs)
-            }
-            window.location.reload()
+            // Revalidar los datos automáticamente
+            mutate()
         } catch (error) {
             console.error('Error al devolver el libro:', error)
         }
@@ -62,7 +61,7 @@ export function ReservationsTable({ itemId }: Props) {
     </h2>
 
 
-    if (reservations.length === 0) {
+    if (!reservations || reservations.length === 0) {
         return <div>
             {h2Title}
             No hay reservas {itemId ? 'para este libro' : 'activas'}

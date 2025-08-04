@@ -6,16 +6,17 @@ import { createReservation } from '../../actions'
 interface Props {
     itemId: number
     userId: string
+    onReservationSuccess?: () => void
 }
 
-export function UserButton({ itemId, userId }: Props) {
+export function UserButton({ itemId, userId, onReservationSuccess }: Props) {
     const [isPending, startTransition] = useTransition()
 
     const handleReservation = () => {
         startTransition(async () => {
             try {
                 await createReservation(itemId, userId)
-                window.location.reload()
+                onReservationSuccess?.()
             } catch (error) {
                 console.error('Error al crear la reserva:', error)
             }

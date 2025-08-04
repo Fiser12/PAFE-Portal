@@ -5,16 +5,17 @@ import { returnBook } from '../actions'
 
 interface Props {
     reservationId: number
+    onReturnSuccess?: () => void
 }
 
-export function ReturnButton({ reservationId }: Props) {
+export function ReturnButton({ reservationId, onReturnSuccess }: Props) {
     const [isPending, startTransition] = useTransition()
 
     const handleReturn = () => {
         startTransition(async () => {
             try {
                 await returnBook(reservationId)
-                window.location.reload()
+                onReturnSuccess?.()
             } catch (error) {
                 console.error('Error al devolver el libro:', error)
             }
