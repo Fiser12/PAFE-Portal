@@ -41,7 +41,7 @@ export function Card({ reservation, itemId, onReturn }: Props) {
             <div>
                 <button
                     onClick={() => onReturn(reservation.id)}
-                    className="text-red-600 hover:text-red-900 text-sm"
+                    className="text-destructive hover:text-destructive/80 text-sm"
                 >
                     Devolver
                 </button>

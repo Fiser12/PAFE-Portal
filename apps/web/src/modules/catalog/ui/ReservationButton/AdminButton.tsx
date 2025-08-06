@@ -30,7 +30,7 @@ export function AdminButton({ itemId, onReservationSuccess }: Props) {
             <button
                 onClick={() => setIsModalOpen(true)}
                 disabled={isPending}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-secondary text-secondary-foreground px-6 py-2 rounded-lg hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isPending ? 'Reservando...' : 'Reservar para usuario'}
             </button>

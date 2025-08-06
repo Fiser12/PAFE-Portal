@@ -6,7 +6,7 @@ import type { Footer } from '@/payload-types'
 
 import { ThemeSelector } from '@/components/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
+import { Logo } from '@/components/Logo/LogoImage'
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
@@ -14,12 +14,12 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
+    <footer className="mt-auto border-t border-primary/20 bg-primary text-primary-foreground">
       <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
         <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
           <nav className="flex flex-col md:flex-row gap-4">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
+              return <CMSLink className="text-primary-foreground hover:text-primary-foreground/80" key={i} {...link} />
             })}
           </nav>
         </div>

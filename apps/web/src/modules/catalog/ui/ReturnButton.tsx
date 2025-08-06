@@ -26,7 +26,7 @@ export function ReturnButton({ reservationId, onReturnSuccess }: Props) {
         <button
             onClick={handleReturn}
             disabled={isPending}
-            className="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-destructive text-destructive-foreground px-4 py-1 rounded hover:bg-destructive/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {isPending ? 'Devolviendo...' : 'Devolver'}
         </button>

@@ -27,7 +27,7 @@ export function UserButton({ itemId, userId, onReservationSuccess }: Props) {
         <button
             onClick={handleReservation}
             disabled={isPending}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {isPending ? 'Reservando...' : 'Reservar libro'}
         </button>

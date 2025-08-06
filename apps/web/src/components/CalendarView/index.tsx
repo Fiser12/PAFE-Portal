@@ -36,14 +36,22 @@ const CalendarView: FC<CalendarViewProps> = ({
             <div className="w-full md:w-4/6">
                 <iframe
                     src={weekViewUrl}
-                    style={{ width: '100%', height: `${height}px` }}
+                    style={{ 
+                        width: '100%', 
+                        height: `${height}px`,
+                        borderRadius: '12px'
+                    }}
                     frameBorder="0"
                 />
             </div>
             <div className="w-full md:w-2/6">
                 <iframe
                     src={agendaViewUrl}
-                    style={{ width: '100%', height: `${height}px` }}
+                    style={{ 
+                        width: '100%', 
+                        height: `${height}px`,
+                        borderRadius: '12px'
+                    }}
                     frameBorder="0"
                 />
             </div>

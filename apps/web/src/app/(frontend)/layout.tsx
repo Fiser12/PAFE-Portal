@@ -8,6 +8,7 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/payload/admin_components/Footer/Component'
 import { Header } from '@/payload/admin_components/Header/Component'
+import { MobileBottomNav } from '@/components/MobileBottomNav'
 import { Providers } from '@/components/providers'
 import { InitTheme } from '@/components/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -38,8 +39,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <PayloadSessionProvider session={await getPayloadSession()}>
 
             <Header />
-            {children}
+            <main className="pb-16 md:pb-0">
+              {children}
+            </main>
             <Footer />
+            <MobileBottomNav />
           </PayloadSessionProvider>
 
         </Providers>

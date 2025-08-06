@@ -38,7 +38,7 @@ export function Row({ reservation, itemId, onReturn }: Props) {
             <td className="px-6 py-4 whitespace-nowrap">
                 <button
                     onClick={() => onReturn(reservation.id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-destructive hover:text-destructive/80"
                 >
                     Devolver
                 </button>

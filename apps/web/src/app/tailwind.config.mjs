@@ -89,10 +89,38 @@ const config = {
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+        // PAFE Custom Colors
+        'pafe-blue': {
+          50: '#f0f6fe',
+          100: '#deebfc',
+          200: '#c4ddf9',
+          300: '#9bc8f5',
+          400: '#6badef',
+          500: '#4892e8',
+          600: '#366db2', // Primary blue
+          700: '#2d5a99',
+          800: '#2a4d7f',
+          900: '#264268',
+          950: '#1a2a44',
+        },
+        'pafe-orange': {
+          50: '#fef6f0',
+          100: '#fdeadc',
+          200: '#fad3b8',
+          300: '#f6b489',
+          400: '#f28e58',
+          500: '#ef7135',
+          600: '#df8540', // Secondary orange
+          700: '#c5432a',
+          800: '#9d3625',
+          900: '#7e3022',
+          950: '#431610',
+        },
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
         sans: ['var(--font-geist-sans)'],
+        bubblegum: ['Bubblegum Sans', 'serif'],
       },
       keyframes: {
         'accordion-down': {
