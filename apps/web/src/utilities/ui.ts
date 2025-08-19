@@ -1,12 +1,10 @@
 /**
- * Utility functions for UI components automatically added by ShadCN and used in a few of our frontend components and blocks.
- *
- * Other functions may be exported from here in the future or by installing other shadcn components.
+ * Utility functions for UI components - updated for MUI usage.
+ * No longer uses Tailwind merge since we migrated to MUI.
  */
 
 import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return clsx(inputs)
 }

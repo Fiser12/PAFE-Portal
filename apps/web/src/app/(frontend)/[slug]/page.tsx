@@ -9,7 +9,7 @@ import { RenderBlocks } from '@/payload/blocks/RenderBlocks'
 import { RenderHero } from '@/payload/fields/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { LivePreviewListener } from '@/components/legacy/LivePreviewListener'
 
 export const dynamic = 'force-static'
 export const revalidate = 60

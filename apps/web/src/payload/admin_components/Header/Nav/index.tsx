@@ -4,10 +4,10 @@ import React from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/legacy/Link'
 import { usePayloadSession } from 'payload-authjs/client'
 import { signInAction } from '@/payload/plugins/authjs/signIn'
-import { Button, type ButtonProps } from '@/components/ui/button'
+import { Button, type ButtonProps } from '@/components/legacy/button'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const { session } = usePayloadSession()
