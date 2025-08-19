@@ -1,0 +1,1 @@
+export { pafeTheme, pafeDarkTheme, lightColors, darkColors } from './pafeTheme';

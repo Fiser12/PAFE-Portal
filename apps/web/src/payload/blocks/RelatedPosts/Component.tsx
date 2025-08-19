@@ -4,7 +4,7 @@ import RichText from '@/components/legacy/RichText'
 
 import type { Post } from '@/payload-types'
 
-import { Card } from '../../../components/Card'
+import { Card } from '@/components/legacy/Card'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 export type RelatedPostsProps = {
@@ -24,7 +24,19 @@ export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
         {docs?.map((doc, index) => {
           if (typeof doc === 'string') return null
 
-          return <Card key={index} doc={doc} relationTo="posts" showCategories />
+          return (
+            <Card 
+              key={index} 
+              doc={{
+                slug: doc.slug,
+                categories: doc.categories,
+                meta: doc.meta,
+                title: doc.title,
+              }} 
+              relationTo="posts" 
+              showCategories 
+            />
+          )
         })}
       </div>
     </div>
