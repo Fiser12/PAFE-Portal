@@ -69,32 +69,34 @@ const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
   },
 }))
 
-const CustomBottomNavigationAction = styled(BottomNavigationAction)(({ theme }) => ({
-  minWidth: 0,
-  flex: '1 1 0',
-  padding: theme.spacing(1),
-  '& .MuiSvgIcon-root': {
-    fontSize: '1.375rem',
-  },
-}))
+const CustomBottomNavigationAction = styled(BottomNavigationAction)(
+  ({ theme }) => ({
+    minWidth: 0,
+    flex: '1 1 0',
+    padding: theme.spacing(1),
+    '& .MuiSvgIcon-root': {
+      fontSize: '1.375rem',
+    },
+  })
+) as typeof BottomNavigationAction;
 
 export function MobileBottomNav() {
   const pathname = usePathname()
 
   return (
-    <Paper 
-      sx={{ 
-        position: 'fixed', 
-        bottom: 0, 
-        left: 0, 
-        right: 0, 
+    <Paper
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
         zIndex: 50,
         display: { md: 'none', xs: 'block' },
-      }} 
+      }}
       elevation={8}
     >
       <Box sx={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        <StyledBottomNavigation 
+        <StyledBottomNavigation
           value={false} // Don't use controlled value to avoid hydration issues
           showLabels
           sx={{ height: 64, px: 1 }}
@@ -103,27 +105,28 @@ export function MobileBottomNav() {
             const Icon = item.icon
             // Calculate active state directly from pathname without state
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
-            
+
             return (
-              <Link key={item.name} href={item.href} style={{ textDecoration: 'none' }}>
-                <CustomBottomNavigationAction
-                  label={item.name}
-                  value={index}
-                  icon={<Icon size={22} strokeWidth={isActive ? 2.5 : 2} />}
-                  sx={{
-                    '& .MuiBottomNavigationAction-label': {
-                      fontWeight: isActive ? 600 : 500,
-                    },
-                    ...(isActive && {
-                      color: 'primary.contrastText !important',
-                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      borderRadius: 1.5,
-                      margin: 0.5,
-                      transform: 'scale(1.05)',
-                    }),
-                  }}
-                />
-              </Link>
+              <CustomBottomNavigationAction
+                label={item.name}
+                href={item.href}
+                key={index}
+                value={index}
+                LinkComponent={Link}
+                icon={<Icon size={22} strokeWidth={isActive ? 2.5 : 2} />}
+                sx={{
+                  '& .MuiBottomNavigationAction-label': {
+                    fontWeight: isActive ? 600 : 500,
+                  },
+                  ...(isActive && {
+                    color: 'primary.contrastText !important',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: 1.5,
+                    margin: 0.5,
+                    transform: 'scale(1.05)',
+                  }),
+                }}
+              />
             )
           })}
         </StyledBottomNavigation>

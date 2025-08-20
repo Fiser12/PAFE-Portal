@@ -1,8 +1,15 @@
 'use client'
 
 import type { CatalogItem, Media } from '@/payload-types'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Chip,
+  Box
+} from '@mui/material'
 
 interface Props {
     item: CatalogItem
@@ -16,31 +23,92 @@ export function CatalogItemCard({ item }: Props) {
     const available = Math.max(total - reserved, 0)
 
     return (
-        <div
-            className="bg-white rounded shadow p-3 flex flex-col items-center mx-auto cursor-pointer hover:shadow-lg transition-shadow"
-            style={{ width: 200, minHeight: 340 }}
+        <Card
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 3,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.15)',
+                },
+                '&:active': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.15)',
+                }
+            }}
             onClick={() => router.push(`/catalog/${item.id}`)}
         >
+            {/* Book Cover */}
             {cover?.url && (
-                <div className="relative w-full mb-2" style={{ aspectRatio: '1 / 1.414', width: 180, minHeight: 254 }}>
-                    <Image
-                        src={cover.url}
+                <Box sx={{ 
+                    p: 2, 
+                    display: 'flex', 
+                    justifyContent: 'center',
+                    backgroundColor: '#f5f5f5'
+                }}>
+                    <CardMedia
+                        component="img"
+                        sx={{
+                            height: 280,
+                            width: 'auto',
+                            maxWidth: '100%',
+                            objectFit: 'contain',
+                            borderRadius: 1
+                        }}
+                        image={cover.url}
                         alt={cover.alt ?? item.title}
-                        fill
-                        style={{ objectFit: 'cover', borderRadius: 7 }}
+                        title={cover.alt ?? item.title}
                     />
-                </div>
+                </Box>
             )}
-            <h3
-                className="text-lg font-semibold mb-1 text-center leading-tight w-full truncate"
-                title={item.title}
-                style={{ maxWidth: 200 }}
-            >
-                {item.title}
-            </h3>
-            <span className="text-sm text-gray-600">
-                <strong>{available} disponibles</strong> de {total}
-            </span>
-        </div>
+            
+            {/* Book Info */}
+            <CardContent sx={{ 
+                flexGrow: 1, 
+                display: 'flex', 
+                flexDirection: 'column', 
+                p: 2,
+                '&:last-child': { pb: 2 }
+            }}>
+                <Typography 
+                    variant="h6" 
+                    component="h3" 
+                    gutterBottom
+                    sx={{ 
+                        fontWeight: 600,
+                        fontSize: '1.1rem',
+                        lineHeight: 1.3,
+                        mb: 1,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        textAlign: 'center'
+                    }}
+                    title={item.title}
+                >
+                    {item.title}
+                </Typography>
+                
+                <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'center' }}>
+                    <Chip
+                        label={`${available} disponibles de ${total}`}
+                        size="small"
+                        color={available > 0 ? 'success' : 'error'}
+                        variant="filled"
+                        sx={{
+                            fontSize: '0.75rem',
+                            fontWeight: 500
+                        }}
+                    />
+                </Box>
+            </CardContent>
+        </Card>
     )
 } 

@@ -1,9 +1,17 @@
 'use client'
 
-import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 import type { CatalogItem, Taxonomy } from '@/payload-types'
 import { useMemo, useState } from 'react'
 import { CatalogItemCard } from './CatalogItemCard'
+import {
+  Box,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Container
+} from '@mui/material'
 
 interface CatalogListClientProps {
     catalogItems: CatalogItem[]
@@ -23,26 +31,53 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
     }, [catalogItems, selectedCategory])
 
     return (
-        <div className="container">
-            <h2 className="text-2xl font-bold mb-4 mt-4">Catálogo</h2>
-            <div className="mb-4 w-full max-w-xs">
-                <select
-                    className="w-full px-3 py-2 border rounded"
-                    value={selectedCategory ?? ''}
-                    onChange={e => setSelectedCategory(e.target.value ? Number(e.target.value) : null)}
-                >
-                    <option value="">Todas las categorías</option>
-                    {categories.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.singular_name}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 justify-center">
+        <Container maxWidth="lg" sx={{ py: 0 }}>
+            {/* Header with Filter */}
+            <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="h4" component="h2" sx={{ fontWeight: 600 }}>
+                    Catálogo
+                </Typography>
+                
+                <Box sx={{ minWidth: 200 }}>
+                    <FormControl fullWidth size="medium">
+                        <InputLabel>Categoría</InputLabel>
+                        <Select
+                            value={selectedCategory ?? ''}
+                            label="Categoría"
+                            onChange={e => setSelectedCategory(e.target.value ? Number(e.target.value) : null)}
+                            sx={{ borderRadius: 2 }}
+                        >
+                            <MenuItem value="">Todas las categorías</MenuItem>
+                            {categories.map(cat => (
+                                <MenuItem key={cat.id} value={cat.id}>
+                                    {cat.singular_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+            </Box>
+
+            {/* Books Grid */}
+            <Box sx={{ 
+                display: 'grid',
+                gridTemplateColumns: {
+                    xs: 'repeat(1, 1fr)',
+                    sm: 'repeat(2, 1fr)',
+                    md: 'repeat(3, 1fr)',
+                    lg: 'repeat(4, 1fr)'
+                },
+                gap: 3,
+                justifyContent: 'center',
+                justifyItems: 'center'
+            }}>
                 {filteredItems.map(item => (
-                    <CatalogItemCard key={item.id} item={item} />
+                    <Box key={item.id} sx={{ width: '100%', maxWidth: 280 }}>
+                        <CatalogItemCard item={item} />
+                    </Box>
                 ))}
-            </div>
-        </div>
+            </Box>
+        </Container>
     )
 }
 
