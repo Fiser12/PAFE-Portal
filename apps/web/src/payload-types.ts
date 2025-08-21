@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     reservation: Reservation;
     'catalog-item': CatalogItem;
+    cases: Case;
+    tasks: Task;
     taxonomy: Taxonomy;
     media: Media;
     users: User;
@@ -88,10 +90,16 @@ export interface Config {
     'catalog-item': {
       reservations: 'reservation';
     };
+    cases: {
+      assignedUser: 'users';
+      tasks: 'tasks';
+    };
   };
   collectionsSelect: {
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
+    cases: CasesSelect<false> | CasesSelect<true>;
+    tasks: TasksSelect<false> | TasksSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -316,6 +324,7 @@ export interface User {
   name?: string | null;
   image?: string | null;
   reservations?: (number | Reservation)[] | null;
+  assignedCases?: (number | Case)[] | null;
   roles?: (number | Taxonomy)[] | null;
   accounts?:
     | {
@@ -332,6 +341,44 @@ export interface User {
         expires: string;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cases".
+ */
+export interface Case {
+  id: number;
+  title: string;
+  assignedUser?: {
+    docs?: (string | User)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  notes?: string | null;
+  tasks?: {
+    docs?: (number | Task)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks".
+ */
+export interface Task {
+  id: number;
+  title: string;
+  case: (number | Case)[];
+  completedOn?: string | null;
+  /**
+   * Formato RFC 5545. Ejemplo: FREQ=WEEKLY;INTERVAL=1;BYDAY=MO. Dejar vacío para tareas no recurrentes.
+   */
+  rrule?: string | null;
+  notes?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1010,6 +1057,14 @@ export interface PayloadLockedDocument {
         value: number | CatalogItem;
       } | null)
     | ({
+        relationTo: 'cases';
+        value: number | Case;
+      } | null)
+    | ({
+        relationTo: 'tasks';
+        value: number | Task;
+      } | null)
+    | ({
         relationTo: 'taxonomy';
         value: number | Taxonomy;
       } | null)
@@ -1117,6 +1172,31 @@ export interface CatalogItemSelect<T extends boolean = true> {
   quantity?: T;
   reservations?: T;
   categories?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cases_select".
+ */
+export interface CasesSelect<T extends boolean = true> {
+  title?: T;
+  assignedUser?: T;
+  notes?: T;
+  tasks?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks_select".
+ */
+export interface TasksSelect<T extends boolean = true> {
+  title?: T;
+  case?: T;
+  completedOn?: T;
+  rrule?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1237,6 +1317,7 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   reservations?: T;
+  assignedCases?: T;
   roles?: T;
   accounts?:
     | T

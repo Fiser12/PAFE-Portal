@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_USER, COLLECTION_SLUG_CASES } from '@/core/collections-slugs'
 import { authenticated } from '@/payload/access/authenticated'
 import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
@@ -29,6 +29,13 @@ export const Users: CollectionConfig = {
       name: 'reservations',
       type: 'relationship',
       relationTo: COLLECTION_SLUG_RESERVATION,
+      hasMany: true,
+    },
+    {
+      label: 'Casos Asignados',
+      name: 'assignedCases',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_CASES,
       hasMany: true,
     },
     buildTaxonomyRelationship({
