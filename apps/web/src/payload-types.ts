@@ -374,10 +374,15 @@ export interface Task {
   title: string;
   case: (number | Case)[];
   completedOn?: string | null;
-  /**
-   * Formato RFC 5545. Ejemplo: FREQ=WEEKLY;INTERVAL=1;BYDAY=MO. Dejar vacío para tareas no recurrentes.
-   */
-  rrule?: string | null;
+  rrule?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   notes?: string | null;
   updatedAt: string;
   createdAt: string;

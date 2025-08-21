@@ -1,5 +1,6 @@
 import { RRule } from 'rrule'
 import type { TaskWithCaseInfo, TaskWithNextDue, ClassifiedTasks, TaskStatus } from '@/types/cases'
+import type { RRuleValue } from '@/types/rrule'
 
 /**
  * Calcula la próxima fecha de vencimiento para una tarea recurrente
@@ -7,11 +8,11 @@ import type { TaskWithCaseInfo, TaskWithNextDue, ClassifiedTasks, TaskStatus } f
  * @param lastCompletedAt - Fecha de última completación
  * @returns Próxima fecha de vencimiento o null si no aplica
  */
-export function getNextDueDate(rruleString: string, lastCompletedAt: Date): Date | null {
-  if (!rruleString || !lastCompletedAt) return null
+export function getNextDueDate(rruleValue: RRuleValue | null | undefined, lastCompletedAt: Date): Date | null {
+  if (!rruleValue?.rrule || !lastCompletedAt) return null
   
   try {
-    const rule = RRule.fromString(rruleString)
+    const rule = RRule.fromString(rruleValue.rrule)
     const nextOccurrence = rule.after(lastCompletedAt, true)
     return nextOccurrence
   } catch (error) {
@@ -28,14 +29,14 @@ export function getNextDueDate(rruleString: string, lastCompletedAt: Date): Date
  * @returns true si la tarea debe completarse de nuevo
  */
 export function shouldTaskBeCompletedAgain(
-  rruleString: string | null | undefined,
+  rruleValue: RRuleValue | null | undefined,
   lastCompletedAt: string | null | undefined,
   now: Date = new Date()
 ): boolean {
-  if (!rruleString || !lastCompletedAt) return false
+  if (!rruleValue || !lastCompletedAt) return false
   
   const lastCompleted = new Date(lastCompletedAt)
-  const nextDue = getNextDueDate(rruleString, lastCompleted)
+  const nextDue = getNextDueDate(rruleValue, lastCompleted)
   
   return nextDue ? now >= nextDue : false
 }
@@ -49,17 +50,17 @@ export function shouldTaskBeCompletedAgain(
  */
 export function getTaskStatus(
   completedOn: string | null | undefined,
-  rruleString: string | null | undefined,
+  rruleValue: RRuleValue | null | undefined,
   now: Date = new Date()
 ): TaskStatus {
   // Si no está completada nunca, está pendiente
   if (!completedOn) return 'pending'
   
   // Si no es recurrente y está completada, está completada
-  if (!rruleString) return 'completed'
+  if (!rruleValue) return 'completed'
   
   // Si es recurrente, verificar si debe completarse de nuevo
-  if (shouldTaskBeCompletedAgain(rruleString, completedOn, now)) {
+  if (shouldTaskBeCompletedAgain(rruleValue, completedOn, now)) {
     return 'overdue'
   }
   
@@ -71,11 +72,11 @@ export function getTaskStatus(
  * @param rruleString - Regla RRule en formato RFC 5545
  * @returns Descripción legible de la recurrencia en español
  */
-export function rruleToText(rruleString: string): string {
-  if (!rruleString) return ''
+export function rruleToText(rruleValue: RRuleValue | null | undefined): string {
+  if (!rruleValue?.rrule) return ''
   
   try {
-    const rule = RRule.fromString(rruleString)
+    const rule = RRule.fromString(rruleValue.rrule)
     const englishText = rule.toText()
     
     return englishText
@@ -83,6 +84,7 @@ export function rruleToText(rruleString: string): string {
       .replace(/every week/gi, 'cada semana')  
       .replace(/every month/gi, 'cada mes')
       .replace(/every year/gi, 'cada año')
+      .replace(/for (\d+) times/gi, 'por $1 veces')
       .replace(/every (\d+) days/gi, 'cada $1 días')
       .replace(/every (\d+) weeks/gi, 'cada $1 semanas')
       .replace(/every (\d+) months/gi, 'cada $1 meses')
@@ -114,12 +116,13 @@ export function rruleToText(rruleString: string): string {
       .replace(/December/gi, 'diciembre')
       // Preposiciones y conectores
       .replace(/on /gi, 'los ')
+      .replace(/the (\d+)th/gi, '$1 de cada mes')
       .replace(/until/gi, 'hasta')
       .replace(/and/gi, 'y')
       .replace(/at/gi, 'a las')
   } catch (error) {
     console.error('Error parsing RRule:', error)
-    return rruleString
+    return rruleValue.rrule
   }
 }
 
@@ -135,13 +138,14 @@ export function classifyTasks(tasks: TaskWithCaseInfo[]): ClassifiedTasks {
   const upcomingTasks: TaskWithNextDue[] = []
 
   tasks.forEach(task => {
-    const status = getTaskStatus(task.completedOn, task.rrule, now)
+    const rruleValue = task.rrule as RRuleValue | null | undefined
+    const status = getTaskStatus(task.completedOn, rruleValue, now)
     
     if (status === 'pending' || status === 'overdue') {
       pendingTasks.push(task)
-    } else if (status === 'completed' && task.rrule && task.completedOn) {
+    } else if (status === 'completed' && rruleValue && task.completedOn) {
       // Para tareas recurrentes completadas, calcular próxima fecha
-      const nextDue = getNextDueDate(task.rrule, new Date(task.completedOn))
+      const nextDue = getNextDueDate(rruleValue, new Date(task.completedOn))
       if (nextDue) {
         upcomingTasks.push({
           ...task,

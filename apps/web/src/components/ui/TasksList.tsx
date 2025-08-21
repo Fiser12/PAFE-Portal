@@ -2,6 +2,7 @@
 
 import { getTaskStatus, rruleToText, classifyTasks } from '@/utils/rrule-helpers'
 import type { CaseInfo, TasksListProps } from '@/types/cases'
+import type { RRuleValue } from '@/types/rrule'
 import { getTaskStatusIcon, getTaskStatusColor, getTaskStatusText } from '@/utils/statusUtils'
 import { CaseModal } from '@/components/cases/CaseModal'
 import {
@@ -78,8 +79,9 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
           </Typography>
           <Box sx={{ mb: 3 }}>
             {pendingTasks.map((task) => {
-              const status = getTaskStatus(task.completedOn, task.rrule)
-              const isRecurring = Boolean(task.rrule)
+              const rruleValue = task.rrule as RRuleValue | null | undefined
+              const status = getTaskStatus(task.completedOn, rruleValue)
+              const isRecurring = Boolean(rruleValue)
               
               return (
                 <Card 
@@ -131,7 +133,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                         ))}
                         {isRecurring && (
                           <Tooltip 
-                            title={rruleToText(task.rrule!)}
+                            title={rruleToText(rruleValue!)}
                             placement="top"
                             arrow
                           >
@@ -207,8 +209,9 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
           </Typography>
           <Box sx={{ mb: 3 }}>
             {upcomingTasks.map((task) => {
-              const status = getTaskStatus(task.completedOn, task.rrule)
-              const isRecurring = Boolean(task.rrule)
+              const rruleValue = task.rrule as RRuleValue | null | undefined
+              const status = getTaskStatus(task.completedOn, rruleValue)
+              const isRecurring = Boolean(rruleValue)
               
               return (
                 <Card 
@@ -260,7 +263,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                         ))}
                         {isRecurring && (
                           <Tooltip 
-                            title={rruleToText(task.rrule!)}
+                            title={rruleToText(rruleValue!)}
                             placement="top"
                             arrow
                           >
@@ -284,7 +287,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                         Completada: {task.completedOn && new Date(task.completedOn).toLocaleDateString('es-ES')}
                       </Typography>
                       <Typography variant="body2" color="primary.main">
-                        Próximo vencimiento: {task.nextDueDate.toLocaleDateString('es-ES')}
+                        Próximo: {task.nextDueDate.toLocaleDateString('es-ES')}
                       </Typography>
                     </Box>
 

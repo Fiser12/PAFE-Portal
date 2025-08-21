@@ -44,9 +44,11 @@ export const Tasks: CollectionConfig = {
     {
       label: 'Regla de Recurrencia (RRule)',
       name: 'rrule',
-      type: 'text',
+      type: 'json',
       admin: {
-        description: 'Formato RFC 5545. Ejemplo: FREQ=WEEKLY;INTERVAL=1;BYDAY=MO. Dejar vacío para tareas no recurrentes.',
+        components: {
+          Field: '@/payload/admin_components/RRule/Component#RRuleField'
+        }
       },
     },
     {
