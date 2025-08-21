@@ -18,7 +18,7 @@ export const Tasks: CollectionConfig = {
   },
   admin: {
     hidden: checkRoleHidden("admin"),
-    defaultColumns: ['title', 'case', 'completedOn'],
+    defaultColumns: ['title', 'case'],
     useAsTitle: 'title',
   },
   fields: [
@@ -35,11 +35,6 @@ export const Tasks: CollectionConfig = {
       relationTo: COLLECTION_SLUG_CASES,
       required: true,
       hasMany: true
-    },
-    {
-      label: 'Completada en',
-      name: 'completedOn',
-      type: 'date',
     },
     {
       label: 'Regla de Recurrencia (RRule)',

@@ -71,6 +71,7 @@ export interface Config {
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
+    'tasks-completed': TasksCompleted;
     taxonomy: Taxonomy;
     media: Media;
     users: User;
@@ -100,6 +101,7 @@ export interface Config {
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
+    'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -373,7 +375,6 @@ export interface Task {
   id: number;
   title: string;
   case: (number | Case)[];
-  completedOn?: string | null;
   rrule?:
     | {
         [k: string]: unknown;
@@ -384,6 +385,18 @@ export interface Task {
     | boolean
     | null;
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks-completed".
+ */
+export interface TasksCompleted {
+  id: number;
+  task: number | Task;
+  user: string | User;
+  completedOn: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1070,6 +1083,10 @@ export interface PayloadLockedDocument {
         value: number | Task;
       } | null)
     | ({
+        relationTo: 'tasks-completed';
+        value: number | TasksCompleted;
+      } | null)
+    | ({
         relationTo: 'taxonomy';
         value: number | Taxonomy;
       } | null)
@@ -1199,9 +1216,19 @@ export interface CasesSelect<T extends boolean = true> {
 export interface TasksSelect<T extends boolean = true> {
   title?: T;
   case?: T;
-  completedOn?: T;
   rrule?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks-completed_select".
+ */
+export interface TasksCompletedSelect<T extends boolean = true> {
+  task?: T;
+  user?: T;
+  completedOn?: T;
   updatedAt?: T;
   createdAt?: T;
 }

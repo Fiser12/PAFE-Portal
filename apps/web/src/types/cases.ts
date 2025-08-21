@@ -1,4 +1,5 @@
 import type { Task, Case } from '@/payload-types'
+import type { TaskCompletion } from '@/utils/rrule-helpers'
 
 /**
  * Case information subset used in UI components
@@ -12,6 +13,7 @@ export type CaseInfo = Pick<Case, 'id' | 'title'> & {
  */
 export type TaskWithCaseInfo = Task & {
   caseInfo?: CaseInfo[]
+  lastCompletion?: TaskCompletion | null
 }
 
 /**

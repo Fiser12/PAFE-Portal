@@ -58,8 +58,10 @@ export default function CasesPage() {
   )
 
   const handleTaskComplete = async (taskId: number) => {
+    if (!user?.id) return
+    
     try {
-      await completeTask(taskId)
+      await completeTask(taskId, user.id)
       // Revalidar las tareas
       mutateTasks()
     } catch (error) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { getTaskStatus, rruleToText, classifyTasks } from '@/utils/rrule-helpers'
+import { getTaskStatus, rruleToText, classifyTasks, type TaskCompletion } from '@/utils/rrule-helpers'
 import type { CaseInfo, TasksListProps } from '@/types/cases'
 import type { RRuleValue } from '@/types/rrule'
 import { getTaskStatusIcon, getTaskStatusColor, getTaskStatusText } from '@/utils/statusUtils'
@@ -80,7 +80,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
           <Box sx={{ mb: 3 }}>
             {pendingTasks.map((task) => {
               const rruleValue = task.rrule as RRuleValue | null | undefined
-              const status = getTaskStatus(task.completedOn, rruleValue)
+              const status = getTaskStatus(task.lastCompletion, rruleValue)
               const isRecurring = Boolean(rruleValue)
               
               return (
@@ -150,7 +150,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                         )}
                       </Box>
                       
-                      {task.completedOn && (
+                      {task.lastCompletion && (
                         <Typography variant="caption" color="text.secondary" sx={{ 
                           fontFamily: 'monospace',
                           backgroundColor: 'background.paper',
@@ -160,7 +160,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                           border: '1px solid',
                           borderColor: 'divider'
                         }}>
-                          Completada: {new Date(task.completedOn).toLocaleDateString()}
+                          Completada: {new Date(task.lastCompletion.completedOn).toLocaleDateString()}
                         </Typography>
                       )}
                     </Box>
@@ -210,7 +210,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
           <Box sx={{ mb: 3 }}>
             {upcomingTasks.map((task) => {
               const rruleValue = task.rrule as RRuleValue | null | undefined
-              const status = getTaskStatus(task.completedOn, rruleValue)
+              const status = getTaskStatus(task.lastCompletion, rruleValue)
               const isRecurring = Boolean(rruleValue)
               
               return (
@@ -284,7 +284,7 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                     {/* Fechas para tareas recurrentes */}
                     <Box sx={{ mb: 2 }}>
                       <Typography variant="body2" color="text.secondary">
-                        Completada: {task.completedOn && new Date(task.completedOn).toLocaleDateString('es-ES')}
+                        Completada: {task.lastCompletion && new Date(task.lastCompletion.completedOn).toLocaleDateString('es-ES')}
                       </Typography>
                       <Typography variant="body2" color="primary.main">
                         Próximo: {task.nextDueDate.toLocaleDateString('es-ES')}

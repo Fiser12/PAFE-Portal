@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
-export async function up({ db }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_appearance" AS ENUM('default', 'outline');
@@ -34,6 +34,67 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'schedulePublish');
   CREATE TYPE "public"."enum_header_nav_items_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_footer_nav_items_link_type" AS ENUM('reference', 'custom');
+  CREATE TABLE IF NOT EXISTS "reservation" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"item_id" integer NOT NULL,
+  	"user_id" varchar NOT NULL,
+  	"reservation_date" timestamp(3) with time zone NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "catalog_item" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"cover_id" integer NOT NULL,
+  	"title" varchar NOT NULL,
+  	"content" jsonb NOT NULL,
+  	"quantity" numeric,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "catalog_item_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"taxonomy_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "cases" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar NOT NULL,
+  	"notes" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "tasks" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar NOT NULL,
+  	"rrule" jsonb,
+  	"notes" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "tasks_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"cases_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "tasks_completed" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"task_id" integer NOT NULL,
+  	"user_id" varchar NOT NULL,
+  	"completed_on" timestamp(3) with time zone NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
   CREATE TABLE IF NOT EXISTS "taxonomy" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"singular_name" varchar NOT NULL,
@@ -136,6 +197,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" varchar NOT NULL,
   	"path" varchar NOT NULL,
+  	"reservation_id" integer,
+  	"cases_id" integer,
   	"taxonomy_id" integer
   );
   
@@ -221,6 +284,14 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   	"form_id" integer,
   	"enable_intro" boolean,
   	"intro_content" jsonb,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_catalog_list" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
   	"block_name" varchar
   );
   
@@ -340,6 +411,15 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   	"form_id" integer,
   	"enable_intro" boolean,
   	"intro_content" jsonb,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_catalog_list" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar,
   	"block_name" varchar
   );
@@ -723,6 +803,11 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"reservation_id" integer,
+  	"catalog_item_id" integer,
+  	"cases_id" integer,
+  	"tasks_id" integer,
+  	"tasks_completed_id" integer,
   	"taxonomy_id" integer,
   	"media_id" integer,
   	"users_id" varchar,
@@ -811,6 +896,60 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   );
   
   DO $$ BEGIN
+   ALTER TABLE "reservation" ADD CONSTRAINT "reservation_item_id_catalog_item_id_fk" FOREIGN KEY ("item_id") REFERENCES "public"."catalog_item"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "reservation" ADD CONSTRAINT "reservation_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "catalog_item" ADD CONSTRAINT "catalog_item_cover_id_media_id_fk" FOREIGN KEY ("cover_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "catalog_item_rels" ADD CONSTRAINT "catalog_item_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."catalog_item"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "catalog_item_rels" ADD CONSTRAINT "catalog_item_rels_taxonomy_fk" FOREIGN KEY ("taxonomy_id") REFERENCES "public"."taxonomy"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tasks_rels" ADD CONSTRAINT "tasks_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tasks"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tasks_rels" ADD CONSTRAINT "tasks_rels_cases_fk" FOREIGN KEY ("cases_id") REFERENCES "public"."cases"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tasks_completed" ADD CONSTRAINT "tasks_completed_task_id_tasks_id_fk" FOREIGN KEY ("task_id") REFERENCES "public"."tasks"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tasks_completed" ADD CONSTRAINT "tasks_completed_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "users_accounts" ADD CONSTRAINT "users_accounts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -824,6 +963,18 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_reservation_fk" FOREIGN KEY ("reservation_id") REFERENCES "public"."reservation"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_cases_fk" FOREIGN KEY ("cases_id") REFERENCES "public"."cases"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -890,6 +1041,12 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_form_block" ADD CONSTRAINT "pages_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_catalog_list" ADD CONSTRAINT "pages_blocks_catalog_list_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -986,6 +1143,12 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_form_block" ADD CONSTRAINT "_pages_v_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_catalog_list" ADD CONSTRAINT "_pages_v_blocks_catalog_list_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1243,6 +1406,36 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_reservation_fk" FOREIGN KEY ("reservation_id") REFERENCES "public"."reservation"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_catalog_item_fk" FOREIGN KEY ("catalog_item_id") REFERENCES "public"."catalog_item"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_cases_fk" FOREIGN KEY ("cases_id") REFERENCES "public"."cases"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tasks_fk" FOREIGN KEY ("tasks_id") REFERENCES "public"."tasks"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tasks_completed_fk" FOREIGN KEY ("tasks_completed_id") REFERENCES "public"."tasks_completed"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_taxonomy_fk" FOREIGN KEY ("taxonomy_id") REFERENCES "public"."taxonomy"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1368,6 +1561,29 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
    WHEN duplicate_object THEN null;
   END $$;
   
+  CREATE INDEX IF NOT EXISTS "reservation_item_idx" ON "reservation" USING btree ("item_id");
+  CREATE INDEX IF NOT EXISTS "reservation_user_idx" ON "reservation" USING btree ("user_id");
+  CREATE INDEX IF NOT EXISTS "reservation_updated_at_idx" ON "reservation" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "reservation_created_at_idx" ON "reservation" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "catalog_item_cover_idx" ON "catalog_item" USING btree ("cover_id");
+  CREATE INDEX IF NOT EXISTS "catalog_item_updated_at_idx" ON "catalog_item" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "catalog_item_created_at_idx" ON "catalog_item" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "catalog_item_rels_order_idx" ON "catalog_item_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "catalog_item_rels_parent_idx" ON "catalog_item_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "catalog_item_rels_path_idx" ON "catalog_item_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "catalog_item_rels_taxonomy_id_idx" ON "catalog_item_rels" USING btree ("taxonomy_id");
+  CREATE INDEX IF NOT EXISTS "cases_updated_at_idx" ON "cases" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "cases_created_at_idx" ON "cases" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "tasks_updated_at_idx" ON "tasks" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "tasks_created_at_idx" ON "tasks" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "tasks_rels_order_idx" ON "tasks_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "tasks_rels_parent_idx" ON "tasks_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "tasks_rels_path_idx" ON "tasks_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "tasks_rels_cases_id_idx" ON "tasks_rels" USING btree ("cases_id");
+  CREATE INDEX IF NOT EXISTS "tasks_completed_task_idx" ON "tasks_completed" USING btree ("task_id");
+  CREATE INDEX IF NOT EXISTS "tasks_completed_user_idx" ON "tasks_completed" USING btree ("user_id");
+  CREATE INDEX IF NOT EXISTS "tasks_completed_updated_at_idx" ON "tasks_completed" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "tasks_completed_created_at_idx" ON "tasks_completed" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "taxonomy_slug_idx" ON "taxonomy" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "taxonomy_updated_at_idx" ON "taxonomy" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "taxonomy_created_at_idx" ON "taxonomy" USING btree ("created_at");
@@ -1393,6 +1609,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "users_rels_order_idx" ON "users_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "users_rels_parent_idx" ON "users_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "users_rels_path_idx" ON "users_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "users_rels_reservation_id_idx" ON "users_rels" USING btree ("reservation_id");
+  CREATE INDEX IF NOT EXISTS "users_rels_cases_id_idx" ON "users_rels" USING btree ("cases_id");
   CREATE INDEX IF NOT EXISTS "users_rels_taxonomy_id_idx" ON "users_rels" USING btree ("taxonomy_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_links_order_idx" ON "pages_hero_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_hero_links_parent_id_idx" ON "pages_hero_links" USING btree ("_parent_id");
@@ -1417,6 +1635,9 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_blocks_form_block_parent_id_idx" ON "pages_blocks_form_block" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_form_block_path_idx" ON "pages_blocks_form_block" USING btree ("_path");
   CREATE INDEX IF NOT EXISTS "pages_blocks_form_block_form_idx" ON "pages_blocks_form_block" USING btree ("form_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_catalog_list_order_idx" ON "pages_blocks_catalog_list" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_catalog_list_parent_id_idx" ON "pages_blocks_catalog_list" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_catalog_list_path_idx" ON "pages_blocks_catalog_list" USING btree ("_path");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_media_idx" ON "pages" USING btree ("hero_media_id");
   CREATE INDEX IF NOT EXISTS "pages_meta_meta_image_idx" ON "pages" USING btree ("meta_image_id");
   CREATE INDEX IF NOT EXISTS "pages_slug_idx" ON "pages" USING btree ("slug");
@@ -1452,6 +1673,9 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_form_block_parent_id_idx" ON "_pages_v_blocks_form_block" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_form_block_path_idx" ON "_pages_v_blocks_form_block" USING btree ("_path");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_form_block_form_idx" ON "_pages_v_blocks_form_block" USING btree ("form_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_catalog_list_order_idx" ON "_pages_v_blocks_catalog_list" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_catalog_list_parent_id_idx" ON "_pages_v_blocks_catalog_list" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_catalog_list_path_idx" ON "_pages_v_blocks_catalog_list" USING btree ("_path");
   CREATE INDEX IF NOT EXISTS "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_media_idx" ON "_pages_v" USING btree ("version_hero_media_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_meta_version_meta_image_idx" ON "_pages_v" USING btree ("version_meta_image_id");
@@ -1574,6 +1798,11 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_reservation_id_idx" ON "payload_locked_documents_rels" USING btree ("reservation_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_catalog_item_id_idx" ON "payload_locked_documents_rels" USING btree ("catalog_item_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_cases_id_idx" ON "payload_locked_documents_rels" USING btree ("cases_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_tasks_id_idx" ON "payload_locked_documents_rels" USING btree ("tasks_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_tasks_completed_id_idx" ON "payload_locked_documents_rels" USING btree ("tasks_completed_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_taxonomy_id_idx" ON "payload_locked_documents_rels" USING btree ("taxonomy_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
@@ -1610,9 +1839,16 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "footer_rels_posts_id_idx" ON "footer_rels" USING btree ("posts_id");`)
 }
 
-export async function down({ db }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
-   DROP TABLE "taxonomy" CASCADE;
+   DROP TABLE "reservation" CASCADE;
+  DROP TABLE "catalog_item" CASCADE;
+  DROP TABLE "catalog_item_rels" CASCADE;
+  DROP TABLE "cases" CASCADE;
+  DROP TABLE "tasks" CASCADE;
+  DROP TABLE "tasks_rels" CASCADE;
+  DROP TABLE "tasks_completed" CASCADE;
+  DROP TABLE "taxonomy" CASCADE;
   DROP TABLE "media" CASCADE;
   DROP TABLE "users_accounts" CASCADE;
   DROP TABLE "users_sessions" CASCADE;
@@ -1626,6 +1862,7 @@ export async function down({ db }: MigrateDownArgs): Promise<void> {
   DROP TABLE "pages_blocks_media_block" CASCADE;
   DROP TABLE "pages_blocks_archive" CASCADE;
   DROP TABLE "pages_blocks_form_block" CASCADE;
+  DROP TABLE "pages_blocks_catalog_list" CASCADE;
   DROP TABLE "pages" CASCADE;
   DROP TABLE "pages_rels" CASCADE;
   DROP TABLE "_pages_v_version_hero_links" CASCADE;
@@ -1636,6 +1873,7 @@ export async function down({ db }: MigrateDownArgs): Promise<void> {
   DROP TABLE "_pages_v_blocks_media_block" CASCADE;
   DROP TABLE "_pages_v_blocks_archive" CASCADE;
   DROP TABLE "_pages_v_blocks_form_block" CASCADE;
+  DROP TABLE "_pages_v_blocks_catalog_list" CASCADE;
   DROP TABLE "_pages_v" CASCADE;
   DROP TABLE "_pages_v_rels" CASCADE;
   DROP TABLE "posts_populated_authors" CASCADE;

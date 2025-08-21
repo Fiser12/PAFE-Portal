@@ -2,6 +2,13 @@ import { RRule } from 'rrule'
 import type { TaskWithCaseInfo, TaskWithNextDue, ClassifiedTasks, TaskStatus } from '@/types/cases'
 import type { RRuleValue } from '@/types/rrule'
 
+export interface TaskCompletion {
+  taskId: number
+  userId: number
+  completedOn: string
+  id: number
+}
+
 /**
  * Calcula la próxima fecha de vencimiento para una tarea recurrente
  * @param rruleString - Regla RRule en formato RFC 5545
@@ -12,9 +19,9 @@ export function getNextDueDate(rruleValue: RRuleValue | null | undefined, lastCo
   if (!rruleValue?.rrule || !lastCompletedAt) return null
   
   try {
-    const rule = RRule.fromString(rruleValue.rrule)
-    const nextOccurrence = rule.after(lastCompletedAt, true)
-    return nextOccurrence
+    return RRule
+      .fromString(rruleValue.rrule)
+      .after(lastCompletedAt, true)
   } catch (error) {
     console.error('Error parsing RRule:', error)
     return null
@@ -43,24 +50,29 @@ export function shouldTaskBeCompletedAgain(
 
 /**
  * Obtiene el estado de una tarea (completed, overdue, pending)
- * @param completedOn - Fecha de completación
- * @param rruleString - Regla RRule
+ * @param completedOn - Fecha de completación (string) o objeto TaskCompletion
+ * @param rruleValue - Regla RRule
  * @param now - Fecha actual
  * @returns Estado de la tarea
  */
 export function getTaskStatus(
-  completedOn: string | null | undefined,
+  completedOn: string | TaskCompletion | null | undefined,
   rruleValue: RRuleValue | null | undefined,
   now: Date = new Date()
 ): TaskStatus {
+  // Extraer fecha de completación
+  const completionDate = typeof completedOn === 'string' 
+    ? completedOn 
+    : completedOn?.completedOn
+
   // Si no está completada nunca, está pendiente
-  if (!completedOn) return 'pending'
+  if (!completionDate) return 'pending'
   
   // Si no es recurrente y está completada, está completada
   if (!rruleValue) return 'completed'
   
   // Si es recurrente, verificar si debe completarse de nuevo
-  if (shouldTaskBeCompletedAgain(rruleValue, completedOn, now)) {
+  if (shouldTaskBeCompletedAgain(rruleValue, completionDate, now)) {
     return 'overdue'
   }
   
@@ -129,28 +141,42 @@ export function rruleToText(rruleValue: RRuleValue | null | undefined): string {
 
 /**
  * Clasifica las tareas en pendientes y próximas
- * @param tasks - Array de tareas con información del caso
+ * @param tasks - Array de tareas (con completedOn o lastCompletion)
  * @returns Objeto con tareas pendientes y próximas organizadas
  */
-export function classifyTasks(tasks: TaskWithCaseInfo[]): ClassifiedTasks {
+export function classifyTasks(
+  tasks: Array<TaskWithCaseInfo & { 
+    lastCompletion?: TaskCompletion | null
+    completedOn?: string | null 
+  }>
+): ClassifiedTasks {
   const now = new Date()
   const pendingTasks: TaskWithCaseInfo[] = []
   const upcomingTasks: TaskWithNextDue[] = []
 
   tasks.forEach(task => {
     const rruleValue = task.rrule as RRuleValue | null | undefined
-    const status = getTaskStatus(task.completedOn, rruleValue, now)
+    
+    // Usar lastCompletion si existe, sino completedOn
+    const completion = task.lastCompletion || task.completedOn
+    const status = getTaskStatus(completion, rruleValue, now)
     
     if (status === 'pending' || status === 'overdue') {
       pendingTasks.push(task)
-    } else if (status === 'completed' && rruleValue && task.completedOn) {
+    } else if (status === 'completed' && rruleValue) {
       // Para tareas recurrentes completadas, calcular próxima fecha
-      const nextDue = getNextDueDate(rruleValue, new Date(task.completedOn))
-      if (nextDue) {
-        upcomingTasks.push({
-          ...task,
-          nextDueDate: nextDue
-        })
+      const completedDate = typeof completion === 'string' 
+        ? completion 
+        : completion?.completedOn
+        
+      if (completedDate) {
+        const nextDue = getNextDueDate(rruleValue, new Date(completedDate))
+        if (nextDue) {
+          upcomingTasks.push({
+            ...task,
+            nextDueDate: nextDue
+          })
+        }
       }
     }
   })

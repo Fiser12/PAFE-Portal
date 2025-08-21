@@ -39,7 +39,43 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
       depth: 2, // Para obtener la información del caso también
     })
 
-    // Enriquecemos las tareas con información de todos los casos relevantes
+    // Obtener TODAS las completaciones del usuario de una vez
+    const taskIds = tasks.docs.map(task => task.id)
+    const allCompletions = await payload.find({
+      collection: 'tasks-completed',
+      where: {
+        and: [
+          {
+            task: {
+              in: taskIds
+            }
+          },
+          {
+            user: {
+              equals: userId
+            }
+          }
+        ]
+      },
+      sort: '-completedOn',
+      limit: 1000 // Ajustar según necesidad
+    })
+
+    // Crear mapa de última completación por tarea
+    const completionsByTask = new Map()
+    allCompletions.docs.forEach(completion => {
+      const taskId = typeof completion.task === 'object' ? completion.task.id : completion.task
+      if (!completionsByTask.has(taskId)) {
+        completionsByTask.set(taskId, {
+          taskId,
+          userId: typeof completion.user === 'object' ? completion.user.id : completion.user,
+          completedOn: completion.completedOn,
+          id: completion.id
+        })
+      }
+    })
+
+    // Enriquecemos las tareas con información de casos y completaciones
     const allTasks = tasks.docs.map((task) => {
       // Como una tarea puede estar en múltiples casos, obtenemos todos los casos del usuario
       const taskCases = Array.isArray(task.case) ? task.case : [task.case]
@@ -68,9 +104,13 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
         }
       }).filter((caseInfo): caseInfo is NonNullable<typeof caseInfo> => caseInfo !== null)
 
+      // Obtener completación desde el mapa
+      const lastCompletion = completionsByTask.get(task.id) || null
+
       return {
         ...task,
-        caseInfo
+        caseInfo,
+        lastCompletion
       }
     })
 
