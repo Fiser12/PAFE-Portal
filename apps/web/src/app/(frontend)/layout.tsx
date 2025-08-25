@@ -10,7 +10,6 @@ import { Footer } from '@/payload/admin_components/Footer/Component'
 import { Header } from '@/payload/admin_components/Header/Component'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { Providers } from '@/components/providers'
-import { InitTheme } from '@/components/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { PayloadSessionProvider } from "payload-authjs/client";
@@ -25,7 +24,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>

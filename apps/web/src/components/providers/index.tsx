@@ -1,14 +1,11 @@
 import React from 'react'
 
-import { HeaderThemeProvider } from './HeaderTheme'
-import { ThemeProvider } from './Theme'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
 export const Providers: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   return (
-    <ThemeProvider>
-      <HeaderThemeProvider>{children}</HeaderThemeProvider>
-    </ThemeProvider>
+    <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
   )
 }
