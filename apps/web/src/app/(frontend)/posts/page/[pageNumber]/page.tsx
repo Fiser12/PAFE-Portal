@@ -2,7 +2,7 @@ import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/legacy/CollectionArchive'
 import { PageRange } from '@/components/legacy/PageRange'
-import { Pagination } from '@/components/legacy/Pagination'
+import { Pagination } from '@/components/legacy/Pagination/'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'

@@ -4,7 +4,7 @@ import RichText from '@/components/legacy/RichText'
 
 import type { Post } from '@/payload-types'
 
-import { Card } from '@/components/legacy/Card'
+import { Card } from '@/components/legacy/Card/'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 export type RelatedPostsProps = {
