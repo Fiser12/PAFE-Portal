@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import { useField, FieldLabel } from '@payloadcms/ui'
 import type { JSONFieldClientComponent } from 'payload'
 import { rruleToText } from '@/utils/rrule-helpers'
-import { RRuleBuilder } from 'react-rrule-builder-ts';
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import type { RRuleValue } from '@/types/rrule'
 
@@ -90,15 +88,6 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
           borderRadius: 'var(--theme-border-radius)',
           border: '1px solid var(--theme-elevation-200)'
         } as React.CSSProperties}>
-          <RRuleBuilder
-            dateAdapter={AdapterLuxon}
-            datePickerInitialDate={value?.datePickerInitialDate}
-            rruleString={value?.rrule}
-            showStartDate={true}
-            onChange={handleRRuleChange}
-            enableYearlyInterval={true}
-            enableOpenOnClickDatePicker
-          />
         </div>
       </ThemeProvider>
     </div>
