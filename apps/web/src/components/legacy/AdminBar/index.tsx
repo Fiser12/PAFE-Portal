@@ -62,12 +62,7 @@ export const AdminBar: React.FC<{
             logo: 'text-primary-foreground',
             user: 'text-primary-foreground',
           }}
-          cmsURL={getClientSideURL()}
-          collectionSlug={collection}
-          collectionLabels={{
-            plural: collectionLabels[collection]?.plural || 'Pages',
-            singular: collectionLabels[collection]?.singular || 'Page',
-          }}
+          cmsURL={getClientSideURL()}          
           logo={<Title />}
           onAuthChange={onAuthChange}
           onPreviewExit={() => {

@@ -5,6 +5,7 @@ import type { CaseInfo, TasksListProps } from '@/types/cases'
 import type { RRuleValue } from '@/types/rrule'
 import { getTaskStatusIcon, getTaskStatusColor, getTaskStatusText } from '@/utils/statusUtils'
 import { CaseModal } from '@/components/cases/CaseModal'
+import { TaskResources } from './TaskResources'
 import {
   Card,
   CardContent,
@@ -100,68 +101,96 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                 >
                   <CardContent sx={{ p: 3 }}>
                     {/* Header row */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        {getTaskStatusIcon(status )}
-                        <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.1rem' }}>
-                          {task.title}
-                        </Typography>
-                        <Chip
-                          label={getTaskStatusText(status )}
-                          size="small"
-                          color={getTaskStatusColor(status ) }
-                          sx={{ 
-                            fontSize: '0.7rem',
-                            height: 24
-                          }}
-                        />
-                        {showCaseInfo && task.caseInfo && task.caseInfo.map((caseItem) => (
+                    <Box sx={{ mb: 2 }}>
+                      {/* Desktop: Title and chips in same row with space-between. Mobile: stacked */}
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: { xs: 'flex-start', sm: 'center' },
+                        justifyContent: { xs: 'flex-start', sm: 'space-between' },
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        gap: { xs: 1, sm: 2 }
+                      }}>
+                        {/* Title section */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 2,
+                          order: { xs: 1, sm: 1 }
+                        }}>
+                          {getTaskStatusIcon(status )}
+                          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.1rem' }}>
+                            {task.title}
+                          </Typography>
+                        </Box>
+                        
+                        {/* Chips section */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 1, 
+                          flexWrap: 'wrap',
+                          order: { xs: 2, sm: 2 }
+                        }}>
                           <Chip
-                            key={caseItem.id}
-                            label={caseItem.title}
+                            label={getTaskStatusText(status )}
                             size="small"
-                            variant="outlined"
-                            color="primary"
-                            clickable
-                            onClick={() => handleCaseClick(caseItem)}
+                            color={getTaskStatusColor(status ) }
                             sx={{ 
                               fontSize: '0.7rem',
-                              height: 24,
-                              cursor: 'pointer'
+                              height: 24
                             }}
                           />
-                        ))}
-                        {isRecurring && (
-                          <Tooltip 
-                            title={rruleToText(rruleValue!)}
-                            placement="top"
-                            arrow
-                          >
+                          {showCaseInfo && task.caseInfo && task.caseInfo.map((caseItem) => (
                             <Chip
-                              label="Recurrente"
+                              key={caseItem.id}
+                              label={caseItem.title}
                               size="small"
                               variant="outlined"
+                              color="primary"
+                              clickable
+                              onClick={() => handleCaseClick(caseItem)}
                               sx={{ 
                                 fontSize: '0.7rem',
-                                height: 24
+                                height: 24,
+                                cursor: 'pointer'
                               }}
                             />
-                          </Tooltip>
-                        )}
+                          ))}
+                          {isRecurring && (
+                            <Tooltip 
+                              title={rruleToText(rruleValue!)}
+                              placement="top"
+                              arrow
+                            >
+                              <Chip
+                                label="Recurrente"
+                                size="small"
+                                variant="outlined"
+                                sx={{ 
+                                  fontSize: '0.7rem',
+                                  height: 24
+                                }}
+                              />
+                            </Tooltip>
+                          )}
+                        </Box>
                       </Box>
                       
+                      {/* Completion date (only for pending tasks) */}
                       {task.lastCompletion && (
-                        <Typography variant="caption" color="text.secondary" sx={{ 
-                          fontFamily: 'monospace',
-                          backgroundColor: 'background.paper',
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: 1,
-                          border: '1px solid',
-                          borderColor: 'divider'
-                        }}>
-                          Completada: {new Date(task.lastCompletion.completedOn).toLocaleDateString()}
-                        </Typography>
+                        <Box sx={{ mt: 1 }}>
+                          <Typography variant="caption" color="text.secondary" sx={{ 
+                            fontFamily: 'monospace',
+                            backgroundColor: 'background.paper',
+                            px: 1.5,
+                            py: 0.5,
+                            borderRadius: 1,
+                            border: '1px solid',
+                            borderColor: 'divider'
+                          }}>
+                            Completada: {new Date(task.lastCompletion.completedOn).toLocaleDateString()}
+                          </Typography>
+                        </Box>
                       )}
                     </Box>
 
@@ -174,25 +203,44 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                       </Box>
                     )}
 
-                    {/* Actions */}
-                    {(status === 'overdue' || status === 'pending') && onTaskComplete && (
-                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          onClick={() => onTaskComplete(task.id)}
-                          startIcon={<CheckCircle size={16} />}
-                          sx={{
-                            borderRadius: 2,
-                            textTransform: 'none',
-                            fontWeight: 500
-                          }}
-                        >
-                          Marcar como Completada
-                        </Button>
+                    {/* Bottom row: Resources left, Actions right (vertical on mobile) */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'flex-start', 
+                      justifyContent: 'space-between', 
+                      gap: 2,
+                      flexDirection: { xs: 'column', sm: 'row' }
+                    }}>
+                      {/* Resources */}
+                      <Box sx={{ flex: 1, width: { xs: '100%', sm: 'auto' } }}>
+                        <TaskResources resources={task.resources} />
                       </Box>
-                    )}
+
+                      {/* Actions */}
+                      {(status === 'overdue' || status === 'pending') && onTaskComplete && (
+                        <Box sx={{ 
+                          flexShrink: 0, 
+                          alignSelf: { xs: 'flex-start', sm: 'flex-end' },
+                          width: { xs: '100%', sm: 'auto' }
+                        }}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => onTaskComplete(task.id)}
+                            startIcon={<CheckCircle size={16} />}
+                            sx={{
+                              borderRadius: 2,
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              width: { xs: '100%', sm: 'auto' }
+                            }}
+                          >
+                            Marcar como Completada
+                          </Button>
+                        </Box>
+                      )}
+                    </Box>
                   </CardContent>
                 </Card>
               )
@@ -230,12 +278,17 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                 >
                   <CardContent sx={{ p: 3 }}>
                     {/* Header row */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ mb: 2 }}>
+                      {/* Title row */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
                         {getTaskStatusIcon(status)}
                         <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.1rem' }}>
                           {task.title}
                         </Typography>
+                      </Box>
+                      
+                      {/* Chips row */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                         <Chip
                           label="Completada"
                           size="small"
@@ -299,6 +352,9 @@ export function TasksList({ tasks, isLoading, onTaskComplete, showCaseInfo = fal
                         </Typography>
                       </Box>
                     )}
+
+                    {/* Resources */}
+                    <TaskResources resources={task.resources} />
                   </CardContent>
                 </Card>
               )

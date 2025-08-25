@@ -28,13 +28,6 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         url="/catalog"
         appearance="link"
       />
-      <CMSLink
-        type="reference"
-        label="Foro"
-        url="https://foro.pafe-formakuntza.com/"
-        appearance="link"
-      />
-      
       {user && (
         <CMSLink
           type="reference"
@@ -43,6 +36,13 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           appearance="link"
         />
       )}
+      <CMSLink
+        type="reference"
+        label="Foro"
+        url="https://foro.pafe-formakuntza.com/"
+        appearance="link"
+      />
+      
 
       {!user && (
         <Button 

@@ -129,10 +129,7 @@ export default function CasesPage() {
           Mis Tareas
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography color="text.secondary">
-            Tareas de todos tus casos abiertos ({tasks?.length || 0} tareas{selectedCaseId !== 'all' ? ' filtradas' : ''})
-          </Typography>
-          {uniqueCases && uniqueCases.length > 0 && (
+          {uniqueCases && uniqueCases.length > 1 && (
             <FormControl size="small" sx={{ minWidth: 200 }}>
               <InputLabel>Filtrar por caso</InputLabel>
               <Select

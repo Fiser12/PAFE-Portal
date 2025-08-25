@@ -36,7 +36,7 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
           in: caseIds,
         },
       },
-      depth: 2, // Para obtener la información del caso también
+      depth: 3, // Para obtener casos, recursos y sus relaciones
     })
 
     // Obtener TODAS las completaciones del usuario de una vez
