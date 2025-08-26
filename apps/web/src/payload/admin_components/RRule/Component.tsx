@@ -6,6 +6,9 @@ import type { JSONFieldClientComponent } from 'payload'
 import { rruleToText } from '@/utils/rrule-helpers'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import type { RRuleValue } from '@/types/rrule'
+import { RRuleBuilder } from 'react-rrule-builder-ts';
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { DateTime } from "luxon";
 
 const darkTheme = createTheme({
   palette: {
@@ -88,6 +91,16 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
           borderRadius: 'var(--theme-border-radius)',
           border: '1px solid var(--theme-elevation-200)'
         } as React.CSSProperties}>
+          <RRuleBuilder
+            dateAdapter={AdapterLuxon as any}
+            datePickerInitialDate={value?.datePickerInitialDate ? DateTime.now() : DateTime.now()}
+            rruleString={value?.rrule}
+            showStartDate={true}
+            onChange={handleRRuleChange}
+            enableYearlyInterval={true}
+            enableOpenOnClickDatePicker
+          />
+
         </div>
       </ThemeProvider>
     </div>
