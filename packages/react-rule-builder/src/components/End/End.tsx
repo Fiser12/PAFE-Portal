@@ -35,12 +35,12 @@ const End = ({
   return (
     <>
       <FormControl>
-        <InputLabel id="end-label" size={labelSize}>End</InputLabel>
+        <InputLabel id="end-label" size={labelSize}>Fin</InputLabel>
         <Select
           value={endDetails?.endingType}
           onChange={(e) => setEndDetails({ ...endDetails, endingType: e.target.value as EndType })}
           labelId="end-label"
-          label="End"
+          label="Fin"
           size={inputSize}
           variant={inputVariant}
         >

@@ -28,7 +28,7 @@ const RepeatWeekly = (
       <IntervalTextInput
         value={value}
         onChange={onChange}
-        unit="week"
+        unit="semana"
         pluralizeUnit
         inputSize={inputSize}
         inputVariant={inputVariant}

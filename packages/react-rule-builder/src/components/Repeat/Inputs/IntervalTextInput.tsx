@@ -22,7 +22,7 @@ const IntervalTextInput = ({
   inputVariant,
 } : IntervalTextInputProps) => (
   <Stack direction="row" spacing={2} alignItems="center">
-    <Typography fontSize={inputSize}>Every</Typography>
+    <Typography fontSize={inputSize}>Cada</Typography>
     <TextField
       id="outlined-basic"
       label=""

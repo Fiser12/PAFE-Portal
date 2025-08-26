@@ -52,8 +52,8 @@ const RRuleBuilder = <TDate extends DateTime<boolean>,>({
   inputSize = "small",
   inputVariant = "outlined",
   lang = {
-    startDatePickerLabel: "Start Date",
-    endDatePickerLabel: "End Date",
+    startDatePickerLabel: "Fecha de inicio",
+    endDatePickerLabel: "Fecha de fin",
   },
   timeZone = "UTC",
   // TODO implement small container detection

@@ -93,7 +93,7 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
         } as React.CSSProperties}>
           <RRuleBuilder
             dateAdapter={AdapterLuxon as any}
-            datePickerInitialDate={value?.datePickerInitialDate ? DateTime.now() : DateTime.now()}
+            datePickerInitialDate={value?.datePickerInitialDate ? DateTime.fromISO(value.datePickerInitialDate) : DateTime.now()}
             rruleString={value?.rrule}
             showStartDate={true}
             onChange={handleRRuleChange}

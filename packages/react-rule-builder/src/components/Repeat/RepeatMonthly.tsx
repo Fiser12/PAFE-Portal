@@ -97,7 +97,7 @@ const RepeatMonthly = (
                   fontSize={inputSize}
                   sx={{ color: disabledOnBYMONTHDAY ? "text.disabled" : "text.primary", paddingLeft: 2 }}
                 >
-                  On Day
+                  En el día
                 </Typography>
               )}
               sx={{ minWidth: 120, marginRight: 2 }}
@@ -122,7 +122,7 @@ const RepeatMonthly = (
                     fontSize={inputSize}
                     sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary", paddingLeft: 2 }}
                   >
-                    On The
+                    En el
                   </Typography>
                 )}
               />
