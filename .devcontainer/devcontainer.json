@@ -31,7 +31,7 @@
   "postStartCommand": "echo 'Para iniciar el servidor de desarrollo, ejecuta: pnpm dev'",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
+      "version": "24"
     }
   },
   "otherPortsAttributes": {

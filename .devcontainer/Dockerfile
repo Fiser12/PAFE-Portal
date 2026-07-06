@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:24-slim
 
 # Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     && rm -rf /var/lib/apt/lists/*
-
+    
+RUN curl -fsSL https://claude.ai/install.sh | bash
 # Instalar pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 

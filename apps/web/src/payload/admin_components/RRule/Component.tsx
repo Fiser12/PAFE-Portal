@@ -10,24 +10,6 @@ import { RRuleBuilder } from 'react-rrule-builder-ts';
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#1a1a1a',
-      paper: '#2a2a2a',
-    },
-    text: {
-      primary: '#ffffff',
-      secondary: '#b0b0b0',
-    },
-    primary: {
-      main: '#ffffff',
-    },
-    divider: '#404040',
-  },
-});
-
 export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
   const { required, label } = field;
   const { value, setValue } = useField<RRuleValue>({ path })
@@ -39,9 +21,9 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
       return
     }
     try {
-        const rruleData = value as RRuleValue
-        const spanishText = rruleToText(rruleData)
-        setPreviewText(spanishText)
+      const rruleData = value as RRuleValue
+      const spanishText = rruleToText(rruleData)
+      setPreviewText(spanishText)
     } catch (error) {
       setPreviewText('Formato RRule inválido')
     }
@@ -84,25 +66,22 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
         </div>
       )}
 
-      <ThemeProvider theme={darkTheme}>
-        <div style={{
-          backgroundColor: 'var(--theme-elevation-50)',
-          padding: '16px',
-          borderRadius: 'var(--theme-border-radius)',
-          border: '1px solid var(--theme-elevation-200)'
-        } as React.CSSProperties}>
-          <RRuleBuilder
-            dateAdapter={AdapterLuxon as any}
-            datePickerInitialDate={value?.datePickerInitialDate ? DateTime.fromISO(value.datePickerInitialDate) : DateTime.now()}
-            rruleString={value?.rrule}
-            showStartDate={true}
-            onChange={handleRRuleChange}
-            enableYearlyInterval={true}
-            enableOpenOnClickDatePicker
-          />
-
-        </div>
-      </ThemeProvider>
+      <div style={{
+        backgroundColor: 'var(--theme-elevation-50)',
+        padding: '16px',
+        borderRadius: 'var(--theme-border-radius)',
+        border: '1px solid var(--theme-elevation-200)'
+      } as React.CSSProperties}>
+        <RRuleBuilder
+          dateAdapter={AdapterLuxon as any}
+          datePickerInitialDate={value?.datePickerInitialDate ? DateTime.fromISO(value.datePickerInitialDate) : DateTime.now()}
+          rruleString={value?.rrule}
+          showStartDate={true}
+          onChange={handleRRuleChange}
+          enableYearlyInterval={true}
+          enableOpenOnClickDatePicker
+        />
+      </div>
     </div>
   )
 }

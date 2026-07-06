@@ -1,5 +1,5 @@
 import { checkRoleHidden } from '@/core/permissions'
-import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
+import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
 export const COLLECTION_SLUG_CATALOG_ITEM = 'catalog-item'
@@ -12,7 +12,7 @@ export const CatalogItem: CollectionConfig = {
   },
   admin: {
     group: 'Catálogo',
-    hidden: checkRoleHidden("catalog-admin"),
+    hidden: checkRoleHidden('catalog-admin'),
     useAsTitle: 'title',
     components: {
       views: {
@@ -24,11 +24,11 @@ export const CatalogItem: CollectionConfig = {
   },
   fields: [
     {
-        label: 'Caratula',
-        name: 'cover',
-        type: 'upload',
-        relationTo: 'media',
-        required: true,
+      label: 'Caratula',
+      name: 'cover',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
     },
     {
       label: 'Título',
@@ -53,7 +53,7 @@ export const CatalogItem: CollectionConfig = {
       type: 'join',
       on: 'item',
       name: 'reservations',
-      collection: 'reservation'
+      collection: 'reservation',
     },
     buildTaxonomyRelationship({
       name: 'categories',

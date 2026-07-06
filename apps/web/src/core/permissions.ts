@@ -1,6 +1,5 @@
 import { Taxonomy, User } from '@/payload-types'
-import { Access, ClientUser, PayloadRequest } from 'payload'
-import "@nexo-labs/hegel";
+import { ClientUser, PayloadRequest } from 'payload'
 
 const admin = 'admin'
 const gestor = 'gestor'
@@ -56,7 +55,7 @@ export const checkRoleAccess: (props: Omit<CheckRoleProps, 'user'>) => CommonAcc
   }
 
 export const checkRole = ({ roleSlug, user }: CheckRoleProps): boolean => {
-  return user?.roles?.cast<Taxonomy>().some((role) => role.slug === roleSlug) ?? false
+  return (user?.roles as Taxonomy[])?.some((role) => role.slug === roleSlug) ?? false
 }
 
 interface CheckRolesProps {
@@ -71,5 +70,5 @@ export const checkRolesAccess: (props: { rolesSlug: RoleSlug[] }) => CommonAcces
   }
 
 export const checkRoles = ({ rolesSlug, user }: CheckRolesProps): boolean => {
-  return user?.roles?.cast<Taxonomy>().some((role) => rolesSlug.includes(role.slug ?? '')) ?? false
+  return (user?.roles as Taxonomy[])?.some((role) => rolesSlug.includes(role.slug ?? '')) ?? false
 }

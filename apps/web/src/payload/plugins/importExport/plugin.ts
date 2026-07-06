@@ -12,7 +12,7 @@ export const plugin = importExportPlugin({
         COLLECTION_SLUG_PDF, 
         COLLECTION_SLUG_EXPORTS, 
     ],
-    overrideExportCollection: (collection) => {
+    overrideExportCollection: ({ collection }) => {
         return {
             ...collection,
             admin: {

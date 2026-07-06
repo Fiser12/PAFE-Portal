@@ -26,7 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/payload/fields/slug'
-import { COLLECTION_SLUG_TAXONOMY } from '@nexo-labs/payload-taxonomies'
+import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import { checkRoleHidden } from '@/core/permissions'
 
 export const Posts: CollectionConfig<'posts'> = {

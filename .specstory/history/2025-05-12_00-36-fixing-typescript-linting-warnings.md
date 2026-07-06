@@ -240,8 +240,8 @@ Read file: apps/web/src/payload/collections/Users/index.ts
 ```diff
   import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
   import { authenticated } from '@/payload/access/authenticated'
-- import { buildTaxonomyRelationship, taxonomyRelationship } from '@nexo-labs/payload-taxonomies'
-+ import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
+- import { buildTaxonomyRelationship, taxonomyRelationship } from '@zetesis/payload-taxonomies'
++ import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
   
   export const Users: CollectionConfig = {
 ```

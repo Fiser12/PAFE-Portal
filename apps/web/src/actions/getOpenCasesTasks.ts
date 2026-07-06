@@ -2,7 +2,6 @@
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import "@nexo-labs/hegel"
 import { Case } from '@/payload-types'
 
 export async function getOpenCasesTasks(userId: string, caseId?: string) {
@@ -17,9 +16,9 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
     })
 
     // Obtenemos todos los casos del usuario (ya no hay status que filtrar)
-    let userCases = user.assignedCases?.cast<Case>()?.filter((caseItem) => 
+    let userCases = user.assignedCases?.filter((caseItem) => 
       typeof caseItem === 'object'
-    ) || []
+    ) as Case[] || []
 
     // Si se especifica un caso específico, filtrar solo por ese caso
     if (caseId) {
@@ -79,7 +78,7 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
     const allTasks = tasks.docs.map((task) => {
       // Como una tarea puede estar en múltiples casos, obtenemos todos los casos del usuario
       const taskCases = Array.isArray(task.case) ? task.case : [task.case]
-      const userRelevantCases = taskCases.cast<Case>().filter((caseRef) => 
+      const userRelevantCases = (taskCases as Case[]).filter((caseRef) => 
         caseIds.includes(caseRef.id)
       )
       
@@ -92,7 +91,7 @@ export async function getOpenCasesTasks(userId: string, caseId?: string) {
           }
         } else {
           // Es un ID, buscar en userCases
-          const foundCase = userCases.cast<Case>().find((c) => c.id === caseRef)
+          const foundCase = (userCases as Case[]).find((c) => c.id === caseRef)
           if (foundCase && typeof foundCase === 'object') {
             return {
               id: foundCase.id,

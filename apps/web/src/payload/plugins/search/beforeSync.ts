@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_TAXONOMY } from '@nexo-labs/payload-taxonomies'
+import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import { BeforeSync, DocToSync } from '@payloadcms/plugin-search/types'
 
 export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc }) => {

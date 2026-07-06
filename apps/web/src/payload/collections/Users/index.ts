@@ -1,6 +1,6 @@
 import { COLLECTION_SLUG_USER, COLLECTION_SLUG_CASES } from '@/core/collections-slugs'
 import { authenticated } from '@/payload/access/authenticated'
-import { buildTaxonomyRelationship } from '@nexo-labs/payload-taxonomies'
+import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
 import { checkRoleHidden } from '@/core/permissions'

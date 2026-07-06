@@ -1,15 +1,15 @@
-import { COLLECTION_SLUG_TAXONOMY } from "@nexo-labs/payload-taxonomies"
+import { COLLECTION_SLUG_TAXONOMY } from "@zetesis/payload-taxonomies"
 
-export const COLLECTION_SLUG_PDF = 'pdf'
-export const COLLECTION_SLUG_MEDIA = 'media'
-export const COLLECTION_SLUG_EXPORTS = 'exports'
-export const COLLECTION_SLUG_USER = 'users'
+export const COLLECTION_SLUG_PDF = 'pdf' as const
+export const COLLECTION_SLUG_MEDIA = 'media' as const
+export const COLLECTION_SLUG_EXPORTS = 'exports' as const
+export const COLLECTION_SLUG_USER = 'users' as const
 export const COLLECTION_SLUG_CATEGORIES = COLLECTION_SLUG_TAXONOMY
-export const COLLECTION_SLUG_POSTS = 'posts'
-export const COLLECTION_SLUG_PAGES = 'pages'
-export const COLLECTION_SLUG_CASES = 'cases'
-export const COLLECTION_SLUG_TASKS = 'tasks'
-export const COLLECTION_SLUG_TASKS_COMPLETED = 'tasks-completed'
-export const COLLECTION_SLUG_EXTERNAL_RESOURCES = 'external-resources'
-export const COLLECTION_SLUG_FORMS = 'forms'
-export const COLLECTION_SLUG_FORMS_SUBMISSION = 'form-submissions'
+export const COLLECTION_SLUG_POSTS = 'posts' as const
+export const COLLECTION_SLUG_PAGES = 'pages' as const
+export const COLLECTION_SLUG_CASES = 'cases' as const
+export const COLLECTION_SLUG_TASKS = 'tasks' as const
+export const COLLECTION_SLUG_TASKS_COMPLETED = 'tasks-completed' as const
+export const COLLECTION_SLUG_EXTERNAL_RESOURCES = 'external-resources' as const
+export const COLLECTION_SLUG_FORMS = 'forms' as const
+export const COLLECTION_SLUG_FORMS_SUBMISSION = 'form-submissions' as const

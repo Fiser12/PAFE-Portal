@@ -1,11 +1,9 @@
 import { checkRoleHidden } from '@/core/permissions'
-import { slugField } from '@/payload/fields/slug'
-import { taxonomiesCollection } from '@nexo-labs/payload-taxonomies'
+import { taxonomiesCollection } from '@zetesis/payload-taxonomies'
 
 export const Categories = taxonomiesCollection({
-  fields: [...slugField()],
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: checkRoleHidden('admin'),
   },
   payloadTypescriptSchema: [
     () => ({
