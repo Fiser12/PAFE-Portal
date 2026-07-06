@@ -1,6 +1,6 @@
 'use client'
 
-import { usePayloadSession } from 'payload-authjs/client'
+import { useSession } from '@/lib/auth/client'
 import useSWR from 'swr'
 import { getOpenCasesTasks } from '@/actions/getOpenCasesTasks'
 import { getUserCases } from '@/actions/getUserCases'
@@ -33,7 +33,7 @@ const casesFetcher = async (userId: string) => {
 }
 
 export default function CasesPage() {
-  const { session } = usePayloadSession()
+  const { data: session } = useSession()
   const user = session?.user
   const [selectedCaseId, setSelectedCaseId] = useState<string>('all')
 

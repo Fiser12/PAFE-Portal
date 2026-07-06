@@ -2,14 +2,13 @@
 
 import React from 'react'
 import { Box, Button } from '@mui/material'
-import { usePayloadSession } from 'payload-authjs/client'
-import { signInAction } from '@/payload/plugins/authjs/signIn'
+import { signIn, useSession } from '@/lib/auth/client'
 import { CMSLink } from '@/components/legacy/Link'
 
 import type { Header as HeaderType } from '@/payload-types'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
-  const { session } = usePayloadSession()
+  const { data: session } = useSession()
   const user = session?.user
   const navItems = data?.navItems || []
 
@@ -47,7 +46,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       {!user && (
         <Button 
           variant="contained"
-          onClick={async () => await signInAction()}
+          onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}
           sx={{
             textTransform: 'none',
             fontWeight: 500,

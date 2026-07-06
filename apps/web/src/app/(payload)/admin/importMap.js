@@ -1,3 +1,7 @@
+import { AdminInviteButton as AdminInviteButton_5a568d0e24198ca3140489e0d330f424 } from 'payload-auth/better-auth/plugin/client'
+import { AdminButtons as AdminButtons_5a568d0e24198ca3140489e0d330f424 } from 'payload-auth/better-auth/plugin/client'
+import { GenerateUuidButton as GenerateUuidButton_ce3a59fe00f4e2209a6e5804babc005e } from 'payload-auth/shared/payload/fields'
+import { FieldCopyButton as FieldCopyButton_ce3a59fe00f4e2209a6e5804babc005e } from 'payload-auth/shared/payload/fields'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -10,7 +14,6 @@ import { RRuleField as RRuleField_61d97ab0be1a7d5da72ef4d2f350ef39 } from '@/pay
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { AccountRowLabel as AccountRowLabel_06d0cb594d8f6ba2ac35015f930c882e } from 'payload-authjs/components'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -36,14 +39,23 @@ import { ImportPreview as ImportPreview_cdf7e044479f899a31f804427d568b36 } from 
 import { ImportSaveButton as ImportSaveButton_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { RowLabel as RowLabel_1166824f45c5fed9d21005e52a4af8bb } from '@/payload/admin_components/Header/RowLabel'
 import { RowLabel as RowLabel_c6ce328bb6b20cba0a9ecee290eba05d } from '@/payload/admin_components/Footer/RowLabel'
-import { SignInButton as SignInButton_06d0cb594d8f6ba2ac35015f930c882e } from 'payload-authjs/components'
+import { LogoutButton as LogoutButton_5a568d0e24198ca3140489e0d330f424 } from 'payload-auth/better-auth/plugin/client'
+import { RSCRedirect as RSCRedirect_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
 import { default as default_da5a40b0456868ef1fc26ae10d841147 } from '@/components/legacy/BeforeDashboard'
 import { default as default_240372a4ee0ec01c14565f2144a2f002 } from '@/components/legacy/BeforeLogin'
 import { ImportExportProvider as ImportExportProvider_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { AdminLogin as AdminLogin_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
+import { AdminSignup as AdminSignup_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
+import { ForgotPassword as ForgotPassword_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
+import { ResetPassword as ResetPassword_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
+  "payload-auth/better-auth/plugin/client#AdminInviteButton": AdminInviteButton_5a568d0e24198ca3140489e0d330f424,
+  "payload-auth/better-auth/plugin/client#AdminButtons": AdminButtons_5a568d0e24198ca3140489e0d330f424,
+  "payload-auth/shared/payload/fields#GenerateUuidButton": GenerateUuidButton_ce3a59fe00f4e2209a6e5804babc005e,
+  "payload-auth/shared/payload/fields#FieldCopyButton": FieldCopyButton_ce3a59fe00f4e2209a6e5804babc005e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -56,7 +68,6 @@ export const importMap = {
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "payload-authjs/components#AccountRowLabel": AccountRowLabel_06d0cb594d8f6ba2ac35015f930c882e,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
@@ -82,10 +93,15 @@ export const importMap = {
   "@payloadcms/plugin-import-export/rsc#ImportSaveButton": ImportSaveButton_cdf7e044479f899a31f804427d568b36,
   "@/payload/admin_components/Header/RowLabel#RowLabel": RowLabel_1166824f45c5fed9d21005e52a4af8bb,
   "@/payload/admin_components/Footer/RowLabel#RowLabel": RowLabel_c6ce328bb6b20cba0a9ecee290eba05d,
-  "payload-authjs/components#SignInButton": SignInButton_06d0cb594d8f6ba2ac35015f930c882e,
+  "payload-auth/better-auth/plugin/client#LogoutButton": LogoutButton_5a568d0e24198ca3140489e0d330f424,
+  "payload-auth/better-auth/plugin/rsc#RSCRedirect": RSCRedirect_5afe2312a68aef77a0242fe42f239ed0,
   "@/components/legacy/BeforeDashboard#default": default_da5a40b0456868ef1fc26ae10d841147,
   "@/components/legacy/BeforeLogin#default": default_240372a4ee0ec01c14565f2144a2f002,
   "@payloadcms/plugin-import-export/rsc#ImportExportProvider": ImportExportProvider_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
+  "payload-auth/better-auth/plugin/rsc#AdminLogin": AdminLogin_5afe2312a68aef77a0242fe42f239ed0,
+  "payload-auth/better-auth/plugin/rsc#AdminSignup": AdminSignup_5afe2312a68aef77a0242fe42f239ed0,
+  "payload-auth/better-auth/plugin/rsc#ForgotPassword": ForgotPassword_5afe2312a68aef77a0242fe42f239ed0,
+  "payload-auth/better-auth/plugin/rsc#ResetPassword": ResetPassword_5afe2312a68aef77a0242fe42f239ed0,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

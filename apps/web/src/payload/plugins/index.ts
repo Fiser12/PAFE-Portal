@@ -2,7 +2,7 @@ import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { Plugin } from 'payload'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import authJSPlugin from '@/payload/plugins/authjs'
+import { betterAuthPluginInstance } from '@/payload/plugins/better-auth'
 import s3Plugin from '@/payload/plugins/s3'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '../../utilities/getURL'
@@ -29,6 +29,6 @@ export const plugins: Plugin[] = [
   searchPlugin,
   payloadCloudPlugin(),
   importExportPlugin,
-  authJSPlugin,
   s3Plugin,
+  betterAuthPluginInstance,
 ]

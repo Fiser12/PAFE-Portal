@@ -1,7 +1,7 @@
 'use client'
 
 import type { Reservation } from '@/payload-types'
-import { usePayloadSession } from 'payload-authjs/client'
+import { useSession } from '@/lib/auth/client'
 import useSWR from 'swr'
 import { getItemReservations, getUserReservations, returnBook } from '../../actions'
 import {
@@ -33,7 +33,7 @@ const fetcher = async (key: [string, number | string]) => {
 }
 
 export function ReservationsTable({ itemId }: Props) {
-    const { session } = usePayloadSession()
+    const { data: session } = useSession()
     const user = session?.user
     const router = useRouter()
 

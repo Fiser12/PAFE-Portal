@@ -1,7 +1,7 @@
 'use client'
 
 import { checkRole } from '@/core/permissions'
-import { usePayloadSession } from 'payload-authjs/client'
+import { useSession } from '@/lib/auth/client'
 import { AdminButton } from './AdminButton'
 import { UserButton } from './UserButton'
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function ReservationButton({ itemId, userId, onReservationSuccess }: Props) {
-    const { session } = usePayloadSession()
+    const { data: session } = useSession()
     const isCatalogAdmin = checkRole({ roleSlug: 'catalog-admin', user: session?.user })
 
     if (isCatalogAdmin) {

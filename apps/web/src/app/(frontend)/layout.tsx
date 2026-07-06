@@ -12,8 +12,6 @@ import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { Providers } from '@/components/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
-import { PayloadSessionProvider } from "payload-authjs/client";
-import { getPayloadSession } from "payload-authjs";
 
 import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -34,15 +32,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-          <PayloadSessionProvider session={await getPayloadSession()}>
-
-            <Header />
-            <main style={{ paddingBottom: '64px' }} className="md:pb-0">
-              {children}
-            </main>
-            <Footer />
-            <MobileBottomNav />
-          </PayloadSessionProvider>
+          <Header />
+          <main style={{ paddingBottom: '64px' }} className="md:pb-0">
+            {children}
+          </main>
+          <Footer />
+          <MobileBottomNav />
 
         </Providers>
       </body>

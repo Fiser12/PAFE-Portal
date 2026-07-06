@@ -1,6 +1,6 @@
 'use client'
 
-import { usePayloadSession } from 'payload-authjs/client'
+import { useSession } from '@/lib/auth/client'
 import { useUserReservation } from '../hooks/useUserReservation'
 import { ReservationButton } from './ReservationButton'
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ReservationForm({ itemId }: Props) {
-    const { session } = usePayloadSession()
+    const { data: session } = useSession()
     const user = session?.user
     
     const { hasReservation, reservationDate, isLoading, refetch } = useUserReservation(

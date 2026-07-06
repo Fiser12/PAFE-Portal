@@ -21,10 +21,8 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
-    {
-      name: 'name',
-      type: 'text',
-    },
+    // name/email/emailVerified/image are injected automatically by the
+    // better-auth plugin (see src/payload/plugins/better-auth)
     {
       name: 'reservations',
       type: 'relationship',

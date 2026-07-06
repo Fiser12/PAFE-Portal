@@ -67,6 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    users: User;
+    sessions: Session;
+    accounts: Account;
+    verifications: Verification;
+    'admin-invitations': AdminInvitation;
     reservation: Reservation;
     'catalog-item': CatalogItem;
     cases: Case;
@@ -75,7 +80,6 @@ export interface Config {
     'external-resources': ExternalResource;
     taxonomy: Taxonomy;
     media: Media;
-    users: User;
     pages: Page;
     posts: Post;
     pdf: Pdf;
@@ -91,6 +95,10 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    users: {
+      account: 'accounts';
+      session: 'sessions';
+    };
     'catalog-item': {
       reservations: 'reservation';
     };
@@ -100,6 +108,11 @@ export interface Config {
     };
   };
   collectionsSelect: {
+    users: UsersSelect<false> | UsersSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
+    accounts: AccountsSelect<false> | AccountsSelect<true>;
+    verifications: VerificationsSelect<false> | VerificationsSelect<true>;
+    'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
@@ -108,7 +121,6 @@ export interface Config {
     'external-resources': ExternalResourcesSelect<false> | ExternalResourcesSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     pdf: PdfSelect<false> | PdfSelect<true>;
@@ -173,12 +185,55 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  reservations?: (number | Reservation)[] | null;
+  assignedCases?: (number | Case)[] | null;
+  roles?: (number | Taxonomy)[] | null;
+  /**
+   * Users chosen display name
+   */
+  name: string;
+  /**
+   * The email of the user
+   */
+  email: string;
+  /**
+   * Whether the email of the user has been verified
+   */
+  emailVerified: boolean;
+  /**
+   * The image of the user
+   */
+  image?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  /**
+   * The role/ roles of the user
+   */
+  role?: ('admin' | 'user')[] | null;
+  account?: {
+    docs?: (number | Account)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  session?: {
+    docs?: (number | Session)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reservation".
  */
 export interface Reservation {
   id: number;
   item: number | CatalogItem;
-  user: string | User;
+  user: number | User;
   reservationDate: string;
   updatedAt: string;
   createdAt: string;
@@ -330,45 +385,13 @@ export interface Taxonomy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  email: string;
-  emailVerified?: string | null;
-  name?: string | null;
-  image?: string | null;
-  reservations?: (number | Reservation)[] | null;
-  assignedCases?: (number | Case)[] | null;
-  roles?: (number | Taxonomy)[] | null;
-  accounts?:
-    | {
-        provider: string;
-        providerAccountId: string;
-        type: 'oidc' | 'oauth' | 'email' | 'webauthn';
-        id?: string | null;
-      }[]
-    | null;
-  sessions?:
-    | {
-        sessionToken: string;
-        expires: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cases".
  */
 export interface Case {
   id: number;
   title: string;
   assignedUser?: {
-    docs?: (string | User)[];
+    docs?: (number | User)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -669,7 +692,7 @@ export interface Post {
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
+  authors?: (number | User)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -683,13 +706,130 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Accounts are used to store user accounts for authentication providers
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts".
+ */
+export interface Account {
+  id: number;
+  /**
+   * The id of the account as provided by the SSO or equal to userId for credential accounts
+   */
+  accountId: string;
+  /**
+   * The id of the provider as provided by the SSO
+   */
+  providerId: string;
+  /**
+   * The user that the account belongs to
+   */
+  user: number | User;
+  /**
+   * The access token of the account. Returned by the provider
+   */
+  accessToken?: string | null;
+  /**
+   * The refresh token of the account. Returned by the provider
+   */
+  refreshToken?: string | null;
+  /**
+   * The id token for the account. Returned by the provider
+   */
+  idToken?: string | null;
+  /**
+   * The date and time when the access token will expire
+   */
+  accessTokenExpiresAt?: string | null;
+  /**
+   * The date and time when the refresh token will expire
+   */
+  refreshTokenExpiresAt?: string | null;
+  /**
+   * The scope of the account. Returned by the provider
+   */
+  scope?: string | null;
+  /**
+   * The hashed password of the account. Mainly used for email and password authentication
+   */
+  password?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+/**
+ * Sessions are active sessions for users. They are used to authenticate users with a session token
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: number;
+  /**
+   * The date and time when the session will expire
+   */
+  expiresAt: string;
+  /**
+   * The unique session token
+   */
+  token: string;
+  createdAt: string;
+  updatedAt: string;
+  /**
+   * The IP address of the device
+   */
+  ipAddress?: string | null;
+  /**
+   * The user agent information of the device
+   */
+  userAgent?: string | null;
+  /**
+   * The user that the session belongs to
+   */
+  user: number | User;
+}
+/**
+ * Verifications are used to verify authentication requests
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications".
+ */
+export interface Verification {
+  id: number;
+  /**
+   * The identifier of the verification request
+   */
+  identifier: string;
+  /**
+   * The value to be verified
+   */
+  value: string;
+  /**
+   * The date and time when the verification request will expire
+   */
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin-invitations".
+ */
+export interface AdminInvitation {
+  id: number;
+  role: 'admin' | 'user';
+  token: string;
+  url?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tasks-completed".
  */
 export interface TasksCompleted {
   id: number;
   task: number | Task;
-  user: string | User;
+  user: number | User;
   completedOn: string;
   updatedAt: string;
   createdAt: string;
@@ -1176,6 +1316,26 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'sessions';
+        value: number | Session;
+      } | null)
+    | ({
+        relationTo: 'accounts';
+        value: number | Account;
+      } | null)
+    | ({
+        relationTo: 'verifications';
+        value: number | Verification;
+      } | null)
+    | ({
+        relationTo: 'admin-invitations';
+        value: number | AdminInvitation;
+      } | null)
+    | ({
         relationTo: 'reservation';
         value: number | Reservation;
       } | null)
@@ -1208,10 +1368,6 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'users';
-        value: string | User;
-      } | null)
-    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1238,7 +1394,7 @@ export interface PayloadLockedDocument {
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -1251,7 +1407,7 @@ export interface PayloadPreference {
   id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -1276,6 +1432,77 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  reservations?: T;
+  assignedCases?: T;
+  roles?: T;
+  name?: T;
+  email?: T;
+  emailVerified?: T;
+  image?: T;
+  createdAt?: T;
+  updatedAt?: T;
+  role?: T;
+  account?: T;
+  session?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  expiresAt?: T;
+  token?: T;
+  createdAt?: T;
+  updatedAt?: T;
+  ipAddress?: T;
+  userAgent?: T;
+  user?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts_select".
+ */
+export interface AccountsSelect<T extends boolean = true> {
+  accountId?: T;
+  providerId?: T;
+  user?: T;
+  accessToken?: T;
+  refreshToken?: T;
+  idToken?: T;
+  accessTokenExpiresAt?: T;
+  refreshTokenExpiresAt?: T;
+  scope?: T;
+  password?: T;
+  createdAt?: T;
+  updatedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications_select".
+ */
+export interface VerificationsSelect<T extends boolean = true> {
+  identifier?: T;
+  value?: T;
+  expiresAt?: T;
+  createdAt?: T;
+  updatedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin-invitations_select".
+ */
+export interface AdminInvitationsSelect<T extends boolean = true> {
+  role?: T;
+  token?: T;
+  url?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1455,37 +1682,6 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  id?: T;
-  email?: T;
-  emailVerified?: T;
-  name?: T;
-  image?: T;
-  reservations?: T;
-  assignedCases?: T;
-  roles?: T;
-  accounts?:
-    | T
-    | {
-        provider?: T;
-        providerAccountId?: T;
-        type?: T;
-        id?: T;
-      };
-  sessions?:
-    | T
-    | {
-        sessionToken?: T;
-        expires?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2185,7 +2381,7 @@ export interface TaskSchedulePublish {
           value: number | Post;
         } | null);
     global?: string | null;
-    user?: (string | null) | User;
+    user?: (number | null) | User;
   };
   output?: unknown;
 }
