@@ -1,17 +1,29 @@
-node_modules/*
-build/*
-.turbo
-dist/*
-volumes/*
-out/*
-.next/*
+# dependencies
 **/node_modules
-.env
-.env.local
-**/.env
-**/.env.local
+
+# build outputs
 **/.next
+**/dist
+**/build
+**/out
+.turbo
+**/.turbo
+**/storybook-static
+
+# env / secrets (never bake into the image; build-time vars come from ARG/ENV)
+**/.env
+**/.env.*
+
+# docker
 **/Dockerfile
-Dockerfile
+.dockerignore
 .docker/
+volumes/
+
+# vcs / tooling / editor
 .git/
+.gitignore
+.vercel/
+.specstory/
+**/*.log
+**/.DS_Store

@@ -1,51 +1,63 @@
-FROM node:24-alpine
+# --- BASE ---
+FROM node:24-alpine AS base
+RUN corepack enable
 
-# Instalamos dependencias necesarias
-RUN apk add --no-cache libc6-compat netcat-openbsd
-
-# Configuramos el usuario no-root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Establecemos el directorio de trabajo
+# --- DEPENDENCIES ---
+FROM base AS deps
+# libc6-compat es necesario para Payload/Sharp en Alpine
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Instalamos pnpm globalmente como root
-RUN corepack enable pnpm
-
-# Copiamos los archivos de configuración necesarios
+# Solo lo necesario para instalar (mejor cacheo de capas)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY apps/web/package.json ./apps/web/
-COPY packages/ ./packages/
+COPY apps/web/package.json ./apps/web/package.json
+COPY packages ./packages
 
-# Copiamos el código fuente (respetando .dockerignore)
+RUN pnpm install --frozen-lockfile
+
+# --- BUILDER ---
+FROM base AS builder
+WORKDIR /app
+
+# Reutilizamos node_modules ya instalados
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY --from=deps /app/packages ./packages
+
+# Código fuente (respetando .dockerignore)
 COPY . .
 
-# Preparamos directorios para volúmenes y establecemos permisos
-RUN mkdir -p /app/node_modules /app/apps/web/.next /app/apps/web/public && \
-    touch /app/apps/web/.env && \
-    chown -R nextjs:nodejs /app && \
-    chmod -R 755 /app
+# NEXT_PUBLIC_* se inlinea en el bundle de cliente en tiempo de build.
+# Pásalo con: docker build --build-arg NEXT_PUBLIC_SERVER_URL=https://www.pafe-formakuntza.com
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
 
-# Configuramos variables de entorno
+WORKDIR /app/apps/web
+# compile-only: compila el bundle SIN "Collecting page data" (no necesita base de
+# datos en tiempo de build). La generación/render se difiere al runtime.
+RUN npx next build --experimental-build-mode compile
+
+# --- RUNNER ---
+FROM base AS runner
+WORKDIR /app
+
 ENV NODE_ENV=production
-ENV PAYLOAD_CONFIG_PATH=payload.config.js
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
-# Copiamos y configuramos el script de entrada
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh && \
-    chown nextjs:nodejs /entrypoint.sh
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Cambiamos al usuario no-root
+# Salida standalone de Next (incluye node_modules de producción trazados)
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
 USER nextjs
 
-# Volúmenes para persistencia delegada
-VOLUME ["/app/node_modules", "/app/apps/web/.next"]
-
-# Exponemos el puerto
 EXPOSE 3000
 
-# Configuramos el entrypoint y comando por defecto
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["pnpm", "start:web"]
+# El servidor standalone lee process.env directamente en runtime.
+# Las migraciones (prodMigrations en payload.config) se aplican al inicializar Payload.
+CMD ["node", "apps/web/server.js"]
