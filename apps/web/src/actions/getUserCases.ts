@@ -15,13 +15,15 @@ export async function getUserCases(userId: string) {
     })
 
     // Solo devolver los casos del usuario
-    const userCases = user.assignedCases?.cast<Case>()?.filter((caseItem) => 
-      typeof caseItem === 'object'
-    ).map((caseItem) => ({
-      id: caseItem.id,
-      title: caseItem.title,
-      notes: caseItem.notes
-    })) || []
+    const rawAssigned = user?.assignedCases as (Case | number)[] | undefined
+
+    const userCases = rawAssigned
+      ?.filter((caseItem): caseItem is Case => typeof caseItem === 'object' && caseItem !== null)
+      .map((caseItem) => ({
+        id: caseItem.id,
+        title: caseItem.title,
+        notes: caseItem.notes,
+      })) || []
 
     return userCases
   } catch (error) {
