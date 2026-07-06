@@ -3,7 +3,7 @@
 import { checkRole } from '@/core/permissions'
 import { CatalogItem } from '@/payload-types'
 import Image from 'next/image'
-import { useSession } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import { useEffect, useState } from 'react'
 import { getItemAvailability } from '../../actions'
 import { ReservationForm } from '../ReservationForm'
@@ -15,8 +15,7 @@ interface Props {
 }
 
 export function CatalogItemClient({ item, children }: Props) {
-    const { data: session } = useSession()
-    const user = session?.user
+    const { user } = useUser()
     const isCatalogAdmin = user ? checkRole({ roleSlug: 'catalog-admin', user }) : false
     const [availability, setAvailability] = useState<{ available: number; total: number; reserved: number } | null>(null)
 

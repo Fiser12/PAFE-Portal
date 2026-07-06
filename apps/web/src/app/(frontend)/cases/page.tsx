@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import useSWR from 'swr'
 import { getOpenCasesTasks } from '@/actions/getOpenCasesTasks'
 import { getUserCases } from '@/actions/getUserCases'
@@ -33,13 +33,12 @@ const casesFetcher = async (userId: string) => {
 }
 
 export default function CasesPage() {
-  const { data: session } = useSession()
-  const user = session?.user
+  const { user } = useUser()
   const [selectedCaseId, setSelectedCaseId] = useState<string>('all')
 
   // Fetch tasks (filtered or all based on selectedCaseId)
   const { data: tasks, mutate: mutateTasks, isLoading: tasksLoading } = useSWR(
-    user?.id ? [user.id, selectedCaseId === 'all' ? undefined : selectedCaseId] as const : null,
+    user?.id ? [String(user.id), selectedCaseId === 'all' ? undefined : selectedCaseId] as const : null,
     tasksFetcher,
     {
       revalidateOnFocus: false,
@@ -49,7 +48,7 @@ export default function CasesPage() {
 
   // Fetch user cases for dropdown
   const { data: uniqueCases } = useSWR(
-    user?.id ? user.id : null,
+    user?.id ? String(user.id) : null,
     casesFetcher,
     {
       revalidateOnFocus: false,
@@ -61,7 +60,7 @@ export default function CasesPage() {
     if (!user?.id) return
     
     try {
-      await completeTask(taskId, user.id)
+      await completeTask(taskId, String(user.id))
       // Revalidar las tareas
       mutateTasks()
     } catch (error) {

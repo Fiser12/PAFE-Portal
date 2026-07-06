@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import { useUserReservation } from '../hooks/useUserReservation'
 import { ReservationButton } from './ReservationButton'
 
@@ -9,12 +9,11 @@ interface Props {
 }
 
 export function ReservationForm({ itemId }: Props) {
-    const { data: session } = useSession()
-    const user = session?.user
+    const { user } = useUser()
     
     const { hasReservation, reservationDate, isLoading, refetch } = useUserReservation(
         itemId,
-        user?.id
+        user?.id ? String(user.id) : undefined
     )
 
     if (!user?.id) {
@@ -45,7 +44,7 @@ export function ReservationForm({ itemId }: Props) {
                     </p>
                 </div>
             ) : (
-                <ReservationButton itemId={itemId} userId={user.id} onReservationSuccess={refetch} />
+                <ReservationButton itemId={itemId} userId={String(user.id)} onReservationSuccess={refetch} />
             )}
         </div>
     )

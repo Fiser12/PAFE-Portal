@@ -12,7 +12,8 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
   verifications: { slug: 'verifications' },
 
   betterAuthOptions: {
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET,
+    baseURL: getServerSideURL(),
     trustedOrigins: [getServerSideURL()],
     socialProviders: {
       google: {

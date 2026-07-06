@@ -31,7 +31,7 @@ export async function createReservation(itemId: number, userId: string) {
     collection: 'reservation',
     data: {
       item: itemId,
-      user: userId,
+      user: Number(userId),
       reservationDate: new Date().toISOString(),
     },
   })

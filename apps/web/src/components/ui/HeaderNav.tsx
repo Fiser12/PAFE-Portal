@@ -2,14 +2,14 @@
 
 import React from 'react'
 import { Box, Button } from '@mui/material'
-import { signIn, useSession } from '@/lib/auth/client'
+import { signIn } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import { CMSLink } from '@/components/legacy/Link'
 
 import type { Header as HeaderType } from '@/payload-types'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
-  const { data: session } = useSession()
-  const user = session?.user
+  const { user } = useUser()
   const navItems = data?.navItems || []
 
   return (

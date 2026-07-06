@@ -16,7 +16,7 @@ export async function completeTask(taskId: number, userId: string) {
       collection: 'tasks-completed',
       data: {
         task: taskId,
-        user: userId,
+        user: Number(userId),
         completedOn: completionDate.toISOString(),
       },
     })

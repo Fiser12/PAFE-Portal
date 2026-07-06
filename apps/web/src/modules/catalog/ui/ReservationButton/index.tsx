@@ -1,7 +1,7 @@
 'use client'
 
 import { checkRole } from '@/core/permissions'
-import { useSession } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import { AdminButton } from './AdminButton'
 import { UserButton } from './UserButton'
 
@@ -12,8 +12,8 @@ interface Props {
 }
 
 export function ReservationButton({ itemId, userId, onReservationSuccess }: Props) {
-    const { data: session } = useSession()
-    const isCatalogAdmin = checkRole({ roleSlug: 'catalog-admin', user: session?.user })
+    const { user } = useUser()
+    const isCatalogAdmin = checkRole({ roleSlug: 'catalog-admin', user: user })
 
     if (isCatalogAdmin) {
         return <AdminButton itemId={itemId} onReservationSuccess={onReservationSuccess} />

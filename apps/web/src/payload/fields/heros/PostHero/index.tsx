@@ -1,4 +1,4 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
+import { formatDateTime } from '@/utilities/formatDateTime'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
@@ -21,7 +21,7 @@ export const PostHero: React.FC<{
           <div className="uppercase text-sm mb-6">
             {categories?.map((category, index) => {
               if (typeof category === 'object' && category !== null) {
-                const { singular_name: categoryTitle } = category
+                const { name: categoryTitle } = category
 
                 const titleToUse = categoryTitle || 'Untitled category'
 

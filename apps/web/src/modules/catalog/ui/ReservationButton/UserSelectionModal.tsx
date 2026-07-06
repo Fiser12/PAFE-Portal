@@ -67,7 +67,7 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
                         {users.map((user) => (
                             <button
                                 key={user.id}
-                                onClick={() => onSelect(user.id)}
+                                onClick={() => onSelect(String(user.id))}
                                 className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
                             >
                                 <div className="font-medium">{user.email}</div>

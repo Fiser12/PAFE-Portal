@@ -48,7 +48,7 @@ export const Card: React.FC<{
               <div>
                 {categories?.map((category, index) => {
                   if (typeof category === 'object') {
-                    const { singular_name: titleFromCategory } = category
+                    const { name: titleFromCategory } = category
 
                     const categoryTitle = titleFromCategory || 'Untitled category'
 

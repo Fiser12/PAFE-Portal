@@ -50,7 +50,7 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
                             <MenuItem value="">Todas las categorías</MenuItem>
                             {categories.map(cat => (
                                 <MenuItem key={cat.id} value={cat.id}>
-                                    {cat.singular_name}
+                                    {cat.name}
                                 </MenuItem>
                             ))}
                         </Select>

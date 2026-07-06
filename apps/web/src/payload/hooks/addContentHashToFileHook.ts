@@ -1,4 +1,4 @@
-import { CollectionBeforeOperationHook } from "payload"
+import { CollectionBeforeOperationHook } from 'payload'
 
 const hashBuffer = async (buffer: Buffer): Promise<string> => {
   const hashBuffer = await crypto.subtle.digest('SHA-1', buffer)
@@ -28,6 +28,8 @@ export const addContentHashToFile: CollectionBeforeOperationHook = async ({
   const nameWithoutExtension = fileNameParts.join('.')
 
   req.file.name = `${nameWithoutExtension}-${hash}${extension ? `.${extension}` : ''}`
-  args.data.title = `${nameWithoutExtension}${extension ? `.${extension}` : ''}`
+  if ('data' in args && args.data && typeof args.data === 'object' && 'title' in args.data) {
+    args.data.title = `${nameWithoutExtension}${extension ? `.${extension}` : ''}`
+  }
   context.filenameHasContentHash = true
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import type { Reservation } from '@/payload-types'
-import { useSession } from '@/lib/auth/client'
+import { useUser } from '@/lib/auth/useUser'
 import useSWR from 'swr'
 import { getItemReservations, getUserReservations, returnBook } from '../../actions'
 import {
@@ -33,8 +33,7 @@ const fetcher = async (key: [string, number | string]) => {
 }
 
 export function ReservationsTable({ itemId }: Props) {
-    const { data: session } = useSession()
-    const user = session?.user
+    const { user } = useUser()
     const router = useRouter()
 
     const swrKey = itemId 

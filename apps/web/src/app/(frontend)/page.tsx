@@ -2,13 +2,13 @@
 
 import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 import CalendarView from '@/components/legacy/CalendarView'
-import { signIn, useSession } from '@/lib/auth/client';
+import { signIn } from '@/lib/auth/client';
+import { useUser } from '@/lib/auth/useUser';
 import React from 'react';
 import { Button } from '@/components/legacy/button';
 
 export default function Home() {
-  const { data: session } = useSession()
-  const user = session?.user
+  const { user } = useUser()
 
   return (
     <div className="container flex flex-col gap-8">
