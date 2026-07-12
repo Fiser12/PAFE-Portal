@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Box, Button } from '@mui/material'
+import { isAdmin, isStaff } from '@/core/permissions'
 import { useUser } from '@/lib/auth/useUser'
 import { CMSLink } from '@/components/legacy/Link'
 
@@ -26,7 +27,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         url="/catalog"
         appearance="link"
       />
-      {user && (
+      {isAdmin(user) && (
         <CMSLink
           type="reference"
           label="Casos"
@@ -40,6 +41,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         url="https://foro.pafe-formakuntza.com/"
         appearance="link"
       />
+      {isStaff(user) && (
+        <CMSLink
+          type="reference"
+          label="Administración"
+          url="/admin"
+          appearance="link"
+        />
+      )}
       
 
       {!user && (

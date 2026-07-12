@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Home, Book, User, Briefcase, FileText } from 'lucide-react'
+import { isAdmin } from '@/core/permissions'
+import { useUser } from '@/lib/auth/useUser'
 import {
   Paper,
   BottomNavigation,
@@ -82,6 +84,9 @@ const CustomBottomNavigationAction = styled(BottomNavigationAction)(
 
 export function MobileBottomNav() {
   const pathname = usePathname()
+  const { user } = useUser()
+  // Casos solo es visible para admin
+  const visibleItems = navItems.filter((item) => item.href !== '/cases' || isAdmin(user))
 
   return (
     <Paper
@@ -101,7 +106,7 @@ export function MobileBottomNav() {
           showLabels
           sx={{ height: 64, px: 1 }}
         >
-          {navItems.map((item, index) => {
+          {visibleItems.map((item, index) => {
             const Icon = item.icon
             // Calculate active state directly from pathname without state
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
