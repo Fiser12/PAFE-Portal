@@ -74,6 +74,7 @@ export interface Config {
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
     'catalog-item': CatalogItem;
+    'digital-item': DigitalItem;
     cases: Case;
     tasks: Task;
     'tasks-completed': TasksCompleted;
@@ -116,6 +117,7 @@ export interface Config {
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
+    'digital-item': DigitalItemSelect<false> | DigitalItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
     'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
@@ -251,6 +253,7 @@ export interface CatalogItem {
   id: number;
   cover: number | Media;
   title: string;
+  type: 'libro' | 'juego' | 'programa';
   content: {
     root: {
       type: string;
@@ -840,6 +843,28 @@ export interface AdminInvitation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "digital-item".
+ */
+export interface DigitalItem {
+  id: number;
+  cover?: (number | null) | Media;
+  title: string;
+  type: 'video' | 'ebook';
+  description?: string | null;
+  /**
+   * Enlace externo al vídeo (no se aloja en el portal)
+   */
+  url?: string | null;
+  /**
+   * PDF o documento descargable
+   */
+  file?: (number | null) | Pdf;
+  categories: (number | Taxonomy)[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tasks-completed".
  */
 export interface TasksCompleted {
@@ -1120,10 +1145,15 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: number | Post;
-  };
+  doc:
+    | {
+        relationTo: 'catalog-item';
+        value: number | CatalogItem;
+      }
+    | {
+        relationTo: 'digital-item';
+        value: number | DigitalItem;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
@@ -1360,6 +1390,10 @@ export interface PayloadLockedDocument {
         value: number | CatalogItem;
       } | null)
     | ({
+        relationTo: 'digital-item';
+        value: number | DigitalItem;
+      } | null)
+    | ({
         relationTo: 'cases';
         value: number | Case;
       } | null)
@@ -1542,9 +1576,25 @@ export interface ReservationSelect<T extends boolean = true> {
 export interface CatalogItemSelect<T extends boolean = true> {
   cover?: T;
   title?: T;
+  type?: T;
   content?: T;
   quantity?: T;
   reservations?: T;
+  categories?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "digital-item_select".
+ */
+export interface DigitalItemSelect<T extends boolean = true> {
+  cover?: T;
+  title?: T;
+  type?: T;
+  description?: T;
+  url?: T;
+  file?: T;
   categories?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2338,6 +2388,7 @@ export interface TaskCreateCollectionExport {
     collectionSlug:
       | 'reservation'
       | 'catalog-item'
+      | 'digital-item'
       | 'cases'
       | 'tasks'
       | 'tasks-completed'

@@ -8,8 +8,8 @@ export const COLLECTION_SLUG_CATALOG_ITEM = 'catalog-item'
 export const CatalogItem: CollectionConfig = {
   slug: COLLECTION_SLUG_CATALOG_ITEM,
   labels: {
-    singular: 'Item del catálogo',
-    plural: 'Items del catálogo',
+    singular: 'Material reservable',
+    plural: 'Catálogo reservable',
   },
   access: {
     // El catálogo es visible públicamente; solo el staff lo gestiona
@@ -43,6 +43,22 @@ export const CatalogItem: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      label: 'Tipo de material',
+      name: 'type',
+      type: 'select',
+      required: true,
+      // Los materiales existentes son libros
+      defaultValue: 'libro',
+      options: [
+        { label: 'Libro', value: 'libro' },
+        { label: 'Juego', value: 'juego' },
+        { label: 'Programa técnico', value: 'programa' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       label: 'Contenido',

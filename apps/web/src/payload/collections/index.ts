@@ -1,4 +1,5 @@
 import { CatalogItem } from '@/modules/catalog/collections/CatalogItem'
+import { DigitalItem } from '@/modules/catalog/collections/DigitalItem'
 import { Reservation } from '@/modules/catalog/collections/Reservation'
 import { Categories } from './Categories'
 import { Cases } from './Cases'
@@ -12,4 +13,4 @@ import { ExternalResources } from './ExternalResources'
 import { Groups } from './Groups'
 import { Users } from './Users'
 
-export const collections = [Reservation, CatalogItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Pdf]
+export const collections = [Reservation, CatalogItem, DigitalItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Pdf]
