@@ -1,11 +1,15 @@
 'use server'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { isStaff } from '@/core/permissions'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 export async function checkUserReservation(itemId: number, userId: string) {
   try {
-    const payload = await getPayload({ config: configPromise })
+    const { payload, user } = await getSessionUser()
+
+    if (!user || (String(userId) !== String(user.id) && !isStaff(user))) {
+      throw new Error('No tienes permiso para consultar esta reserva')
+    }
     const existingReservation = await payload.find({
       collection: 'reservation',
       where: {

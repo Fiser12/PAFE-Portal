@@ -1,11 +1,20 @@
 'use server'
 
-import configPromise from '@payload-config'
 import { revalidatePath } from 'next/cache'
-import { getPayload } from 'payload'
+import { isActiveUser, isStaff } from '@/core/permissions'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 export async function createReservation(itemId: number, userId: string) {
-  const payload = await getPayload({ config: configPromise })
+  const { payload, user } = await getSessionUser()
+
+  if (!user || !isActiveUser(user)) {
+    throw new Error('No tienes permiso para reservar')
+  }
+
+  // Reservar en nombre de otro usuario es cosa del staff
+  if (String(userId) !== String(user.id) && !isStaff(user)) {
+    throw new Error('No tienes permiso para reservar en nombre de otro usuario')
+  }
 
   const existingReservation = await payload.find({
     collection: 'reservation',

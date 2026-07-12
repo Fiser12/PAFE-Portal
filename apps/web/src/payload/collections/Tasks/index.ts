@@ -1,6 +1,9 @@
 import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_PDF, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
-import { checkRoleHidden } from '@/core/permissions'
-import { authenticated } from '@/payload/access/authenticated'
+import {
+  hiddenUnlessStaff,
+  isStaffAccess,
+  staffOrOwnCaseTasksAccess,
+} from '@/core/permissions'
 import type { CollectionConfig } from 'payload'
 
 export const Tasks: CollectionConfig = {
@@ -10,14 +13,14 @@ export const Tasks: CollectionConfig = {
     plural: 'Tareas',
   },
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: isStaffAccess,
+    delete: isStaffAccess,
+    // El staff ve todas las tareas; una familia solo las de sus casos
+    read: staffOrOwnCaseTasksAccess,
+    update: isStaffAccess,
   },
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: hiddenUnlessStaff,
     defaultColumns: ['title', 'case'],
     useAsTitle: 'title',
   },

@@ -1,7 +1,8 @@
 'use server'
 
-import configPromise from '@payload-config'
-import { getPayload, Where } from 'payload'
+import { Where } from 'payload'
+import { isStaff } from '@/core/permissions'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface GetUsersParams {
   searchTerm?: string
@@ -9,7 +10,11 @@ interface GetUsersParams {
 
 export async function getUsersBySearchTerm({ searchTerm }: GetUsersParams = {}) {
   try {
-    const payload = await getPayload({ config: configPromise })
+    const { payload, user } = await getSessionUser()
+
+    if (!isStaff(user)) {
+      throw new Error('No tienes permiso para buscar usuarios')
+    }
 
     const where: Where | undefined = searchTerm
       ? {

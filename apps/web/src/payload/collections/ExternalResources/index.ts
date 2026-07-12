@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_EXTERNAL_RESOURCES } from '@/core/collections-slugs'
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
 import { authenticated } from '@/payload/access/authenticated'
 import type { CollectionConfig } from 'payload'
 
@@ -10,14 +10,13 @@ export const ExternalResources: CollectionConfig = {
     plural: 'Recursos Externos',
   },
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
+    create: isStaffAccess,
+    delete: isStaffAccess,
     read: authenticated,
-    update: authenticated,
+    update: isStaffAccess,
   },
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: hiddenUnlessStaff,
     defaultColumns: ['title', 'type', 'url'],
     useAsTitle: 'title',
   },

@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Box, Button } from '@mui/material'
-import { signIn } from '@/lib/auth/client'
 import { useUser } from '@/lib/auth/useUser'
 import { CMSLink } from '@/components/legacy/Link'
 
@@ -44,9 +43,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       
 
       {!user && (
-        <Button 
+        <Button
           variant="contained"
-          onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}
+          href="/login"
           sx={{
             textTransform: 'none',
             fontWeight: 500,

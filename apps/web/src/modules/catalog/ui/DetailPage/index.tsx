@@ -1,6 +1,6 @@
 'use client'
 
-import { checkRole } from '@/core/permissions'
+import { isStaff } from '@/core/permissions'
 import { CatalogItem } from '@/payload-types'
 import Image from 'next/image'
 import { useUser } from '@/lib/auth/useUser'
@@ -16,7 +16,7 @@ interface Props {
 
 export function CatalogItemClient({ item, children }: Props) {
     const { user } = useUser()
-    const isCatalogAdmin = user ? checkRole({ roleSlug: 'catalog-admin', user }) : false
+    const isCatalogAdmin = isStaff(user)
     const [availability, setAvailability] = useState<{ available: number; total: number; reserved: number } | null>(null)
 
     useEffect(() => {

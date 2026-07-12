@@ -1,15 +1,16 @@
 import type { GlobalConfig } from 'payload'
 import { link } from '@/payload/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   access: {
     read: () => true,
+    update: isAdminAccess,
   },
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: hiddenUnlessAdmin,
   },
   fields: [
     {

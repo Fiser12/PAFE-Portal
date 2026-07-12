@@ -9,6 +9,7 @@ import { Posts } from './Posts'
 import { Tasks } from './Tasks'
 import { TasksCompleted } from './TasksCompleted'
 import { ExternalResources } from './ExternalResources'
+import { Groups } from './Groups'
 import { Users } from './Users'
 
-export const collections = [Reservation, CatalogItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Media, Users, Pages, Posts, Pdf]
+export const collections = [Reservation, CatalogItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Pdf]

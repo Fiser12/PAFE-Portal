@@ -9,7 +9,6 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
@@ -27,15 +26,15 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/payload/fields/slug'
 import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: isStaffAccess,
+    delete: isStaffAccess,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: isStaffAccess,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -50,7 +49,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
   },
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: hiddenUnlessStaff,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {

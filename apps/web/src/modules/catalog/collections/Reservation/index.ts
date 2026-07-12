@@ -1,7 +1,12 @@
 import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '../CatalogItem'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { checkRoleHidden } from '@/core/permissions'
+import {
+  hiddenUnlessStaff,
+  isActiveUserAccess,
+  isStaffAccess,
+  staffOrOwnerAccess,
+} from '@/core/permissions'
 
 export const COLLECTION_SLUG_RESERVATION = 'reservation'
 
@@ -11,9 +16,17 @@ export const Reservation: CollectionConfig = {
     singular: 'Reserva',
     plural: 'Reservas',
   },
+  access: {
+    // Familias y staff solicitan; un usuario `pendiente` no puede reservar
+    create: isActiveUserAccess,
+    // Devolver/cancelar: el staff cualquiera, una familia solo las suyas
+    delete: staffOrOwnerAccess('user'),
+    read: staffOrOwnerAccess('user'),
+    update: isStaffAccess,
+  },
   admin: {
     group: 'Catálogo',
-    hidden: checkRoleHidden("catalog-admin"),
+    hidden: hiddenUnlessStaff,
     components: {
       views: {
         list: {

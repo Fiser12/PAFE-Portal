@@ -2,8 +2,8 @@
 
 import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 import CalendarView from '@/components/legacy/CalendarView'
-import { signIn } from '@/lib/auth/client';
 import { useUser } from '@/lib/auth/useUser';
+import Link from 'next/link';
 import React from 'react';
 import { Button } from '@/components/legacy/button';
 
@@ -19,7 +19,9 @@ export default function Home() {
       ) : (
         <React.Fragment>
           <h1 className="text-2xl font-bold">Bienvenido a PAFE</h1>
-          <Button className='max-w-xs' onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}>Entrar</Button>
+          <Button className='max-w-xs' asChild>
+            <Link href="/login">Entrar</Link>
+          </Button>
         </React.Fragment>
       )}
     </div>

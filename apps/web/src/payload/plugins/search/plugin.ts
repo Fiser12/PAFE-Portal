@@ -1,14 +1,14 @@
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { searchFields } from './fieldOverrides'
 import { beforeSyncWithSearch } from './beforeSync'
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessAdmin } from '@/core/permissions'
 
 export const plugin = searchPlugin({
   collections: ['posts'],
   beforeSync: beforeSyncWithSearch,
   searchOverrides: {
     admin: {
-      hidden: checkRoleHidden("admin"),
+      hidden: hiddenUnlessAdmin,
     },
     fields: ({ defaultFields }) => {
       return [...defaultFields, ...searchFields]

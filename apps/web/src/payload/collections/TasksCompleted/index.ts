@@ -1,7 +1,23 @@
 import { COLLECTION_SLUG_TASKS_COMPLETED, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { checkRoleHidden } from '@/core/permissions'
-import { authenticated } from '@/payload/access/authenticated'
-import type { CollectionConfig } from 'payload'
+import {
+  hiddenUnlessStaff,
+  isActiveUser,
+  isAdminAccess,
+  isStaff,
+  staffOrOwnerAccess,
+} from '@/core/permissions'
+import type { Access, CollectionConfig } from 'payload'
+
+/**
+ * Una familia solo puede registrar completaciones a su propio nombre;
+ * el staff puede registrarlas para cualquiera.
+ */
+const createOwnCompletionAccess: Access = ({ req, data }) => {
+  if (!req.user) return false
+  if (isStaff(req.user)) return true
+  if (!isActiveUser(req.user)) return false
+  return data?.user !== undefined && String(data.user) === String(req.user.id)
+}
 
 export const TasksCompleted: CollectionConfig = {
   slug: COLLECTION_SLUG_TASKS_COMPLETED,
@@ -10,14 +26,14 @@ export const TasksCompleted: CollectionConfig = {
     plural: 'Tareas Completadas',
   },
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: createOwnCompletionAccess,
+    // El histórico no se edita; solo un admin corrige errores
+    delete: isAdminAccess,
+    read: staffOrOwnerAccess('user'),
+    update: isAdminAccess,
   },
   admin: {
-    hidden: checkRoleHidden("admin"),
+    hidden: hiddenUnlessStaff,
     defaultColumns: ['task', 'user', 'completedOn'],
     useAsTitle: 'id',
   },

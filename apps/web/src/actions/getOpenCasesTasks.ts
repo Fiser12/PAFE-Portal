@@ -1,13 +1,17 @@
 'use server'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { Case } from '@/payload-types'
+import { isStaff } from '@/core/permissions'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 export async function getOpenCasesTasks(userId: string, caseId?: string) {
   try {
-    const payload = await getPayload({ config: await configPromise })
-    
+    const { payload, user: sessionUser } = await getSessionUser()
+
+    if (!sessionUser || (String(userId) !== String(sessionUser.id) && !isStaff(sessionUser))) {
+      throw new Error('No tienes permiso para ver estas tareas')
+    }
+
     // Primero obtenemos el usuario con sus casos asignados
     const user = await payload.findByID({
       collection: 'users',

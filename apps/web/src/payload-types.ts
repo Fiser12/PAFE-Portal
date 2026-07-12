@@ -79,6 +79,7 @@ export interface Config {
     'tasks-completed': TasksCompleted;
     'external-resources': ExternalResource;
     taxonomy: Taxonomy;
+    groups: Group;
     media: Media;
     pages: Page;
     posts: Post;
@@ -120,6 +121,7 @@ export interface Config {
     'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
     'external-resources': ExternalResourcesSelect<false> | ExternalResourcesSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
+    groups: GroupsSelect<false> | GroupsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -191,7 +193,10 @@ export interface User {
   id: number;
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
-  roles?: (number | Taxonomy)[] | null;
+  /**
+   * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
+   */
+  groups?: (number | Group)[] | null;
   /**
    * Users chosen display name
    */
@@ -213,7 +218,7 @@ export interface User {
   /**
    * The role/ roles of the user
    */
-  role?: ('admin' | 'user')[] | null;
+  role?: ('admin' | 'profesional' | 'familia')[] | null;
   account?: {
     docs?: (number | Account)[];
     hasNextPage?: boolean;
@@ -706,6 +711,17 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "groups".
+ */
+export interface Group {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Accounts are used to store user accounts for authentication providers
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -816,7 +832,7 @@ export interface Verification {
  */
 export interface AdminInvitation {
   id: number;
-  role: 'admin' | 'user';
+  role: 'admin' | 'profesional' | 'familia';
   token: string;
   url?: string | null;
   updatedAt: string;
@@ -1364,6 +1380,10 @@ export interface PayloadLockedDocument {
         value: number | Taxonomy;
       } | null)
     | ({
+        relationTo: 'groups';
+        value: number | Group;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1440,7 +1460,7 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   reservations?: T;
   assignedCases?: T;
-  roles?: T;
+  groups?: T;
   name?: T;
   email?: T;
   emailVerified?: T;
@@ -1586,6 +1606,16 @@ export interface TaxonomySelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   payload?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "groups_select".
+ */
+export interface GroupsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2313,6 +2343,7 @@ export interface TaskCreateCollectionExport {
       | 'tasks-completed'
       | 'external-resources'
       | 'taxonomy'
+      | 'groups'
       | 'media'
       | 'users'
       | 'pages'

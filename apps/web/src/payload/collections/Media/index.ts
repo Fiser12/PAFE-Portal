@@ -10,11 +10,10 @@ import { fileURLToPath } from 'url'
 import { COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
 
 import { anyone } from '../../access/anyone'
-import { authenticated } from '../../access/authenticated'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { handleSvgUpload } from '@/payload/hooks/handleSvgUploadHook'
 import { updateCacheControl } from '@/payload/hooks/updateCacheControl'
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,13 +21,13 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: COLLECTION_SLUG_MEDIA,
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: isStaffAccess,
+    delete: isStaffAccess,
     read: anyone,
-    update: authenticated,
+    update: isStaffAccess,
   },
   admin: {
-    hidden: checkRoleHidden('catalog-admin'),
+    hidden: hiddenUnlessStaff,
   },
   hooks: {
     beforeOperation: [addContentHashToFile],

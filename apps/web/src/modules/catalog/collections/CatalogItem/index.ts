@@ -1,4 +1,5 @@
-import { checkRoleHidden } from '@/core/permissions'
+import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
+import { anyone } from '@/payload/access/anyone'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -10,9 +11,16 @@ export const CatalogItem: CollectionConfig = {
     singular: 'Item del catálogo',
     plural: 'Items del catálogo',
   },
+  access: {
+    // El catálogo es visible públicamente; solo el staff lo gestiona
+    create: isStaffAccess,
+    delete: isStaffAccess,
+    read: anyone,
+    update: isStaffAccess,
+  },
   admin: {
     group: 'Catálogo',
-    hidden: checkRoleHidden('catalog-admin'),
+    hidden: hiddenUnlessStaff,
     useAsTitle: 'title',
     components: {
       views: {

@@ -1,11 +1,15 @@
 'use server'
 
-import configPromise from '@payload-config'
 import { revalidatePath } from 'next/cache'
-import { getPayload } from 'payload'
+import { isStaff } from '@/core/permissions'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 export async function returnBook(reservationId: number) {
-  const payload = await getPayload({ config: configPromise })
+  const { payload, user } = await getSessionUser()
+
+  if (!user) {
+    throw new Error('No tienes permiso para devolver reservas')
+  }
 
   const reservation = await payload.findByID({
     collection: 'reservation',
@@ -16,21 +20,20 @@ export async function returnBook(reservationId: number) {
     throw new Error('Reserva no encontrada')
   }
 
-  const itemId = typeof reservation.item === 'object' ? reservation.item.id : reservation.item
+  const ownerId =
+    typeof reservation.user === 'object' ? reservation.user.id : reservation.user
 
-  const catalogItem = await payload.findByID({
-    collection: 'catalog-item',
-    id: itemId,
-  })
-
-  if (!catalogItem) {
-    throw new Error('Libro no encontrado')
+  // El staff gestiona cualquier reserva; una familia solo las suyas
+  if (String(ownerId) !== String(user.id) && !isStaff(user)) {
+    throw new Error('No tienes permiso para devolver esta reserva')
   }
+
+  const itemId = typeof reservation.item === 'object' ? reservation.item.id : reservation.item
 
   await payload.delete({
     collection: 'reservation',
     id: reservationId,
   })
 
-  revalidatePath(`/catalog/${catalogItem.id}`)
+  revalidatePath(`/catalog/${itemId}`)
 }
