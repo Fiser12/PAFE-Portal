@@ -1,22 +1,28 @@
-import { COLLECTION_SLUG_FILES } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
-import { authenticated } from '@/payload/access/authenticated'
+import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
+import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
+import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
+/**
+ * Materiales descargables del catálogo (ebooks, guías, documentos).
+ * También sirven como recursos adjuntos de tareas.
+ */
 export const Files: CollectionConfig = {
   slug: COLLECTION_SLUG_FILES,
   labels: {
-    singular: 'Fichero',
-    plural: 'Ficheros',
+    singular: 'Material descargable',
+    plural: 'Materiales descargables',
   },
   access: {
     create: isStaffAccess,
     delete: isStaffAccess,
-    read: authenticated,
+    // Contenido del catálogo digital: solo usuarios con rol
+    read: isActiveUserAccess,
     update: isStaffAccess,
   },
   admin: {
+    group: 'Catálogo',
     hidden: hiddenUnlessStaff,
     useAsTitle: 'title',
     components: {
@@ -48,10 +54,21 @@ export const Files: CollectionConfig = {
   },
   fields: [
     {
+      label: 'Caratula',
+      name: 'cover',
+      type: 'upload',
+      relationTo: COLLECTION_SLUG_MEDIA,
+    },
+    {
       label: 'Título',
       name: 'title',
       type: 'text',
       required: true,
     },
+    buildTaxonomyRelationship({
+      name: 'categories',
+      label: 'Categorías',
+      defaultValue: [],
+    }),
   ],
 }

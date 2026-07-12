@@ -44,7 +44,7 @@ const getResourceIcon = (relationTo: string, resourceType?: string) => {
 const getResourceLabel = (relationTo: string) => {
   switch (relationTo) {
     case 'files':
-      return 'Fichero'
+      return 'Material descargable'
     case 'forms':
       return 'Formulario'
     case 'external-resources':

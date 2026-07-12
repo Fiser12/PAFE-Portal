@@ -5,6 +5,8 @@ import * as migration_20260712_154645_catalog_reorg from './20260712_154645_cata
 import * as migration_20260712_154702_search_sin_posts from './20260712_154702_search_sin_posts';
 import * as migration_20260712_155925_ficheros from './20260712_155925_ficheros';
 import * as migration_20260712_160032_adios_pdf from './20260712_160032_adios_pdf';
+import * as migration_20260712_160951_catalogo_digital from './20260712_160951_catalogo_digital';
+import * as migration_20260712_161032_adios_digital_item from './20260712_161032_adios_digital_item';
 
 export const migrations = [
   {
@@ -40,6 +42,16 @@ export const migrations = [
   {
     up: migration_20260712_160032_adios_pdf.up,
     down: migration_20260712_160032_adios_pdf.down,
-    name: '20260712_160032_adios_pdf'
+    name: '20260712_160032_adios_pdf',
+  },
+  {
+    up: migration_20260712_160951_catalogo_digital.up,
+    down: migration_20260712_160951_catalogo_digital.down,
+    name: '20260712_160951_catalogo_digital',
+  },
+  {
+    up: migration_20260712_161032_adios_digital_item.up,
+    down: migration_20260712_161032_adios_digital_item.down,
+    name: '20260712_161032_adios_digital_item'
   },
 ];

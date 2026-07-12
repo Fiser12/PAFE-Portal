@@ -74,7 +74,6 @@ export interface Config {
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
     'catalog-item': CatalogItem;
-    'digital-item': DigitalItem;
     cases: Case;
     tasks: Task;
     'tasks-completed': TasksCompleted;
@@ -117,7 +116,6 @@ export interface Config {
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
-    'digital-item': DigitalItemSelect<false> | DigitalItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
     'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
@@ -462,7 +460,9 @@ export interface Task {
  */
 export interface File {
   id: number;
+  cover?: (number | null) | Media;
   title: string;
+  categories?: (number | Taxonomy)[] | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -656,13 +656,15 @@ export interface Form {
  */
 export interface ExternalResource {
   id: number;
+  cover?: (number | null) | Media;
   title: string;
   description?: string | null;
-  type: 'web_link' | 'google-form' | 'google-doc';
+  type: 'video' | 'web_link' | 'google-form' | 'google-doc';
   /**
    * URL del recurso externo
    */
   url: string;
+  categories?: (number | Taxonomy)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -838,28 +840,6 @@ export interface AdminInvitation {
   role: 'admin' | 'profesional' | 'familia';
   token: string;
   url?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "digital-item".
- */
-export interface DigitalItem {
-  id: number;
-  cover?: (number | null) | Media;
-  title: string;
-  type: 'video' | 'ebook';
-  description?: string | null;
-  /**
-   * Enlace externo al vídeo (no se aloja en el portal)
-   */
-  url?: string | null;
-  /**
-   * PDF o documento descargable
-   */
-  file?: (number | null) | File;
-  categories: (number | Taxonomy)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -1151,8 +1131,12 @@ export interface Search {
         value: number | CatalogItem;
       }
     | {
-        relationTo: 'digital-item';
-        value: number | DigitalItem;
+        relationTo: 'files';
+        value: number | File;
+      }
+    | {
+        relationTo: 'external-resources';
+        value: number | ExternalResource;
       };
   slug?: string | null;
   meta?: {
@@ -1390,10 +1374,6 @@ export interface PayloadLockedDocument {
         value: number | CatalogItem;
       } | null)
     | ({
-        relationTo: 'digital-item';
-        value: number | DigitalItem;
-      } | null)
-    | ({
         relationTo: 'cases';
         value: number | Case;
       } | null)
@@ -1586,21 +1566,6 @@ export interface CatalogItemSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "digital-item_select".
- */
-export interface DigitalItemSelect<T extends boolean = true> {
-  cover?: T;
-  title?: T;
-  type?: T;
-  description?: T;
-  url?: T;
-  file?: T;
-  categories?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cases_select".
  */
 export interface CasesSelect<T extends boolean = true> {
@@ -1640,10 +1605,12 @@ export interface TasksCompletedSelect<T extends boolean = true> {
  * via the `definition` "external-resources_select".
  */
 export interface ExternalResourcesSelect<T extends boolean = true> {
+  cover?: T;
   title?: T;
   description?: T;
   type?: T;
   url?: T;
+  categories?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1943,7 +1910,9 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "files_select".
  */
 export interface FilesSelect<T extends boolean = true> {
+  cover?: T;
   title?: T;
+  categories?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2388,7 +2357,6 @@ export interface TaskCreateCollectionExport {
     collectionSlug:
       | 'reservation'
       | 'catalog-item'
-      | 'digital-item'
       | 'cases'
       | 'tasks'
       | 'tasks-completed'
