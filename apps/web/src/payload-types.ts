@@ -1138,15 +1138,11 @@ export interface Search {
         relationTo: 'external-resources';
         value: number | ExternalResource;
       };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
+  collectionType?: string | null;
+  itemType?: string | null;
+  cover?: (number | null) | Media;
   categories?:
     | {
-        relationTo?: string | null;
         id?: string | null;
         title?: string | null;
       }[]
@@ -2083,18 +2079,12 @@ export interface SearchSelect<T extends boolean = true> {
   title?: T;
   priority?: T;
   doc?: T;
-  slug?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
+  collectionType?: T;
+  itemType?: T;
+  cover?: T;
   categories?:
     | T
     | {
-        relationTo?: T;
         id?: T;
         title?: T;
       };

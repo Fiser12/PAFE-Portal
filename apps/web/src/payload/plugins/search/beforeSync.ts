@@ -1,44 +1,46 @@
-import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import { BeforeSync, DocToSync } from '@payloadcms/plugin-search/types'
 
+const extractId = (value: unknown): string | number | null => {
+  if (value == null) return null
+  if (typeof value === 'object') return (value as { id?: string | number }).id ?? null
+  return value as string | number
+}
+
+/**
+ * Copia al índice de búsqueda los campos que el catálogo necesita para
+ * filtrar (categorías, tipo) y pintar las tarjetas (título, portada).
+ * Indexa catalog-item, files y external-resources.
+ */
 export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc }) => {
   const {
     doc: { relationTo: collection },
   } = searchDoc
 
-  const { slug, id, categories, title, meta } = originalDoc
+  const { title, type, cover, categories } = originalDoc as {
+    title?: string
+    type?: string
+    cover?: unknown
+    categories?: Array<{ id?: string | number; name?: string } | number>
+  }
+
+  const mappedCategories = Array.isArray(categories)
+    ? categories
+        .map((category) => {
+          if (typeof category === 'object' && category !== null) {
+            return { id: String(category.id ?? ''), title: category.name ?? '' }
+          }
+          return { id: String(category), title: '' }
+        })
+        .filter((c) => c.id)
+    : []
 
   const modifiedDoc: DocToSync = {
     ...searchDoc,
-    slug,
-    meta: {
-      ...meta,
-      title: meta?.title || title,
-      image: meta?.image?.id || meta?.image,
-      description: meta?.description,
-    },
-    categories: [],
-  }
-
-  if (categories && Array.isArray(categories) && categories.length > 0) {
-    // get full categories and keep a flattened copy of their most important properties
-    try {
-      const mappedCategories = categories.map((category) => {
-        const { id, title } = category
-
-        return {
-          relationTo: COLLECTION_SLUG_TAXONOMY,
-          id,
-          title,
-        }
-      })
-
-      modifiedDoc.categories = mappedCategories
-    } catch (_err) {
-      console.error(
-        `Failed. Category not found when syncing collection '${collection}' with id: '${id}' to search.`,
-      )
-    }
+    title: title ?? searchDoc.title,
+    collectionType: collection,
+    itemType: type ?? null,
+    cover: extractId(cover),
+    categories: mappedCategories,
   }
 
   return modifiedDoc

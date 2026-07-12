@@ -30,11 +30,6 @@ const navItems = [
     href: '/cases',
     icon: Briefcase,
   },
-  {
-    name: 'Documentos',
-    href: '/documents',
-    icon: FileText,
-  },
 ]
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({

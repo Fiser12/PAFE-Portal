@@ -13,7 +13,6 @@ export const CatalogListBlock: React.FC<CTABlockProps> = async () => {
   })
   const categories = await payload.find({
     collection: 'taxonomy',
-    where: { 'payload.types': { in: ['topic'] } },
     pagination: false
   })
   return (

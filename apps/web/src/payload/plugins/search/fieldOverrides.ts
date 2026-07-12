@@ -1,61 +1,37 @@
 import { Field } from 'payload'
+import { COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
 
+// Campos que copiamos al índice de búsqueda para poder filtrar y pintar las
+// tarjetas del catálogo sin resolver el documento original.
 export const searchFields: Field[] = [
   {
-    name: 'slug',
+    // Colección de origen: 'catalog-item' | 'files' | 'external-resources'
+    name: 'collectionType',
     type: 'text',
     index: true,
-    admin: {
-      readOnly: true,
-    },
+    admin: { readOnly: true },
   },
   {
-    name: 'meta',
-    label: 'Meta',
-    type: 'group',
+    // Tipo interno del material (libro/juego/programa, video/web_link/…)
+    name: 'itemType',
+    type: 'text',
     index: true,
-    admin: {
-      readOnly: true,
-    },
-    fields: [
-      {
-        type: 'text',
-        name: 'title',
-        label: 'Title',
-      },
-      {
-        type: 'text',
-        name: 'description',
-        label: 'Description',
-      },
-      {
-        name: 'image',
-        label: 'Image',
-        type: 'upload',
-        relationTo: 'media',
-      },
-    ],
+    admin: { readOnly: true },
   },
   {
-    label: 'Categories',
+    name: 'cover',
+    type: 'upload',
+    relationTo: COLLECTION_SLUG_MEDIA,
+    admin: { readOnly: true },
+  },
+  {
+    label: 'Categorías',
     name: 'categories',
     type: 'array',
-    admin: {
-      readOnly: true,
-    },
+    admin: { readOnly: true },
     fields: [
-      {
-        name: 'relationTo',
-        type: 'text',
-      },
-      {
-        name: 'id',
-        type: 'text',
-      },
-      {
-        name: 'title',
-        type: 'text',
-      },
+      { name: 'id', type: 'text' },
+      { name: 'title', type: 'text' },
     ],
   },
 ]
