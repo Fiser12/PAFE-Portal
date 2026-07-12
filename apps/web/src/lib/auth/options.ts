@@ -1,9 +1,20 @@
 import { nextCookies } from 'better-auth/next-js'
-import type { Field, FieldHook } from 'payload'
+import type { CollectionConfig, Field, FieldHook } from 'payload'
 import type { PayloadAuthOptions } from 'payload-auth/better-auth'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { ADMIN_PANEL_ROLES, ALL_ROLES, ROLE_ADMIN } from '@/core/permissions'
+import {
+  ADMIN_PANEL_ROLES,
+  ALL_ROLES,
+  ROLE_ADMIN,
+  hiddenUnlessAdmin,
+} from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
+
+/** Colecciones técnicas de better-auth: visibles solo para admin en el panel */
+const hideFromStaff = ({ collection }: { collection: CollectionConfig }): CollectionConfig => ({
+  ...collection,
+  admin: { ...collection.admin, hidden: hiddenUnlessAdmin },
+})
 
 /**
  * better-auth inyecta role 'user' (su default) al crear usuarios en el signup
@@ -43,9 +54,12 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
       ),
     }),
   },
-  accounts: { slug: 'accounts' },
-  sessions: { slug: 'sessions' },
-  verifications: { slug: 'verifications' },
+  accounts: { slug: 'accounts', collectionOverrides: hideFromStaff },
+  sessions: { slug: 'sessions', collectionOverrides: hideFromStaff },
+  verifications: { slug: 'verifications', collectionOverrides: hideFromStaff },
+  pluginCollectionOverrides: {
+    invitations: hideFromStaff,
+  },
 
   betterAuthOptions: {
     secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET,

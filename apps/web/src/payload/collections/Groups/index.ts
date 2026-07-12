@@ -12,8 +12,8 @@ import type { CollectionConfig } from 'payload'
 export const Groups: CollectionConfig = {
   slug: COLLECTION_SLUG_GROUPS,
   labels: {
-    singular: 'Grupo',
-    plural: 'Grupos',
+    singular: 'Grupo de usuarios',
+    plural: 'Grupos de usuarios',
   },
   access: {
     create: isStaffAccess,
@@ -22,6 +22,7 @@ export const Groups: CollectionConfig = {
     update: isStaffAccess,
   },
   admin: {
+    group: 'Auth',
     hidden: hiddenUnlessStaff,
     useAsTitle: 'name',
     defaultColumns: ['name', 'description'],

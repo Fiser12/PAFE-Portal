@@ -1,6 +1,6 @@
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder"
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from "@payloadcms/richtext-lexical"
-import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from "@/core/permissions"
+import { hiddenUnlessAdmin, isActiveUserAccess, isStaffAccess } from "@/core/permissions"
 import { authenticated } from "@/payload/access/authenticated"
 import { COLLECTION_SLUG_FORMS, COLLECTION_SLUG_FORMS_SUBMISSION } from "@/core/collections-slugs"
 
@@ -17,7 +17,7 @@ export const plugin = formBuilderPlugin({
         read: isStaffAccess,
         update: isStaffAccess,
       },
-      admin: { hidden: hiddenUnlessStaff },
+      admin: { hidden: hiddenUnlessAdmin },
     },
     formOverrides: {
       slug: COLLECTION_SLUG_FORMS,
@@ -28,7 +28,7 @@ export const plugin = formBuilderPlugin({
         update: isStaffAccess,
       },
       admin: {
-        hidden: hiddenUnlessStaff,
+        hidden: hiddenUnlessAdmin,
       },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
