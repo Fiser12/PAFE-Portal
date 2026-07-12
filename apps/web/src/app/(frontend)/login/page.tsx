@@ -2,17 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { signIn } from '@/lib/auth/client'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -39,52 +34,69 @@ export default function LoginPage() {
   }
 
   return (
-    <Container maxWidth="xs" sx={{ py: 8 }}>
-      <Paper elevation={3} sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography variant="h5" component="h1" textAlign="center">
-          Iniciar sesión
-        </Typography>
-
-        <Button
-          variant="outlined"
-          onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}
-          sx={{ textTransform: 'none' }}
-        >
-          Entrar con Google
-        </Button>
-
-        <Divider>o</Divider>
-
-        <Box component="form" onSubmit={handleEmailLogin} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            fullWidth
-            autoComplete="email"
-          />
-          <TextField
-            label="Contraseña"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            fullWidth
-            autoComplete="current-password"
-          />
-          {error && <Alert severity="error">{error}</Alert>}
-          <Button type="submit" variant="contained" disabled={loading} sx={{ textTransform: 'none' }}>
-            {loading ? 'Entrando…' : 'Entrar'}
+    <div className="container flex justify-center py-10 sm:py-16">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-center text-xl">Iniciar sesión</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <Button
+            variant="outline"
+            onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}
+          >
+            Entrar con Google
           </Button>
-        </Box>
 
-        <Typography variant="body2" color="text.secondary" textAlign="center">
-          Las cuentas las crea la asociación. Si no tienes acceso, contacta con tu profesional de
-          referencia.
-        </Typography>
-      </Paper>
-    </Container>
+          <div className="flex items-center gap-3 text-xs uppercase text-muted-foreground">
+            <div className="h-px flex-1 bg-border" />
+            o
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Contraseña</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+            </div>
+            {error && (
+              <div
+                role="alert"
+                className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              >
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {error}
+              </div>
+            )}
+            <Button type="submit" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {loading ? 'Entrando…' : 'Entrar'}
+            </Button>
+          </form>
+
+          <p className="text-center text-sm text-muted-foreground">
+            Las cuentas las crea la asociación. Si no tienes acceso, contacta con tu profesional
+            de referencia.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

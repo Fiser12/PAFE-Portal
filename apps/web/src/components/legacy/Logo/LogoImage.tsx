@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/utilities/ui'
 import React from 'react'
 import logoImg from './logo.png'
 interface Props {
@@ -21,7 +21,7 @@ export const Logo = (props: Props) => {
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[7.5rem] w-full h-[60px] object-contain', className)}
+      className={cn('max-w-[7.5rem] w-full h-[60px] object-contain', className)}
       src={logoImg.src}
     />
   )

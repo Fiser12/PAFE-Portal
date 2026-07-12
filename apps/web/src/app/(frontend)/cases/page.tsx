@@ -5,21 +5,16 @@ import useSWR from 'swr'
 import { getOpenCasesTasks } from '@/actions/getOpenCasesTasks'
 import { getUserCases } from '@/actions/getUserCases'
 import { completeTask } from '@/actions/completeTask'
-import { TasksList } from '@/components/ui/TasksList'
-import type { TaskWithCaseInfo } from '@/types/cases'
+import { TasksList } from '@/components/cases/TasksList'
+import { Card, CardContent } from '@/components/ui/card'
 import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  CircularProgress,
-  FormControl,
   Select,
-  MenuItem,
-  InputLabel,
-} from '@mui/material'
-import { CheckSquare } from 'lucide-react'
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { CheckSquare, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
 const tasksFetcher = async (key: [string, string, string?]) => {
@@ -37,28 +32,30 @@ export default function CasesPage() {
   const [selectedCaseId, setSelectedCaseId] = useState<string>('all')
 
   // Fetch tasks (filtered or all based on selectedCaseId)
-  const { data: tasks, mutate: mutateTasks, isLoading: tasksLoading } = useSWR(
-    user?.id ? [String(user.id), selectedCaseId === 'all' ? undefined : selectedCaseId] as const : null,
+  const {
+    data: tasks,
+    mutate: mutateTasks,
+    isLoading: tasksLoading,
+  } = useSWR(
+    user?.id
+      ? ([String(user.id), selectedCaseId === 'all' ? undefined : selectedCaseId] as const)
+      : null,
     tasksFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
-    }
+    },
   )
 
   // Fetch user cases for dropdown
-  const { data: uniqueCases } = useSWR(
-    user?.id ? String(user.id) : null,
-    casesFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-    }
-  )
+  const { data: uniqueCases } = useSWR(user?.id ? String(user.id) : null, casesFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  })
 
   const handleTaskComplete = async (taskId: number) => {
     if (!user?.id) return
-    
+
     try {
       await completeTask(taskId, String(user.id))
       // Revalidar las tareas
@@ -70,89 +67,71 @@ export default function CasesPage() {
 
   if (!user) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h5" gutterBottom>
-            Debes iniciar sesión para ver tus tareas
-          </Typography>
-        </Box>
-      </Container>
+      <div className="container py-8">
+        <p className="text-center text-lg font-medium">
+          Debes iniciar sesión para ver tus tareas
+        </p>
+      </div>
     )
   }
 
   if (tasksLoading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 4 }}>
-          <CircularProgress size={24} />
-          <Typography>Cargando tareas...</Typography>
-        </Box>
-      </Container>
+      <div className="container py-8">
+        <div className="flex items-center justify-center gap-3">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <p>Cargando tareas...</p>
+        </div>
+      </div>
     )
   }
 
   if (!tasks || tasks.length === 0) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
-            Mis Tareas
-          </Typography>
-          <Typography color="text.secondary">
-            Tareas de todos tus casos abiertos
-          </Typography>
-        </Box>
-        
-        <Card sx={{ 
-          borderRadius: 3,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        }}>
-          <CardContent sx={{ p: 4, textAlign: 'center' }}>
-            <CheckSquare size={48} color="#9e9e9e" style={{ marginBottom: 16 }} />
-            <Typography variant="h6" color="text.secondary" gutterBottom>
+      <div className="container py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold sm:text-3xl">Mis Tareas</h1>
+          <p className="text-muted-foreground">Tareas de todos tus casos abiertos</p>
+        </div>
+
+        <Card>
+          <CardContent className="flex flex-col items-center gap-2 p-8 text-center">
+            <CheckSquare className="mb-2 h-12 w-12 text-muted-foreground/50" />
+            <p className="text-lg font-medium text-muted-foreground">
               No tienes tareas pendientes
-            </Typography>
-            <Typography color="text.secondary">
+            </p>
+            <p className="text-muted-foreground">
               Todas tus tareas están completadas o no tienes casos abiertos asignados.
-            </Typography>
+            </p>
           </CardContent>
         </Card>
-      </Container>
+      </div>
     )
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
-          Mis Tareas
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {uniqueCases && uniqueCases.length > 1 && (
-            <FormControl size="small" sx={{ minWidth: 200 }}>
-              <InputLabel>Filtrar por caso</InputLabel>
-              <Select
-                value={selectedCaseId}
-                label="Filtrar por caso"
-                onChange={(e) => setSelectedCaseId(e.target.value)}
-                sx={{ 
-                  borderRadius: 2,
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'divider',
-                  }
-                }}
-              >
-                <MenuItem value="all">Todos los casos</MenuItem>
-                {uniqueCases?.map((caseInfo) => (
-                  <MenuItem key={caseInfo.id} value={caseInfo.id.toString()}>
-                    {caseInfo.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        </Box>
-      </Box>
+    <div className="container py-8">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold sm:text-3xl">Mis Tareas</h1>
+          <p className="text-muted-foreground">Tareas de todos tus casos abiertos</p>
+        </div>
+        {uniqueCases && uniqueCases.length > 1 && (
+          <Select value={selectedCaseId} onValueChange={setSelectedCaseId}>
+            <SelectTrigger className="w-full sm:w-52" aria-label="Filtrar por caso">
+              <SelectValue placeholder="Filtrar por caso" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos los casos</SelectItem>
+              {uniqueCases?.map((caseInfo) => (
+                <SelectItem key={caseInfo.id} value={caseInfo.id.toString()}>
+                  {caseInfo.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </div>
 
       <TasksList
         tasks={tasks}
@@ -160,6 +139,6 @@ export default function CasesPage() {
         onTaskComplete={handleTaskComplete}
         showCaseInfo={true}
       />
-    </Container>
+    </div>
   )
 }

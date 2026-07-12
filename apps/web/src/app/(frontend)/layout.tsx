@@ -8,8 +8,6 @@ import React from 'react'
 import { AdminBar } from '@/components/legacy/AdminBar'
 import { Footer } from '@/payload/admin_components/Footer/Component'
 import { Header } from '@/payload/admin_components/Header/Component'
-import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
-import { Providers } from '@/components/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -20,26 +18,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="es" suppressHydrationWarning>
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
-        <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-          <Header />
-          <main style={{ paddingBottom: '64px' }} className="md:pb-0">
-            {children}
-          </main>
-          <Footer />
-          <MobileBottomNav />
-
-        </Providers>
+        <AdminBar
+          adminBarProps={{
+            preview: isEnabled,
+          }}
+        />
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   )

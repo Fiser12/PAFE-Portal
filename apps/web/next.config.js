@@ -28,7 +28,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  transpilePackages: ['react-rrule-builder-ts'],
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

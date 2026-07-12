@@ -5,17 +5,20 @@ import type { TaskStatus } from '@/types/cases'
 export const getTaskStatusIcon = (status: TaskStatus) => {
   switch (status) {
     case 'completed':
-      return <CheckCircle size={20} color="#4caf50" />
+      return <CheckCircle className="h-5 w-5 shrink-0 text-emerald-500" />
     case 'overdue':
-      return <AlertCircle size={20} color="#f44336" />
+      return <AlertCircle className="h-5 w-5 shrink-0 text-red-500" />
     case 'pending':
-      return <Clock size={20} color="#ff9800" />
+      return <Clock className="h-5 w-5 shrink-0 text-amber-500" />
     default:
-      return <Clock size={20} color="#757575" />
+      return <Clock className="h-5 w-5 shrink-0 text-muted-foreground" />
   }
 }
 
-export const getTaskStatusColor = (status: TaskStatus) => {
+/** Variante del Badge de shadcn para cada estado de tarea */
+export const getTaskStatusVariant = (
+  status: TaskStatus,
+): 'success' | 'error' | 'warning' | 'secondary' => {
   switch (status) {
     case 'completed':
       return 'success'
@@ -24,7 +27,7 @@ export const getTaskStatusColor = (status: TaskStatus) => {
     case 'pending':
       return 'warning'
     default:
-      return 'default'
+      return 'secondary'
   }
 }
 

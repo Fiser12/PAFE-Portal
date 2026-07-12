@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/utilities/ui'
 import React from 'react'
 
 interface Props {
@@ -9,14 +9,13 @@ export const LogoTitle = (props: Props) => {
   const { className } = props
 
   return (
-    <h1 
-      className={clsx('text-3xl font-bubblegum text-primary', className)} 
-      style={{ 
-        fontWeight: '900',
-        textShadow: '0 0 1px currentColor'
-      }}
+    <span
+      className={cn(
+        'font-bubblegum text-3xl font-black text-primary [text-shadow:0_0_1px_currentColor]',
+        className,
+      )}
     >
       PAFE
-    </h1>
+    </span>
   )
 }

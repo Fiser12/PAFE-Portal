@@ -1,3 +1,10 @@
 packages:
   - "apps/*"
   - "packages/*"
+  # Fork MUI de react-rrule-builder-ts: fuera del workspace tras migrar a shadcn
+  - "!packages/react-rule-builder"
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

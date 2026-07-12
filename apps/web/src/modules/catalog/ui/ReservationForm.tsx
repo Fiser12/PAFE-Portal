@@ -2,6 +2,7 @@
 
 import { useUser } from '@/lib/auth/useUser'
 import { useUserReservation } from '../hooks/useUserReservation'
+import { useReservationsRefresh } from '../hooks/useReservationsRefresh'
 import { ReservationButton } from './ReservationButton'
 
 interface Props {
@@ -11,10 +12,12 @@ interface Props {
 export function ReservationForm({ itemId }: Props) {
     const { user } = useUser()
     
-    const { hasReservation, reservationDate, isLoading, refetch } = useUserReservation(
+    const { hasReservation, reservationDate, isLoading } = useUserReservation(
         itemId,
         user?.id ? String(user.id) : undefined
     )
+    // Refresca disponibilidad, tabla de reservas y estado "ya reservado"
+    const refreshReservations = useReservationsRefresh()
 
     if (!user?.id) {
         return (
@@ -44,7 +47,11 @@ export function ReservationForm({ itemId }: Props) {
                     </p>
                 </div>
             ) : (
-                <ReservationButton itemId={itemId} userId={String(user.id)} onReservationSuccess={refetch} />
+                <ReservationButton
+                    itemId={itemId}
+                    userId={String(user.id)}
+                    onReservationSuccess={refreshReservations}
+                />
             )}
         </div>
     )

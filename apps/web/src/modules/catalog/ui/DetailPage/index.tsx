@@ -4,7 +4,7 @@ import { isStaff } from '@/core/permissions'
 import { CatalogItem } from '@/payload-types'
 import Image from 'next/image'
 import { useUser } from '@/lib/auth/useUser'
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { getItemAvailability } from '../../actions'
 import { ReservationForm } from '../ReservationForm'
 import { ReservationsTable } from '../ReservationsTable'
@@ -17,23 +17,15 @@ interface Props {
 export function CatalogItemClient({ item, children }: Props) {
     const { user } = useUser()
     const isCatalogAdmin = isStaff(user)
-    const [availability, setAvailability] = useState<{ available: number; total: number; reserved: number } | null>(null)
-
-    useEffect(() => {
-        const loadAvailability = async () => {
-            try {
-                const data = await getItemAvailability(item.id)
-                setAvailability(data)
-            } catch (error) {
-                console.error('Error loading availability:', error)
-            }
-        }
-        loadAvailability()
-    }, [item.id])
+    // Clave compartida: useReservationsRefresh() la invalida al reservar/devolver
+    const { data: availability } = useSWR(
+        ['item-availability', item.id],
+        () => getItemAvailability(item.id),
+    )
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-card rounded-lg shadow-lg p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div>
                         {item.cover && typeof item.cover !== 'number' && (
@@ -64,4 +56,4 @@ export function CatalogItemClient({ item, children }: Props) {
             </div>
         </div>
     )
-} 
+}

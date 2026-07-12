@@ -2,8 +2,10 @@
 
 import type { Media } from '@/payload-types'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardMedia, Typography, Chip, Box, Button } from '@mui/material'
 import { Download, ExternalLink, BookMarked } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 export interface CatalogResult {
   id: number | string
@@ -63,85 +65,49 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
   }
 
   return (
-    <Card
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 3,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: '0 8px 25px rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.15)',
-        },
-      }}
-    >
-      <Box
-        sx={{
-          p: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 200,
-          backgroundColor: 'action.hover',
-        }}
-      >
+    <Card className="flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg">
+      <div className="flex h-48 items-center justify-center bg-muted p-3">
         {cover?.url ? (
-          <CardMedia
-            component="img"
-            sx={{ maxHeight: 180, width: 'auto', maxWidth: '100%', objectFit: 'contain', borderRadius: 1 }}
-            image={cover.url}
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={cover.url}
             alt={cover.alt ?? result.title ?? ''}
+            loading="lazy"
+            className="max-h-40 w-auto max-w-full rounded object-contain"
           />
         ) : isReservable ? (
-          <BookMarked size={48} strokeWidth={1.5} opacity={0.4} />
+          <BookMarked className="h-12 w-12 text-muted-foreground/40" strokeWidth={1.5} />
         ) : collectionType === 'files' ? (
-          <Download size={48} strokeWidth={1.5} opacity={0.4} />
+          <Download className="h-12 w-12 text-muted-foreground/40" strokeWidth={1.5} />
         ) : (
-          <ExternalLink size={48} strokeWidth={1.5} opacity={0.4} />
+          <ExternalLink className="h-12 w-12 text-muted-foreground/40" strokeWidth={1.5} />
         )}
-      </Box>
+      </div>
 
-      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-        <Chip label={typeLabel} size="small" variant="outlined" sx={{ alignSelf: 'flex-start', mb: 1 }} />
-        <Typography
-          variant="h6"
-          component="h3"
-          sx={{
-            fontWeight: 600,
-            fontSize: '1rem',
-            lineHeight: 1.3,
-            mb: 2,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-          }}
-          title={result.title ?? ''}
-        >
+      <CardContent className="flex flex-1 flex-col gap-2 p-4">
+        <Badge variant="outline" className="self-start">
+          {typeLabel}
+        </Badge>
+        <h3 className="line-clamp-2 font-semibold leading-snug" title={result.title ?? ''}>
           {result.title}
-        </Typography>
+        </h3>
 
-        <Box sx={{ mt: 'auto' }}>
+        <div className="mt-auto pt-2">
           {isReservable ? (
-            <Button fullWidth variant="contained" onClick={handleOpen} sx={{ textTransform: 'none' }}>
+            <Button className="w-full" onClick={handleOpen}>
               Ver ficha
             </Button>
           ) : (
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleOpen}
-              disabled={!url}
-              startIcon={collectionType === 'files' ? <Download size={16} /> : <ExternalLink size={16} />}
-              sx={{ textTransform: 'none' }}
-            >
+            <Button className="w-full" onClick={handleOpen} disabled={!url}>
+              {collectionType === 'files' ? (
+                <Download className="mr-2 h-4 w-4" />
+              ) : (
+                <ExternalLink className="mr-2 h-4 w-4" />
+              )}
               {collectionType === 'files' ? 'Descargar' : 'Ver'}
             </Button>
           )}
-        </Box>
+        </div>
       </CardContent>
     </Card>
   )
