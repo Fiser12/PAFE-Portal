@@ -1,6 +1,6 @@
 import { COLLECTION_SLUG_TAXONOMY } from "@zetesis/payload-taxonomies"
 
-export const COLLECTION_SLUG_PDF = 'pdf' as const
+export const COLLECTION_SLUG_FILES = 'files' as const
 export const COLLECTION_SLUG_MEDIA = 'media' as const
 export const COLLECTION_SLUG_EXPORTS = 'exports' as const
 export const COLLECTION_SLUG_USER = 'users' as const

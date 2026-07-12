@@ -83,12 +83,7 @@ export const CatalogItem: CollectionConfig = {
       name: 'categories',
       label: 'Categorías',
       required: true,
-      defaultValue: [],
-      filterOptions: () => {
-        return {
-          'payload.types': { in: ['topic'] },
-        }
-      },
+      defaultValue: []
     }),
   ],
 }

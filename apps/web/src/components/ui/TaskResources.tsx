@@ -23,7 +23,7 @@ interface TaskResourcesProps {
 
 const getResourceIcon = (relationTo: string, resourceType?: string) => {
   switch (relationTo) {
-    case 'pdf':
+    case 'files':
       return <FileText size={16} />
     case 'forms':
       return <Book size={16} />
@@ -43,8 +43,8 @@ const getResourceIcon = (relationTo: string, resourceType?: string) => {
 
 const getResourceLabel = (relationTo: string) => {
   switch (relationTo) {
-    case 'pdf':
-      return 'PDF'
+    case 'files':
+      return 'Fichero'
     case 'forms':
       return 'Formulario'
     case 'external-resources':
@@ -56,8 +56,8 @@ const getResourceLabel = (relationTo: string) => {
 
 const getResourceUrl = (resource: any, relationTo: string) => {
   switch (relationTo) {
-    case 'pdf':
-      return resource.url || resource.filename ? `/api/media/${resource.filename}` : null
+    case 'files':
+      return resource.url ?? null
     case 'forms':
       return `/forms/${resource.id}`
     case 'external-resources':

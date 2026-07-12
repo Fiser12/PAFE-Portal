@@ -3,6 +3,8 @@ import * as migration_20260712_142127_roles from './20260712_142127_roles';
 import * as migration_20260712_142153_groups from './20260712_142153_groups';
 import * as migration_20260712_154645_catalog_reorg from './20260712_154645_catalog_reorg';
 import * as migration_20260712_154702_search_sin_posts from './20260712_154702_search_sin_posts';
+import * as migration_20260712_155925_ficheros from './20260712_155925_ficheros';
+import * as migration_20260712_160032_adios_pdf from './20260712_160032_adios_pdf';
 
 export const migrations = [
   {
@@ -28,6 +30,16 @@ export const migrations = [
   {
     up: migration_20260712_154702_search_sin_posts.up,
     down: migration_20260712_154702_search_sin_posts.down,
-    name: '20260712_154702_search_sin_posts'
+    name: '20260712_154702_search_sin_posts',
+  },
+  {
+    up: migration_20260712_155925_ficheros.up,
+    down: migration_20260712_155925_ficheros.down,
+    name: '20260712_155925_ficheros',
+  },
+  {
+    up: migration_20260712_160032_adios_pdf.up,
+    down: migration_20260712_160032_adios_pdf.down,
+    name: '20260712_160032_adios_pdf'
   },
 ];

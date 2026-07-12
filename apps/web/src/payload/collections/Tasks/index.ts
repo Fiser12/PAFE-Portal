@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_PDF, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_FILES, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
 import {
   hiddenUnlessAdmin,
   isStaffAccess,
@@ -56,7 +56,7 @@ export const Tasks: CollectionConfig = {
       label: 'Recursos',
       name: 'resources',
       type: 'relationship',
-      relationTo: [COLLECTION_SLUG_PDF, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS],
+      relationTo: [COLLECTION_SLUG_FILES, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS],
       hasMany: true,
       admin: {
         description: 'PDFs, formularios o recursos externos relacionados con esta tarea',

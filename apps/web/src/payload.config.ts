@@ -68,6 +68,12 @@ export default buildConfig({
     },
   }),
   collections,
+  upload: {
+    limits: {
+      // Tamaño máximo de cualquier subida (Media y Ficheros): 25 MB
+      fileSize: 25 * 1024 * 1024,
+    },
+  },
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: plugins,

@@ -84,7 +84,7 @@ export interface Config {
     media: Media;
     pages: Page;
     posts: Post;
-    pdf: Pdf;
+    files: File;
     forms: Form;
     'form-submissions': FormSubmission;
     search: Search;
@@ -127,7 +127,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
-    pdf: PdfSelect<false> | PdfSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
@@ -435,8 +435,8 @@ export interface Task {
   resources?:
     | (
         | {
-            relationTo: 'pdf';
-            value: number | Pdf;
+            relationTo: 'files';
+            value: number | File;
           }
         | {
             relationTo: 'forms';
@@ -458,9 +458,9 @@ export interface Task {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdf".
+ * via the `definition` "files".
  */
-export interface Pdf {
+export interface File {
   id: number;
   title: string;
   prefix?: string | null;
@@ -858,7 +858,7 @@ export interface DigitalItem {
   /**
    * PDF o documento descargable
    */
-  file?: (number | null) | Pdf;
+  file?: (number | null) | File;
   categories: (number | Taxonomy)[];
   updatedAt: string;
   createdAt: string;
@@ -1430,8 +1430,8 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
-        relationTo: 'pdf';
-        value: number | Pdf;
+        relationTo: 'files';
+        value: number | File;
       } | null)
     | ({
         relationTo: 'forms';
@@ -1940,9 +1940,9 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdf_select".
+ * via the `definition` "files_select".
  */
-export interface PdfSelect<T extends boolean = true> {
+export interface FilesSelect<T extends boolean = true> {
   title?: T;
   prefix?: T;
   updatedAt?: T;
@@ -2399,7 +2399,7 @@ export interface TaskCreateCollectionExport {
       | 'users'
       | 'pages'
       | 'posts'
-      | 'pdf'
+      | 'files'
       | 'forms'
       | 'form-submissions'
       | 'search'

@@ -5,12 +5,12 @@ import { Categories } from './Categories'
 import { Cases } from './Cases'
 import { Media } from './Media'
 import { Pages } from './Pages'
-import { Pdf } from './Pdf'
 import { Posts } from './Posts'
 import { Tasks } from './Tasks'
 import { TasksCompleted } from './TasksCompleted'
 import { ExternalResources } from './ExternalResources'
+import { Files } from './Files'
 import { Groups } from './Groups'
 import { Users } from './Users'
 
-export const collections = [Reservation, CatalogItem, DigitalItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Pdf]
+export const collections = [Reservation, CatalogItem, DigitalItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Files]

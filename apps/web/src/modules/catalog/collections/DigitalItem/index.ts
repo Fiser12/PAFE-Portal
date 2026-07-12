@@ -1,7 +1,7 @@
 import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
-import { COLLECTION_SLUG_PDF, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
 
 export const COLLECTION_SLUG_DIGITAL_ITEM = 'digital-item'
 
@@ -77,7 +77,7 @@ export const DigitalItem: CollectionConfig = {
       label: 'Archivo',
       name: 'file',
       type: 'upload',
-      relationTo: COLLECTION_SLUG_PDF,
+      relationTo: COLLECTION_SLUG_FILES,
       admin: {
         condition: (_data, siblingData) => siblingData?.type === 'ebook',
         description: 'PDF o documento descargable',
@@ -87,12 +87,7 @@ export const DigitalItem: CollectionConfig = {
       name: 'categories',
       label: 'Categorías',
       required: true,
-      defaultValue: [],
-      filterOptions: () => {
-        return {
-          'payload.types': { in: ['topic'] },
-        }
-      },
+      defaultValue: []
     }),
   ],
   timestamps: true,
