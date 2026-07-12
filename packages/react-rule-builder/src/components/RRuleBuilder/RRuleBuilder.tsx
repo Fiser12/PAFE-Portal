@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider, MuiPickersAdapter, PickersTimezone } from "@mui/x-date-pickers";
+import { esES } from "@mui/x-date-pickers/locales";
 
 import { Frequency } from "rrule";
-import { useTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { TextFieldProps } from "@mui/material/TextField";
 import { DateTime } from "luxon";
 import RepeatSelect from "../Repeat/Repeat";
@@ -34,6 +35,9 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
   timeZone?: PickersTimezone;
+  // Fuerza el modo de color del builder (el paquete puede tener su propia
+  // copia de MUI, así que un ThemeProvider externo no siempre le llega)
+  themeMode?: "light" | "dark";
   // enableSmallScreenDetection?: boolean;
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
@@ -56,6 +60,7 @@ const RRuleBuilder = <TDate extends DateTime<boolean>,>({
     endDatePickerLabel: "Fecha de fin",
   },
   timeZone = "UTC",
+  themeMode,
   // TODO implement small container detection
   // enableSmallScreenDetection = true,
   // smallScreenBreakpoint = 350,
@@ -132,9 +137,18 @@ const RRuleBuilder = <TDate extends DateTime<boolean>,>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
+  const builderTheme = useMemo(
+    () => (themeMode ? createTheme({ palette: { mode: themeMode } }) : null),
+    [themeMode],
+  );
+
+  const content = (
     <Stack direction="column" spacing={2}>
-      <LocalizationProvider dateAdapter={dateAdapter}>
+      <LocalizationProvider
+        dateAdapter={dateAdapter}
+        adapterLocale="es"
+        localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+      >
         {showStartDate && (
           <DatePicker
             label={lang?.startDatePickerLabel}
@@ -171,6 +185,11 @@ const RRuleBuilder = <TDate extends DateTime<boolean>,>({
       </LocalizationProvider>
     </Stack>
   );
+
+  if (builderTheme) {
+    return <ThemeProvider theme={builderTheme}>{content}</ThemeProvider>;
+  }
+  return content;
 };
 
 export default RRuleBuilder;

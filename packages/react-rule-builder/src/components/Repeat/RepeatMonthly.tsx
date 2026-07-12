@@ -75,7 +75,7 @@ const RepeatMonthly = (
       <IntervalTextInput
         value={value}
         onChange={onChange}
-        unit="month"
+        unit="mes"
         pluralizeUnit
         inputSize={inputSize}
         inputVariant={inputVariant}

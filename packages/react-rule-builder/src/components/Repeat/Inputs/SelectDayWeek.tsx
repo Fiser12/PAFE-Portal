@@ -69,7 +69,7 @@ const SelectDayWeek = ({
         disabled={disabled}
         size={labelSize}
       >
-        Select Day
+        Día
       </InputLabel>
       <Select
         sx={sxMinWidth}
@@ -77,7 +77,7 @@ const SelectDayWeek = ({
         onChange={handleSelectDayChange}
         value={selectedByDay}
         labelId="select-day-label"
-        label="Select Day"
+        label="Día"
         size={inputSize}
         variant={inputVariant}
       >

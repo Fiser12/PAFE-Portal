@@ -20,7 +20,7 @@ const RepeatHourly = (
   <IntervalTextInput
     value={value}
     onChange={onChange}
-    unit="hour"
+    unit="hora"
     pluralizeUnit
     inputSize={inputSize}
     inputVariant={inputVariant}

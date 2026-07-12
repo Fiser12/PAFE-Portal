@@ -79,7 +79,7 @@ const RepeatYearly = (
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       {enableYearlyInterval && (
-        <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit inputSize={inputSize} inputVariant={inputVariant} />
+        <IntervalTextInput value={value} onChange={onChange} unit="año" pluralizeUnit inputSize={inputSize} inputVariant={inputVariant} />
       )}
       <RadioGroup name="Yearly" value={radioValue} onChange={handleRadioChange}>
         <Stack direction="column" spacing={2} alignItems="flex-start">
@@ -88,7 +88,7 @@ const RepeatYearly = (
               value={YearlyBy.BYMONTH}
               name="day"
             />
-            <Typography fontSize={inputSize} sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>On</Typography>
+            <Typography fontSize={inputSize} sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>El</Typography>
             <SelectMonth
               value={value}
               onChange={handleOnChange}
@@ -114,7 +114,7 @@ const RepeatYearly = (
               fontSize={inputSize}
               sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}
             >
-              On The
+              En el
             </Typography>
             <SelectPosition
               value={value}
@@ -130,7 +130,7 @@ const RepeatYearly = (
               inputVariant={inputVariant}
               inputSize={inputSize}
             />
-            <Typography fontSize={inputSize} sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
+            <Typography fontSize={inputSize} sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>de</Typography>
             <SelectMonth
               value={value}
               onChange={handleOnTheChange}

@@ -31,7 +31,7 @@ const SelectMonth = ({
         shrink={!disabled && !!displayValue}
         size={labelSize}
       >
-        Select Month
+        Mes
       </InputLabel>
       <Select
         sx={sxMinWidth}
@@ -39,7 +39,7 @@ const SelectMonth = ({
         onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
         value={displayValue}
         labelId="select-month-label"
-        label={!disabled && !!displayValue ? "Select Month" : undefined}
+        label={!disabled && !!displayValue ? "Mes" : undefined}
         size={inputSize}
         variant={inputVariant}
       >

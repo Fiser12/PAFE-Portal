@@ -11,6 +11,12 @@ import useBuilderStore from "../../store/builderStore";
 import { EndType } from "./End.types";
 import { getLabelSize } from "../Repeat/utils";
 
+const endTypeTextMapping: Record<EndType, string> = {
+  [EndType.NEVER]: "Nunca",
+  [EndType.AFTER]: "Tras varias repeticiones",
+  [EndType.ON]: "En una fecha",
+};
+
 interface EndProps {
   datePickerEndLabel: string;
   inputSize: TextFieldProps["size"];
@@ -46,8 +52,8 @@ const End = ({
         >
           {Object.entries(EndType).map(([key, value]) => (
             <MenuItem key={key} value={value}>
-              <Typography fontSize={inputSize} sx={{ textTransform: "capitalize" }}>
-                {value}
+              <Typography fontSize={inputSize}>
+                {endTypeTextMapping[value]}
               </Typography>
             </MenuItem>
           ))}
@@ -78,7 +84,7 @@ const End = ({
       {endDetails?.endingType === EndType.AFTER && (
         <FormControl>
           <TextField
-            label="Occurrences"
+            label="Repeticiones"
             type="number"
             value={endDetails.occurrences ?? ""}
             onChange={(e) => setEndDetails({ ...endDetails, occurrences: parseInt(e.target.value, 10) })}

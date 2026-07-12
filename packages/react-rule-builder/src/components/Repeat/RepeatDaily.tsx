@@ -19,7 +19,7 @@ const RepeatDaily = (
   <IntervalTextInput
     value={value}
     onChange={onChange}
-    unit="day"
+    unit="día"
     pluralizeUnit
     inputSize={inputSize}
     inputVariant={inputVariant}

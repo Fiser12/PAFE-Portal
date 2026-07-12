@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useField, FieldLabel } from '@payloadcms/ui'
+import { useField, FieldLabel, useTheme } from '@payloadcms/ui'
 import type { JSONFieldClientComponent } from 'payload'
 import { rruleToText } from '@/utils/rrule-helpers'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import type { RRuleValue } from '@/types/rrule'
 import { RRuleBuilder } from 'react-rrule-builder-ts';
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
@@ -14,6 +13,8 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
   const { required, label } = field;
   const { value, setValue } = useField<RRuleValue>({ path })
   const [previewText, setPreviewText] = useState('')
+  // El builder es MUI: sincroniza su paleta con el tema del admin de Payload
+  const { theme } = useTheme()
 
   React.useEffect(() => {
     if (!value) {
@@ -80,6 +81,7 @@ export const RRuleField: JSONFieldClientComponent = ({ path, field }) => {
           onChange={handleRRuleChange}
           enableYearlyInterval={true}
           enableOpenOnClickDatePicker
+          themeMode={theme === 'dark' ? 'dark' : 'light'}
         />
       </div>
     </div>

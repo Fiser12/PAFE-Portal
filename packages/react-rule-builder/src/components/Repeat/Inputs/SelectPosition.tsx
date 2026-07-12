@@ -33,7 +33,7 @@ const SelectPosition = ({
         disabled={disabled}
         size={labelSize}
       >
-        Select Position
+        Posición
       </InputLabel>
       <Select
         sx={sxMinWidth}
@@ -45,7 +45,7 @@ const SelectPosition = ({
         value={value.bySetPos}
         multiple
         labelId="select-pos-label"
-        label="Select Position"
+        label="Posición"
         size={inputSize}
         variant={inputVariant}
       >
