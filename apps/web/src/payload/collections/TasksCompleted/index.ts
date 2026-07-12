@@ -1,6 +1,6 @@
 import { COLLECTION_SLUG_TASKS_COMPLETED, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
-  hiddenUnlessStaff,
+  hiddenUnlessAdmin,
   isActiveUser,
   isAdminAccess,
   isStaff,
@@ -33,7 +33,7 @@ export const TasksCompleted: CollectionConfig = {
     update: isAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessAdmin,
     defaultColumns: ['task', 'user', 'completedOn'],
     useAsTitle: 'id',
   },

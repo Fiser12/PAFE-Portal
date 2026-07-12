@@ -1,6 +1,6 @@
 import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_PDF, COLLECTION_SLUG_FORMS, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
 import {
-  hiddenUnlessStaff,
+  hiddenUnlessAdmin,
   isStaffAccess,
   staffOrOwnCaseTasksAccess,
 } from '@/core/permissions'
@@ -20,7 +20,7 @@ export const Tasks: CollectionConfig = {
     update: isStaffAccess,
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessAdmin,
     defaultColumns: ['title', 'case'],
     useAsTitle: 'title',
   },

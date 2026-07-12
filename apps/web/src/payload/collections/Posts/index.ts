@@ -26,7 +26,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/payload/fields/slug'
 import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
-import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isStaffAccess } from '@/core/permissions'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -49,7 +49,8 @@ export const Posts: CollectionConfig<'posts'> = {
     },
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    // Posts no está operativo todavía: visible solo para admin
+    hidden: hiddenUnlessAdmin,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
