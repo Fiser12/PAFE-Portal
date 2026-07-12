@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { es } from '@payloadcms/translations/languages/es'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -17,6 +18,11 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Panel de admin íntegramente en español (traducciones oficiales de Payload)
+  i18n: {
+    supportedLanguages: { es },
+    fallbackLanguage: 'es',
+  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
