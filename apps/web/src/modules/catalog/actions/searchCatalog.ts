@@ -26,7 +26,7 @@ export async function searchCatalog({
   const and: Where[] = []
   if (query?.trim()) and.push({ title: { contains: query.trim() } })
   if (categoryIds && categoryIds.length > 0) {
-    and.push({ 'categories.id': { in: categoryIds.map(String) } })
+    and.push({ 'categories.categoryId': { in: categoryIds.map(String) } })
   }
   if (collectionType) and.push({ collectionType: { equals: collectionType } })
   if (itemType) and.push({ itemType: { equals: itemType } })

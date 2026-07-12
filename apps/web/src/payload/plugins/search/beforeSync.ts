@@ -27,11 +27,11 @@ export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc 
     ? categories
         .map((category) => {
           if (typeof category === 'object' && category !== null) {
-            return { id: String(category.id ?? ''), title: category.name ?? '' }
+            return { categoryId: String(category.id ?? ''), title: category.name ?? '' }
           }
-          return { id: String(category), title: '' }
+          return { categoryId: String(category), title: '' }
         })
-        .filter((c) => c.id)
+        .filter((c) => c.categoryId)
     : []
 
   const modifiedDoc: DocToSync = {

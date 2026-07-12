@@ -20,7 +20,11 @@ const fetchObjectMetadata = async (
   try {
     return await s3.send(new HeadObjectCommand(headParams))
   } catch (error) {
-    console.error('Error fetching object metadata:', error)
+    // Un 404 aquí es esperable (objeto recién subido / endpoint sin HEAD):
+    // no es fatal, solo se omite el ajuste de Cache-Control. No hacemos ruido.
+    const status = (error as { $metadata?: { httpStatusCode?: number } })?.$metadata
+      ?.httpStatusCode
+    if (status !== 404) console.error('Error fetching object metadata:', error)
     return null
   }
 }

@@ -30,7 +30,10 @@ export const searchFields: Field[] = [
     type: 'array',
     admin: { readOnly: true },
     fields: [
-      { name: 'id', type: 'text' },
+      // OJO: no usar `id` aquí. Payload convierte un campo `id` del array en la
+      // PK (global) de la tabla search_categories, y como las categorías se
+      // comparten entre items, el mismo id colisiona y aborta el sync.
+      { name: 'categoryId', type: 'text' },
       { name: 'title', type: 'text' },
     ],
   },

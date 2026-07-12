@@ -24,9 +24,9 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/payload/fields/slug'
 import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import { hiddenUnlessAdmin, isStaffAccess } from '@/core/permissions'
+import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -220,7 +220,7 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    ...slugField(),
+    slugField(),
   ],
   hooks: {
     afterChange: [revalidatePost],

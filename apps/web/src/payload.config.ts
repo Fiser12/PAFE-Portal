@@ -78,6 +78,20 @@ export default buildConfig({
   globals: [Header, Footer],
   plugins: plugins,
   secret: process.env.PAYLOAD_SECRET,
+  // Carga datos de prueba al arrancar solo si SEED_MOCK_DATA=true (dev).
+  // Es idempotente: no re-siembra si ya existe el admin de prueba.
+  onInit: async (payload) => {
+    if (process.env.SEED_MOCK_DATA === 'true') {
+      const { seedMockData } = await import('./seed')
+      // Sin await: el seed puebla en segundo plano y no bloquea el arranque
+      void seedMockData(payload).catch((err) => {
+        const e = err as { message?: string; data?: { errors?: unknown[] }; stack?: string }
+        const detail = e?.data?.errors ? ` — ${JSON.stringify(e.data.errors)}` : ''
+        payload.logger.error(`[seed] error: ${e?.message ?? String(err)}${detail}`)
+        if (e?.stack) payload.logger.error(e.stack)
+      })
+    }
+  },
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
