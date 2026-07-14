@@ -1,3 +1,4 @@
+import { APIError, createAuthMiddleware } from 'better-auth/api'
 import { nextCookies } from 'better-auth/next-js'
 import type { CollectionConfig, Field, FieldHook } from 'payload'
 import type { PayloadAuthOptions } from 'payload-auth/better-auth'
@@ -105,8 +106,9 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     trustedOrigins: [getServerSideURL()],
     emailAndPassword: {
       enabled: true,
-      // Sin auto-registro: las cuentas con contraseña las crea el staff
-      disableSignUp: true,
+      // OJO: no usar disableSignUp aquí — bloquearía también a los invitados
+      // desde /admin/signup ("Email and password sign up is not enabled").
+      // El alta abierta con contraseña se bloquea en hooks.before (más abajo).
       // Cubre tanto "olvidé mi contraseña" como el alta gestionada: el staff
       // crea la cuenta y el usuario establece su contraseña desde este enlace
       sendResetPassword: async ({ user, url }) => {
@@ -133,6 +135,31 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
         // después con Google (mismo email verificado) y se enlazan las cuentas
         trustedProviders: ['google'],
       },
+    },
+    hooks: {
+      // Solo se permite el alta con contraseña si llega un token de
+      // invitación válido (el formulario de /admin/signup lo manda como
+      // query adminInviteToken); sin él, el registro queda cerrado.
+      // Réplica del middleware de requireAdminInviteForSignUp del plugin,
+      // que no se puede activar directamente: esa opción además desactiva
+      // el alta implícita con Google, que aquí es deliberada.
+      before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path !== '/sign-up/email') return
+        const token =
+          ctx.headers?.get('x-admin-invite-token') ??
+          ctx.query?.adminInviteToken ??
+          ctx.body?.adminInviteToken
+        const isValidInvitation =
+          typeof token === 'string' &&
+          token.length > 0 &&
+          (await ctx.context.adapter.count({
+            model: 'admin-invitations',
+            where: [{ field: 'token', operator: 'eq', value: token }],
+          })) > 0
+        if (!isValidInvitation) {
+          throw new APIError('UNAUTHORIZED', { message: 'signup disabled' })
+        }
+      }),
     },
     plugins: [nextCookies()],
   },
