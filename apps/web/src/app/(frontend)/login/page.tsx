@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { AlertCircle, Loader2 } from 'lucide-react'
-import { signIn } from '@/lib/auth/client'
+import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
+import { authClient, signIn } from '@/lib/auth/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -14,11 +14,31 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Escribe tu email arriba para enviarte el enlace')
+      return
+    }
+    setError(null)
+    setInfo(null)
+    const { error: resetError } = await authClient.requestPasswordReset({
+      email,
+      redirectTo: '/reset-password',
+    })
+    if (resetError) {
+      setError('No se pudo enviar el correo. Inténtalo de nuevo en unos minutos.')
+      return
+    }
+    setInfo('Si la cuenta existe, te hemos enviado un enlace para establecer la contraseña.')
+  }
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setInfo(null)
     setLoading(true)
     const { error: signInError } = await signIn.email({
       email,
@@ -85,10 +105,26 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
+            {info && (
+              <div
+                role="status"
+                className="flex items-center gap-2 rounded-md border border-emerald-500/50 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-400"
+              >
+                <CheckCircle className="h-4 w-4 shrink-0" />
+                {info}
+              </div>
+            )}
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {loading ? 'Entrando…' : 'Entrar'}
             </Button>
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-center text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
+              ¿Has olvidado tu contraseña?
+            </button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">

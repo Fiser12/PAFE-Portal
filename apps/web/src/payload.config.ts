@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { es } from '@payloadcms/translations/languages/es'
 
 import sharp from 'sharp' // sharp-import
@@ -61,6 +62,17 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  // Email transaccional vía Resend cuando hay API key; sin ella (dev),
+  // Payload escribe los correos en la consola.
+  ...(process.env.RESEND_API_KEY
+    ? {
+        email: resendAdapter({
+          apiKey: process.env.RESEND_API_KEY,
+          defaultFromAddress: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+          defaultFromName: process.env.EMAIL_FROM_NAME || 'PAFE',
+        }),
+      }
+    : {}),
   db: postgresAdapter({
     prodMigrations: migrations,
     pool: {

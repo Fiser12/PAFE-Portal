@@ -20,13 +20,27 @@
     "S3_SECRET_ACCESS_KEY",
     "AWS_ACCESS_KEY_ID",
     "AWS_SECRET_ACCESS_KEY",
-    "AWS_REGION"
+    "AWS_REGION",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "EMAIL_FROM_NAME",
+    "SEED_MOCK_DATA"
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT", ".env*"],
-      "outputs": [".turbo/**", ".next/**", ".vercel/**", "build/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT",
+        ".env*"
+      ],
+      "outputs": [
+        ".turbo/**",
+        ".next/**",
+        ".vercel/**",
+        "build/**"
+      ]
     },
     "lint": {},
     "devcontainer": {
@@ -38,7 +52,9 @@
       "persistent": true
     },
     "start": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "storybook": {
       "cache": false,

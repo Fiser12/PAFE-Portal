@@ -1,7 +1,7 @@
 import type { s3Storage } from "@payloadcms/storage-s3"
 import { S3Client } from "@aws-sdk/client-s3"
 import { s3Storage as s3StoragePlugin } from "@payloadcms/storage-s3"
-import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA, COLLECTION_SLUG_EXPORTS } from "@/core/collections-slugs"
+import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA, COLLECTION_SLUG_EXPORTS, COLLECTION_SLUG_IMPORTS } from "@/core/collections-slugs"
 
 export type S3StoragePlugin = Parameters<typeof s3Storage>[0]
 
@@ -41,6 +41,10 @@ const config = s3StoragePlugin({
     [COLLECTION_SLUG_EXPORTS]: {
       disableLocalStorage: true,
       prefix: 'exports',
+    },
+    [COLLECTION_SLUG_IMPORTS]: {
+      disableLocalStorage: true,
+      prefix: 'imports',
     },
 
   },
