@@ -74,6 +74,9 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
   },
   adminInvitations: {
     collectionOverrides: hideFromStaff,
+    // Sin serverURL en payload.config, el default del plugin genera una ruta
+    // relativa (/admin/signup?token=...) y el enlace llega roto en el correo
+    generateInviteUrl: ({ token }) => `${getServerSideURL()}/admin/signup?token=${token}`,
     // Requerido por el botón "Invite" del panel de admin: sin esta función el
     // endpoint del plugin responde 500 ("Send invite email function not found")
     sendInviteEmail: async ({ payload, email, url }) => {
