@@ -6,29 +6,7 @@ import { ROLE_ADMIN, ROLE_PROFESIONAL, ROLE_FAMILIA } from '@/core/permissions'
 
 const PASSWORD = 'test1234!'
 const ASSETS = path.join(process.cwd(), 'src/seed/assets')
-
-const TEMAS = [
-  'comunicación',
-  'lectura fácil',
-  'emociones',
-  'autonomía personal',
-  'habilidades sociales',
-  'pictogramas',
-  'atención y memoria',
-  'matemáticas básicas',
-  'vida diaria',
-  'juego simbólico',
-  'motricidad',
-  'lenguaje',
-]
-
-const slugify = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
+const DATA = path.join(process.cwd(), 'src/seed/data')
 
 // Extrae el detalle campo-a-campo de un ValidationError de Payload.
 // El `message` de Payload solo lista los `path`; el motivo real (requerido,
@@ -79,12 +57,15 @@ async function upsert(
   return saved.id as number
 }
 
-const richText = (text: string) => ({
+// richText de Lexical con un párrafo por cada string
+const richTextParas = (paras: string[]) => ({
   root: {
     type: 'root',
-    children: [
-      { type: 'paragraph', version: 1, children: [{ type: 'text', version: 1, text }] },
-    ],
+    children: paras.map((text) => ({
+      type: 'paragraph',
+      version: 1,
+      children: [{ type: 'text', version: 1, text }],
+    })),
     direction: null,
     format: '' as const,
     indent: 0,
@@ -92,23 +73,56 @@ const richText = (text: string) => ({
   },
 })
 
-// Genera `count` títulos únicos combinando prefijos, temas y un sufijo opcional
-function uniqueTitles(prefixes: string[], count: number, suffix = ''): string[] {
-  const out = new Set<string>()
-  let nivel = 0
-  while (out.size < count) {
-    for (const p of prefixes) {
-      for (const t of TEMAS) {
-        const extra = nivel > 0 ? ` (nivel ${nivel})` : ''
-        out.add(`${p} ${t}${suffix}${extra}`)
-        if (out.size >= count) break
-      }
-      if (out.size >= count) break
-    }
-    nivel++
-  }
-  return [...out].slice(0, count)
+// --- Taxonomía del catálogo ---------------------------------------------
+// Tres facetas planas (el plugin no tiene jerarquía); la faceta viaja en
+// `payload.types` para que la UI pueda agrupar los chips más adelante.
+const TAXONOMY: { slug: string; name: string; type: string }[] = [
+  { slug: 'emociones-y-regulacion', name: 'Emociones y regulación', type: 'tematica' },
+  { slug: 'trauma-apego-y-vinculo', name: 'Trauma, apego y vínculo', type: 'tematica' },
+  { slug: 'acogimiento-y-adopcion', name: 'Acogimiento y adopción', type: 'tematica' },
+  { slug: 'educacion-afectivo-sexual', name: 'Educación afectivo-sexual', type: 'tematica' },
+  { slug: 'convivencia-y-relaciones', name: 'Convivencia y relaciones', type: 'tematica' },
+  { slug: 'desarrollo-y-aprendizaje', name: 'Desarrollo y aprendizaje', type: 'tematica' },
+  { slug: 'salud-y-habitos', name: 'Salud y hábitos', type: 'tematica' },
+  { slug: 'identidad-y-autoestima', name: 'Identidad y autoestima', type: 'tematica' },
+  { slug: 'familia-y-parentalidad', name: 'Familia y parentalidad', type: 'tematica' },
+  { slug: 'edad-0-2', name: '0–2 años', type: 'edad' },
+  { slug: 'edad-3-5', name: '3–5 años', type: 'edad' },
+  { slug: 'edad-6-9', name: '6–9 años', type: 'edad' },
+  { slug: 'edad-10-12', name: '10–12 años', type: 'edad' },
+  { slug: 'adolescentes', name: 'Adolescentes', type: 'edad' },
+  { slug: 'adultos', name: 'Adultos', type: 'edad' },
+  { slug: 'nna', name: 'Chicos y chicas (NNA)', type: 'destinatario' },
+  { slug: 'familias', name: 'Familias acogedoras', type: 'destinatario' },
+  { slug: 'profesionales', name: 'Profesionales', type: 'destinatario' },
+]
+
+const LOAN_DAYS: Record<string, number> = { libro: 30, juego: 20, programa: 15 }
+
+interface CatalogItemData {
+  type: string
+  title: string
+  author: string | null
+  language: string | null
+  quantity: number
+  content: string[] | null
+  categories: string[]
+  coverTheme: string
 }
+
+interface CortoData {
+  page: number
+  title: string
+  url: string
+  duration: number | null
+  valores: string[]
+  description: string
+  categories: string[]
+  coverTheme: string
+}
+
+const readJson = <T>(file: string): T =>
+  JSON.parse(fs.readFileSync(path.join(DATA, file), 'utf-8')) as T
 
 export async function seedMockData(payload: Payload): Promise<void> {
   const now = new Date().toISOString()
@@ -149,39 +163,55 @@ export async function seedMockData(payload: Payload): Promise<void> {
   await createUser('sinrol@test.local', 'Sin Rol Prueba', [])
   payload.logger.info(`[seed] usuarios de prueba listos (contraseña: ${PASSWORD})`)
 
-  // Si el catálogo ya está poblado, no re-sembrar el resto
+  // --- ¿Catálogo real ya sembrado? ------------------------------------------
+  const realTax = await payload.find({
+    collection: 'taxonomy',
+    where: { slug: { equals: 'emociones-y-regulacion' } },
+    limit: 1,
+  })
   const catCount = await payload.count({ collection: 'catalog-item' })
-  if (catCount.totalDocs >= 50) return
-  payload.logger.info('[seed] poblando catálogo…')
+  if (realTax.totalDocs > 0 && catCount.totalDocs >= 180) return
 
-  // --- Categorías -----------------------------------------------------------
-  const categoryNames = [
-    'Comunicación',
-    'Autonomía',
-    'Ocio y juego',
-    'Habilidades sociales',
-    'Tecnología',
-    'Aprendizaje',
-    'Familia',
-    'Terapia',
-  ]
-  const categories: number[] = []
-  for (const name of categoryNames) {
-    const slug = slugify(name)
-    try {
-      categories.push(await upsert(payload, 'taxonomy', { slug }, { name, slug }))
-    } catch (err) {
-      payload.logger.error(`[seed] categoría "${name}": ${describeError(err)}`)
+  // --- Limpieza del mock antiguo --------------------------------------------
+  // Si hay datos de catálogo pero no existe la taxonomía real, es el dataset
+  // mock: se elimina entero (reservas primero por la relación con los items).
+  if (realTax.totalDocs === 0) {
+    payload.logger.info('[seed] eliminando datos mock del catálogo…')
+    for (const collection of ['reservation', 'catalog-item', 'files', 'external-resources', 'taxonomy']) {
+      try {
+        await payload.delete({
+          collection: collection as never,
+          where: { id: { exists: true } } as never,
+          overrideAccess: true,
+        })
+      } catch (err) {
+        payload.logger.warn(`[seed] limpieza de ${collection}: ${describeError(err)}`)
+      }
     }
   }
-  const catFor = (i: number): number[] => [
-    categories[i % categories.length]!,
-    categories[(i + 3) % categories.length]!,
-  ]
+
+  payload.logger.info('[seed] poblando catálogo real…')
+
+  // --- Taxonomías -----------------------------------------------------------
+  const taxIds: Record<string, number> = {}
+  for (const t of TAXONOMY) {
+    try {
+      taxIds[t.slug] = await upsert(
+        payload,
+        'taxonomy',
+        { slug: t.slug },
+        { name: t.name, slug: t.slug, payload: { types: [t.type] } },
+      )
+    } catch (err) {
+      payload.logger.error(`[seed] taxonomía "${t.slug}": ${describeError(err)}`)
+    }
+  }
+  const catsFor = (slugs: string[]): number[] =>
+    slugs.map((s) => taxIds[s]).filter((id): id is number => typeof id === 'number')
 
   // --- Pool de portadas (subir las imágenes de stock a media una vez) --------
   const coverPool: Record<string, number[]> = {}
-  const themes = ['book', 'toy', 'education', 'document', 'video', 'computer']
+  const themes = ['book', 'toy', 'document', 'video', 'computer']
   for (const theme of themes) {
     coverPool[theme] = []
     for (let n = 1; n <= 5; n++) {
@@ -210,7 +240,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
       }
     }
   }
-  payload.logger.info(`[seed] portadas subidas (${Object.values(coverPool).flat().length})`)
   const coverFrom = (theme: string, i: number): number | null => {
     const pool = coverPool[theme]
     return pool && pool.length > 0 ? pool[i % pool.length]! : null
@@ -226,137 +255,126 @@ export async function seedMockData(payload: Payload): Promise<void> {
     description: 'Segundo grupo de prueba',
   })
 
-  // --- Catálogo reservable (~50) --------------------------------------------
-  const reservableSpecs: { titles: string[]; type: string; theme: string }[] = [
-    { titles: uniqueTitles(['Cuaderno de', 'Guía de', 'Manual de', 'Libro de'], 20), type: 'libro', theme: 'book' },
-    { titles: uniqueTitles(['Juego de', 'Dominó de', 'Puzzle de', 'Memory de'], 18), type: 'juego', theme: 'toy' },
-    { titles: uniqueTitles(['Programa de', 'Plan de', 'Taller de'], 12), type: 'programa', theme: 'education' },
+  // --- Catálogo reservable (libros, juegos y programas reales) --------------
+  const items: CatalogItemData[] = [
+    ...readJson<CatalogItemData[]>('libros.json'),
+    ...readJson<CatalogItemData[]>('juegos.json'),
+    ...readJson<CatalogItemData[]>('programas.json'),
   ]
   const catalogIds: number[] = []
   let ci = 0
-  for (const spec of reservableSpecs) {
-    for (const title of spec.titles) {
-      try {
-        const item = await payload.create({
-          collection: 'catalog-item',
-          data: {
-            title,
-            type: spec.type,
-            quantity: (ci % 5) + 1,
-            cover: coverFrom(spec.theme, ci),
-            content: richText(`Material reservable de prueba: ${title}.`),
-            categories: catFor(ci),
-          } as never,
-        })
-        catalogIds.push(item.id as number)
-      } catch (err) {
-        payload.logger.warn(`[seed] reservable "${title}": ${describeError(err)}`)
-      }
-      ci++
-    }
-  }
-  payload.logger.info(`[seed] ${catalogIds.length} reservables creados`)
-
-  // --- Materiales descargables (~30) ----------------------------------------
-  const downloadTitles = uniqueTitles(['Guía', 'Manual', 'Ficha', 'Cuaderno', 'Protocolo'], 30)
-  const pdfBuffers = Array.from({ length: 10 }, (_, i) =>
-    fs.readFileSync(path.join(ASSETS, 'files', `doc-${i + 1}.pdf`)),
-  )
-  for (let i = 0; i < downloadTitles.length; i++) {
-    const pdf = pdfBuffers[i % pdfBuffers.length]!
+  for (const item of items) {
     try {
-      await payload.create({
-        collection: 'files',
-        data: { title: downloadTitles[i], cover: coverFrom('document', i), categories: catFor(i) } as never,
-        file: {
-          data: pdf,
-          mimetype: 'application/pdf',
-          name: `descargable-${i + 1}.pdf`,
-          size: pdf.length,
+      const id = await upsert(
+        payload,
+        'catalog-item',
+        { title: item.title, type: item.type },
+        {
+          title: item.title,
+          type: item.type,
+          author: item.author ?? undefined,
+          language: item.language ?? undefined,
+          loanDays: LOAN_DAYS[item.type],
+          quantity: item.quantity,
+          cover: coverFrom(item.coverTheme, ci),
+          // «Si no hay content, no se pone»: solo el texto real de las fichas
+          content: item.content && item.content.length > 0 ? richTextParas(item.content) : undefined,
+          categories: catsFor(item.categories),
         },
-      })
+      )
+      catalogIds.push(id)
     } catch (err) {
-      payload.logger.warn(`[seed] descargable ${i}: ${describeError(err)}`)
+      payload.logger.warn(`[seed] "${item.title}": ${describeError(err)}`)
     }
+    ci++
   }
+  payload.logger.info(`[seed] ${catalogIds.length}/${items.length} materiales reservables`)
 
-  // --- Recursos externos (~20) ----------------------------------------------
-  const externalSpecs: { titles: string[]; type: string; theme: string; url: string }[] = [
-    { titles: uniqueTitles(['Vídeo:'], 8), type: 'video', theme: 'video', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-    { titles: uniqueTitles(['Portal de', 'Web de'], 5), type: 'web_link', theme: 'computer', url: 'https://arasaac.org' },
-    { titles: uniqueTitles(['Cuestionario de'], 4), type: 'google-form', theme: 'computer', url: 'https://forms.gle/ejemplo' },
-    { titles: uniqueTitles(['Documento de'], 3), type: 'google-doc', theme: 'document', url: 'https://docs.google.com/document/d/ejemplo' },
-  ]
+  // --- Cortometrajes (recursos externos, sin reserva) -----------------------
+  const cortos = readJson<CortoData[]>('cortos.json')
   const externalIds: number[] = []
   let ei = 0
-  for (const spec of externalSpecs) {
-    for (const title of spec.titles) {
-      try {
-        const res = await payload.create({
-          collection: 'external-resources',
-          data: {
-            title,
-            type: spec.type,
-            url: spec.url,
-            description: `Recurso externo de prueba: ${title}.`,
-            cover: coverFrom(spec.theme, ei),
-            categories: catFor(ei),
-          } as never,
-        })
-        externalIds.push(res.id as number)
-      } catch (err) {
-        payload.logger.warn(`[seed] externo "${title}": ${describeError(err)}`)
-      }
-      ei++
+  for (const corto of cortos) {
+    try {
+      const valores = corto.valores.length > 0 ? ` Valores: ${corto.valores.join(', ').toLowerCase()}.` : ''
+      const id = await upsert(
+        payload,
+        'external-resources',
+        { title: corto.title },
+        {
+          title: corto.title,
+          type: 'video',
+          url: corto.url,
+          duration: corto.duration ?? undefined,
+          description: `${corto.description}${valores}`,
+          cover: coverFrom('video', ei),
+          categories: catsFor(corto.categories),
+        },
+      )
+      externalIds.push(id)
+    } catch (err) {
+      payload.logger.warn(`[seed] corto "${corto.title}": ${describeError(err)}`)
     }
+    ei++
   }
+  payload.logger.info(`[seed] ${externalIds.length}/${cortos.length} cortometrajes`)
 
-  // --- Caso, tareas y completación ------------------------------------------
-  const caseDoc = await payload.create({
+  // --- Caso, tareas y completación (fixtures de prueba) ---------------------
+  const existingCase = await payload.find({
     collection: 'cases',
-    data: { title: 'Caso de seguimiento — Familia Prueba', notes: 'Caso de ejemplo.' } as never,
+    where: { title: { equals: 'Caso de seguimiento — Familia Prueba' } },
+    limit: 1,
   })
-  await payload.update({
-    collection: 'users',
-    id: familiaId,
-    data: { assignedCases: [caseDoc.id], groups: [grupoId] } as never,
-  })
+  if (existingCase.totalDocs === 0) {
+    const caseDoc = await payload.create({
+      collection: 'cases',
+      data: { title: 'Caso de seguimiento — Familia Prueba', notes: 'Caso de ejemplo.' } as never,
+    })
+    await payload.update({
+      collection: 'users',
+      id: familiaId,
+      data: { assignedCases: [caseDoc.id], groups: [grupoId] } as never,
+    })
 
-  const task1 = await payload.create({
-    collection: 'tasks',
-    data: {
-      title: 'Completar cuestionario inicial',
-      case: [caseDoc.id],
-      rrule: { rrule: 'FREQ=WEEKLY;INTERVAL=1', datePickerInitialDate: now },
-      resources: externalIds[8] ? [{ relationTo: 'external-resources', value: externalIds[8] }] : [],
-    } as never,
-  })
-  await payload.create({
-    collection: 'tasks',
-    data: {
-      title: 'Ver vídeo de rutinas',
-      case: [caseDoc.id],
-      rrule: { rrule: 'FREQ=DAILY;INTERVAL=1', datePickerInitialDate: now },
-      resources: externalIds[0] ? [{ relationTo: 'external-resources', value: externalIds[0] }] : [],
-    } as never,
-  })
-
-  const midnight = new Date()
-  midnight.setHours(0, 0, 0, 0)
-  await payload.create({
-    collection: 'tasks-completed',
-    data: { task: task1.id, user: familiaId, completedOn: midnight.toISOString() } as never,
-  })
-
-  // --- Reservas de la familia -----------------------------------------------
-  for (const itemId of catalogIds.slice(0, 3)) {
+    const task1 = await payload.create({
+      collection: 'tasks',
+      data: {
+        title: 'Completar cuestionario inicial',
+        case: [caseDoc.id],
+        rrule: { rrule: 'FREQ=WEEKLY;INTERVAL=1', datePickerInitialDate: now },
+        resources: externalIds[0] ? [{ relationTo: 'external-resources', value: externalIds[0] }] : [],
+      } as never,
+    })
     await payload.create({
-      collection: 'reservation',
-      data: { item: itemId, user: familiaId, reservationDate: now } as never,
+      collection: 'tasks',
+      data: {
+        title: 'Ver un cortometraje en familia',
+        case: [caseDoc.id],
+        rrule: { rrule: 'FREQ=DAILY;INTERVAL=1', datePickerInitialDate: now },
+        resources: externalIds[1] ? [{ relationTo: 'external-resources', value: externalIds[1] }] : [],
+      } as never,
+    })
+
+    const midnight = new Date()
+    midnight.setHours(0, 0, 0, 0)
+    await payload.create({
+      collection: 'tasks-completed',
+      data: { task: task1.id, user: familiaId, completedOn: midnight.toISOString() } as never,
     })
   }
 
+  // --- Reservas de la familia (para probar el flujo de préstamo) ------------
+  const existingReservations = await payload.count({ collection: 'reservation' })
+  if (existingReservations.totalDocs === 0) {
+    for (const itemId of catalogIds.slice(0, 3)) {
+      await payload.create({
+        collection: 'reservation',
+        data: { item: itemId, user: familiaId, reservationDate: now } as never,
+      })
+    }
+  }
+
   payload.logger.info(
-    `[seed] Cargados ${catalogIds.length} reservables, ${downloadTitles.length} descargables, ${externalIds.length} externos. Contraseña: ${PASSWORD}`,
+    `[seed] Catálogo real: ${catalogIds.length} reservables + ${externalIds.length} cortos. Contraseña: ${PASSWORD}`,
   )
 }

@@ -1,0 +1,1500 @@
+[
+ {
+  "type": "juego",
+  "title": "Hitzgurutzatuak",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero.",
+   "Objetivo: Azar, habilidad de componer palabras."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Domino triangular",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero. +2 jugadores. 30 mins.",
+   "Objetivo: Azar, habilidad lógica."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Doctor eureka",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, tubos de ensayo y pelotas. 2-4 jugadores. 15 mins.",
+   "Objetivo: Funciones ejecutivas. Trabajo en equipo."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Emoti Capsules",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Capsulas-tarjetas. 1-5 jugadores.",
+   "Objetivo: Emociones. Autoconocimiento, empatía y cooperación, comunicación."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "emociones-y-regulacion",
+   "identidad-y-autoestima",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Maki Stack",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas y piezas. 4-6 jugadores. 15 mins.",
+   "Objetivo: Trabajo en equipo, concentración, motricidad fina"
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Twister Air",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Movimiento. 2-4 personas.",
+   "Objetivo: Coordinación, motricidad"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Emotions Detective. ¿Qué harías si te pasara algo similar?",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, secuencias pictogramas. 1-20 jugadores.",
+   "Objetivo: Emociones. Empatía y cooperación, comunicación, conciencia social y cultural."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Emötiö",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. Más de 2 personas. 20 mins.",
+   "Objetivo: Emociones (identificar, nombrar y comunicar), inteligencia emocional."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mascotas",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-8 jugadores. 20 mins.",
+   "Objetivo: Cuidados, estrategia."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Rhino Hero",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción. 2-4 jugadores. 5-15 mins.",
+   "Objetivo: Habilidad y destreza, motricidad fina, suerte."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mr. Wolf",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero, fichas. 1-4 jugadores. 15 mins.",
+   "Objetivo: Juego cooperativo, velocidad."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Coyote",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Plumas con valores. 3-6 jugadores. 30 mins.",
+   "Objetivo: Funciones ejecutivas (matemáticas, lógica, estrategia, etc.) y cooperación"
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Puzzles Sets",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Puzzle, rompecabezas.",
+   "Objetivo: Habilidad, lógica, motricidad fina."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Crazy Clak",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores. 10 mins.",
+   "Objetivo: Velocidad, concentración, atención."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Obstacles",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego cooperativo, soluciones imaginativas. Cartas. 2-5 jugadores.",
+   "Objetivo: Cooperación, creatividad."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mix-max Rauber",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores. 10 15 minutos.",
+   "Objetivo: Velocidad."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "El Abejorro Tramposo",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-5 jugadores. 25 mins.",
+   "Objetivo: Estrategia, habilidad."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "RallyRas",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-8 jugadores. 15-30 mins.",
+   "Objetivo: Comunicación, trabajo en equipo."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Zanimatch",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. Doble de animales. 2-6 jugadores. 10 mins.",
+   "Objetivo: Velocidad, observación."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Zoop",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-8 jugadores.",
+   "Objetivo: Velocidad, estrategia."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Cobardes",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2 jugadores. 15 mins.",
+   "Objetivo: Velocidad, anticipación, intuición."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Contrast",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-6 jugadores. 15 mins.",
+   "Objetivo: Estimulación sensorial, colores y formas."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Elixir Mixer",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores. 20 mins.",
+   "Objetivo: Agilidad mental, pensamiento estratégico y juego cooperativo. Área lógico-matemática (numeración, categorización y asociación para crear conjunto de colores y números)"
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Piratas al Agua",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero, piezas. 3-5 jugadores. 20 mins.",
+   "Objetivo: Estrategia."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Batti Burri",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores.",
+   "Objetivo: Velocidad, concentración."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Fantasma Blitz",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-8 jugadores. 20-30 mins.",
+   "Objetivo: Velocidad, concentración, atención."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Le Petit Boucet",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Fichas y tablero. 3-6 jugadores. 20 mins.",
+   "Objetivo: Juego cooperativo de memoria."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Dixit",
+  "author": null,
+  "language": null,
+  "quantity": 2,
+  "content": [
+   "Cartas proyectivas.",
+   "Objetivo: Creatividad, emoción, historia de vida… Herramienta de trabajo"
+  ],
+  "categories": [
+   "acogimiento-y-adopcion",
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Fuerza de Dragon",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero. 2-4 jugadores. 15 mins.",
+   "Objetivo: Memoria, táctica."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Super Rhino (caja pequeña)",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción. 2-5 jugadores. 5-15 mins.",
+   "Objetivo: Habilidad y destreza, motricidad fina, suerte."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Tiburón",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-6 jugadores. 20 mins.",
+   "Objetivo: Azar, estrategia."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Sushi Go!",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-5 jugadores. 15 mins.",
+   "Objetivo: Estrategia, probabilidad."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Crazy Mistigri",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-5 jugadores.",
+   "Objetivo: Estrategia, táctica."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Ritmo Bola",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 4-12 jugadores.",
+   "Objetivo: Movimiento, memoria, velocidad."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Ugha Bugha",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-8 jugadores.",
+   "Objetivo: Memorizar sonidos y acciones."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Moves",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Ficha y movimiento.",
+   "Objetivo: Atención, memoria, motricidad gruesa, coordinación."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Piou Piou",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-5 jugadores. 10 mins.",
+   "Objetivo: Lógica, anticipación… Funciones ejecutivas."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Taco Gato Queso Cabra",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-8 jugadores. 10 mins.",
+   "Objetivo: Velocidad, concentración."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Meli Basic 150 piezas",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Bloques construccion, puzzle.",
+   "Objetivo: Creatividad, motricidad fina."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Oruga de Colores",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego de dados. 2-4 jugadores. 5-10 mins.",
+   "Objetivo: Azar, aprender colores y vocabulario, memoria."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Pelusas",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-6 jugadores. 20 mins.",
+   "Objetivo: Toma de decisiones, tolerancia a la frustración, cálculo mental."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "edad-10-12",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Cubimag Junior",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción, puzzle rompecabezas.",
+   "Objetivo: Visión espacial, concentración y creatividad."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mimica Haba",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, mímica. 4-10 jugadores. 10-15 minutos.",
+   "Objetivo: Comunicación no verbal"
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "El Frutal mini",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego cooperativo de dados. 2-4 jugadores. 10 mins.",
+   "Objetivo: Juego de equipo y cooperación."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Learn Sequences (Hábitos de higiene)",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Secuencias con pictogramas. 1-4 jugadores.",
+   "Objetivo: Higiene. Reconocimiento y secuencia de patrones, conciencia social y cultural, pensamiento lógico y crítico."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Learn Bits (Comportamientos y rutinas diarias)",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Secuencias con pictos. 1-4 jugadores.",
+   "Objetivo: Autonomía. Reconocimiento y secuenciación de patrones, conciencia social y cultural, autoconocimiento."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "emociones-y-regulacion",
+   "identidad-y-autoestima",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Family Diversity Blocks",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción, cartas. 1-4 jugadores.",
+   "Objetivo: Conciencia social y cultural, empatía y cooperación, autoconocimiento."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "edad-0-2",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "identidad-y-autoestima",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Happy Salmon",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-8 jugadores. 90 seg.",
+   "Objetivo: Velocidad, acción, movimiento."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Cartas Veo Doble",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-6 jugadores.",
+   "Objetivo: Velicudad, agudeza visual, observación, atención."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mimo. Imita la representación y adivina la carta.",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, mímica. 2-6 jugadores.",
+   "Objetivo: Comunicación no verbal (animales y acciones)"
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Uno No Mercy",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-6 jugadores.",
+   "Objetivo: Funciones ejecutivas, estrategia."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Multitasking",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 4-8 jugadores. 40 mins.",
+   "Objetivo: Multitarea por equipos (responde a preguntas mientras lleva acabo una acción), concentración, atención dividida."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Magnets emotions",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Imanes con escenario extraíble para aprender los estados de ánimo.",
+   "Objetivo: Emociones. Visión espacial, psicomotricidad fina, lingüística, logico matemático, naturalística, desarrollo emocional, juego social, juego simbólico."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Postman",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas y tablero. 2 a 6 jugadores. 15 mins.",
+   "Objetivo: Observación, velocidad."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Hotelogic",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego de lógica. 1 jugador.",
+   "Objetivo: Funciones ejecutivas."
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Picatesoros",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego de habilidad. Tablero y piezas. 2-4 jugadores. 15 mins.",
+   "Objetivo: Motricidad y coordinación (control de fuerza), velocidad, HHSS y emocionales."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Baby Doll Evi",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Muñeco.",
+   "Objetivo: Fomento del cuidado, juego simbólico."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-0-2",
+   "edad-10-12",
+   "nna",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "The Emotions Game",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, tablero.",
+   "Objetivo: Emociones básicas"
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Grabolo Monstruos Reverso",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-5 jugadores. 10 mins.",
+   "Objetivo: Concentración y velocidad"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Hitz Jarioa. Azkarrenak irabaziko du!",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-5 jugadores. 10 mins.",
+   "Objetivo: Velocidad, categorias"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Pictopalabra",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores.",
+   "Objetivo: Atención para ampliar vocabulario"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Emo Trip (El Viaje de las Emociones)",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas, tablero.",
+   "Objetivo: Emociones, conocimiento."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Tapikékoi?",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero, piezas. 2-4 jugadores. 15 mins.",
+   "Objetivo: Memoria"
+  ],
+  "categories": [
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Camelot Jr",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción, estrategia. 1 jugador.",
+   "Objetivo: Lógica, pensamiento flexible, planificación, resolución de problemas, concentración."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Slapzi. ¡Si pestañeas… pierdes!",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-8 jugadores. 10 mins.",
+   "Objetivo: Velocidad, imagen-pista."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Presto. El rápido juego de hacer Pop.",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-4 jugadores. 15 minutos.",
+   "Objetivo: Velocidad. Agudeza visual, coordinación, reflejos."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Stacking Logs (Apila los Troncos)",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Construcción, estrategia. 1-2 jugadores.",
+   "Objetivo: Coordinación, concentración, motricidad fina."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Goki",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Destreza con bolas. 2 jugadores.",
+   "Objetivo: Coordinación, concentración, motricidad fina. Trabajo en equipo, control."
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Emopark",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero, piezas, cartas. Más de 2 jugadores. 20 min.",
+   "Objetivo: Imitación. Emociones."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Chocolate Rabbit Gradparents.",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Muñecos.",
+   "Objetivo: Juego simbólico"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Silk Cat Family.",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Muñecos.",
+   "Objetivo: Juego simbólico"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Cottontail Rabbit Family.",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Muñecos.",
+   "Objetivo: Juego simbólico"
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mystery Bag",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Piezas, juego sensorial.",
+   "Objetivo: Estimulación táctil, motricidad fina, memoria, reconocimiento de formas."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-0-2",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "La Oca de las emociones",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Tablero.",
+   "Objetivo: Diferenciar y expresar emociones."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Kluster",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Juego de destreza, estrategia. 1-4 jugadores. 10 mins.",
+   "Objetivo: Lógica. Deshacerse de sus piedras magnéticas."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Mi Primer Juego de 5 Familias",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-5 juegadores. 10 mins.",
+   "Objetivo: Velocidad, concentración."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Perfect",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 3-9 jugadores. 10/20/30 mins.",
+   "Objetivo: Humor"
+  ],
+  "categories": [
+   "adolescentes",
+   "convivencia-y-relaciones",
+   "edad-10-12",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Tiro al Pato. ¡Solo puede quedar uno! ¡Cua!",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Cartas. 2-6 jugadores. 30 mins.",
+   "Objetivo: Estrategia, funciones ejecutivas."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ },
+ {
+  "type": "juego",
+  "title": "Crazy Clack",
+  "author": null,
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Piezas, 2-6 jugadores.",
+   "Objetivo: Velocidad, concentración, observación."
+  ],
+  "categories": [
+   "adolescentes",
+   "desarrollo-y-aprendizaje",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna"
+  ],
+  "coverTheme": "toy"
+ }
+]

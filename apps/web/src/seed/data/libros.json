@@ -1,0 +1,1164 @@
+[
+ {
+  "type": "libro",
+  "title": "Ez nago bakarrik. No estoy sola.",
+  "author": "Maritxu Amenabarro",
+  "language": "bilingue",
+  "quantity": 6,
+  "content": [
+   "Relato centrado en la realidad de una menor de 8 años en acogimiento. La historia aborda sus necesidades emocionales y las dificultades del entorno para interpretarlas y responder adecuadamente. Incluye al final un apartado denominado “Diario de las emociones”, orientado al trabajo de identificación emocional."
+  ],
+  "categories": [
+   "acogimiento-y-adopcion",
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "emociones-y-regulacion",
+   "familia-y-parentalidad",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "¡Hola, sexo! Una guía sin preguntas tontas sobre el placer, la sexualidad y de qué va todo esto",
+  "author": "Yumi Stynes, Dra. Melissa Kang",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro de educación sexual dirigido a adolescentes. Aborda identidad sexual, mitos, prácticas seguras, formas de relacionarse, autocuidado y cuidado ajeno, parentalidad, vocabulario y recursos complementarios."
+  ],
+  "categories": [
+   "adolescentes",
+   "educacion-afectivo-sexual",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El semen mola. Pero necesitas saber cómo funciona.",
+  "author": "Anna Salvia, Cristina Torrón",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material de educación sexual dirigido a chicos. Aborda el desarrollo corporal, prácticas sexuales saludables y una relación más consciente con el propio cuerpo y la sexualidad."
+  ],
+  "categories": [
+   "educacion-afectivo-sexual",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "La chica pájaro",
+  "author": "Sandy Stark McGinnis",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Novela centrada en el recorrido de una menor en acogimiento familiar. Aborda cuestiones relacionadas con la identidad, el género, el bullying, las heridas emocionales, la resiliencia, la soledad y la vulnerabilidad."
+  ],
+  "categories": [
+   "acogimiento-y-adopcion",
+   "familia-y-parentalidad",
+   "familias",
+   "identidad-y-autoestima",
+   "nna",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Chusco, el perro callejero",
+  "author": "Begoña Ibarrola",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento orientado al trabajo emocional con infancia temprana. Utiliza una historia sencilla y cercana para favorecer el reconocimiento y la expresión emocional."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuando tengo miedo",
+  "author": "Trace Moroney",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro dirigido a ayudar a niños y niñas a reconocer y comprender la emoción del miedo. Incluye notas finales orientadas a facilitar el acompañamiento por parte de personas cuidadoras."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuando me siento solo",
+  "author": "Trace Moroney",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro dirigido a facilitar la comprensión de la soledad y el reconocimiento emocional en infancia temprana. Incluye orientaciones para el acompañamiento por parte de cuidadores."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuando estoy contento",
+  "author": "Trace Moroney",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro orientado a favorecer el reconocimiento y expresión de emociones positivas en niños y niñas pequeños. Incluye apoyo para el acompañamiento adulto."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuando estoy triste",
+  "author": "Trace Moroney",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro dirigido a ayudar a niños y niñas a comprender la tristeza y reconocer cómo aparece en distintas situaciones. Incluye orientaciones finales para facilitar el acompañamiento por parte de figuras cuidadoras."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Adiós, enfado. ¡Hola calma!",
+  "author": "Ana Serna y Henar Iñigo",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento breve orientado al trabajo de identificación emocional y regulación conductual. Utiliza una narrativa sencilla para ayudar a comprender la rabia y promover estrategias de calma con acompañamiento adulto."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Adiós miedo. ¡Hola seguridad!",
+  "author": "Ana Serna y Henar Iñigo",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento orientado a acompañar el reconocimiento del miedo y facilitar recursos emocionales para desarrollar sensación de seguridad."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Adiós tristeza. ¡Hola alegría!",
+  "author": "Ana Serna y Henar Iñigo",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento breve orientado al reconocimiento de la tristeza y al desarrollo de estrategias emocionales que favorezcan experiencias de bienestar."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Adiós soledad. ¡Hola amor!",
+  "author": "Ana Serna y Henar Iñigo",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento centrado en la comprensión de la soledad y el fortalecimiento del vínculo afectivo y la sensación de conexión emocional."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Subnormal. Una historia de acoso escolar.",
+  "author": "Fernando Llor, Miguel Porto",
+  "language": "castellano",
+  "quantity": 2,
+  "content": [
+   "Novela gráfica basada en una historia real que aborda el acoso escolar y sus consecuencias. Orientada tanto a menores como a personas adultas que acompañan situaciones similares."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Clara y su sombra",
+  "author": "Elisenda Pascual",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento orientado a la prevención del abuso sexual infantil. Utiliza una narrativa adaptada para facilitar la identificación de situaciones incómodas, el reconocimiento de límites personales y la búsqueda de ayuda."
+  ],
+  "categories": [
+   "educacion-afectivo-sexual",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Se llama vulva",
+  "author": "Anna Salvia, Cristina Torrón",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material de educación sexual infantil orientado al conocimiento del cuerpo, lenguaje corporal adecuado y educación afectivo-sexual temprana. Incluye guía para personas cuidadoras."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "educacion-afectivo-sexual",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Se llama pene",
+  "author": "Anna Salvia, Cristina Torrón",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material de educación sexual infantil centrado en el conocimiento del cuerpo y el desarrollo de una relación saludable con la sexualidad desde edades tempranas. Incluye guía para familias."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "educacion-afectivo-sexual",
+   "familias",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Supercuaderno de educación sexual",
+  "author": "Anna Salvia, Cristina Torrón",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuaderno práctico orientado a acompañar la educación sexual durante la preadolescencia. Incluye actividades, preguntas y contenidos sobre cuerpo, emociones y sexualidad."
+  ],
+  "categories": [
+   "educacion-afectivo-sexual",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "La joya interior",
+  "author": "Anna Llenas",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro dirigido al fortalecimiento de la autoestima, la identidad y el autoconocimiento en infancia. Utiliza lenguaje simbólico y visual."
+  ],
+  "categories": [
+   "identidad-y-autoestima",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer con la enfermedad mental. Un libro para ayudar a los niños cuyos padres tienen enfermedades mentales.",
+  "author": "Lisa Anne Clarke",
+  "language": "castellano",
+  "quantity": 2,
+  "content": [
+   "Material psicoeducativo orientado a explicar la enfermedad mental de figuras parentales y favorecer comprensión emocional y recursos de afrontamiento."
+  ],
+  "categories": [
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "25 urtez beroa ematen",
+  "author": "Gipuzkoako Harrera Familien Elkartea",
+  "language": "euskera",
+  "quantity": 2,
+  "content": [
+   "Publicación conmemorativa del aniversario de Beroa centrada en la trayectoria de la asociación y experiencias vinculadas al acogimiento."
+  ],
+  "categories": [
+   "acogimiento-y-adopcion",
+   "familia-y-parentalidad",
+   "familias"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuídome. Prevención y cuidado de la salud mental en adolescentes.",
+  "author": "Pepa Izquierdo Cortés",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Programa de prevención y promoción de salud mental en adolescentes. Integra herramientas de regulación emocional, autocuidado y fortalecimiento psicológico."
+  ],
+  "categories": [
+   "adolescentes",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Protocolo unificado para el tratamiento transdiagnóstico de los trastornos emocionales en adolescentes. Manual del paciente.",
+  "author": "Jill Ehrenreich-May y cols.",
+  "language": "castellano",
+  "quantity": 5,
+  "content": [
+   "Manual estructurado para intervención transdiagnóstica en adolescentes con dificultades emocionales."
+  ],
+  "categories": [
+   "adolescentes",
+   "emociones-y-regulacion",
+   "nna",
+   "profesionales",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Protocolo unificado para el tratamiento transdiagnóstico de los trastornos emocionales en niños. Manual del paciente.",
+  "author": "Jill Ehrenreich-May y cols.",
+  "language": "castellano",
+  "quantity": 5,
+  "content": [
+   "Manual de trabajo para intervención emocional transdiagnóstica en población infantil."
+  ],
+  "categories": [
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "nna",
+   "profesionales",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Protocolo unificado para el tratamiento transdiagnóstico de los trastornos emocionales. Manual del terapeuta.",
+  "author": "David H. Barlow y cols.",
+  "language": "castellano",
+  "quantity": 2,
+  "content": [
+   "Manual dirigido a profesionales para aplicación del protocolo transdiagnóstico en trastornos emocionales."
+  ],
+  "categories": [
+   "profesionales",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El cuerpo lleva la cuenta. Cerebro, mente y cuerpo en la superación del trauma.",
+  "author": "Bessel Van Der Kolk",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Obra centrada en la comprensión del trauma y sus efectos sobre cerebro, cuerpo y conducta."
+  ],
+  "categories": [
+   "familias",
+   "profesionales",
+   "salud-y-habitos",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Tormenta cerebral. El poder y el propósito del cerebro adolescente.",
+  "author": "Daniel J. Siegel",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Análisis del desarrollo cerebral adolescente y su relación con conducta, emociones y vínculos."
+  ],
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "familias",
+   "identidad-y-autoestima",
+   "profesionales"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Mi primer emocionómetro",
+  "author": "Susanna Isern, Monica Carretero",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material introductorio para reconocimiento emocional en primera infancia."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El enfado de Arantxa. Cuento para comprender y acompañar la rabia en los más pequeños.",
+  "author": "Jesús López",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento orientado a comprender la rabia en la infancia y acompañar su expresión de forma saludable. Introduce recursos sencillos para identificar señales emocionales y responder de manera regulada."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Los 4 cerebros de Arantxa. Cuento para conocer el cerebro y desarrollar la autorregulación emocional.",
+  "author": "Jesús López",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento psicoeducativo para introducir el funcionamiento cerebral y facilitar estrategias básicas de regulación emocional."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Tengo un superpoder. Cuento para entender la alta sensibilidad.",
+  "author": "Jesús López, Úrsula Perona",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Cuento dirigido a comprender la alta sensibilidad desde una perspectiva positiva y favorecer el autoconocimiento."
+  ],
+  "categories": [
+   "familias",
+   "identidad-y-autoestima",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "La tristeza de Arantxa. Cuento para comprender y acompañar la tristeza en los más pequeños.",
+  "author": "Jesús López, Rafa Guerrero",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material para trabajar la identificación y validación de la tristeza y acompañar procesos emocionales en infancia."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "A mí también. Si la adolescencia te ataca, lee este libro.",
+  "author": "Kariona M. Soto, Mayte F. Tepichín, Toño García",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro dirigido a adolescentes para abordar cambios evolutivos, identidad y retos propios de esta etapa."
+  ],
+  "categories": [
+   "adolescentes",
+   "identidad-y-autoestima",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando no quiero separarme",
+  "author": "Kristen Lavallee, Silvia Schneider",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Guía para trabajar ansiedad por separación mediante actividades y estrategias adaptadas."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer para vencer mi timidez",
+  "author": "Clare A.B. Freeland, Jacqueline B. Toner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material dirigido al abordaje de ansiedad social y fortalecimiento de habilidades de afrontamiento."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando me da miedo irme a la cama",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material centrado en hábitos del sueño y miedos asociados al descanso."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando algo no es justo",
+  "author": "J. B. Toner, C. A. B. Freeland",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro orientado al trabajo de celos, comparación social y sensación de injusticia."
+  ],
+  "categories": [
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando estallo por cualquier cosa",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material para trabajar ira, impulsividad y regulación emocional."
+  ],
+  "categories": [
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando me preocupo demasiado. Un libro para niñas y niños con ansiedad.",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material psicoeducativo dirigido a ayudar a niños y niñas a identificar pensamientos de preocupación excesiva y desarrollar estrategias para manejar la ansiedad."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando me obsesiono demasiado. Un libro para ayudar a las niñas y niños con TOC.",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro orientado a comprender y afrontar pensamientos obsesivos y conductas compulsivas mediante ejercicios adaptados."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer cuando refunfuño demasiado. Un libro para ayudar a las niñas y niños a superar el negativismo.",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Guía orientada al trabajo con conductas negativistas y mejora de estrategias emocionales y conductuales."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Que puedo hacer cuando me da miedo equivocarme. Un libro para ayudar a las niñas y niños a perder el miedo a cometer errores.",
+  "author": "Clare A.B. Freeland y Jacqueline B. Toner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material orientado al trabajo del perfeccionismo, el miedo al error y el fortalecimiento de la confianza."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "identidad-y-autoestima",
+   "nna"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Qué puedo hacer para vencer mis manías. Un libro para ayudar a las niñas y niños que se muerden las uñas, se chupan el dedo, etc.",
+  "author": "Dawn Huebner",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Libro centrado en hábitos repetitivos y conductas automáticas, ofreciendo estrategias para modificarlas."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Tratar el Trauma (165 técnicas y consejos para avanzar en la recuperación)",
+  "author": "Jennifer Sweeton",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Manual práctico orientado al abordaje terapéutico del trauma mediante técnicas aplicadas y herramientas clínicas."
+  ],
+  "categories": [
+   "profesionales",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Entender y evaluar el apego. De las experiencias tempranas al modelo mental.",
+  "author": "Anabel Gonzalez",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Obra centrada en comprender la construcción del apego y su evaluación desde una perspectiva clínica."
+  ],
+  "categories": [
+   "familias",
+   "profesionales",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "No soy yo. Entendiendo el trauma complejo, el apego y la disociación. Una guía para pacientes, familiares y terapeutas.",
+  "author": "Anabel Gonzalez",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Libro divulgativo sobre trauma complejo, apego y disociación orientado tanto a pacientes como a profesionales."
+  ],
+  "categories": [
+   "familias",
+   "profesionales",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cuando el cuerpo habla. Un abordaje integrador del trastorno conversivo.",
+  "author": "Lucía del Río y Anabel Gonzalez",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Abordaje clínico integrador del trastorno conversivo desde una perspectiva terapéutica."
+  ],
+  "categories": [
+   "profesionales",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Las cicatrices no duelen. Cómo sanar nuestras heridas y deshacer los nudos emocionales.",
+  "author": "Anabel Gonzalez",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Libro orientado a comprender y trabajar heridas emocionales desde una perspectiva integradora y cercana."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias",
+   "profesionales"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Lo bueno de tener un mal día. Cómo cuidar nuestras emociones para estar mejor.",
+  "author": "Anabel Gonzalez",
+  "language": null,
+  "quantity": 1,
+  "content": [
+   "Material divulgativo sobre reconocimiento, validación y manejo emocional."
+  ],
+  "categories": [
+   "emociones-y-regulacion",
+   "familias"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Detección e intervención en abuso sexual infantil",
+  "author": "Jose Ramón Elizondo y Rosa Lizarraga",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Manual orientado a la detección, evaluación e intervención en situaciones de abuso sexual infantil."
+  ],
+  "categories": [
+   "educacion-afectivo-sexual",
+   "profesionales"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Guía para la familia: Crecer Erradicando la violencia de genero.",
+  "author": "Gobierno de La Rioja",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Material enfocado en la sensibilización, prevención y erradicación de la violencia de género dentro del entorno familiar."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "familias",
+   "identidad-y-autoestima"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "¿Cómo abordar los problemas de comportamiento?",
+  "author": "Asecal",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Documento orientado a ofrecer estrategias y pautas para el abordaje de dificultades conductuales."
+  ],
+  "categories": [
+   "convivencia-y-relaciones",
+   "familias",
+   "profesionales"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Enséñale a comer",
+  "author": "Ayuntamiento de Logroño",
+  "language": "castellano",
+  "quantity": 3,
+  "content": [
+   "Prevención y detección precoz de trastornos relacionados con la alimentación (anorexia, bulimia, obesidad infantil)."
+  ],
+  "categories": [
+   "familias",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Guía para una alimentación consciente",
+  "author": "Fundación Oxigeno",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Guía sobre los hábitos de consumo alimenticio e industria de la comida."
+  ],
+  "categories": [
+   "familias",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "En familia. Claves para prevenir los problemas de drogas",
+  "author": "Fundación de ayuda contra la drogadicción",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Orientaciones y herramientas clave enfocadas en la prevención del consumo de sustancias en el entorno familiar."
+  ],
+  "categories": [
+   "familias",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "programa",
+  "title": "Zeus. Programa de desarrollo de competencias personales en el ámbito familiar",
+  "author": "Fundación Arpegio",
+  "language": "castellano",
+  "quantity": 1,
+  "content": [
+   "Prevención y fortalecimiento de competencias parentales a través del desarrollo de habilidades personales."
+  ],
+  "categories": [
+   "familia-y-parentalidad",
+   "familias",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "programa",
+  "title": "Hygieia. Programa de aprendizaje y fomento de hábitos saludables.",
+  "author": "Gobierno de España",
+  "language": "castellano",
+  "quantity": 8,
+  "content": [
+   "Aprendizaje y fomento de hábitos saludables dirigido a jóvenes."
+  ],
+  "categories": [
+   "adolescentes",
+   "nna",
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "La regla mola. Si sabes cómo funciona.",
+  "author": "Anna Salvia, Cristina Torrón",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "educacion-afectivo-sexual"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Sex Faqs. Lo que sí preguntan los adolescentes.",
+  "author": "Marta Piedra, Lara Castro Grañén.",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "adolescentes",
+   "educacion-afectivo-sexual"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El emocionómetro del inspector Drilo. Identifica, mide y regula tus emociones.",
+  "author": "Susanna Isern, Monica Carretero",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Trauma. Niños traumatizados, adultos con problemas.",
+  "author": "Rafa Gerrero",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "adolescentes",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "salud-y-habitos",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "¿Por dónde se sale? Como deshacer el miedo, aliviar el malestar psicológico y adquirir un apego seguro",
+  "author": "Anabel Gonzalez",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "emociones-y-regulacion",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Todas las mañana",
+  "author": "Javier de Isusi",
+  "language": "castellano",
+  "quantity": 3,
+  "content": null,
+  "categories": [
+   "acogimiento-y-adopcion",
+   "familia-y-parentalidad"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Goizero",
+  "author": "Javier de Isusi",
+  "language": "euskera",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "acogimiento-y-adopcion",
+   "familia-y-parentalidad"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Y ahora, ¿qué hago?",
+  "author": "Vandita García",
+  "language": "castellano",
+  "quantity": 3,
+  "content": null,
+  "categories": [
+   "emociones-y-regulacion",
+   "identidad-y-autoestima",
+   "salud-y-habitos",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "¿Por qué me pasa esto a mí? Diálogo con adolescentes sobre adopción y acogimiento.",
+  "author": "Beatriz González Luna",
+  "language": "castellano",
+  "quantity": 5,
+  "content": null,
+  "categories": [
+   "acogimiento-y-adopcion",
+   "adolescentes"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "¿Por qué les cuesta tanto aprender a mis hijos? Entre hipocampos y neurogénesis",
+  "author": "Rosa Mª Fernández García",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "desarrollo-y-aprendizaje"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "La regulación emocional. Bases neurobiológicas y desarrollo en la infancia y adolescencia",
+  "author": "Rafael Benito Moraga",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El florecimiento resiliente después de los traumas. Los fundamentos de la resiliencia infanto-juvenil.",
+  "author": "Jorge Barudy Labrin",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Cómo estimular el cerebro del niño. 100 ejercicios para potenciar la concentración, la memoria y otras funciones ejecutivas.",
+  "author": "Rafa Guerrero",
+  "language": "castellano",
+  "quantity": 3,
+  "content": null,
+  "categories": [
+   "salud-y-habitos"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Reparando el CDDT. No estáis solos, hay solución.",
+  "author": "Redes AFE-FICE y Maritxu Amenabarro",
+  "language": "castellano",
+  "quantity": 2,
+  "content": null,
+  "categories": [
+   "acogimiento-y-adopcion",
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "El niño superviviente. Curar el trauma del desarrollo y la disociación.",
+  "author": "Joyanna L Silberg",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Adopción, trauma y juego. Manual para tratar a los niños adoptados y maltratados a través del juego.",
+  "author": "Montse Lapastora, Noelia Mata",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "acogimiento-y-adopcion",
+   "edad-10-12",
+   "edad-3-5",
+   "edad-6-9",
+   "trauma-apego-y-vinculo"
+  ],
+  "coverTheme": "book"
+ },
+ {
+  "type": "libro",
+  "title": "Don't worry, be happy. Una guía para que los niños superen la ansiedad.",
+  "author": "Poppy O'Neill",
+  "language": "castellano",
+  "quantity": 1,
+  "content": null,
+  "categories": [
+   "emociones-y-regulacion"
+  ],
+  "coverTheme": "book"
+ }
+]

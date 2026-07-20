@@ -45,6 +45,12 @@ export const CatalogItem: CollectionConfig = {
       required: true,
     },
     {
+      label: 'Autor',
+      name: 'author',
+      type: 'text',
+      required: false,
+    },
+    {
       label: 'Tipo de material',
       name: 'type',
       type: 'select',
@@ -61,10 +67,34 @@ export const CatalogItem: CollectionConfig = {
       },
     },
     {
+      label: 'Idioma',
+      name: 'language',
+      type: 'select',
+      required: false,
+      options: [
+        { label: 'Castellano', value: 'castellano' },
+        { label: 'Euskera', value: 'euskera' },
+        { label: 'Bilingüe (eus/cas)', value: 'bilingue' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      label: 'Días de préstamo',
+      name: 'loanDays',
+      type: 'number',
+      required: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Duración del préstamo: libros 30 días, juegos 20, programas 15–30',
+      },
+    },
+    {
       label: 'Contenido',
       name: 'content',
       type: 'richText',
-      required: true,
+      required: false,
     },
     {
       label: 'Cantidad total',

@@ -25,6 +25,14 @@ export const searchFields: Field[] = [
     admin: { readOnly: true },
   },
   {
+    // URL de destino de la tarjeta: el enlace externo (external-resources) o el
+    // fichero subido (files). El campo `doc` del plugin tiene maxDepth 0, así
+    // que sin esta copia la tarjeta no puede montar el botón Ver/Descargar.
+    name: 'url',
+    type: 'text',
+    admin: { readOnly: true },
+  },
+  {
     label: 'Categorías',
     name: 'categories',
     type: 'array',

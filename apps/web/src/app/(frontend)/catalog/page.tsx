@@ -7,6 +7,8 @@ export default async function CatalogPage() {
   const categories = await payload.find({
     collection: 'taxonomy',
     pagination: false,
+    // Orden de inserción del seed: mantiene los tramos de edad ordenados
+    sort: 'id',
   })
 
   return <CatalogSearch categories={categories.docs} />

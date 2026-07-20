@@ -16,11 +16,13 @@ export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc 
     doc: { relationTo: collection },
   } = searchDoc
 
-  const { title, type, cover, categories } = originalDoc as {
+  const { title, type, cover, categories, url } = originalDoc as {
     title?: string
     type?: string
     cover?: unknown
     categories?: Array<{ id?: string | number; name?: string } | number>
+    // external-resources: campo de texto; files: URL virtual del fichero subido
+    url?: string
   }
 
   const mappedCategories = Array.isArray(categories)
@@ -40,6 +42,7 @@ export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc 
     collectionType: collection,
     itemType: type ?? null,
     cover: extractId(cover),
+    url: url ?? null,
     categories: mappedCategories,
   }
 

@@ -21,6 +21,6 @@ export default async function CatalogItemPage({ params }: Props) {
     }
 
     return <CatalogItemClient item={catalogItem} >
-        <RichText data={catalogItem.content} />
+        {catalogItem.content ? <RichText data={catalogItem.content} /> : null}
     </CatalogItemClient>
 } 

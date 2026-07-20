@@ -61,3 +61,6 @@ tsconfig.tsbuildinfo
 # SpecStory explanation file
 .specstory/.what-is-this.md
 .env*.local
+
+# Materiales originales de PAFE (contienen datos personales — no subir)
+/Materiales PAFE/

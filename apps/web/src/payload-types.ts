@@ -251,8 +251,14 @@ export interface CatalogItem {
   id: number;
   cover: number | Media;
   title: string;
+  author?: string | null;
   type: 'libro' | 'juego' | 'programa';
-  content: {
+  language?: ('castellano' | 'euskera' | 'bilingue') | null;
+  /**
+   * Duración del préstamo: libros 30 días, juegos 20, programas 15–30
+   */
+  loanDays?: number | null;
+  content?: {
     root: {
       type: string;
       children: {
@@ -266,7 +272,7 @@ export interface CatalogItem {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   quantity?: number | null;
   reservations?: {
     docs?: (number | Reservation)[];
@@ -664,6 +670,10 @@ export interface ExternalResource {
    * URL del recurso externo
    */
   url: string;
+  /**
+   * Duración aproximada en minutos (para vídeos)
+   */
+  duration?: number | null;
   categories?: (number | Taxonomy)[] | null;
   updatedAt: string;
   createdAt: string;
@@ -1147,6 +1157,7 @@ export interface Search {
   collectionType?: string | null;
   itemType?: string | null;
   cover?: (number | null) | Media;
+  url?: string | null;
   categories?:
     | {
         categoryId?: string | null;
@@ -1220,6 +1231,7 @@ export interface Import {
       | boolean
       | null;
   };
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1559,7 +1571,10 @@ export interface ReservationSelect<T extends boolean = true> {
 export interface CatalogItemSelect<T extends boolean = true> {
   cover?: T;
   title?: T;
+  author?: T;
   type?: T;
+  language?: T;
+  loanDays?: T;
   content?: T;
   quantity?: T;
   reservations?: T;
@@ -1613,6 +1628,7 @@ export interface ExternalResourcesSelect<T extends boolean = true> {
   description?: T;
   type?: T;
   url?: T;
+  duration?: T;
   categories?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2089,6 +2105,7 @@ export interface SearchSelect<T extends boolean = true> {
   collectionType?: T;
   itemType?: T;
   cover?: T;
+  url?: T;
   categories?:
     | T
     | {
@@ -2146,6 +2163,7 @@ export interface ImportsSelect<T extends boolean = true> {
         issues?: T;
         issueDetails?: T;
       };
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

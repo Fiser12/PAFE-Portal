@@ -13,6 +13,7 @@ export interface CatalogResult {
   collectionType?: string | null
   itemType?: string | null
   cover?: number | Media | null
+  url?: string | null
   doc?: { relationTo?: string; value?: unknown } | null
 }
 
@@ -47,7 +48,9 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
     COLLECTION_LABEL[collectionType] ||
     'Material'
 
-  const url = getDocUrl(result)
+  // La url viene copiada en el índice search; el fallback vía doc.value solo
+  // funciona si el doc llegara poblado (el campo del plugin tiene maxDepth 0)
+  const url = result.url ?? getDocUrl(result)
   const isReservable = collectionType === 'catalog-item'
 
   const docValue = result.doc?.value

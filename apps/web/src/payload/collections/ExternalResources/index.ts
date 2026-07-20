@@ -77,6 +77,15 @@ export const ExternalResources: CollectionConfig = {
         description: 'URL del recurso externo'
       }
     },
+    {
+      label: 'Duración (minutos)',
+      name: 'duration',
+      type: 'number',
+      required: false,
+      admin: {
+        description: 'Duración aproximada en minutos (para vídeos)'
+      }
+    },
     buildTaxonomyRelationship({
       name: 'categories',
       label: 'Categorías',
