@@ -1,11 +1,14 @@
-import fs from 'fs'
-import path from 'path'
 import { hashPassword } from 'better-auth/crypto'
 import type { Payload } from 'payload'
 import { ROLE_ADMIN, ROLE_PROFESIONAL, ROLE_FAMILIA } from '@/core/permissions'
+// Imports estáticos: el bundler los incluye en el build, así el seed funciona
+// también en serverless (fs.readFileSync no encuentra los archivos en Vercel)
+import librosJson from './data/libros.json'
+import juegosJson from './data/juegos.json'
+import programasJson from './data/programas.json'
+import cortosJson from './data/cortos.json'
 
 const PASSWORD = 'test1234!'
-const DATA = path.join(process.cwd(), 'src/seed/data')
 
 // Extrae el detalle campo-a-campo de un ValidationError de Payload.
 // El `message` de Payload solo lista los `path`; el motivo real (requerido,
@@ -120,9 +123,6 @@ interface CortoData {
   coverTheme: string
 }
 
-const readJson = <T>(file: string): T =>
-  JSON.parse(fs.readFileSync(path.join(DATA, file), 'utf-8')) as T
-
 export async function seedMockData(payload: Payload): Promise<void> {
   const now = new Date().toISOString()
 
@@ -222,9 +222,9 @@ export async function seedMockData(payload: Payload): Promise<void> {
   // Sin portada: media no funciona en serverless y las carátulas reales se
   // subirán desde el admin (por eso `cover` es opcional)
   const items: CatalogItemData[] = [
-    ...readJson<CatalogItemData[]>('libros.json'),
-    ...readJson<CatalogItemData[]>('juegos.json'),
-    ...readJson<CatalogItemData[]>('programas.json'),
+    ...(librosJson as CatalogItemData[]),
+    ...(juegosJson as CatalogItemData[]),
+    ...(programasJson as CatalogItemData[]),
   ]
   const catalogIds: number[] = []
   for (const item of items) {
@@ -253,7 +253,7 @@ export async function seedMockData(payload: Payload): Promise<void> {
   payload.logger.info(`[seed] ${catalogIds.length}/${items.length} materiales reservables`)
 
   // --- Cortometrajes (recursos externos, sin reserva) -----------------------
-  const cortos = readJson<CortoData[]>('cortos.json')
+  const cortos = cortosJson as CortoData[]
   const externalIds: number[] = []
   for (const corto of cortos) {
     try {
