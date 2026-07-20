@@ -36,7 +36,9 @@ export const CatalogItem: CollectionConfig = {
       name: 'cover',
       type: 'upload',
       relationTo: 'media',
-      required: true,
+      // Opcional: las carátulas reales llegan después desde el admin y el
+      // seed de producción debe poder crear ítems sin portada
+      required: false,
     },
     {
       label: 'Título',

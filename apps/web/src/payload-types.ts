@@ -249,7 +249,7 @@ export interface Reservation {
  */
 export interface CatalogItem {
   id: number;
-  cover: number | Media;
+  cover?: (number | null) | Media;
   title: string;
   author?: string | null;
   type: 'libro' | 'juego' | 'programa';

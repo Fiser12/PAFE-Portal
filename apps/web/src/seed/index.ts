@@ -5,7 +5,6 @@ import type { Payload } from 'payload'
 import { ROLE_ADMIN, ROLE_PROFESIONAL, ROLE_FAMILIA } from '@/core/permissions'
 
 const PASSWORD = 'test1234!'
-const ASSETS = path.join(process.cwd(), 'src/seed/assets')
 const DATA = path.join(process.cwd(), 'src/seed/data')
 
 // Extrae el detalle campo-a-campo de un ValidationError de Payload.
@@ -75,7 +74,7 @@ const richTextParas = (paras: string[]) => ({
 
 // --- Taxonomía del catálogo ---------------------------------------------
 // Tres facetas planas (el plugin no tiene jerarquía); la faceta viaja en
-// `payload.types` para que la UI pueda agrupar los chips más adelante.
+// `payload.types` para que la UI agrupe los selectores.
 const TAXONOMY: { slug: string; name: string; type: string }[] = [
   { slug: 'emociones-y-regulacion', name: 'Emociones y regulación', type: 'tematica' },
   { slug: 'trauma-apego-y-vinculo', name: 'Trauma, apego y vínculo', type: 'tematica' },
@@ -209,42 +208,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
   const catsFor = (slugs: string[]): number[] =>
     slugs.map((s) => taxIds[s]).filter((id): id is number => typeof id === 'number')
 
-  // --- Pool de portadas (subir las imágenes de stock a media una vez) --------
-  const coverPool: Record<string, number[]> = {}
-  const themes = ['book', 'toy', 'document', 'video', 'computer']
-  for (const theme of themes) {
-    coverPool[theme] = []
-    for (let n = 1; n <= 5; n++) {
-      const alt = `${theme} ${n}`
-      try {
-        // Idempotente: el filename de media es determinista (hook content-hash),
-        // así que reutilizamos la portada ya subida en vez de re-subirla.
-        const found = await payload.find({
-          collection: 'media',
-          where: { alt: { equals: alt } },
-          limit: 1,
-        })
-        if (found.totalDocs > 0) {
-          coverPool[theme].push(found.docs[0]!.id as number)
-          continue
-        }
-        const file = fs.readFileSync(path.join(ASSETS, 'covers', `${theme}-${n}.jpg`))
-        const media = await payload.create({
-          collection: 'media',
-          data: { alt },
-          file: { data: file, mimetype: 'image/jpeg', name: `${theme}-${n}.jpg`, size: file.length },
-        })
-        coverPool[theme].push(media.id as number)
-      } catch (err) {
-        payload.logger.warn(`[seed] portada ${theme}-${n}: ${describeError(err)}`)
-      }
-    }
-  }
-  const coverFrom = (theme: string, i: number): number | null => {
-    const pool = coverPool[theme]
-    return pool && pool.length > 0 ? pool[i % pool.length]! : null
-  }
-
   // --- Grupos (name es único → upsert) --------------------------------------
   const grupoId = await upsert(payload, 'groups', { name: 'Grupo A' }, {
     name: 'Grupo A',
@@ -256,13 +219,14 @@ export async function seedMockData(payload: Payload): Promise<void> {
   })
 
   // --- Catálogo reservable (libros, juegos y programas reales) --------------
+  // Sin portada: media no funciona en serverless y las carátulas reales se
+  // subirán desde el admin (por eso `cover` es opcional)
   const items: CatalogItemData[] = [
     ...readJson<CatalogItemData[]>('libros.json'),
     ...readJson<CatalogItemData[]>('juegos.json'),
     ...readJson<CatalogItemData[]>('programas.json'),
   ]
   const catalogIds: number[] = []
-  let ci = 0
   for (const item of items) {
     try {
       const id = await upsert(
@@ -276,7 +240,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
           language: item.language ?? undefined,
           loanDays: LOAN_DAYS[item.type],
           quantity: item.quantity,
-          cover: coverFrom(item.coverTheme, ci),
           // «Si no hay content, no se pone»: solo el texto real de las fichas
           content: item.content && item.content.length > 0 ? richTextParas(item.content) : undefined,
           categories: catsFor(item.categories),
@@ -286,17 +249,16 @@ export async function seedMockData(payload: Payload): Promise<void> {
     } catch (err) {
       payload.logger.warn(`[seed] "${item.title}": ${describeError(err)}`)
     }
-    ci++
   }
   payload.logger.info(`[seed] ${catalogIds.length}/${items.length} materiales reservables`)
 
   // --- Cortometrajes (recursos externos, sin reserva) -----------------------
   const cortos = readJson<CortoData[]>('cortos.json')
   const externalIds: number[] = []
-  let ei = 0
   for (const corto of cortos) {
     try {
-      const valores = corto.valores.length > 0 ? ` Valores: ${corto.valores.join(', ').toLowerCase()}.` : ''
+      const valores =
+        corto.valores.length > 0 ? ` Valores: ${corto.valores.join(', ').toLowerCase()}.` : ''
       const id = await upsert(
         payload,
         'external-resources',
@@ -307,7 +269,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
           url: corto.url,
           duration: corto.duration ?? undefined,
           description: `${corto.description}${valores}`,
-          cover: coverFrom('video', ei),
           categories: catsFor(corto.categories),
         },
       )
@@ -315,7 +276,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
     } catch (err) {
       payload.logger.warn(`[seed] corto "${corto.title}": ${describeError(err)}`)
     }
-    ei++
   }
   payload.logger.info(`[seed] ${externalIds.length}/${cortos.length} cortometrajes`)
 
@@ -375,6 +335,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
   }
 
   payload.logger.info(
-    `[seed] Catálogo real: ${catalogIds.length} reservables + ${externalIds.length} cortos. Contraseña: ${PASSWORD}`,
+    `[seed] Cargados ${catalogIds.length} reservables y ${externalIds.length} cortos. Contraseña: ${PASSWORD}`,
   )
 }
