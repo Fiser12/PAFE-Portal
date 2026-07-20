@@ -64,3 +64,6 @@ tsconfig.tsbuildinfo
 
 # Materiales originales de PAFE (contienen datos personales — no subir)
 /Materiales PAFE/
+
+# Secretos del script de seed remoto
+apps/web/scripts/seed-remote.env

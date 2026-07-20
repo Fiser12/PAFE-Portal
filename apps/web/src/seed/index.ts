@@ -10,6 +10,12 @@ import cortosJson from './data/cortos.json'
 
 const PASSWORD = 'test1234!'
 
+// Totales esperados del catálogo, derivados de los datos: el guard del seed
+// compara contra esto para saber si ya está todo sembrado (o completar lo
+// que falte tras una siembra interrumpida)
+const EXPECTED_ITEMS = librosJson.length + juegosJson.length + programasJson.length
+const EXPECTED_CORTOS = cortosJson.length
+
 // Extrae el detalle campo-a-campo de un ValidationError de Payload.
 // El `message` de Payload solo lista los `path`; el motivo real (requerido,
 // único, etc.) vive en `err.data.errors[i].message`.
@@ -169,7 +175,14 @@ export async function seedMockData(payload: Payload): Promise<void> {
     limit: 1,
   })
   const catCount = await payload.count({ collection: 'catalog-item' })
-  if (realTax.totalDocs > 0 && catCount.totalDocs >= 180) return
+  const extCount = await payload.count({ collection: 'external-resources' })
+  if (
+    realTax.totalDocs > 0 &&
+    catCount.totalDocs >= EXPECTED_ITEMS &&
+    extCount.totalDocs >= EXPECTED_CORTOS
+  ) {
+    return
+  }
 
   // --- Limpieza del mock antiguo --------------------------------------------
   // Si hay datos de catálogo pero no existe la taxonomía real, es el dataset
