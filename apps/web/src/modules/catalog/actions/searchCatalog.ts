@@ -42,6 +42,11 @@ export async function searchCatalog({
 
   const and: Where[] = []
   if (query?.trim()) and.push({ title: { contains: query.trim() } })
+  for (const group of categoryGroups ?? []) {
+    if (group.length > 0) {
+      and.push({ 'categories.categoryId': { in: group.map(String) } })
+    }
+  }
   if (collectionType) and.push({ collectionType: { equals: collectionType } })
   if (itemType) and.push({ itemType: { equals: itemType } })
 
@@ -49,37 +54,17 @@ export async function searchCatalog({
     collection: 'search',
     where: and.length > 0 ? { and } : {},
     depth: 1,
-    // El catálogo completo son unos cientos de docs: se trae entero y las
-    // facetas se aplican abajo. OJO: dos cláusulas AND sobre
-    // `categories.categoryId` en el mismo find NO funcionan (Payload las
-    // aplica sobre el mismo join del array y no casan nunca).
-    limit: 500,
+    page,
+    limit,
     sort: 'title',
     overrideAccess: false,
     user,
   })
 
-  // AND entre grupos (facetas); OR dentro de cada grupo
-  const groups = (categoryGroups ?? [])
-    .filter((g) => g.length > 0)
-    .map((g) => g.map(String))
-  const filtered =
-    groups.length === 0
-      ? results.docs
-      : results.docs.filter((doc) => {
-          const cats = (doc as { categories?: Array<{ categoryId?: string | null }> | null })
-            .categories
-          const ids = (cats ?? []).map((c) => c.categoryId).filter(Boolean) as string[]
-          return groups.every((group) => group.some((id) => ids.includes(id)))
-        })
-
-  // Paginación sobre el conjunto ya filtrado (el post-filtro de facetas
-  // rompería el tamaño de página si se paginara en la consulta)
-  const start = (page - 1) * limit
   return {
-    docs: filtered.slice(start, start + limit),
-    totalDocs: filtered.length,
-    page,
-    hasNextPage: start + limit < filtered.length,
+    docs: results.docs,
+    totalDocs: results.totalDocs,
+    page: results.page ?? page,
+    hasNextPage: results.hasNextPage,
   }
 }
