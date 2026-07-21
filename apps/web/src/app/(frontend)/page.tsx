@@ -15,7 +15,7 @@ export default function Home() {
       {user ? (<React.Fragment>
         <section>
           <h2 className="mb-4 text-2xl font-semibold sm:text-3xl">Calendario</h2>
-          <CalendarView calendarEmail="pafe.gcalendar@gmail.com" />
+          <CalendarView />
         </section>
         <ReservationsTable />
       </React.Fragment>
