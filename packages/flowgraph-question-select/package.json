@@ -1,0 +1,22 @@
+{
+  "name": "flowgraph-question-select",
+  "version": "0.1.0",
+  "description": "Select question plugin for FlowGraph",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/core.d.mts", "import": "./src/core.ts", "default": "./src/core.ts" },
+    "./react": { "types": "./dist/react.d.mts", "import": "./src/react.tsx", "default": "./src/react.tsx" }
+  },
+  "main": "./src/core.ts",
+  "types": "./dist/core.d.mts",
+  "scripts": { "build": "tsdown", "dev": "tsdown --watch", "typecheck:prod": "tsc -p tsconfig.json --noEmit" },
+  "dependencies": { "flowgraph-core": "workspace:*", "flowgraph-react": "workspace:*", "zod": "4.4.3" },
+  "peerDependencies": { "react": "^19.1.0", "react-dom": "^19.1.0" },
+  "devDependencies": { "@types/react": "19.1.0", "react": "19.1.0", "tsdown": "^0.16.8", "typescript": "5.9.3" },
+  "publishConfig": { "exports": {
+    ".": { "types": "./dist/core.d.mts", "import": "./dist/core.mjs", "default": "./dist/core.mjs" },
+    "./react": { "types": "./dist/react.d.mts", "import": "./dist/react.mjs", "default": "./dist/react.mjs" }
+  }, "main": "./dist/core.mjs", "types": "./dist/core.d.mts" }
+}

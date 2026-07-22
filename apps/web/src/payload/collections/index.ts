@@ -10,6 +10,7 @@ import { TasksCompleted } from './TasksCompleted'
 import { ExternalResources } from './ExternalResources'
 import { Files } from './Files'
 import { Groups } from './Groups'
+import { GuidedQuestionnaires } from './GuidedQuestionnaires'
 import { Users } from './Users'
 
-export const collections = [Reservation, CatalogItem, Cases, Tasks, TasksCompleted, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Files]
+export const collections = [Reservation, CatalogItem, Cases, Tasks, TasksCompleted, GuidedQuestionnaires, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Files]

@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true
+  },
+  "files": [],
+  "references": [
+    { "path": "./packages/flowgraph-core" },
+    { "path": "./packages/flowgraph-question-text" },
+    { "path": "./packages/flowgraph-question-number" },
+    { "path": "./packages/flowgraph-question-select" },
+    { "path": "./packages/flowgraph-session" },
+    { "path": "./packages/flowgraph-react" }
+  ]
+}

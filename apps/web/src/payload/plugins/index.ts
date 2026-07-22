@@ -7,7 +7,6 @@ import s3Plugin from '@/payload/plugins/s3'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '../../utilities/getURL'
 import { plugin as searchPlugin } from './search/plugin'
-import { plugin as formBuilderPlugin } from './formBuilder/plugin'
 import { plugin as importExportPlugin } from './importExport/plugin'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
@@ -25,7 +24,6 @@ export const plugins: Plugin[] = [
     generateTitle,
     generateURL,
   }),
-  formBuilderPlugin,
   searchPlugin,
   payloadCloudPlugin(),
   importExportPlugin,

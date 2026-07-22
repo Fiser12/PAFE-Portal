@@ -12,6 +12,5 @@ export const COLLECTION_SLUG_CASES = 'cases' as const
 export const COLLECTION_SLUG_TASKS = 'tasks' as const
 export const COLLECTION_SLUG_TASKS_COMPLETED = 'tasks-completed' as const
 export const COLLECTION_SLUG_EXTERNAL_RESOURCES = 'external-resources' as const
-export const COLLECTION_SLUG_FORMS = 'forms' as const
-export const COLLECTION_SLUG_FORMS_SUBMISSION = 'form-submissions' as const
+export const COLLECTION_SLUG_GUIDED_QUESTIONNAIRES = 'guided-questionnaires' as const
 export const COLLECTION_SLUG_GROUPS = 'groups' as const

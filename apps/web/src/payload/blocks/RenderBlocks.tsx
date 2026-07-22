@@ -5,7 +5,6 @@ import type { Page } from '@/payload-types'
 import { ArchiveBlock } from '@/payload/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/payload/blocks/CallToAction/Component'
 import { ContentBlock } from '@/payload/blocks/Content/Component'
-import { FormBlock } from '@/payload/blocks/Form/Component'
 import { MediaBlock } from '@/payload/blocks/MediaBlock/Component'
 import { CatalogListBlock } from './CatalogList/Component'
 
@@ -13,7 +12,6 @@ const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
-  formBlock: FormBlock,
   mediaBlock: MediaBlock,
   catalogList: CatalogListBlock,
 }

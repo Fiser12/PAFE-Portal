@@ -12,7 +12,7 @@ const getResourceIcon = (relationTo: string, resourceType?: string) => {
   switch (relationTo) {
     case 'files':
       return <FileText className="h-3.5 w-3.5" />
-    case 'forms':
+    case 'guided-questionnaires':
       return <Book className="h-3.5 w-3.5" />
     case 'external-resources':
       switch (resourceType) {
@@ -32,8 +32,8 @@ const getResourceLabel = (relationTo: string) => {
   switch (relationTo) {
     case 'files':
       return 'Material descargable'
-    case 'forms':
-      return 'Formulario'
+    case 'guided-questionnaires':
+      return 'Cuestionario guiado'
     case 'external-resources':
       return 'Recurso'
     default:
@@ -48,8 +48,8 @@ const getResourceUrl = (
   switch (relationTo) {
     case 'files':
       return resource.url ?? null
-    case 'forms':
-      return `/forms/${resource.id}`
+    case 'guided-questionnaires':
+      return `/questionnaires/${resource.id}`
     case 'external-resources':
       return resource.url ?? null
     default:
