@@ -498,6 +498,27 @@ export interface GuidedQuestionnaire {
     | boolean
     | null;
   schemaID?: string | null;
+  pageContents?:
+    | {
+        pageID: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   schemaVersion?: string | null;
   schemaHash?: string | null;
   updatedAt: string;
@@ -1427,6 +1448,13 @@ export interface GuidedQuestionnairesSelect<T extends boolean = true> {
   description?: T;
   schema?: T;
   schemaID?: T;
+  pageContents?:
+    | T
+    | {
+        pageID?: T;
+        content?: T;
+        id?: T;
+      };
   schemaVersion?: T;
   schemaHash?: T;
   updatedAt?: T;
@@ -2102,6 +2130,16 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuestionnaireResourceBlock".
+ */
+export interface QuestionnaireResourceBlock {
+  resource: number | Search;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'questionnaireResource';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

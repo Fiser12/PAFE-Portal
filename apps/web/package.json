@@ -47,6 +47,7 @@
     "cross-env": "^7.0.3",
     "geist": "^1.4.2",
     "flowgraph-core": "workspace:*",
+    "flowgraph-payload-lexical": "workspace:*",
     "flowgraph-question-number": "workspace:*",
     "flowgraph-question-select": "workspace:*",
     "flowgraph-question-text": "workspace:*",

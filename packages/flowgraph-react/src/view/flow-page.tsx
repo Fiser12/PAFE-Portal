@@ -1,5 +1,5 @@
 import type { Problem } from "flowgraph-core";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import {
   DraftRegistryContext,
   QuestionOrderContext,
@@ -24,6 +24,7 @@ export type FlowPageProps = {
   readonly disabled?: boolean;
   readonly backLabel?: string;
   readonly nextLabel?: string;
+  readonly beforeQuestions?: ReactNode;
 };
 
 export const FlowPage = ({
@@ -34,6 +35,7 @@ export const FlowPage = ({
   disabled = false,
   backLabel = "Atrás",
   nextLabel = "Continuar",
+  beforeQuestions,
 }: FlowPageProps) => {
   const { view, friction } = controller;
   const drafts = draftRegistryOf(controller);
@@ -94,6 +96,7 @@ export const FlowPage = ({
             summary.current = element;
           }}
         />
+        {beforeQuestions}
         {view.questions.map(({ question, value, order }) => {
           const questionPlugin = questionPlugins.get(question.kind);
           const Renderer = resolveQuestionRenderer(

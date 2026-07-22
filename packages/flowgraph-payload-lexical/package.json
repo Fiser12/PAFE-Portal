@@ -1,0 +1,70 @@
+{
+  "name": "flowgraph-payload-lexical",
+  "version": "0.1.0",
+  "description": "Payload CMS Lexical authoring adapter for FlowGraph pages",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist", "README.md"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "types": "./dist/client.d.mts",
+      "import": "./src/client.tsx",
+      "default": "./src/client.tsx"
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./dist/index.d.mts",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck:prod": "tsc -p tsconfig.json --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
+    "test": "vitest run --config ../../vitest.config.ts --project payload-lexical"
+  },
+  "dependencies": {
+    "flowgraph-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/richtext-lexical": ">=3.85.0 <4",
+    "@payloadcms/ui": ">=3.85.0 <4",
+    "payload": ">=3.85.0 <4",
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@payloadcms/richtext-lexical": "3.85.2",
+    "@payloadcms/ui": "3.85.2",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "22.5.4",
+    "@types/react": "19.1.0",
+    "payload": "3.85.2",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tsdown": "^0.16.8",
+    "typescript": "5.7.3",
+    "vitest": "4.1.10"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.mts",
+        "import": "./dist/index.mjs",
+        "default": "./dist/index.mjs"
+      },
+      "./client": {
+        "types": "./dist/client.d.mts",
+        "import": "./dist/client.mjs",
+        "default": "./dist/client.mjs"
+      }
+    },
+    "main": "./dist/index.mjs",
+    "types": "./dist/index.d.mts"
+  }
+}

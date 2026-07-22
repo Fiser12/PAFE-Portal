@@ -25,6 +25,22 @@ export interface SearchCatalogResult {
   hasNextPage: boolean
 }
 
+export async function getCatalogSearchResult(id: number | string): Promise<unknown | null> {
+  const { payload, user } = await getSessionUser()
+
+  try {
+    return await payload.findByID({
+      collection: 'search',
+      id,
+      depth: 1,
+      overrideAccess: false,
+      user,
+    })
+  } catch {
+    return null
+  }
+}
+
 /**
  * Busca en el índice global del catálogo (colección search), que agrega
  * materiales reservables, descargables y recursos externos.

@@ -6,12 +6,25 @@ import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
 import { FlowPage, useFlowSurvey } from 'flowgraph-react'
 import { hashSchema, toSafeInt, type CommandMeta, type FlowSchema } from 'flowgraph-core'
 import { createSession, type FlowSession } from 'flowgraph-session'
+import {
+  currentFlowGraphLexicalPageContent,
+  type FlowGraphLexicalPageContent,
+} from 'flowgraph-payload-lexical'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useMemo } from 'react'
+
+import { QuestionnaireRichText } from './QuestionnaireRichText'
+
+type PageContent = FlowGraphLexicalPageContent & {
+  pageID: string
+  content?: DefaultTypedEditorState | null
+}
 
 type QuestionnaireRunnerProps = {
   title: string
   description?: string | null
   schema: FlowSchema
+  pageContents?: PageContent[] | null
 }
 
 const createMeta = (): CommandMeta => ({
@@ -26,9 +39,18 @@ const createFlowSession = (schema: FlowSchema): FlowSession => {
   return result.value
 }
 
-export function QuestionnaireRunner({ title, description, schema }: QuestionnaireRunnerProps) {
+export function QuestionnaireRunner({
+  title,
+  description,
+  schema,
+  pageContents,
+}: QuestionnaireRunnerProps) {
   const session = useMemo(() => createFlowSession(schema), [schema])
   const controller = useFlowSurvey({ runtime: flowGraphRuntime, schema, session, createMeta })
+  const currentContent = currentFlowGraphLexicalPageContent(
+    controller.state,
+    pageContents,
+  )?.content
 
   const start = useCallback(() => {
     session.dispatch({
@@ -71,6 +93,9 @@ export function QuestionnaireRunner({ title, description, schema }: Questionnair
         questionPlugins={flowGraphReactQuestionPlugins}
         nextLabel="Continuar"
         backLabel="Atrás"
+        beforeQuestions={
+          currentContent ? <QuestionnaireRichText data={currentContent} /> : undefined
+        }
       />
     </div>
   )

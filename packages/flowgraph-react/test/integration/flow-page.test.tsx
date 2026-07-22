@@ -31,12 +31,14 @@ describe("FlowPage", () => {
         <FlowPage
           controller={controller}
           questionPlugins={testQuestionPlugins}
+          beforeQuestions={<p>Contexto de la página</p>}
         />
       );
     };
     render(<Harness />);
 
     expect(screen.getByRole("heading", { name: "Perfil" })).toBeInTheDocument();
+    expect(screen.getByText("Contexto de la página")).toBeInTheDocument();
     expect(screen.getAllByRole("textbox")).toHaveLength(1);
     await user.click(screen.getByRole("button", { name: /continuar/i }));
     expect(screen.getByRole("textbox", { name: /nombre/i })).toHaveFocus();

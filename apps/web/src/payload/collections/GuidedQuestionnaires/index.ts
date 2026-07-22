@@ -2,7 +2,12 @@ import { COLLECTION_SLUG_GUIDED_QUESTIONNAIRES } from '@/core/collections-slugs'
 import { hiddenUnlessAdmin, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
 import { createDefaultFlowSchema } from '@/lib/flowgraph/defaultSchema'
 import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
+import { questionnaireLexical } from '@/payload/fields/questionnaireLexical'
 import { hashSchema } from 'flowgraph-core'
+import {
+  createFlowGraphLexicalPageContentsField,
+  reconcileFlowGraphLexicalPageContents,
+} from 'flowgraph-payload-lexical'
 import type { CollectionBeforeChangeHook, CollectionConfig, JSONField } from 'payload'
 
 const validateSchema: NonNullable<JSONField['validate']> = (value) => {
@@ -27,6 +32,7 @@ const populateSchemaMetadata: CollectionBeforeChangeHook = ({ data }) => {
 
   return {
     ...data,
+    pageContents: reconcileFlowGraphLexicalPageContents(parsed.value, data.pageContents),
     schema: flowGraphRuntime.withQuestionPluginManifest(parsed.value),
     schemaHash: hashSchema(flowGraphRuntime.withQuestionPluginManifest(parsed.value)),
     schemaID: parsed.value.id,
@@ -84,6 +90,10 @@ export const GuidedQuestionnaires: CollectionConfig = {
       type: 'text',
       admin: { hidden: true, readOnly: true },
     },
+    createFlowGraphLexicalPageContentsField({
+      editor: questionnaireLexical,
+      label: 'Contenido de las páginas',
+    }),
     {
       name: 'schemaVersion',
       label: 'Versión del esquema',

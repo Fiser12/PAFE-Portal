@@ -54,6 +54,7 @@ type FlowGraphCanvasProps = {
   onChange: (schema: SchemaDraft) => void
   onTitleChange: (title: string) => void
   onDescriptionChange: (description: string) => void
+  renderPageContentEditor?: (nodeID: string) => React.ReactNode
 }
 
 const fieldStyle: React.CSSProperties = {
@@ -344,6 +345,7 @@ const NodeEditorModal = ({
   remove,
   close,
   createQuestionID,
+  pageContentEditor,
 }: {
   questionPlugins: ReactQuestionPluginRegistry
   nodeID: string
@@ -355,6 +357,7 @@ const NodeEditorModal = ({
   remove: () => void
   close: () => void
   createQuestionID: () => string
+  pageContentEditor?: React.ReactNode
 }) => (
   <div
     role="presentation"
@@ -439,6 +442,8 @@ const NodeEditorModal = ({
               {entry ? 'Página inicial' : 'Hacer página inicial'}
             </button>
           </div>
+
+          {pageContentEditor}
 
           <strong>Preguntas</strong>
           {node.questions.length === 0 && (
@@ -589,6 +594,7 @@ export function FlowGraphCanvas({
   onChange,
   onTitleChange,
   onDescriptionChange,
+  renderPageContentEditor,
 }: FlowGraphCanvasProps) {
   const [positions, setPositions] = useState<Record<string, XYPosition>>(() =>
     layoutPositions(schema),
@@ -1172,6 +1178,7 @@ export function FlowGraphCanvas({
           remove={() => removeNode(editingNodeID)}
           close={() => setEditingNodeID(null)}
           createQuestionID={createQuestionID}
+          pageContentEditor={renderPageContentEditor?.(editingNodeID)}
         />
       )}
     </section>

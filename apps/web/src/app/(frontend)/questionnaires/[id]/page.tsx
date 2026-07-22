@@ -64,6 +64,7 @@ export default async function QuestionnairePage({ params }: PageProps) {
         title={questionnaire.title}
         description={questionnaire.description}
         schema={parsed.value}
+        pageContents={questionnaire.pageContents}
       />
     </div>
   )

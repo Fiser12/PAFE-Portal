@@ -4,6 +4,7 @@ import { createDefaultFlowSchema } from '@/lib/flowgraph/defaultSchema'
 import { flowGraphReactQuestionPlugins } from '@/lib/flowgraph/react'
 import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
 import { useField } from '@payloadcms/ui'
+import { FlowGraphLexicalPageEditor } from 'flowgraph-payload-lexical/client'
 import type { JSONFieldClientComponent } from 'payload'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -132,6 +133,17 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
           onChange={commit}
           onTitleChange={titleField.setValue}
           onDescriptionChange={descriptionField.setValue}
+          renderPageContentEditor={(nodeID) => (
+            <FlowGraphLexicalPageEditor
+              collectionSlug="guided-questionnaires"
+              nodeID={nodeID}
+              labels={{
+                title: 'Contenido de la página',
+                preparing: 'Preparando contenido…',
+                configurationError: 'No se ha podido cargar la configuración Lexical.',
+              }}
+            />
+          )}
         />
       )}
     </div>

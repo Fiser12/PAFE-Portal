@@ -22,6 +22,15 @@ export default [
   }),
   nodeProject("session", "flowgraph-session"),
   defineProject({
+    root: `${import.meta.dirname}/packages/flowgraph-payload-lexical`,
+    test: {
+      name: "payload-lexical",
+      environment: "jsdom",
+      include: ["test/**/*.test.ts", "test/**/*.test.tsx"],
+      sequence: { shuffle: false },
+    },
+  }),
+  defineProject({
     root: `${import.meta.dirname}/packages/flowgraph-react`,
     test: {
       name: "react",
