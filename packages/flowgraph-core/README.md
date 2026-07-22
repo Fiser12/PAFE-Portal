@@ -4,6 +4,9 @@ Pure, synchronous event-sourced engine for immutable survey graphs. It owns sche
 parsing, Strong Kleene guard evaluation, `decide`/`apply`/`replay`, selectors,
 structural checking, bounded probing, golden journeys, and edge coverage.
 
+The cross-package product roadmap is tracked in
+[`FLOWGRAPH_ROADMAP.md`](../../FLOWGRAPH_ROADMAP.md).
+
 Import only from `flowgraph-core`; the package exposes no deep subpaths and ships as
 ESM for Node.js 22+ and browser-oriented ES2022 toolchains.
 
