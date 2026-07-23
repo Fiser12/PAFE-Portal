@@ -24,7 +24,12 @@ const metadata = (event: Event): CommandMeta => ({
 });
 
 const samePath = (left: Event["path"], right: Event["path"]): boolean =>
-  left.length === right.length;
+  left.length === right.length &&
+  left.every(
+    (segment, index) =>
+      segment.flow === right[index]?.flow &&
+      segment.instance === right[index]?.instance,
+  );
 
 const sameAnswer = (left: JsonValue, right: JsonValue): boolean => {
   if (Array.isArray(left) || Array.isArray(right)) {

@@ -23,20 +23,35 @@ export type QuestionLocation = {
   readonly question: Question;
 };
 
+// Schemas are immutable after parsing, so the location index can be cached
+// per schema object without changing the function's pure semantics.
+const questionIndexes = new WeakMap<
+  FlowSchema,
+  ReadonlyMap<QuestionId, QuestionLocation>
+>();
+
+const questionIndex = (
+  schema: FlowSchema,
+): ReadonlyMap<QuestionId, QuestionLocation> => {
+  const cached = questionIndexes.get(schema);
+  if (cached) return cached;
+  const built = new Map<QuestionId, QuestionLocation>();
+  for (const [nodeId, node] of Object.entries(schema.nodes)) {
+    if (node.kind !== "page") continue;
+    node.questions.forEach((question, index) => {
+      if (!built.has(question.id)) {
+        built.set(question.id, { page: toNodeId(nodeId), index, question });
+      }
+    });
+  }
+  questionIndexes.set(schema, built);
+  return built;
+};
+
 export const findQuestion = (
   schema: FlowSchema,
   questionId: QuestionId,
-): QuestionLocation | undefined => {
-  for (const [nodeId, node] of Object.entries(schema.nodes)) {
-    if (node.kind !== "page") continue;
-    const index = node.questions.findIndex(
-      (question) => question.id === questionId,
-    );
-    const question = node.questions[index];
-    if (question) return { page: toNodeId(nodeId), index, question };
-  }
-  return undefined;
-};
+): QuestionLocation | undefined => questionIndex(schema).get(questionId);
 
 const pluginFor = (plugins: QuestionPluginRegistry, question: Question) =>
   plugins.get(question.kind);

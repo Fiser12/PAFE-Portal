@@ -121,16 +121,28 @@ const emptyGuardProblems = (
   return own;
 };
 
-const canReach = (schema: FlowSchema, from: NodeId, to: NodeId): boolean => {
-  const visit = (nodeId: NodeId, seen: ReadonlySet<NodeId>): boolean => {
-    if (nodeId === to) return true;
-    if (seen.has(nodeId)) return false;
-    const node = schema.nodes[nodeId];
-    if (node?.kind !== "page") return false;
-    const nextSeen = new Set(seen).add(nodeId);
-    return node.edges.some((edge) => visit(edge.to, nextSeen));
+// One O(V+E) traversal per queried source, cached for the duration of a
+// check() run; guard references would otherwise enumerate paths repeatedly.
+const createReachability = (schema: FlowSchema) => {
+  const cache = new Map<NodeId, ReadonlySet<NodeId>>();
+  const reachableFrom = (from: NodeId): ReadonlySet<NodeId> => {
+    const cached = cache.get(from);
+    if (cached) return cached;
+    const visited = new Set<NodeId>();
+    const stack: NodeId[] = [from];
+    while (stack.length > 0) {
+      const nodeId = stack.pop() as NodeId;
+      if (visited.has(nodeId)) continue;
+      visited.add(nodeId);
+      const node = schema.nodes[nodeId];
+      if (node?.kind === "page") {
+        for (const edge of node.edges) stack.push(edge.to);
+      }
+    }
+    cache.set(from, visited);
+    return visited;
   };
-  return visit(from, new Set());
+  return (from: NodeId, to: NodeId): boolean => reachableFrom(from).has(to);
 };
 
 export const check = (
@@ -256,6 +268,7 @@ export const check = (
     }
   }
 
+  const canReach = createReachability(schema);
   const questions = new Map<QuestionId, QuestionLocation>();
   for (const [page, node] of nodes) {
     if (node.kind !== "page") continue;
@@ -336,7 +349,7 @@ export const check = (
         location.page === page &&
         location.index < (visibilityIndex ?? Infinity);
       const isAncestor =
-        location.page !== page && canReach(schema, location.page, page);
+        location.page !== page && canReach(location.page, page);
       if (visibilityIndex !== undefined && !isEarlier && !isAncestor) {
         problems.push(
           issue("error", "ill-founded-visibility", {
