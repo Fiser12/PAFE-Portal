@@ -79,6 +79,7 @@ export interface Config {
     'tasks-completed': TasksCompleted;
     'guided-questionnaires': GuidedQuestionnaire;
     'questionnaire-executions': QuestionnaireExecution;
+    formaciones: Formacione;
     'external-resources': ExternalResource;
     taxonomy: Taxonomy;
     groups: Group;
@@ -121,6 +122,7 @@ export interface Config {
     'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
     'guided-questionnaires': GuidedQuestionnairesSelect<false> | GuidedQuestionnairesSelect<true>;
     'questionnaire-executions': QuestionnaireExecutionsSelect<false> | QuestionnaireExecutionsSelect<true>;
+    formaciones: FormacionesSelect<false> | FormacionesSelect<true>;
     'external-resources': ExternalResourcesSelect<false> | ExternalResourcesSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     groups: GroupsSelect<false> | GroupsSelect<true>;
@@ -783,6 +785,43 @@ export interface QuestionnaireExecution {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formaciones".
+ */
+export interface Formacione {
+  id: number;
+  title: string;
+  slug: string;
+  description?: string | null;
+  /**
+   * Origen de la migración
+   */
+  moodleCourseId?: number | null;
+  sections?:
+    | {
+        title: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -1279,6 +1318,10 @@ export interface PayloadLockedDocument {
         value: number | QuestionnaireExecution;
       } | null)
     | ({
+        relationTo: 'formaciones';
+        value: number | Formacione;
+      } | null)
+    | ({
         relationTo: 'external-resources';
         value: number | ExternalResource;
       } | null)
@@ -1526,6 +1569,25 @@ export interface QuestionnaireExecutionsSelect<T extends boolean = true> {
   schemaHash?: T;
   startedAt?: T;
   finishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formaciones_select".
+ */
+export interface FormacionesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  moodleCourseId?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2128,6 +2190,7 @@ export interface TaskCreateCollectionExport {
       | 'tasks-completed'
       | 'guided-questionnaires'
       | 'questionnaire-executions'
+      | 'formaciones'
       | 'external-resources'
       | 'taxonomy'
       | 'groups'
