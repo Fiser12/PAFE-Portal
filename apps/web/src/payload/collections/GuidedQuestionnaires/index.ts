@@ -30,8 +30,20 @@ const populateSchemaMetadata: CollectionBeforeChangeHook = ({ data }) => {
   const parsed = flowGraphRuntime.parseSchema(data.schema)
   if (!parsed.ok) return data
 
+  // El layout del editor es cosmético y vive fuera del schema (no altera su
+  // hash); aquí solo se descartan posiciones de nodos que ya no existen.
+  const layout =
+    data.editorLayout && typeof data.editorLayout === 'object'
+      ? Object.fromEntries(
+          Object.entries(data.editorLayout as Record<string, unknown>).filter(
+            ([nodeID]) => parsed.value.nodes[nodeID as keyof typeof parsed.value.nodes],
+          ),
+        )
+      : data.editorLayout
+
   return {
     ...data,
+    editorLayout: layout,
     pageContents: reconcileFlowGraphLexicalPageContents(parsed.value, data.pageContents),
     schema: flowGraphRuntime.withQuestionPluginManifest(parsed.value),
     schemaHash: hashSchema(flowGraphRuntime.withQuestionPluginManifest(parsed.value)),
@@ -89,6 +101,12 @@ export const GuidedQuestionnaires: CollectionConfig = {
       label: 'ID del esquema',
       type: 'text',
       admin: { hidden: true, readOnly: true },
+    },
+    {
+      name: 'editorLayout',
+      label: 'Disposición del grafo',
+      type: 'json',
+      admin: { hidden: true },
     },
     createFlowGraphLexicalPageContentsField({
       editor: questionnaireLexical,

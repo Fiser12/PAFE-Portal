@@ -500,6 +500,15 @@ export interface GuidedQuestionnaire {
     | boolean
     | null;
   schemaID?: string | null;
+  editorLayout?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   pageContents?:
     | {
         pageID: string;
@@ -1489,6 +1498,7 @@ export interface GuidedQuestionnairesSelect<T extends boolean = true> {
   description?: T;
   schema?: T;
   schemaID?: T;
+  editorLayout?: T;
   pageContents?:
     | T
     | {
