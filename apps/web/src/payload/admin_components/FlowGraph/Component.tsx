@@ -8,18 +8,11 @@ import { FlowGraphLexicalPageEditor } from 'flowgraph-payload-lexical/client'
 import type { JSONFieldClientComponent } from 'payload'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import type { SchemaDraft } from './draft-types'
+import { describeProblem } from './diagnostics'
+import type { LayoutDraft, SchemaDraft } from './draft-types'
 import { FlowGraphCanvas } from './GraphCanvas'
-
-const buttonStyle: React.CSSProperties = {
-  minHeight: '34px',
-  padding: '6px 12px',
-  border: '1px solid var(--theme-elevation-250)',
-  borderRadius: 'var(--style-radius-s)',
-  background: 'var(--theme-elevation-100)',
-  color: 'var(--theme-elevation-800)',
-  cursor: 'pointer',
-}
+import { PreviewModal } from './PreviewModal'
+import { buttonStyle } from './styles'
 
 const cloneSchema = (value: unknown): SchemaDraft => {
   const parsed = flowGraphRuntime.parseSchema(value)
@@ -31,7 +24,10 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
   const schemaField = useField<unknown>({ path })
   const titleField = useField<string>({ path: 'title' })
   const descriptionField = useField<string>({ path: 'description' })
+  const layoutField = useField<LayoutDraft | null>({ path: 'editorLayout' })
+  const pageContentsField = useField<unknown>({ path: 'pageContents' })
   const [tab, setTab] = useState<'graph' | 'json'>('graph')
+  const [previewing, setPreviewing] = useState(false)
   const [jsonDraft, setJsonDraft] = useState('')
   const [jsonError, setJsonError] = useState<string | null>(null)
   const schema = useMemo(() => cloneSchema(schemaField.value), [schemaField.value])
@@ -45,12 +41,12 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
     if (!parsed.ok) {
       return parsed.error.map((problem) => ({
         severity: 'error' as const,
-        text: `JSON inválido en ${problem.path.join('.') || 'raíz'}`,
+        text: `El JSON no es válido en ${problem.path.join('.') || 'la raíz'}`,
       }))
     }
     return flowGraphRuntime.check(parsed.value).map((problem) => ({
       severity: problem.severity,
-      text: `${problem.code}${Object.keys(problem.where).length ? ` · ${JSON.stringify(problem.where)}` : ''}`,
+      text: describeProblem(problem),
     }))
   }, [schemaField.value])
 
@@ -83,6 +79,9 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
   return (
     <div className="field-type json">
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginBottom: '10px' }}>
+        <button type="button" style={buttonStyle} onClick={() => setPreviewing(true)}>
+          ▶ Probar
+        </button>
         <button type="button" style={buttonStyle} onClick={() => setTab('graph')}>
           Grafo
         </button>
@@ -130,9 +129,11 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
           title={titleField.value ?? ''}
           description={descriptionField.value ?? ''}
           diagnostics={diagnostics}
+          layout={layoutField.value}
           onChange={commit}
           onTitleChange={titleField.setValue}
           onDescriptionChange={descriptionField.setValue}
+          onLayoutChange={layoutField.setValue}
           renderPageContentEditor={(nodeID) => (
             <FlowGraphLexicalPageEditor
               collectionSlug="guided-questionnaires"
@@ -144,6 +145,14 @@ export const FlowGraphField: JSONFieldClientComponent = ({ path }) => {
               }}
             />
           )}
+        />
+      )}
+
+      {previewing && (
+        <PreviewModal
+          schemaValue={schemaField.value ?? createDefaultFlowSchema()}
+          pageContents={pageContentsField.value}
+          close={() => setPreviewing(false)}
         />
       )}
     </div>

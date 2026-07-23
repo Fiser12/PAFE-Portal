@@ -1,19 +1,22 @@
 export type TextRefDraft = { key: string; fallback: string }
 
-/** Guards que el editor visual sabe crear y editar */
-export type BasicGuardDraft =
+export type ComparisonOpDraft = 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte'
+
+export type NumericExprDraft =
+  | { kind: 'num'; value: number }
+  | { kind: 'answer'; q: string }
+  | { kind: 'score'; q: string }
+  | { kind: 'sum'; values: NumericExprDraft[] }
+
+/** Gramática completa de guards del core; el builder visual la cubre entera */
+export type GuardDraft =
   | { kind: 'always' }
   | { kind: 'answered'; q: string }
   | { kind: 'selected'; q: string; option: string }
-
-/**
- * Guards del core que el editor visual todavía no representa (not/all/any/cmp).
- * Se muestran como "condición avanzada" y se preservan intactos: solo la
- * pestaña de JSON puede modificarlos.
- */
-export type AdvancedGuardDraft = { kind: 'not' | 'all' | 'any' | 'cmp' } & Record<string, unknown>
-
-export type GuardDraft = BasicGuardDraft | AdvancedGuardDraft
+  | { kind: 'not'; value: GuardDraft }
+  | { kind: 'all'; values: GuardDraft[] }
+  | { kind: 'any'; values: GuardDraft[] }
+  | { kind: 'cmp'; op: ComparisonOpDraft; left: NumericExprDraft; right: NumericExprDraft }
 
 export type OptionDraft = { id: string; text: TextRefDraft; weight?: number }
 
@@ -27,8 +30,7 @@ export type QuestionDraft = {
   max?: number
   multiple?: boolean
   options?: OptionDraft[]
-  /** Visibilidad condicional del core; el editor la preserva pero aún no la edita */
-  visibleWhen?: unknown
+  visibleWhen?: GuardDraft
 }
 
 export type EdgeDraft = { to: string; when: GuardDraft }
@@ -50,3 +52,5 @@ export type SchemaDraft = {
   entry: string
   nodes: Record<string, NodeDraft>
 }
+
+export type LayoutDraft = Record<string, { x: number; y: number }>

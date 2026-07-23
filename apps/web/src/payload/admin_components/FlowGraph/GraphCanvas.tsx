@@ -16,19 +16,23 @@ import {
   type XYPosition,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { toQuestionId, type QuestionDefinition } from 'flowgraph-core'
 import type { ReactQuestionPluginRegistry } from 'flowgraph-react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type {
-  BasicGuardDraft,
   EdgeDraft,
   GuardDraft,
+  LayoutDraft,
   NodeDraft,
   PageDraft,
   QuestionDraft,
   SchemaDraft,
 } from './draft-types'
+import { GuardBuilder } from './GuardBuilder'
+import { eligibleQuestions, guardLabel, selectableOptions } from './guards'
+import { layoutPositions, orderedEdges } from './layout'
+import { NodeEditorModal } from './NodeEditorModal'
+import { buttonStyle, dangerButtonStyle, fieldStyle } from './styles'
 
 type Diagnostic = { severity: 'error' | 'warning'; text: string }
 type SelectedEdge = { source: string; target: string }
@@ -52,38 +56,12 @@ type FlowGraphCanvasProps = {
   title: string
   description: string
   diagnostics: readonly Diagnostic[]
+  layout?: LayoutDraft | null
   onChange: (schema: SchemaDraft) => void
   onTitleChange: (title: string) => void
   onDescriptionChange: (description: string) => void
+  onLayoutChange?: (layout: LayoutDraft) => void
   renderPageContentEditor?: (nodeID: string) => React.ReactNode
-}
-
-const fieldStyle: React.CSSProperties = {
-  width: '100%',
-  minHeight: '34px',
-  padding: '6px 9px',
-  border: '1px solid var(--theme-elevation-200)',
-  borderRadius: 'var(--style-radius-s)',
-  background: 'var(--theme-input-bg)',
-  color: 'var(--theme-elevation-800)',
-  fontSize: '12px',
-}
-
-const buttonStyle: React.CSSProperties = {
-  minHeight: '32px',
-  padding: '5px 10px',
-  border: '1px solid var(--theme-elevation-250)',
-  borderRadius: 'var(--style-radius-s)',
-  background: 'var(--theme-elevation-100)',
-  color: 'var(--theme-elevation-800)',
-  cursor: 'pointer',
-  fontSize: '12px',
-}
-
-const dangerButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  color: 'var(--theme-error-600)',
-  borderColor: 'var(--theme-error-300)',
 }
 
 const slug = (value: string): string =>
@@ -103,112 +81,6 @@ const uniqueID = (prefix: string, used: readonly string[]): string => {
     suffix += 1
   }
   return candidate
-}
-
-const questionForKind = (
-  plugins: ReactQuestionPluginRegistry,
-  kind: QuestionDraft['kind'],
-  id: string,
-  label = 'Nueva pregunta',
-): QuestionDraft => {
-  const plugin = plugins.get(kind)
-  if (plugin === undefined) throw new Error(`Plugin de pregunta no registrado: ${kind}`)
-  const question = plugin.core.createDefault({
-    id: toQuestionId(id),
-    text: { key: `question.${id}`, fallback: label },
-  })
-  return JSON.parse(JSON.stringify({ ...question, required: false })) as QuestionDraft
-}
-
-const InlineQuestion = ({
-  question,
-  questionPlugins,
-  update,
-  remove,
-}: {
-  question: QuestionDraft
-  update: (question: QuestionDraft) => void
-  remove: () => void
-  questionPlugins: ReactQuestionPluginRegistry
-}) => {
-  const plugin = questionPlugins.get(question.kind)
-  const parsed = plugin?.core.questionSchema.safeParse(question)
-  const PluginEditor = plugin?.QuestionEditor
-
-  return (
-    <div
-      className="nodrag nopan"
-      style={{
-        display: 'grid',
-        gap: '7px',
-        padding: '9px',
-        border: '1px solid var(--theme-elevation-150)',
-        borderRadius: '7px',
-        background: 'var(--theme-elevation-50)',
-      }}
-    >
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 105px auto', gap: '6px' }}>
-        <input
-          aria-label={`Texto de ${question.id}`}
-          style={fieldStyle}
-          value={question.text.fallback}
-          onChange={(event) =>
-            update({ ...question, text: { ...question.text, fallback: event.target.value } })
-          }
-        />
-        <select
-          aria-label={`Tipo de ${question.id}`}
-          style={fieldStyle}
-          value={question.kind}
-          onChange={(event) =>
-            update({
-              ...questionForKind(
-                questionPlugins,
-                event.target.value as QuestionDraft['kind'],
-                question.id,
-                question.text.fallback,
-              ),
-              required: question.required,
-            })
-          }
-        >
-          {questionPlugins.list().map((questionPlugin) => (
-            <option key={questionPlugin.core.kind} value={questionPlugin.core.kind}>
-              {questionPlugin.label}
-            </option>
-          ))}
-        </select>
-        <button type="button" style={dangerButtonStyle} onClick={remove} aria-label="Eliminar pregunta">
-          ×
-        </button>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '11px' }}>
-        <code>{question.id}</code>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <input
-            type="checkbox"
-            checked={question.required ?? false}
-            onChange={(event) => update({ ...question, required: event.target.checked })}
-          />
-          Obligatoria
-        </label>
-      </div>
-      {PluginEditor && parsed?.success ? (
-        <PluginEditor
-          question={parsed.data as QuestionDefinition}
-          problems={[]}
-          disabled={false}
-          resolveText={(text) => text.fallback}
-          onChange={(next) => update(JSON.parse(JSON.stringify(next)) as QuestionDraft)}
-        />
-      ) : (
-        <p style={{ margin: 0, color: 'var(--theme-error-600)', fontSize: '11px' }}>
-          La configuración de esta pregunta no es válida para su plugin.
-        </p>
-      )}
-    </div>
-  )
 }
 
 const FlowNode = ({ data, selected }: NodeProps<CanvasNode>) => {
@@ -335,262 +207,7 @@ const FlowNode = ({ data, selected }: NodeProps<CanvasNode>) => {
   )
 }
 
-const NodeEditorModal = ({
-  questionPlugins,
-  nodeID,
-  node,
-  entry,
-  canDelete,
-  update,
-  makeEntry,
-  remove,
-  close,
-  createQuestionID,
-  pageContentEditor,
-}: {
-  questionPlugins: ReactQuestionPluginRegistry
-  nodeID: string
-  node: NodeDraft
-  entry: boolean
-  canDelete: boolean
-  update: (node: NodeDraft) => void
-  makeEntry: () => void
-  remove: () => void
-  close: () => void
-  createQuestionID: () => string
-  pageContentEditor?: React.ReactNode
-}) => (
-  <div
-    role="presentation"
-    onMouseDown={(event) => {
-      if (event.target === event.currentTarget) close()
-    }}
-    style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 1000,
-      display: 'grid',
-      placeItems: 'center',
-      padding: '24px',
-      background: 'color-mix(in srgb, var(--theme-elevation-900) 45%, transparent)',
-    }}
-  >
-    <section
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Editar ${nodeID}`}
-      style={{
-        width: 'min(760px, 100%)',
-        maxHeight: 'calc(100vh - 48px)',
-        overflow: 'auto',
-        padding: '18px',
-        border: '1px solid var(--theme-elevation-250)',
-        borderRadius: '12px',
-        background: 'var(--theme-elevation-0)',
-        color: 'var(--theme-elevation-800)',
-        boxShadow: '0 20px 60px color-mix(in srgb, var(--theme-elevation-900) 28%, transparent)',
-      }}
-    >
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-          marginBottom: '16px',
-        }}
-      >
-        <div>
-          <strong>Editar {node.kind === 'page' ? 'página' : 'resultado'}</strong>
-          <code style={{ display: 'block', marginTop: '3px', fontSize: '11px', opacity: 0.65 }}>
-            {nodeID}
-          </code>
-        </div>
-        <button type="button" style={buttonStyle} onClick={close}>
-          Cerrar
-        </button>
-      </header>
-
-      {node.kind === 'terminal' ? (
-        <label style={{ display: 'grid', gap: '5px', fontSize: '12px' }}>
-          Resultado
-          <input
-            style={{ ...fieldStyle, fontSize: '14px' }}
-            value={node.outcome}
-            onChange={(event) => update({ ...node, outcome: event.target.value })}
-          />
-        </label>
-      ) : (
-        <div style={{ display: 'grid', gap: '12px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
-            <label style={{ display: 'grid', gap: '5px', fontSize: '12px' }}>
-              Título de la página
-              <input
-                style={{ ...fieldStyle, fontSize: '14px' }}
-                value={node.title?.fallback ?? ''}
-                onChange={(event) =>
-                  update({
-                    ...node,
-                    title: {
-                      key: node.title?.key ?? `page.${nodeID}.title`,
-                      fallback: event.target.value,
-                    },
-                  })
-                }
-              />
-            </label>
-            <button type="button" style={buttonStyle} onClick={makeEntry} disabled={entry}>
-              {entry ? 'Página inicial' : 'Hacer página inicial'}
-            </button>
-          </div>
-
-          {pageContentEditor}
-
-          <strong>Preguntas</strong>
-          {node.questions.length === 0 && (
-            <p style={{ margin: 0, fontSize: '12px', opacity: 0.7 }}>
-              Esta página todavía no tiene preguntas.
-            </p>
-          )}
-          {node.questions.map((question, questionIndex) => (
-            <InlineQuestion
-              key={question.id}
-              question={question}
-              questionPlugins={questionPlugins}
-              update={(updated) => {
-                const questions = [...node.questions]
-                questions[questionIndex] = updated
-                update({ ...node, questions })
-              }}
-              remove={() =>
-                update({
-                  ...node,
-                  questions: node.questions.filter((_, index) => index !== questionIndex),
-                })
-              }
-            />
-          ))}
-          <button
-            type="button"
-            style={buttonStyle}
-            onClick={() => {
-              const questionID = createQuestionID()
-              update({
-                ...node,
-                questions: [
-                  ...node.questions,
-                  questionForKind(questionPlugins, 'text', questionID),
-                ],
-              })
-            }}
-          >
-            + Añadir pregunta
-          </button>
-        </div>
-      )}
-
-      <footer
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '18px',
-          paddingTop: '14px',
-          borderTop: '1px solid var(--theme-elevation-150)',
-        }}
-      >
-        <button
-          type="button"
-          style={dangerButtonStyle}
-          disabled={!canDelete}
-          onClick={() => {
-            remove()
-            close()
-          }}
-        >
-          Eliminar nodo
-        </button>
-        <button type="button" style={buttonStyle} onClick={close}>
-          Listo
-        </button>
-      </footer>
-    </section>
-  </div>
-)
-
 const nodeTypes = { flowNode: FlowNode }
-
-const NODE_WIDTH = 240
-const NODE_HEIGHT = 92
-const NODE_GAP_X = 140
-const NODE_GAP_Y = 75
-
-const layoutPositions = (schema: SchemaDraft): Record<string, XYPosition> => {
-  const nodeIDs = Object.keys(schema.nodes)
-  if (nodeIDs.length === 0) return {}
-
-  const entry = schema.nodes[schema.entry] ? schema.entry : nodeIDs[0]!
-  const levels = new Map<string, number>([[entry, 0]])
-  const queue = [entry]
-
-  for (let cursor = 0; cursor < queue.length; cursor += 1) {
-    const nodeID = queue[cursor]!
-    const node = schema.nodes[nodeID]
-    if (node?.kind !== 'page') continue
-    const nextLevel = (levels.get(nodeID) ?? 0) + 1
-    for (const edge of node.edges) {
-      if (!schema.nodes[edge.to] || levels.has(edge.to)) continue
-      levels.set(edge.to, nextLevel)
-      queue.push(edge.to)
-    }
-  }
-
-  const lastReachableLevel = Math.max(0, ...levels.values())
-  for (const nodeID of nodeIDs) {
-    if (!levels.has(nodeID)) levels.set(nodeID, lastReachableLevel + 1)
-  }
-
-  const columns = new Map<number, string[]>()
-  for (const nodeID of nodeIDs) {
-    const level = levels.get(nodeID) ?? 0
-    columns.set(level, [...(columns.get(level) ?? []), nodeID])
-  }
-  const maxRows = Math.max(...[...columns.values()].map((column) => column.length))
-  const positions: Record<string, XYPosition> = {}
-
-  for (const [level, column] of columns) {
-    const verticalOffset = ((maxRows - column.length) * (NODE_HEIGHT + NODE_GAP_Y)) / 2
-    column.forEach((nodeID, row) => {
-      positions[nodeID] = {
-        x: 60 + level * (NODE_WIDTH + NODE_GAP_X),
-        y: 60 + verticalOffset + row * (NODE_HEIGHT + NODE_GAP_Y),
-      }
-    })
-  }
-
-  return positions
-}
-
-const orderedEdges = (edges: readonly EdgeDraft[]): EdgeDraft[] => [
-  ...edges.filter((edge) => edge.when.kind !== 'always'),
-  ...edges.filter((edge) => edge.when.kind === 'always'),
-]
-
-const questionLabel = (question: QuestionDraft | undefined): string =>
-  question?.text.fallback || question?.id || 'Pregunta'
-
-const BASIC_GUARD_KINDS: readonly string[] = ['always', 'answered', 'selected']
-
-const isBasicGuard = (guard: GuardDraft): guard is BasicGuardDraft =>
-  BASIC_GUARD_KINDS.includes(guard.kind)
-
-const guardLabel = (guard: GuardDraft, questions: readonly QuestionDraft[]): string => {
-  if (!isBasicGuard(guard)) return 'Condición avanzada (JSON)'
-  if (guard.kind === 'always') return 'Siempre'
-  const question = questions.find(({ id }) => id === guard.q)
-  if (guard.kind === 'answered') return `Respondida: ${questionLabel(question)}`
-  const option = question?.options?.find(({ id }) => id === guard.option)
-  return `${questionLabel(question)} = ${option?.text.fallback ?? guard.option}`
-}
 
 export function FlowGraphCanvas({
   questionPlugins,
@@ -598,14 +215,17 @@ export function FlowGraphCanvas({
   title,
   description,
   diagnostics,
+  layout,
   onChange,
   onTitleChange,
   onDescriptionChange,
+  onLayoutChange,
   renderPageContentEditor,
 }: FlowGraphCanvasProps) {
-  const [positions, setPositions] = useState<Record<string, XYPosition>>(() =>
-    layoutPositions(schema),
-  )
+  const [positions, setPositions] = useState<Record<string, XYPosition>>(() => ({
+    ...layoutPositions(schema),
+    ...(layout ?? {}),
+  }))
   const [flowInstance, setFlowInstance] = useState<ReactFlowInstance<CanvasNode> | null>(null)
   const [selectedEdge, setSelectedEdge] = useState<SelectedEdge | null>(null)
   const [editingNodeID, setEditingNodeID] = useState<string | null>(null)
@@ -620,19 +240,6 @@ export function FlowGraphCanvas({
         .flatMap(([, page]) => page.questions),
     [nodeEntries],
   )
-  const selectedOptions = useCallback(
-    (question: QuestionDraft) => {
-      const plugin = questionPlugins.get(question.kind)
-      const parsed = plugin?.core.questionSchema.safeParse(question)
-      if (!plugin || !parsed?.success) return []
-      const capability = plugin.core
-        .conditions(parsed.data)
-        .find((candidate) => candidate.kind === 'selected')
-      return capability?.kind === 'selected' ? capability.options : []
-    },
-    [questionPlugins],
-  )
-  const selectableQuestions = questions.filter((question) => selectedOptions(question).length > 0)
 
   useEffect(() => {
     setPositions((current) => {
@@ -654,6 +261,19 @@ export function FlowGraphCanvas({
       setSelectedEdge(null)
     }
   }, [schema.nodes, selectedEdge])
+
+  const persistLayout = useCallback(
+    (next: Record<string, XYPosition>) => {
+      if (!onLayoutChange) return
+      const pruned: LayoutDraft = {}
+      for (const nodeID of Object.keys(schema.nodes)) {
+        const position = next[nodeID]
+        if (position) pruned[nodeID] = { x: position.x, y: position.y }
+      }
+      onLayoutChange(pruned)
+    },
+    [onLayoutChange, schema.nodes],
+  )
 
   const updateNode = useCallback(
     (nodeID: string, node: NodeDraft) => {
@@ -800,25 +420,26 @@ export function FlowGraphCanvas({
       const hasDefault = source.edges.some((edge) => edge.when.kind === 'always')
       let when: GuardDraft = { kind: 'always' }
       if (hasDefault) {
-        const localSelect = source.questions.find(
-          (question) => selectedOptions(question).length > 0,
+        const eligible = eligibleQuestions(schema, sourceID)
+        const localSelect = eligible.find(
+          (question) => selectableOptions(questionPlugins, question).length > 0,
         )
-        const candidate = localSelect ?? source.questions[0] ?? questions[0]
+        const candidate = localSelect ?? eligible[0]
         if (!candidate) {
           setNotice('Añade una pregunta en el nodo para poder distinguir una segunda ruta.')
           return
         }
-        when =
-          selectedOptions(candidate)[0]
-            ? { kind: 'selected', q: candidate.id, option: selectedOptions(candidate)[0]!.id }
-            : { kind: 'answered', q: candidate.id }
+        const option = selectableOptions(questionPlugins, candidate)[0]
+        when = option
+          ? { kind: 'selected', q: candidate.id, option: option.id }
+          : { kind: 'answered', q: candidate.id }
       }
 
       updatePageEdges(sourceID, (current) => [...current, { to: target, when }])
       setSelectedEdge({ source: sourceID, target })
       setNotice('Flecha creada. Configura aquí su condición.')
     },
-    [questions, schema.nodes, selectedOptions, updatePageEdges],
+    [questionPlugins, schema, updatePageEdges],
   )
 
   const selectedPage = selectedEdge ? schema.nodes[selectedEdge.source] : undefined
@@ -857,13 +478,14 @@ export function FlowGraphCanvas({
     selectedPage.edges.some(
       (edge) => edge.to !== selectedEdge?.target && edge.when.kind === 'always',
     )
-  const selectedQuestionID =
-    selectedEdgeValue?.when.kind === 'selected' ? selectedEdgeValue.when.q : undefined
-  const selectedQuestion = selectableQuestions.find(({ id }) => id === selectedQuestionID)
-  const selectedQuestionOptions = selectedQuestion ? selectedOptions(selectedQuestion) : []
+  const edgeEligibleQuestions = useMemo(
+    () => (selectedEdge ? eligibleQuestions(schema, selectedEdge.source) : []),
+    [schema, selectedEdge],
+  )
   const editingNode = editingNodeID ? schema.nodes[editingNodeID] : undefined
   const arrangeGraph = () => {
     setPositions(automaticPositions)
+    persistLayout(automaticPositions)
     requestAnimationFrame(() => {
       requestAnimationFrame(() => flowInstance?.fitView({ padding: 0.2, duration: 250 }))
     })
@@ -937,11 +559,9 @@ export function FlowGraphCanvas({
           nodeTypes={nodeTypes}
           onInit={(instance) => {
             setFlowInstance(instance)
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => instance.fitView({ padding: 0.2 }))
-            })
           }}
           onNodesChange={onNodesChange}
+          onNodeDragStop={() => persistLayout(positions)}
           onConnect={onConnect}
           onEdgeClick={(_, edge) => {
             setSelectedEdge({ source: edge.source, target: edge.target })
@@ -1009,6 +629,8 @@ export function FlowGraphCanvas({
               bottom: '14px',
               zIndex: 6,
               width: 'min(820px, calc(100% - 150px))',
+              maxHeight: '55%',
+              overflow: 'auto',
               transform: 'translateX(-50%)',
               padding: '12px',
               border: '1px solid var(--theme-elevation-250)',
@@ -1019,172 +641,62 @@ export function FlowGraphCanvas({
           >
             {notice && <p style={{ margin: selectedEdgeValue ? '0 0 8px' : 0 }}>{notice}</p>}
             {selectedEdge && selectedEdgeValue && (
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr 1fr 1fr auto',
-                  alignItems: 'end',
-                  gap: '7px',
-                }}
-              >
-                <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                  Desde
-                  <input style={fieldStyle} value={selectedEdge.source} disabled />
-                </label>
-                <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                  Destino
-                  <select
-                    style={fieldStyle}
-                    value={selectedEdgeValue.to}
-                    onChange={(event) => {
-                      const destination = event.target.value
-                      if (
-                        selectedPage?.kind === 'page' &&
-                        selectedPage.edges.some(
-                          (edge) => edge.to === destination && edge.to !== selectedEdge.target,
-                        )
-                      ) {
-                        setNotice('Ya existe otra flecha hacia ese destino.')
-                        return
-                      }
-                      updateSelectedEdge((edge) => ({ ...edge, to: destination }))
-                    }}
-                  >
-                    {nodeEntries
-                      .filter(([nodeID]) => nodeID !== selectedEdge.source)
-                      .map(([nodeID, node]) => (
-                        <option key={nodeID} value={nodeID}>
-                          {node.kind === 'page' ? node.title?.fallback || nodeID : node.outcome}
-                        </option>
-                      ))}
-                  </select>
-                </label>
-                {!isBasicGuard(selectedEdgeValue.when) ? (
-                  <span
-                    style={{
-                      gridColumn: '3 / 5',
-                      alignSelf: 'center',
-                      fontSize: '11px',
-                      color: 'var(--theme-elevation-600)',
-                    }}
-                  >
-                    Condición avanzada ({selectedEdgeValue.when.kind}); se conserva tal cual.
-                    Edítala en la pestaña «JSON avanzado».
-                  </span>
-                ) : (
-                  <>
-                    <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                      Condición
-                      <select
-                        style={fieldStyle}
-                        value={selectedEdgeValue.when.kind}
-                        onChange={(event) => {
-                          const kind = event.target.value as BasicGuardDraft['kind']
-                          if (kind === 'always') {
-                            updateSelectedEdge((edge) => ({ ...edge, when: { kind } }))
-                          } else if (kind === 'selected') {
-                            const question = selectableQuestions[0]
-                            const option = question ? selectedOptions(question)[0] : undefined
-                            if (question && option) {
-                              updateSelectedEdge((edge) => ({
-                                ...edge,
-                                when: { kind, q: question.id, option: option.id },
-                              }))
-                            }
-                          } else if (questions[0]) {
-                            updateSelectedEdge((edge) => ({
-                              ...edge,
-                              when: { kind, q: questions[0]!.id },
-                            }))
-                          }
-                        }}
-                      >
-                        <option value="always" disabled={Boolean(anotherDefault)}>
-                          Siempre
-                        </option>
-                        <option value="answered" disabled={questions.length === 0}>
-                          Respondida
-                        </option>
-                        <option value="selected" disabled={selectableQuestions.length === 0}>
-                          Opción elegida
-                        </option>
-                      </select>
-                    </label>
-
-                    {selectedEdgeValue.when.kind === 'always' ? (
-                      <span style={{ alignSelf: 'center', fontSize: '11px' }}>Ruta por defecto</span>
-                    ) : (
-                      <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                        Pregunta
-                        <select
-                          style={fieldStyle}
-                          value={selectedEdgeValue.when.q}
-                          onChange={(event) => {
-                            const question = questions.find(({ id }) => id === event.target.value)
-                            updateSelectedEdge((edge) => ({
-                              ...edge,
-                              when:
-                                edge.when.kind === 'selected'
-                                  ? {
-                                      kind: 'selected',
-                                      q: event.target.value,
-                                      option: question
-                                        ? (selectedOptions(question)[0]?.id ?? '')
-                                        : '',
-                                    }
-                                  : { kind: 'answered', q: event.target.value },
-                            }))
-                          }}
-                        >
-                          {(selectedEdgeValue.when.kind === 'selected'
-                            ? selectableQuestions
-                            : questions
-                          ).map((question) => (
-                            <option key={question.id} value={question.id}>
-                              {questionLabel(question)}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    )}
-                  </>
-                )}
-
-                <button type="button" style={dangerButtonStyle} onClick={deleteSelectedEdge}>
-                  Eliminar flecha
-                </button>
-
-                {selectedEdgeValue.when.kind === 'selected' && (
-                  <label
-                    style={{
-                      display: 'grid',
-                      gridColumn: '4 / 5',
-                      gap: '4px',
-                      fontSize: '11px',
-                    }}
-                  >
-                    Opción
+              <div style={{ display: 'grid', gap: '8px' }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr auto',
+                    alignItems: 'end',
+                    gap: '7px',
+                  }}
+                >
+                  <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
+                    Desde
+                    <input style={fieldStyle} value={selectedEdge.source} disabled />
+                  </label>
+                  <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
+                    Destino
                     <select
                       style={fieldStyle}
-                      value={selectedEdgeValue.when.option}
-                      onChange={(event) =>
-                        updateSelectedEdge((edge) => ({
-                          ...edge,
-                          when:
-                            edge.when.kind === 'selected'
-                              ? { ...edge.when, option: event.target.value }
-                              : edge.when,
-                        }))
-                      }
+                      value={selectedEdgeValue.to}
+                      onChange={(event) => {
+                        const destination = event.target.value
+                        if (
+                          selectedPage?.kind === 'page' &&
+                          selectedPage.edges.some(
+                            (edge) => edge.to === destination && edge.to !== selectedEdge.target,
+                          )
+                        ) {
+                          setNotice('Ya existe otra flecha hacia ese destino.')
+                          return
+                        }
+                        updateSelectedEdge((edge) => ({ ...edge, to: destination }))
+                      }}
                     >
-                      {selectedQuestionOptions.map((option) => (
-                          <option key={option.id} value={option.id}>
-                            {option.text.fallback}
+                      {nodeEntries
+                        .filter(([nodeID]) => nodeID !== selectedEdge.source)
+                        .map(([nodeID, node]) => (
+                          <option key={nodeID} value={nodeID}>
+                            {node.kind === 'page' ? node.title?.fallback || nodeID : node.outcome}
                           </option>
                         ))}
                     </select>
                   </label>
-                )}
+                  <button type="button" style={dangerButtonStyle} onClick={deleteSelectedEdge}>
+                    Eliminar flecha
+                  </button>
+                </div>
+
+                <div style={{ display: 'grid', gap: '4px' }}>
+                  <span style={{ fontSize: '11px' }}>Se sigue esta flecha cuando…</span>
+                  <GuardBuilder
+                    guard={selectedEdgeValue.when}
+                    onChange={(when) => updateSelectedEdge((edge) => ({ ...edge, when }))}
+                    plugins={questionPlugins}
+                    questions={edgeEligibleQuestions}
+                    allowAlways={!anotherDefault}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -1194,6 +706,7 @@ export function FlowGraphCanvas({
       {editingNodeID && editingNode && (
         <NodeEditorModal
           questionPlugins={questionPlugins}
+          schema={schema}
           nodeID={editingNodeID}
           node={editingNode}
           entry={schema.entry === editingNodeID}
