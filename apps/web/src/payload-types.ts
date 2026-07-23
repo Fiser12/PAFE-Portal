@@ -78,6 +78,7 @@ export interface Config {
     tasks: Task;
     'tasks-completed': TasksCompleted;
     'guided-questionnaires': GuidedQuestionnaire;
+    'questionnaire-executions': QuestionnaireExecution;
     'external-resources': ExternalResource;
     taxonomy: Taxonomy;
     groups: Group;
@@ -119,6 +120,7 @@ export interface Config {
     tasks: TasksSelect<false> | TasksSelect<true>;
     'tasks-completed': TasksCompletedSelect<false> | TasksCompletedSelect<true>;
     'guided-questionnaires': GuidedQuestionnairesSelect<false> | GuidedQuestionnairesSelect<true>;
+    'questionnaire-executions': QuestionnaireExecutionsSelect<false> | QuestionnaireExecutionsSelect<true>;
     'external-resources': ExternalResourcesSelect<false> | ExternalResourcesSelect<true>;
     taxonomy: TaxonomySelect<false> | TaxonomySelect<true>;
     groups: GroupsSelect<false> | GroupsSelect<true>;
@@ -733,6 +735,40 @@ export interface TasksCompleted {
   task: number | Task;
   user: number | User;
   completedOn: string;
+  /**
+   * Evidencia: ejecución validada que originó esta completación
+   */
+  execution?: (number | null) | QuestionnaireExecution;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "questionnaire-executions".
+ */
+export interface QuestionnaireExecution {
+  id: number;
+  questionnaire: number | GuidedQuestionnaire;
+  user: number | User;
+  /**
+   * Tarea desde la que se lanzó el cuestionario, si procede
+   */
+  task?: (number | null) | Task;
+  events:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  outcome?: string | null;
+  schemaID?: string | null;
+  schemaVersion?: string | null;
+  schemaHash?: string | null;
+  startedAt?: string | null;
+  finishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1230,6 +1266,10 @@ export interface PayloadLockedDocument {
         value: number | GuidedQuestionnaire;
       } | null)
     | ({
+        relationTo: 'questionnaire-executions';
+        value: number | QuestionnaireExecution;
+      } | null)
+    | ({
         relationTo: 'external-resources';
         value: number | ExternalResource;
       } | null)
@@ -1436,6 +1476,7 @@ export interface TasksCompletedSelect<T extends boolean = true> {
   task?: T;
   user?: T;
   completedOn?: T;
+  execution?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1457,6 +1498,24 @@ export interface GuidedQuestionnairesSelect<T extends boolean = true> {
       };
   schemaVersion?: T;
   schemaHash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "questionnaire-executions_select".
+ */
+export interface QuestionnaireExecutionsSelect<T extends boolean = true> {
+  questionnaire?: T;
+  user?: T;
+  task?: T;
+  events?: T;
+  outcome?: T;
+  schemaID?: T;
+  schemaVersion?: T;
+  schemaHash?: T;
+  startedAt?: T;
+  finishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2058,6 +2117,7 @@ export interface TaskCreateCollectionExport {
       | 'tasks'
       | 'tasks-completed'
       | 'guided-questionnaires'
+      | 'questionnaire-executions'
       | 'external-resources'
       | 'taxonomy'
       | 'groups'

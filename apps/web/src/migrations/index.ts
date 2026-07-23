@@ -4,6 +4,7 @@ import * as migration_20260720_131220 from './20260720_131220';
 import * as migration_20260720_132740 from './20260720_132740';
 import * as migration_20260721_221832 from './20260721_221832';
 import * as migration_20260722_012839_lexical_questionnaire_pages from './20260722_012839_lexical_questionnaire_pages';
+import * as migration_20260723_180019_questionnaire_executions from './20260723_180019_questionnaire_executions';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260722_012839_lexical_questionnaire_pages.up,
     down: migration_20260722_012839_lexical_questionnaire_pages.down,
-    name: '20260722_012839_lexical_questionnaire_pages'
+    name: '20260722_012839_lexical_questionnaire_pages',
+  },
+  {
+    up: migration_20260723_180019_questionnaire_executions.up,
+    down: migration_20260723_180019_questionnaire_executions.down,
+    name: '20260723_180019_questionnaire_executions'
   },
 ];

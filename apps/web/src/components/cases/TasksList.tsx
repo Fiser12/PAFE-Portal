@@ -82,7 +82,7 @@ function TaskCard({ task, variant, showCaseInfo, onCaseClick, onTaskComplete }: 
 
         {/* Recursos y acciones */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <TaskResources resources={task.resources} />
+          <TaskResources resources={task.resources} taskId={task.id} />
           {canComplete && (
             <Button size="sm" className="w-full sm:w-auto" onClick={() => onTaskComplete(task.id)}>
               <CheckCircle className="mr-2 h-4 w-4" />

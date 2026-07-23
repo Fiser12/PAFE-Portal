@@ -6,6 +6,8 @@ import type { Task } from '@/payload-types'
 
 interface TaskResourcesProps {
   resources: Task['resources']
+  /** Tarea de origen: los cuestionarios la llevan en la URL para registrar su completación al enviarse */
+  taskId?: number
 }
 
 const getResourceIcon = (relationTo: string, resourceType?: string) => {
@@ -44,12 +46,13 @@ const getResourceLabel = (relationTo: string) => {
 const getResourceUrl = (
   resource: { url?: string | null; id?: number | string },
   relationTo: string,
+  taskId?: number,
 ): string | null => {
   switch (relationTo) {
     case 'files':
       return resource.url ?? null
     case 'guided-questionnaires':
-      return `/questionnaires/${resource.id}`
+      return `/questionnaires/${resource.id}${taskId !== undefined ? `?task=${taskId}` : ''}`
     case 'external-resources':
       return resource.url ?? null
     default:
@@ -57,7 +60,7 @@ const getResourceUrl = (
   }
 }
 
-export function TaskResources({ resources }: TaskResourcesProps) {
+export function TaskResources({ resources, taskId }: TaskResourcesProps) {
   if (!resources || resources.length === 0) {
     return null
   }
@@ -83,7 +86,7 @@ export function TaskResources({ resources }: TaskResourcesProps) {
           const title = resourceData.title || resourceData.name || 'Recurso sin título'
           const icon = getResourceIcon(relationTo, resourceData.type)
           const label = getResourceLabel(relationTo)
-          const url = getResourceUrl(resourceData, relationTo)
+          const url = getResourceUrl(resourceData, relationTo, taskId)
           const text = `${label}: ${title.length > 20 ? `${title.substring(0, 20)}…` : title}`
 
           if (url) {

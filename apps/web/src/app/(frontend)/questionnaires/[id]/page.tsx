@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic'
 
 type PageProps = {
   params: Promise<{ id: string }>
+  searchParams?: Promise<{ task?: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -26,8 +27,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function QuestionnairePage({ params }: PageProps) {
+export default async function QuestionnairePage({ params, searchParams }: PageProps) {
   const { id } = await params
+  const { task } = (await searchParams) ?? {}
+  const taskId = task && /^\d+$/.test(task) ? Number(task) : undefined
   const { payload, user } = await getSessionUser()
 
   if (!user) redirect(`/login?redirect=/questionnaires/${encodeURIComponent(id)}`)
@@ -61,6 +64,9 @@ export default async function QuestionnairePage({ params }: PageProps) {
   return (
     <div className="container py-10">
       <QuestionnaireRunner
+        questionnaireId={questionnaire.id}
+        userId={user.id}
+        taskId={taskId}
         title={questionnaire.title}
         description={questionnaire.description}
         schema={parsed.value}

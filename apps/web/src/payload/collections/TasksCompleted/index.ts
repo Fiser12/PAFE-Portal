@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_TASKS_COMPLETED, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_TASKS_COMPLETED, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER, COLLECTION_SLUG_QUESTIONNAIRE_EXECUTIONS } from '@/core/collections-slugs'
 import {
   hiddenUnlessAdmin,
   isActiveUser,
@@ -62,6 +62,16 @@ export const TasksCompleted: CollectionConfig = {
           pickerAppearance: 'dayAndTime'
         }
       }
+    },
+    {
+      label: 'Ejecución de cuestionario',
+      name: 'execution',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_QUESTIONNAIRE_EXECUTIONS,
+      admin: {
+        readOnly: true,
+        description: 'Evidencia: ejecución validada que originó esta completación',
+      },
     },
   ],
   timestamps: true,
