@@ -4,6 +4,10 @@ This roadmap records the product capabilities worth adopting from mature survey
 builders such as SurveyJS without giving up FlowGraph's explicit acyclic graph,
 deterministic runtime, event log, or package boundaries.
 
+Resource authorization is deliberately specified outside FlowGraph. See
+[`PAYLOAD_AUTHORIZATION_ARCHITECTURE.md`](./PAYLOAD_AUTHORIZATION_ARCHITECTURE.md)
+for the native Payload CMS design and its optional evolution to SpiceDB.
+
 ## Foundations already in place
 
 - Pure `flowgraph-core` runtime with parsing, structural checks, guard evaluation,
