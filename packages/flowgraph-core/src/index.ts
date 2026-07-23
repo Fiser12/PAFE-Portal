@@ -95,6 +95,7 @@ export type {
   QuestionPluginRegistryProblemCode,
   QuestionPluginSchema,
   QuestionPluginSchemaIssue,
+  QuestionUpcaster,
 } from "./plugins/question-plugin";
 export {
   createQuestionPluginRegistry,
@@ -126,6 +127,7 @@ export {
 } from "./parsing/shared";
 export { parseComposition, parsePack } from "./parsing/pack";
 export { upcastEvents } from "./parsing/upcast";
+export { upcastSchema } from "./parsing/upcast-schema";
 export { allTruth, anyTruth, notTruth } from "./semantics/truth";
 export { evaluateGuard, evaluateNumeric } from "./semantics/evaluate";
 export { activeAnswers, storedAnswer } from "./semantics/active-truth";

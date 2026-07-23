@@ -78,12 +78,18 @@ for the native Payload CMS design and its optional evolution to SpiceDB.
 
 ### Plugin evolution policy
 
-- Define compatibility rules for persisted question definitions when a plugin
-  version changes.
-- Keep schema upcasting framework-owned and deterministic; plugin packages may
-  provide pure version steps, but must not perform storage, network, or UI work.
-- Add compatibility fixtures before releasing a second persisted version of any
-  question plugin.
+Implemented. See [`PLUGIN_EVOLUTION.md`](./PLUGIN_EVOLUTION.md) for the full
+policy and the workflow for publishing a new plugin version.
+
+- Compatibility rules for persisted question definitions are enforced by
+  `upcastSchema` during `parseSchema`: exact version, upcaster chain, or
+  same-major passthrough are accepted; cross-major without a chain and
+  persisted-newer-than-installed are rejected.
+- Schema upcasting is framework-owned and deterministic; plugins contribute
+  pure `QuestionUpcaster` version steps only and never perform storage, network,
+  or UI work.
+- Compatibility fixtures are required before releasing a second persisted
+  version of any plugin (reference: `test/unit/upcast-schema.test.ts`).
 
 ## P1 — product completeness
 

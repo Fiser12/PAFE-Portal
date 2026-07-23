@@ -10,6 +10,7 @@ import {
   textRefSchema,
   toParseProblems,
 } from "./shared";
+import { upcastSchema } from "./upcast-schema";
 
 export const numericExprWireSchema: z.ZodType = z.lazy(() =>
   z.discriminatedUnion("kind", [
@@ -124,7 +125,13 @@ export const parseSchema = (
   input: unknown,
   plugins: QuestionPluginRegistry,
 ): Result<FlowSchema, readonly ParseProblem[]> => {
-  const parsed = flowSchema(plugins).safeParse(input);
+  // Migrate persisted question definitions to the installed plugin versions
+  // before validation, so a compatible version bump does not invalidate saved
+  // questionnaires. Incompatible versions are rejected here with a precise
+  // message; the exact manifest check below stays as a final guard.
+  const upcasted = upcastSchema(input, plugins);
+  if (!upcasted.ok) return err(upcasted.error);
+  const parsed = flowSchema(plugins).safeParse(upcasted.value);
   if (!parsed.success) return err(toParseProblems(parsed.error.issues));
   const schema = parsed.data as unknown as FlowSchema;
   if (schema.questionPlugins !== undefined) {

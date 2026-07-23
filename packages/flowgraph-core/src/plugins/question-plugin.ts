@@ -74,6 +74,20 @@ export type QuestionPluginNamespaceContext = {
 };
 
 /**
+ * A pure, framework-orchestrated migration step for a persisted question
+ * definition. It transforms the raw stored object of version `from` into the
+ * shape of version `to`. It must be deterministic and perform no storage,
+ * network, or UI work, and must preserve fields it does not intend to change.
+ */
+export type QuestionUpcaster = {
+  readonly from: string;
+  readonly to: string;
+  readonly upcast: (
+    question: Readonly<Record<string, unknown>>,
+  ) => Readonly<Record<string, unknown>>;
+};
+
+/**
  * Framework-neutral contract implemented by a question package.
  *
  * Navigation and guard evaluation remain owned by FlowGraph. A plugin only
@@ -85,6 +99,11 @@ export type QuestionPlugin<
 > = {
   readonly kind: Q["kind"];
   readonly version: string;
+  /**
+   * Ordered pure migration steps from older persisted versions up to
+   * `version`. Framework code chains them; a plugin never runs them itself.
+   */
+  readonly upcasters?: readonly QuestionUpcaster[];
   readonly questionSchema: QuestionPluginSchema<Q>;
   readonly answerSchema: QuestionPluginSchema<A>;
   readonly createDefault: (context: QuestionPluginCreateContext) => Q;
