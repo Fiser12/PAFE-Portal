@@ -85,8 +85,11 @@ Consecuencias:
 - **La evidencia se refuerza.** El evento guarda el **hash** del archivo en el
   momento de responder. Si el fichero se altera después, el hash no cuadra →
   a prueba de manipulación. Es mejor prueba que un adjunto suelto.
-- **Autorización/antivirus/retención** son responsabilidad de la server action
-  de subida (patrón ya usado en `submitQuestionnaireExecution`), fuera del motor.
+- **Almacenamiento: Cloudflare R2** (vía adaptador de storage de Payload sobre
+  `Media`). **Autorización/antivirus/retención** son responsabilidad de la server
+  action de subida (patrón ya usado en `submitQuestionnaireExecution`), fuera del
+  motor. Ajuste necesario: subir el límite de subida de Payload (hoy **25 MB** en
+  `payload.config.ts`) — hay recursos de hasta ~36 MB.
 
 Este es exactamente el patrón que el roadmap reservaba para adjuntos y loaders:
 el I/O en el borde del host, el motor consume el resultado capturado. Requiere un
@@ -145,6 +148,30 @@ evolución de plugins, `Tasks`, `TasksCompleted`, `Media`/`Files`,
 4. **ETL de migración**: extraer de Moodle (páginas HTML, PDFs, feedback) →
    transformar (HTML→Lexical, ficheros→Media) → cargar en `Formaciones`.
 
+## Estado de preparación (verificado 2026-07-24)
+
+**Prod en sync.** Las migraciones de las fases 1 y 2 (`questionnaire_executions`,
+`editor_layout`) están aplicadas en Neon (`payload_migrations` batches 6 y 7;
+tabla y columna confirmadas por consulta directa). `prodMigrations` las aplica
+solas al arrancar; el admin de prod (`www.pafe-formakuntza.com/admin`) responde
+200. **Pendiente:** click-through manual del editor de fase 2 en navegador.
+
+**Storage de adjuntos decidido:** Cloudflare **R2** (Media de Payload → R2).
+
+**Spike HTML→Lexical — bajo riesgo.** De 60 páginas: 0 con imágenes, 0 con
+`@@PLUGINFILE@@`, 0 iframes/vídeo/audio; solo 5 con tablas. Es texto rico pegado
+de Word (`<p>/<span>/<strong>` + ruido `mso-`/`style=`/`font-family` que se
+descarta al convertir). La conversión es directa; las 5 tablas → nodos de tabla
+Lexical. No hay medios embebidos que compliquen.
+
+**Spike extracción de ficheros — viable.** `moodledata` en `/bitnami/moodledata`
+(filedir 255 MB). Cada fichero vive en
+`filedir/<hash[0:2]>/<hash[2:4]>/<contenthash>`. Verificado con una muestra: el
+`sha1sum` del fichero en disco coincide con el `contenthash` de `mdl_files`
+(integridad OK, legible). El nombre humano vive solo en `mdl_files.filename` (el
+disco guarda por hash). ETL: por cada fila real de `mdl_files` → leer bytes de esa
+ruta → subir a Media/R2 con su filename.
+
 ## Plan de implementación (fases)
 
 1. **Plugin `upload`** — pregunta de subida (referencia+hash) + server action con
@@ -162,5 +189,12 @@ evolución de plugins, `Tasks`, `TasksCompleted`, `Media`/`Files`,
 - **Revisión de entregas:** el archivo subido queda con la familia como
   propietaria y visible al profesional del caso. ¿Hace falta corrección/nota
   formal, o basta con registrado+descargable? (asunción actual: lo segundo).
+- **Acceso a las Formaciones:** ¿quién ve qué curso? Alinear con
+  [`../../PAYLOAD_AUTHORIZATION_ARCHITECTURE.md`](../../PAYLOAD_AUTHORIZATION_ARCHITECTURE.md).
+- **Seguridad de subidas:** tamaño máximo, tipos permitidos y antivirus (o
+  aparcarlo documentando el riesgo).
 - **Foros / H5P:** confirmar que quedan fuera.
 - **Duplicados:** confirmar que el 14 (No PAFE) no se migra.
+
+Decidido: **storage = R2**; el modelo de curso (Formaciones/bloques) y la subida
+como pregunta de FlowGraph.
