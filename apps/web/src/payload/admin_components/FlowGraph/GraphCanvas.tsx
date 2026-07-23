@@ -21,6 +21,7 @@ import type { ReactQuestionPluginRegistry } from 'flowgraph-react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type {
+  BasicGuardDraft,
   EdgeDraft,
   GuardDraft,
   NodeDraft,
@@ -577,7 +578,13 @@ const orderedEdges = (edges: readonly EdgeDraft[]): EdgeDraft[] => [
 const questionLabel = (question: QuestionDraft | undefined): string =>
   question?.text.fallback || question?.id || 'Pregunta'
 
+const BASIC_GUARD_KINDS: readonly string[] = ['always', 'answered', 'selected']
+
+const isBasicGuard = (guard: GuardDraft): guard is BasicGuardDraft =>
+  BASIC_GUARD_KINDS.includes(guard.kind)
+
 const guardLabel = (guard: GuardDraft, questions: readonly QuestionDraft[]): string => {
+  if (!isBasicGuard(guard)) return 'Condición avanzada (JSON)'
   if (guard.kind === 'always') return 'Siempre'
   const question = questions.find(({ id }) => id === guard.q)
   if (guard.kind === 'answered') return `Respondida: ${questionLabel(question)}`
@@ -1052,77 +1059,95 @@ export function FlowGraphCanvas({
                       ))}
                   </select>
                 </label>
-                <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                  Condición
-                  <select
-                    style={fieldStyle}
-                    value={selectedEdgeValue.when.kind}
-                    onChange={(event) => {
-                      const kind = event.target.value as GuardDraft['kind']
-                      if (kind === 'always') {
-                        updateSelectedEdge((edge) => ({ ...edge, when: { kind } }))
-                      } else if (kind === 'selected') {
-                        const question = selectableQuestions[0]
-                        const option = question ? selectedOptions(question)[0] : undefined
-                        if (question && option) {
-                          updateSelectedEdge((edge) => ({
-                            ...edge,
-                            when: { kind, q: question.id, option: option.id },
-                          }))
-                        }
-                      } else if (questions[0]) {
-                        updateSelectedEdge((edge) => ({
-                          ...edge,
-                          when: { kind, q: questions[0]!.id },
-                        }))
-                      }
+                {!isBasicGuard(selectedEdgeValue.when) ? (
+                  <span
+                    style={{
+                      gridColumn: '3 / 5',
+                      alignSelf: 'center',
+                      fontSize: '11px',
+                      color: 'var(--theme-elevation-600)',
                     }}
                   >
-                    <option value="always" disabled={Boolean(anotherDefault)}>
-                      Siempre
-                    </option>
-                    <option value="answered" disabled={questions.length === 0}>
-                      Respondida
-                    </option>
-                    <option value="selected" disabled={selectableQuestions.length === 0}>
-                      Opción elegida
-                    </option>
-                  </select>
-                </label>
-
-                {selectedEdgeValue.when.kind === 'always' ? (
-                  <span style={{ alignSelf: 'center', fontSize: '11px' }}>Ruta por defecto</span>
+                    Condición avanzada ({selectedEdgeValue.when.kind}); se conserva tal cual.
+                    Edítala en la pestaña «JSON avanzado».
+                  </span>
                 ) : (
-                  <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
-                    Pregunta
-                    <select
-                      style={fieldStyle}
-                      value={selectedEdgeValue.when.q}
-                      onChange={(event) => {
-                        const question = questions.find(({ id }) => id === event.target.value)
-                        updateSelectedEdge((edge) => ({
-                          ...edge,
-                          when:
-                            edge.when.kind === 'selected'
-                              ? {
-                                  kind: 'selected',
-                                  q: event.target.value,
-                                  option: question ? (selectedOptions(question)[0]?.id ?? '') : '',
-                                }
-                              : { kind: 'answered', q: event.target.value },
-                        }))
-                      }}
-                    >
-                      {(selectedEdgeValue.when.kind === 'selected'
-                        ? selectableQuestions
-                        : questions
-                      ).map((question) => (
-                        <option key={question.id} value={question.id}>
-                          {questionLabel(question)}
+                  <>
+                    <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
+                      Condición
+                      <select
+                        style={fieldStyle}
+                        value={selectedEdgeValue.when.kind}
+                        onChange={(event) => {
+                          const kind = event.target.value as BasicGuardDraft['kind']
+                          if (kind === 'always') {
+                            updateSelectedEdge((edge) => ({ ...edge, when: { kind } }))
+                          } else if (kind === 'selected') {
+                            const question = selectableQuestions[0]
+                            const option = question ? selectedOptions(question)[0] : undefined
+                            if (question && option) {
+                              updateSelectedEdge((edge) => ({
+                                ...edge,
+                                when: { kind, q: question.id, option: option.id },
+                              }))
+                            }
+                          } else if (questions[0]) {
+                            updateSelectedEdge((edge) => ({
+                              ...edge,
+                              when: { kind, q: questions[0]!.id },
+                            }))
+                          }
+                        }}
+                      >
+                        <option value="always" disabled={Boolean(anotherDefault)}>
+                          Siempre
                         </option>
-                      ))}
-                    </select>
-                  </label>
+                        <option value="answered" disabled={questions.length === 0}>
+                          Respondida
+                        </option>
+                        <option value="selected" disabled={selectableQuestions.length === 0}>
+                          Opción elegida
+                        </option>
+                      </select>
+                    </label>
+
+                    {selectedEdgeValue.when.kind === 'always' ? (
+                      <span style={{ alignSelf: 'center', fontSize: '11px' }}>Ruta por defecto</span>
+                    ) : (
+                      <label style={{ display: 'grid', gap: '4px', fontSize: '11px' }}>
+                        Pregunta
+                        <select
+                          style={fieldStyle}
+                          value={selectedEdgeValue.when.q}
+                          onChange={(event) => {
+                            const question = questions.find(({ id }) => id === event.target.value)
+                            updateSelectedEdge((edge) => ({
+                              ...edge,
+                              when:
+                                edge.when.kind === 'selected'
+                                  ? {
+                                      kind: 'selected',
+                                      q: event.target.value,
+                                      option: question
+                                        ? (selectedOptions(question)[0]?.id ?? '')
+                                        : '',
+                                    }
+                                  : { kind: 'answered', q: event.target.value },
+                            }))
+                          }}
+                        >
+                          {(selectedEdgeValue.when.kind === 'selected'
+                            ? selectableQuestions
+                            : questions
+                          ).map((question) => (
+                            <option key={question.id} value={question.id}>
+                              {questionLabel(question)}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
+                  </>
                 )}
 
                 <button type="button" style={dangerButtonStyle} onClick={deleteSelectedEdge}>
