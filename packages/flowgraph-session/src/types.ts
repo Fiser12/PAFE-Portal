@@ -10,6 +10,15 @@ export type StateListener = () => void;
 export type EventListener = (batch: readonly Event[]) => void;
 export type Unsubscribe = () => void;
 
+export type SessionOptions = {
+  /**
+   * Invoked with listener failures after a dispatch has committed. When
+   * omitted, the session throws one AggregateError instead; the commit is
+   * never rolled back in either case.
+   */
+  readonly onListenerError?: (failures: readonly unknown[]) => void;
+};
+
 export type FlowSession = {
   readonly dispatch: (
     command: Command,

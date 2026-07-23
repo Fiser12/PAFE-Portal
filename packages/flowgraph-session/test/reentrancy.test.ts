@@ -93,6 +93,24 @@ describe("session notification causality", () => {
     expect(flow.getSnapshot().status).toBe("finished");
   });
 
+  it("reports listener failures through onListenerError instead of throwing", () => {
+    const failures: unknown[] = [];
+    const created = createSession(schema, undefined, {
+      onListenerError: (batch) => failures.push(...batch),
+    });
+    if (!created.ok) throw new Error("test setup failed");
+    const flow = created.value;
+    const cause = new Error("persistence failed");
+    flow.subscribeEvents(() => {
+      throw cause;
+    });
+
+    expect(flow.dispatch(command("START"))).toMatchObject({ ok: true });
+    expect(failures).toEqual([cause]);
+    expect(flow.getSnapshot().status).toBe("active");
+    expect(flow.getEvents()).toHaveLength(1);
+  });
+
   it("aggregates state-listener failures after later state listeners run", () => {
     const flow = session();
     const calls: string[] = [];

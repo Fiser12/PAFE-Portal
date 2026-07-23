@@ -78,4 +78,5 @@ export const activeAnswers = runtime.activeAnswers;
 export const createSession = (
   schema: Parameters<typeof createFlowSession>[1],
   events?: Parameters<typeof createFlowSession>[2],
-) => createFlowSession(runtime, schema, events);
+  options?: Parameters<typeof createFlowSession>[3],
+) => createFlowSession(runtime, schema, events, options);

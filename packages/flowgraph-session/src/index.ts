@@ -11,6 +11,7 @@ export { createSession } from "./session";
 export type {
   EventListener,
   FlowSession,
+  SessionOptions,
   StateListener,
   Unsubscribe,
 } from "./types";

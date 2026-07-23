@@ -14,6 +14,7 @@ import {
 import type {
   EventListener,
   FlowSession,
+  SessionOptions,
   StateListener,
   Unsubscribe,
 } from "./types";
@@ -36,6 +37,7 @@ export const createSession = (
   runtime: FlowGraphRuntime,
   schema: FlowSchema,
   pastEvents?: readonly Event[],
+  options?: SessionOptions,
 ): Result<FlowSession, Problem> => {
   let events: readonly Event[];
   let snapshot: FlowState;
@@ -86,10 +88,14 @@ export const createSession = (
       notifying = false;
     }
     if (failures.length > 0) {
-      throw new AggregateError(
-        failures,
-        "Flow session listeners failed after commit",
-      );
+      if (options?.onListenerError) {
+        options.onListenerError(failures);
+      } else {
+        throw new AggregateError(
+          failures,
+          "Flow session listeners failed after commit",
+        );
+      }
     }
     return decided;
   };
