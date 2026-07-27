@@ -156,7 +156,11 @@ for (const item of items) {
     continue
   }
 
-  const currentTitle = (doc.title ?? '').replace(/\.pdf$/i, '').trim()
+  // El título almacenado, tal cual: la comparación es literal contra el manifiesto.
+  // Quitar la extensión aquí haría que «La Familia en la Ópera.pdf» pasara por correcto
+  // y el catálogo seguiría mostrando el «.pdf» al usuario.
+  const storedTitle = (doc.title ?? '').trim()
+  const currentTitle = storedTitle.replace(/\.pdf$/i, '')
   const currentCats = (doc.categories ?? []) as (number | { id: number; name: string })[]
   const currentCatNames = currentCats.map((c) =>
     typeof c === 'number' ? String(c) : c.name,
@@ -166,7 +170,7 @@ for (const item of items) {
     (c) => !(typeof c !== 'number' && knownAuthorNames.has(c.name)),
   )
 
-  const titleWrong = currentTitle !== item.title
+  const titleWrong = storedTitle !== item.title
   const authorsWrong =
     [...currentAuthors].sort().join(' | ') !== [...item.authors].sort().join(' | ')
 
@@ -177,7 +181,7 @@ for (const item of items) {
 
   console.log(`\n${filename}`)
   if (titleWrong) {
-    console.log(`  título:  ${currentTitle}\n       →   ${item.title}`)
+    console.log(`  título:  ${storedTitle}\n       →   ${item.title}`)
     titleFixes++
   }
   if (authorsWrong) {
