@@ -640,7 +640,6 @@
   "slug": "Malos-padres",
   "title": "Malos padres",
   "authors": [
-   "Rosana Zardini",
    "Stefano Cirillo"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Malos%20padres-95322652df72806ebb2a57e72aae62045b38e128.pdf",
@@ -649,9 +648,11 @@
  },
  {
   "slug": "Modelos-de-Familia-Conocer-y-Resolver-Problemas-entre-Padres",
-  "title": "Modelos de Familia: Conocer y Resolver Problemas entre Padres",
+  "title": "Modelos de familia. Conocer y resolver los problemas entre padres e hijos",
   "authors": [
-   "Giorgio Nardone"
+   "Giorgio Nardone",
+   "Emanuela Giannotti",
+   "Rita Rocchi"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Modelos%20de%20Familia%20Conocer%20y%20Resolver%20Problemas%20entre%20Padres-e0935e051d120f40ec76bb18892894eb65db1c77.pdf",
   "sourceMd": "export/text/r2-files-md/Modelos de Familia Conocer y Resolver Problemas entre Padres.md",
@@ -659,9 +660,10 @@
  },
  {
   "slug": "Neurobilogía-del-apego",
-  "title": "Neurobilogía del apego",
+  "title": "Neurobiología del apego",
   "authors": [
-   "Manuel Hernández Pacheco"
+   "Adriana Vargas Rueda",
+   "Roberto Chaskel"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Neurobilog%C3%ADa%20del%20apego-100834674b9147d452661e2a13861f3266499b47.pdf",
   "sourceMd": "export/text/r2-files-md/Neurobilogía del apego.md",
@@ -669,9 +671,10 @@
  },
  {
   "slug": "Niños-Maltratados-Diagnóstico-y-Terapia-Familiar",
-  "title": "Niños Maltratados: Diagnóstico y Terapia Familiar",
+  "title": "Niños maltratados. Diagnóstico y terapia familiar",
   "authors": [
-   "Stefano Cirillo"
+   "Stefano Cirillo",
+   "Paola Di Blasio"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Ni%C3%B1os%20Maltratados%20Diagn%C3%B3stico%20y%20Terapia%20Familiar-280a0fb2004058ef4cf86ebc63a9c7d2db99bc57.pdf",
   "sourceMd": "export/text/r2-files-md/Niños Maltratados Diagnóstico y Terapia Familiar.md",
@@ -679,7 +682,7 @@
  },
  {
   "slug": "No-Es-Posible-No-Comunicar",
-  "title": "No Es Posible No Comunicar",
+  "title": "No es posible no comunicar",
   "authors": [
    "Paul Watzlawick"
   ],
@@ -689,9 +692,10 @@
  },
  {
   "slug": "Obsesiones-Compulsiones-Manias",
-  "title": "Obsesiones Compulsiones Manias",
+  "title": "Obsesiones, compulsiones, manías. Entenderlas y superarlas en tiempo breve",
   "authors": [
-   "Giorgio Nardone"
+   "Giorgio Nardone",
+   "Claudette Portelli"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Obsesiones%20Compulsiones%20Manias-2bf7e022c5209befc4502486bafedf343be1f8bc.pdf",
   "sourceMd": "export/text/r2-files-md/Obsesiones Compulsiones Manias.md",
@@ -700,7 +704,9 @@
  {
   "slug": "Padres-tóxicos",
   "title": "Padres tóxicos",
-  "authors": [],
+  "authors": [
+   "Joseluis Canales"
+  ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Padres%20t%C3%B3xicos-05a52840f19dca364309285310638ac4e4ac7878.pdf",
   "sourceMd": "export/text/r2-files-md/Padres tóxicos.md",
   "notePath": "wiki/content/libros/Padres-tóxicos.md"
@@ -720,7 +726,7 @@
  },
  {
   "slug": "Pasos-Hacia-Una-Ecologia-De-La-Mente",
-  "title": "Pasos Hacia Una Ecologia De La Mente",
+  "title": "Pasos hacia una ecología de la mente",
   "authors": [
    "Gregory Bateson"
   ],
@@ -730,9 +736,11 @@
  },
  {
   "slug": "Pensamiento-Sistemático",
-  "title": "Pensamiento Sistemático",
+  "title": "Pensamiento sistémico. Nuevas perspectivas y contextos de intervención",
   "authors": [
-   "Enrique Herrscher"
+   "Raúl Medina",
+   "Esteban Laso",
+   "Eduardo Hernández"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Pensamiento%20Sistem%C3%A1tico-d3403538a15910fa9175d4e39194ffc40089640e.pdf",
   "sourceMd": "export/text/r2-files-md/Pensamiento Sistemático.md",
