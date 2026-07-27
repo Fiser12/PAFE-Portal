@@ -16,19 +16,31 @@ import sys
 import pathlib
 
 CONTENT = pathlib.Path('wiki/content')
-DIRS = ('conceptos', 'protocolos', 'temas')
+DIRS = ('conceptos', 'protocolos', 'temas', 'tesis', 'rutas')
 
-KNOWLEDGE_TYPES = {'concept', 'protocol', 'topic', 'instrument'}
+KNOWLEDGE_TYPES = {'concept', 'protocol', 'topic', 'instrument', 'claim', 'guide'}
 EDGES = {'Part of', 'Contains', 'Uses', 'Depends on', 'About', 'Cites', 'Authored by'}
-OPENERS = ('## Qué es', '## En qué consiste', '## De qué trata')
+
+# Primera h2 admitida por tipo: fija el registro de la nota desde la primera línea.
+OPENERS = {
+    'concept': ('## Qué es', '## En qué consiste', '## De qué trata'),
+    'protocol': ('## Qué es', '## En qué consiste', '## De qué trata'),
+    'instrument': ('## Qué es', '## En qué consiste', '## De qué trata'),
+    'topic': ('## Qué es', '## En qué consiste', '## De qué trata'),
+    'claim': ('## Qué afirma',),
+    'guide': ('## Cuándo aplica',),
+}
 
 # Secciones obligatorias por tipo. Las notas de conocimiento declarativo mapean el
-# corpus en "En la biblioteca"; las de procedimiento describen cómo se ejecuta.
+# corpus en "En la biblioteca"; las de procedimiento describen cómo se ejecuta; las
+# afirmaciones separan fundamento, alcance y aplicación; las rutas ordenan la acción.
 REQUIRED_SECTIONS = {
     'concept': ('## En la biblioteca', '## Cautelas y límites'),
     'topic': ('## En la biblioteca', '## Cautelas y límites'),
     'instrument': ('## En la biblioteca', '## Cautelas y límites'),
     'protocol': ('## Procedimiento', '## Indicaciones', '## Cautelas y límites'),
+    'claim': ('## En qué se apoya', '## Alcance y límites', '## Dónde se aplica'),
+    'guide': ('## Qué valorar primero', '## Qué está contraindicado', '## Qué leer'),
 }
 
 MIN_LINES, MAX_LINES = 25, 130
@@ -105,8 +117,9 @@ def check(path: pathlib.Path, slugs: set[str]) -> list[str]:
         err(f'la última h1 debe ser "# Citations", es {h1[-1] if h1 else "ninguna"!r}')
 
     h2 = [ln.rstrip() for ln in lines if ln.startswith('## ')]
-    if not h2 or h2[0] not in OPENERS:
-        err(f'la primera h2 debe ser una de {list(OPENERS)}, es {h2[0] if h2 else "ninguna"!r}')
+    openers = OPENERS.get(ntype, ())
+    if openers and (not h2 or h2[0] not in openers):
+        err(f'la primera h2 debe ser una de {list(openers)}, es {h2[0] if h2 else "ninguna"!r}')
     for sec in REQUIRED_SECTIONS.get(ntype, ()):
         if sec not in h2:
             err(f'falta la sección {sec!r} (obligatoria en type={ntype})')
