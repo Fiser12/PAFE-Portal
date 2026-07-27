@@ -869,7 +869,7 @@
  },
  {
   "slug": "Terapia-Individual-Sistemica",
-  "title": "Terapia Individual Sistemica",
+  "title": "Terapia individual sistémica con la participación de familiares significativos",
   "authors": [
    "Alfredo Canevaro"
   ],
@@ -879,7 +879,7 @@
  },
  {
   "slug": "Terapia-No-Convencional",
-  "title": "Terapia No Convencional",
+  "title": "Terapia no convencional. Las técnicas psiquiátricas de Milton H. Erickson",
   "authors": [
    "Jay Haley"
   ],
@@ -889,7 +889,7 @@
  },
  {
   "slug": "Terapia-Trigeneracional-para-las-simbiosis-de-pareja",
-  "title": "Terapia Trigeneracional para las simbiosis de pareja",
+  "title": "Nec sine te nec tecum vivere possum. Terapia trigeneracional para las simbiosis de pareja",
   "authors": [
    "Alfredo Canevaro"
   ],
@@ -899,9 +899,10 @@
  },
  {
   "slug": "Terapia-de-pareja---El-yo-en-la-relación",
-  "title": "Terapia de pareja - El yo en la relación",
+  "title": "La terapia de pareja. El yo en la relación",
   "authors": [
-   "Jim Crawley"
+   "Jim Crawley",
+   "Jan Grant"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20de%20pareja%20-%20El%20yo%20en%20la%20relaci%C3%B3n-8cd88986eea40dfe74218ed06684753fd31529a0.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia de pareja - El yo en la relación.md",
@@ -909,9 +910,17 @@
  },
  {
   "slug": "Terapia-familiar-de-las-psicosis.-Entre-la-destriangulación-y-la-reconfirmación",
-  "title": "Terapia familiar de las psicosis. Entre la destriangulación y la reconfirmación",
+  "title": "La terapia familiar de las psicosis. Entre la destriangulación y la reconfirmación",
   "authors": [
-   "Juan Luis Linares"
+   "Juan Luis Linares",
+   "Adrián Hinojosa",
+   "Dora Ortiz",
+   "Vitor Silva",
+   "José A. Soriano",
+   "Virginia Rangel",
+   "J. Bueno Álvarez",
+   "J. M. Higón Sancho",
+   "E. Martínez Sapena"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20familiar%20de%20las%20psicosis.%20Entre%20la%20destriangulaci%C3%B3n%20y%20la%20reconfirmaci%C3%B3n-d27bc6ceeee24ee3583ab6380f9be8021ad69f71.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia familiar de las psicosis. Entre la destriangulación y la reconfirmación.md",
@@ -921,7 +930,7 @@
   "slug": "Terapia-familiar-y-de-pareja",
   "title": "Terapia familiar y de pareja",
   "authors": [
-   "Arturo Roizblayt"
+   "Arturo Roizblatt"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20familiar%20y%20de%20pareja-66b138466b5a8402fbdecd580e99b062014f74a1.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia familiar y de pareja.md",
@@ -929,9 +938,9 @@
  },
  {
   "slug": "Terapia-narrativa-con-familias-multiproblematicas",
-  "title": "Terapia narrativa con familias multiproblematicas",
+  "title": "Terapia narrativa con familias multiproblemáticas. El cambio que viene",
   "authors": [
-   "Ricardo Ramos"
+   "Ricardo Ramos Gutiérrez"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20narrativa%20con%20familias%20multiproblematicas-534b4ad73e1e36acadbd03a3d2224ba8786fc6ee.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia narrativa con familias multiproblematicas.md",
@@ -939,9 +948,10 @@
  },
  {
   "slug": "Terapia-narrativa,-basada-en-atencion-plena-para-la-depresion",
-  "title": "Terapia narrativa, basada en atencion plena para la depresion",
+  "title": "Terapia narrativa basada en atención plena para la depresión",
   "authors": [
-   "Beatriz Rodríguez Vega"
+   "Beatriz Rodríguez Vega",
+   "Alberto Fernández Liria"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20narrativa%2C%20basada%20en%20atencion%20plena%20para%20la%20depresion-6f06d84dffe95e35030ae11ffdc3488bfe25666d.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia narrativa, basada en atencion plena para la depresion.md",
@@ -949,7 +959,7 @@
  },
  {
   "slug": "Terapia-para-resolver-problemas",
-  "title": "Terapia para resolver problemas",
+  "title": "Terapia para resolver problemas. Nuevas estrategias para una terapia familiar eficaz",
   "authors": [
    "Jay Haley"
   ],
@@ -959,9 +969,9 @@
  },
  {
   "slug": "Terapia-sistemática-breve-fundamentos-y-aplicaciones",
-  "title": "Terapia sistemática breve fundamentos y aplicaciones",
+  "title": "Terapia sistémica breve. Fundamentos y aplicaciones",
   "authors": [
-   "Felipe García"
+   "Felipe E. García Martínez"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Terapia%20sistem%C3%A1tica%20breve%20fundamentos%20y%20aplicaciones-c44fd61a0279592a9fee819f7ef06fc758301671.pdf",
   "sourceMd": "export/text/r2-files-md/Terapia sistemática breve fundamentos y aplicaciones.md",
