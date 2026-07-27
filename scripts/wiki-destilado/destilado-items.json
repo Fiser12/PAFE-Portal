@@ -748,9 +748,9 @@
  },
  {
   "slug": "Pescando-Barracudas-Pragmática-de-la-terapia-sistematica-breve",
-  "title": "Pescando Barracudas: Pragmática de la terapia sistematica breve",
+  "title": "Pescando barracudas. Pragmática de la terapia sistémica breve",
   "authors": [
-   "Joel Bergman"
+   "Joel S. Bergman"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Pescando%20Barracudas%20Pragm%C3%A1tica%20de%20la%20terapia%20sistematica%20breve-5e2ed6504780d26503441f86e63233c366dbaa9b.pdf",
   "sourceMd": "export/text/r2-files-md/Pescando Barracudas Pragmática de la terapia sistematica breve.md",
@@ -758,7 +758,7 @@
  },
  {
   "slug": "Problem-Solving-Estrategico",
-  "title": "Problem Solving Estrategico",
+  "title": "Problem Solving Estratégico. El arte de encontrar soluciones a problemas irresolubles",
   "authors": [
    "Giorgio Nardone"
   ],
@@ -768,9 +768,24 @@
  },
  {
   "slug": "Prácticas-alineadoras-familiares-El-sindrome-de-alienación-parental-reformulado",
-  "title": "Prácticas alineadoras familiares: El sindrome de alienación parental reformulado",
+  "title": "Prácticas alienadoras familiares. El síndrome de alienación parental reformulado",
   "authors": [
-   "Juan Luis Linares"
+   "Juan Luis Linares",
+   "Teresa Moratalla",
+   "Ana Pérez",
+   "Silvia Macassi",
+   "José Molero",
+   "Rosa Zayas",
+   "Octavio León",
+   "Virginia Inés Franch",
+   "Cristina Günther",
+   "Ana Vilaregut",
+   "Lia Mastropaolo",
+   "Regina Giraldo",
+   "Catalina Wild",
+   "Edén Castañeda",
+   "Sandro Giovanazzi",
+   "Silvia Reyes"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Pr%C3%A1cticas%20alineadoras%20familiares%20El%20sindrome%20de%20alienaci%C3%B3n%20parental%20reformulado-7533a76b8cedc1cc7ef3c7216dc140a52122f0f3.pdf",
   "sourceMd": "export/text/r2-files-md/Prácticas alineadoras familiares El sindrome de alienación parental reformulado.md",
@@ -780,7 +795,10 @@
   "slug": "Psicoterapia-breve-a-largo-plazo",
   "title": "Psicoterapia breve a largo plazo",
   "authors": [
-   "Giorgio Nardone"
+   "Giorgio Nardone",
+   "Elisa Balbi",
+   "Andrea Vallarino",
+   "Massimo Bartoletti"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Psicoterapia%20breve%20a%20largo%20plazo-871acc8dda5f53fddcc34e51468546442f9b7550.pdf",
   "sourceMd": "export/text/r2-files-md/Psicoterapia breve a largo plazo.md",
@@ -788,7 +806,7 @@
  },
  {
   "slug": "Raices-Profundas",
-  "title": "Raices Profundas",
+  "title": "Raíces profundas. Principios subyacentes de la terapia y la hipnosis de Milton Erickson",
   "authors": [
    "William H. O'Hanlon"
   ],
@@ -798,7 +816,7 @@
  },
  {
   "slug": "Ser-Padres-y-Madres",
-  "title": "Ser Padres y Madres",
+  "title": "Ser padres y madres. ¿Dónde está el manual de instrucciones? 100 consultas sobre educación infantil",
   "authors": [
    "Cristina García"
   ],
@@ -808,7 +826,7 @@
  },
  {
   "slug": "Si-quieres-ver,-aprende-a-actuar",
-  "title": "Si quieres ver, aprende a actuar",
+  "title": "Si quieres ver, aprende a actuar. Diseño y prescripción de tareas en psicoterapia",
   "authors": [
    "Marcelo R. Ceberio",
    "Paul Watzlawick"
@@ -819,10 +837,10 @@
  },
  {
   "slug": "Tecnicas-de-Terapia-Familiar",
-  "title": "Tecnicas de Terapia Familiar",
+  "title": "Técnicas de terapia familiar",
   "authors": [
-   "H. Charles Fishman",
-   "Salvador Minuchin"
+   "Salvador Minuchin",
+   "H. Charles Fishman"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Tecnicas%20de%20Terapia%20Familiar-ea4eb39e21de4004fc33d27c0137325c54d17cd6.pdf",
   "sourceMd": "export/text/r2-files-md/Tecnicas de Terapia Familiar.md",
@@ -830,7 +848,7 @@
  },
  {
   "slug": "Terapia-Breve-Filosofía-y-arte",
-  "title": "Terapia Breve: Filosofía y arte",
+  "title": "Terapia breve. Filosofía y arte",
   "authors": [
    "Giorgio Nardone",
    "Paul Watzlawick"
@@ -841,7 +859,7 @@
  },
  {
   "slug": "Terapia-Familiar-Ultramoderna.-La-Inteligencia-Terapeutica",
-  "title": "Terapia Familiar Ultramoderna. La Inteligencia Terapeutica",
+  "title": "Terapia familiar ultramoderna. La inteligencia terapéutica",
   "authors": [
    "Juan Luis Linares"
   ],
