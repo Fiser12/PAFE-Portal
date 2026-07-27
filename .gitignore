@@ -65,5 +65,8 @@ tsconfig.tsbuildinfo
 # Materiales originales de PAFE (contienen datos personales — no subir)
 /Materiales PAFE/
 
+# Export local de datos del catálogo (copia de los materiales originales)
+/export/
+
 # Secretos del script de seed remoto
 apps/web/scripts/seed-remote.env
