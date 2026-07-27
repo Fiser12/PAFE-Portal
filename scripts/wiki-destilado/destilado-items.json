@@ -552,7 +552,9 @@
   "slug": "La-empresa-triunfadora-Mejorar-el-presente,-inventar-el-futuro-problem-solving-para-empresas",
   "title": "La empresa triunfadora: Mejorar el presente, inventar el futuro problem solving para empresas",
   "authors": [
-   "María Cristina Nardone"
+   "María Cristina Nardone",
+   "Roberta Milanese",
+   "Roberta Prato Previde"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/La%20empresa%20triunfadora%20Mejorar%20el%20presente%2C%20inventar%20el%20futuro%20problem%20solving%20para%20empresas-2c3f9abcee966144fa4d967c7f155a81924223b8.pdf",
   "sourceMd": "export/text/r2-files-md/La empresa triunfadora Mejorar el presente, inventar el futuro problem solving para empresas.md",
@@ -560,11 +562,11 @@
  },
  {
   "slug": "La-inteligencia-maternal-manual-para-apoyar-la-crianza-bien-tratante-y-promover-la-resiliencia-de-madres-y-padres",
-  "title": "La inteligencia maternal manual para apoyar la crianza bien tratante y promover la resiliencia de madres y padres",
+  "title": "La inteligencia maternal",
   "authors": [
-   "Emilia Comas",
    "Jorge Barudy",
    "Maryorie Dantagnan",
+   "Emília Comas",
    "María Vergara"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/La%20inteligencia%20maternal%20manual%20para%20apoyar%20la%20crianza%20bien%20tratante%20y%20promover%20la%20resiliencia%20de%20madres%20y%20padres-482b333727082f4a059642829ae09763431c8211.pdf",
@@ -575,6 +577,7 @@
   "slug": "La-intervención-estratégica-en-los-contextos-educativos",
   "title": "La intervención estratégica en los contextos educativos",
   "authors": [
+   "Andrea Fiorenza",
    "Giorgio Nardone"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/La%20intervenci%C3%B3n%20estrat%C3%A9gica%20en%20los%20contextos%20educativos-2613a27ea7e93f904d10fdb78ecb80f477140731.pdf",
@@ -594,7 +597,7 @@
  },
  {
   "slug": "La-terapia-de-los-ataques-de-panico",
-  "title": "La terapia de los ataques de panico",
+  "title": "La terapia de los ataques de pánico",
   "authors": [
    "Giorgio Nardone"
   ],
@@ -606,7 +609,8 @@
   "slug": "Lealtades-invisibles",
   "title": "Lealtades invisibles",
   "authors": [
-   "Iván Boszormenyi-Nagy"
+   "Ivan Boszormenyi-Nagy",
+   "Geraldine M. Spark"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Lealtades%20invisibles-ced6e9bb47c02b62edcab87a90a35ee26d25f9ee.pdf",
   "sourceMd": "export/text/r2-files-md/Lealtades invisibles.md",
@@ -614,7 +618,7 @@
  },
  {
   "slug": "Lo-malo-de-lo-bueno-o-las-soluciones-de-Hecáte",
-  "title": "Lo malo de lo bueno o las soluciones de Hecáte",
+  "title": "Lo malo de lo bueno o las soluciones de Hécate",
   "authors": [
    "Paul Watzlawick"
   ],
@@ -624,9 +628,9 @@
  },
  {
   "slug": "Los-vínculos-familiares---Una-psicopatología-de-las-relaciones-familiares",
-  "title": "Los vínculos familiares - Una psicopatología de las relaciones familiares",
+  "title": "Los vínculos familiares. Una psicopatología de las relaciones familiares",
   "authors": [
-   "José Dunker"
+   "José Dunker L."
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Los%20v%C3%ADnculos%20familiares%20-%20Una%20psicopatolog%C3%ADa%20de%20las%20relaciones%20familiares-964455eacb1ac060809447456804a95e09c275f8.pdf",
   "sourceMd": "export/text/r2-files-md/Los vínculos familiares - Una psicopatología de las relaciones familiares.md",
