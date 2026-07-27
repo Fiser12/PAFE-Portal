@@ -292,6 +292,22 @@ def validate_topology(text: str, offsets: dict[str, int], result: ValidationResu
         result.errors.append("Topology: hay bullets que no siguen `* **Edge**: [[destino]]`")
 
 
+def validate_key_ideas(text: str, offsets: dict[str, int], result: ValidationResult) -> None:
+    start_heading = "## Ideas clave"
+    end_heading = "## Técnicas y protocolos"
+    if start_heading not in offsets or end_heading not in offsets:
+        return
+    section = text[offsets[start_heading] : offsets[end_heading]]
+    direct_lines: list[str] = []
+    for line in section.splitlines()[1:]:
+        if re.match(r"^###\s+", line):
+            break
+        direct_lines.append(line)
+    bullets = [line for line in direct_lines if re.match(r"^\s*[-*]\s+", line)]
+    if not 5 <= len(bullets) <= 10:
+        result.errors.append(f"Ideas clave: deben existir 5-10 bullets, hay {len(bullets)}")
+
+
 def validate_wikilinks(text: str, result: ValidationResult) -> None:
     residual = WIKILINK_RE.sub("", text)
     if "[[" in residual or "]]" in residual:
@@ -368,6 +384,7 @@ def validate_item(
         validate_frontmatter(frontmatter, item, result)
     offsets = section_offsets(text, result)
     validate_topology(text, offsets, result)
+    validate_key_ideas(text, offsets, result)
     validate_wikilinks(text, result)
     if item["portalUrl"] not in text:
         result.errors.append("la nota no contiene el portalUrl exacto del manifiesto")

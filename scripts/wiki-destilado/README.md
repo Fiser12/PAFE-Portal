@@ -50,8 +50,8 @@ python3 scripts/wiki-destilado/validate_book_notes.py --batch 21:30 --quartz
 
 El validador comprueba el manifiesto completo y, para el lote seleccionado, paths, YAML y
 campos, secciones y orden, 2-5 tags kebab-case, edges OKF, longitud 60-150, wikilinks, URL del
-portal, marcadores fuente `1..N` y referencias de página dentro del PDF. No lanza Quartz si hay
-errores.
+portal, 5-10 bullets en `Ideas clave`, marcadores fuente `1..N` y referencias de página dentro
+del PDF. No lanza Quartz si hay errores.
 
 Este gate es estructural. Un revisor independiente todavía debe comprobar cobertura de todos
 los capítulos, exactitud clínica, correspondencia afirmación-evidencia y que la síntesis no
