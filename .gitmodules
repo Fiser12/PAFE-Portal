@@ -1,3 +1,4 @@
 [submodule "wiki"]
 	path = wiki
-	url = ./wiki
+	url = https://github.com/Fiser12/PAFE-Wiki.git
+	branch = destilado
