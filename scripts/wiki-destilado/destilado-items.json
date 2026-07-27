@@ -433,9 +433,10 @@
  },
  {
   "slug": "Historia-de-la-Terapia-Familiar-Los-Personajes-y-las-Ideas",
-  "title": "Historia de la Terapia Familiar: Los Personajes y las Ideas",
+  "title": "Historia de la terapia familiar: los personajes y las ideas",
   "authors": [
-   "Darío Toffanetti"
+   "Paolo Bertrando",
+   "Dario Toffanetti"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/Historia%20de%20la%20Terapia%20Familiar%20Los%20Personajes%20y%20las%20Ideas-2abec951259d5abe467438f10fd0af94d949826d.pdf",
   "sourceMd": "export/text/r2-files-md/Historia de la Terapia Familiar Los Personajes y las Ideas.md",
@@ -464,7 +465,7 @@
  },
  {
   "slug": "La-Coleta-Del-Baron-De-Munchhausen",
-  "title": "La Coleta Del Baron De Munchhausen",
+  "title": "La coleta del barón de Münchhausen",
   "authors": [
    "Paul Watzlawick"
   ],
@@ -487,7 +488,7 @@
   "title": "La Familia en la Ópera",
   "authors": [
    "Juan Luis Linares",
-   "Pier Paolo Semboloni"
+   "Pier Giorgio Semboloni"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/La%20Familia%20en%20la%20%C3%93pera-c8784ced6c70e0fa2f87ef87169a5e19ec16ffe9.pdf",
   "sourceMd": "export/text/r2-files-md/La Familia en la Ópera.md",
@@ -495,7 +496,7 @@
  },
  {
   "slug": "La-Fiesta-Mágica-y-Realista-de-la-Resiliencia-Infantil",
-  "title": "La Fiesta Mágica y Realista de la Resiliencia Infantil",
+  "title": "La fiesta mágica y realista de la resiliencia infantil",
   "authors": [
    "Jorge Barudy",
    "Maryorie Dantagnan"
@@ -506,9 +507,10 @@
  },
  {
   "slug": "La-Práctica-de-la-Psicoterapia",
-  "title": "La Práctica de la Psicoterapia",
+  "title": "La práctica de la psicoterapia. La construcción de narrativas terapéuticas",
   "authors": [
-   "Carl Gustav Jung"
+   "Alberto Fernández Liria",
+   "Beatriz Rodríguez Vega"
   ],
   "portalUrl": "https://pafe-portal.vercel.app/api/files/file/La%20Pr%C3%A1ctica%20de%20la%20Psicoterapia-8de7d171067ac94456d3b3853d81f21f7fa82b7e.pdf",
   "sourceMd": "export/text/r2-files-md/La Práctica de la Psicoterapia.md",
