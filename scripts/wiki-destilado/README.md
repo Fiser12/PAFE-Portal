@@ -7,12 +7,26 @@ solo versiona código, manifiesto y prompt.
 ## Dependencias
 
 - Python 3.10 o posterior.
-- Extracción: `pymupdf4llm` en un entorno virtual aislado.
+- Extracción: `pymupdf4llm` en un entorno virtual aislado, y `pdftotext` (poppler) en el
+  `PATH` para los PDF que el primero no sabe leer.
 - Validación: `PyYAML`. No se omite el parseo si falta: el comando termina con error.
 - Build opcional: Node 22, npm y las dependencias ya instaladas en `wiki/`.
 
 No se añaden dependencias al proyecto. Por ejemplo, puede reutilizarse un entorno local ya
-preparado o instalar las dos dependencias Python en un venv externo al repositorio.
+preparado o instalar las dos dependencias Python en un venv externo al repositorio. Poppler
+se instala con el gestor del sistema (`brew install poppler`, `apt install poppler-utils`).
+
+### Fuentes sin mapa Unicode
+
+Algunos PDF incrustan fuentes sin `ToUnicode`: `pymupdf4llm` devuelve texto formado casi por
+completo por caracteres de reemplazo, válido en apariencia pero ilegible. Pasó con dos libros
+del catálogo —«Neurobilogía del apego» (95 %) y «La inteligencia maternal» (21 %)— y no se
+detectó hasta intentar destilarlos.
+
+El extractor mide ahora esa proporción y, si supera el 2 %, reintenta con `pdftotext`, que
+resuelve estos casos manteniendo los marcadores `1..N`. El sidecar registra el motor usado
+(`engine`) y la proporción final (`replacementRatio`). Si ambos motores fallan, el PDF
+necesita OCR y el comando lo señala como error en lugar de escribir basura.
 
 ## Extracción y reanudación
 

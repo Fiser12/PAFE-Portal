@@ -4,6 +4,13 @@
 The extractor is intentionally independent from the application runtime. It writes
 each Markdown file atomically and records enough provenance in a sidecar to skip an
 unchanged, already validated extraction safely on the next run.
+
+Algunos PDF incrustan fuentes sin un mapa a Unicode utilizable: pymupdf4llm devuelve
+entonces texto compuesto casi por completo de U+FFFD, sintácticamente válido pero
+ilegible. Ocurrió con dos libros del catálogo y no se detectó hasta intentar
+destilarlos. Por eso la extracción se verifica y, si sale ilegible, se reintenta con
+poppler (`pdftotext`), que sí resuelve esos casos. El sidecar registra qué motor
+produjo cada salida.
 """
 
 from __future__ import annotations
@@ -13,6 +20,8 @@ import hashlib
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -25,8 +34,13 @@ DEFAULT_CLASSIFICATION = REPO_ROOT / "export/data/pdf-text-classification.json"
 DEFAULT_MANIFEST = Path(__file__).with_name("destilado-items.json")
 DEFAULT_PDF_DIR = REPO_ROOT / "export/r2/files"
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "export/text/r2-files-md"
-EXTRACTOR_VERSION = 1
+# 2: verificación de legibilidad y reintento con poppler
+EXTRACTOR_VERSION = 2
 HASH_CHUNK_SIZE = 1024 * 1024
+REPLACEMENT_CHAR = "�"
+# Por encima de esta fracción de U+FFFD el texto no sirve para destilar. Un 2 % deja
+# margen para PDF con algún glifo suelto sin mapear.
+MAX_REPLACEMENT_RATIO = 0.02
 PAGE_MARKER_RE = re.compile(r"<!-- p\. (\d+) -->")
 PDF_HASH_SUFFIX_RE = re.compile(r"-[0-9a-f]{40}\.pdf$", re.IGNORECASE)
 SAFE_STEM_RE = re.compile(r"[^A-Za-z0-9áéíóúÁÉÍÓÚñÑüÜ ()_,.\-]+")
@@ -194,6 +208,37 @@ def valid_resume(
     return metadata.get("sourceSha256") == expected_source_hash
 
 
+def replacement_ratio(text: str) -> float:
+    """Fracción de caracteres de reemplazo: mide si el texto es legible."""
+    if not text:
+        return 1.0
+    return text.count(REPLACEMENT_CHAR) / len(text)
+
+
+def extract_with_poppler(source: Path, expected_pages: int) -> str:
+    """Reintento con `pdftotext`, que resuelve las fuentes sin mapa Unicode."""
+    if shutil.which("pdftotext") is None:
+        raise ValueError(
+            "extracción ilegible y pdftotext no está disponible para reintentarla; "
+            "instala poppler (consulta README.md)"
+        )
+    completed = subprocess.run(
+        ["pdftotext", "-layout", "-enc", "UTF-8", str(source), "-"],
+        capture_output=True,
+        check=True,
+    )
+    raw = completed.stdout.decode("utf-8", errors="replace")
+    pages = raw.split("\f")
+    if pages and not pages[-1].strip():
+        pages.pop()
+    if len(pages) != expected_pages:
+        raise ValueError(
+            f"pdftotext devolvió {len(pages)} páginas (esperadas {expected_pages})"
+        )
+    parts = [f"<!-- p. {number} -->\n\n{body.rstrip()}" for number, body in enumerate(pages, 1)]
+    return "\n\n".join(parts) + "\n"
+
+
 def extract_one(
     pymupdf4llm: Any,
     source: Path,
@@ -219,6 +264,23 @@ def extract_one(
         )
 
     content = "\n\n".join(parts) + "\n"
+    engine = "pymupdf4llm"
+    ratio = replacement_ratio(content)
+    if ratio > MAX_REPLACEMENT_RATIO:
+        fallback = extract_with_poppler(source, expected_pages)
+        fallback_ratio = replacement_ratio(fallback)
+        if fallback_ratio >= ratio:
+            raise ValueError(
+                f"texto ilegible con ambos motores ({ratio:.1%} de caracteres de "
+                f"reemplazo con pymupdf4llm, {fallback_ratio:.1%} con pdftotext); "
+                "el PDF necesita OCR"
+            )
+        print(
+            f"      fuente sin mapa Unicode ({ratio:.1%} ilegible): "
+            f"reextraído con pdftotext ({fallback_ratio:.1%})"
+        )
+        content, engine, ratio = fallback, "pdftotext", fallback_ratio
+
     atomic_write_text(destination, content)
     metadata = {
         "extractorVersion": EXTRACTOR_VERSION,
@@ -227,6 +289,8 @@ def extract_one(
         "sourceSize": source.stat().st_size,
         "pageCount": expected_pages,
         "outputSha256": sha256_file(destination),
+        "engine": engine,
+        "replacementRatio": round(ratio, 6),
     }
     atomic_write_json(sidecar_path(destination), metadata)
 
