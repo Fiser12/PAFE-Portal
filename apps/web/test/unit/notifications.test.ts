@@ -10,6 +10,7 @@ describe('notificationFor — texto de cada aviso en la web', () => {
     expect(new Set(NOTIFICATION_TYPES)).toEqual(
       new Set([
         'recordatorio',
+        'vencimiento',
         'devolucion-tardia',
         'perdida',
         'recogida',
@@ -31,6 +32,16 @@ describe('notificationFor — texto de cada aviso en la web', () => {
     expect(n.message).toContain(
       'Deseamos recordarle que tiene que devolver Modelos de Familia el 30-03-2026',
     )
+  })
+
+  it('vencimiento: mismo literal validado por PAFE, que vale también el día que vence', () => {
+    const n = notificationFor({
+      type: 'vencimiento',
+      title: 'Modelos de Familia',
+      dueISO: '2026-03-30',
+    })
+    expect(n.message).toContain('2026-03-30an itzuli behar duzula Modelos de Familia')
+    expect(n.message).toContain('devolver Modelos de Familia el 30-03-2026')
   })
 
   it('devolución tardía: el literal de sensibilidad de PAFE', () => {

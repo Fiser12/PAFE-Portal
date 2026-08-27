@@ -9,6 +9,7 @@ import * as migration_20260723_182706_editor_layout from './20260723_182706_edit
 import * as migration_20260723_231517_formaciones from './20260723_231517_formaciones';
 import * as migration_20260827_131010 from './20260827_131010';
 import * as migration_20260827_154722 from './20260827_154722';
+import * as migration_20260827_155517_aviso_dia_vencimiento from './20260827_155517_aviso_dia_vencimiento';
 
 export const migrations = [
   {
@@ -64,6 +65,11 @@ export const migrations = [
   {
     up: migration_20260827_154722.up,
     down: migration_20260827_154722.down,
-    name: '20260827_154722'
+    name: '20260827_154722',
+  },
+  {
+    up: migration_20260827_155517_aviso_dia_vencimiento.up,
+    down: migration_20260827_155517_aviso_dia_vencimiento.down,
+    name: '20260827_155517_aviso_dia_vencimiento'
   },
 ];

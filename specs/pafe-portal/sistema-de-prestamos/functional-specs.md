@@ -177,8 +177,10 @@ hay perdón automático: sin intervención, el contador es acumulado de por vida
 - **R7 — Disponibilidad**: disponible = stock del material − reservas vivas
   (`reservada` + `activa` + `perdida` sin reponer). Sin disponibilidad no se
   puede reservar.
-- **R8 — Aviso**: 5 días antes del vencimiento, automático, un único envío por
-  vencimiento, bilingüe (§M1).
+- **R8 — Avisos**: dos por vencimiento, automáticos y bilingües (§M1), cada uno
+  con su propia marca para no repetirse: uno **5 días antes** y otro **el mismo
+  día del vencimiento**. Una prórroga genera un vencimiento nuevo y, con él, sus
+  dos avisos. Ambos llegan por correo y como notificación en el portal.
 - **R9 — Penalización**: cada devolución tardía suma 1 al contador acumulado de
   la familia. Con la 3ª tardía —y cada una posterior— la penalización se
   (re)activa: 6 meses desde la fecha de esa devolución. Mientras esté vigente,
@@ -294,8 +296,11 @@ stateDiagram-v2
 
 **Abiertas**
 - Q1: ¿el texto M4 lo redacta/ajusta PAFE finalmente o vale el borrador literal?
-- Q2: ¿debe avisarse también el mismo día del vencimiento (recordatorio final)?
-  Hoy: no, solo a 5 días.
+- Q2 (resuelta 2026-08-27): sí, hay aviso el mismo día del vencimiento. PAFE solo
+  facilitó el literal en euskera del aviso previo, así que el del día reutiliza
+  ese mismo texto —que sigue siendo correcto ese día— en lugar de inventar
+  euskera. Si PAFE quiere un texto propio («hoy vence»), debe facilitarlo en
+  ambos idiomas.
 
 ---
 

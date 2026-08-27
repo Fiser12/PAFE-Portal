@@ -119,6 +119,36 @@ describe('W8 — avisos de devolución', () => {
     expect(bodyOf(mails[0]!)).toContain('2026-10-13an')
   })
 
+  it('avisa también el mismo día del vencimiento, aparte del previo', async () => {
+    // recogida 01-09 -> vence 29-09: aviso previo el 24-09 y del día el 29-09
+    const { familia } = await prestamoActivo('2026-09-01')
+
+    await runDueReminders({ payload, now: at('2026-09-24') })
+    expect(emailsTo(familia.email)).toHaveLength(1)
+
+    const elDia = await runDueReminders({ payload, now: at('2026-09-29') })
+    expect(elDia.sent).toBe(1)
+    expect(emailsTo(familia.email)).toHaveLength(2)
+  })
+
+  it('el aviso del día no se repite si el job corre dos veces', async () => {
+    const { familia } = await prestamoActivo('2026-09-01')
+
+    await runDueReminders({ payload, now: at('2026-09-29') })
+    const segunda = await runDueReminders({ payload, now: at('2026-09-29') })
+
+    expect(segunda.sent).toBe(0)
+    expect(emailsTo(familia.email)).toHaveLength(1)
+  })
+
+  it('el aviso del día llega aunque el previo no se enviara', async () => {
+    const { familia } = await prestamoActivo('2026-09-01')
+
+    const elDia = await runDueReminders({ payload, now: at('2026-09-29') })
+    expect(elDia.sent).toBe(1)
+    expect(emailsTo(familia.email)).toHaveLength(1)
+  })
+
   it('si el envío falla no marca el aviso y la siguiente ejecución reintenta', async () => {
     const { familia, loan } = await prestamoActivo('2026-09-01')
 

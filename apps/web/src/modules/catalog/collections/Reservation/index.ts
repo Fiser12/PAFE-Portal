@@ -147,12 +147,21 @@ export const Reservation: CollectionConfig = {
       },
     },
     {
-      label: 'Aviso enviado para el vencimiento',
+      label: 'Aviso previo enviado para el vencimiento',
       name: 'reminderSentFor',
       type: 'date',
       admin: {
         readOnly: true,
-        description: 'Evita repetir el aviso automático; una prórroga habilita uno nuevo',
+        description: 'Evita repetir el aviso de los 5 días; una prórroga habilita uno nuevo',
+      },
+    },
+    {
+      label: 'Aviso del día enviado para el vencimiento',
+      name: 'dueNoticeSentFor',
+      type: 'date',
+      admin: {
+        readOnly: true,
+        description: 'Evita repetir el aviso del propio día del vencimiento',
       },
     },
   ],

@@ -279,9 +279,13 @@ export interface Reservation {
    */
   quotaOverrideReason?: string | null;
   /**
-   * Evita repetir el aviso automático; una prórroga habilita uno nuevo
+   * Evita repetir el aviso de los 5 días; una prórroga habilita uno nuevo
    */
   reminderSentFor?: string | null;
+  /**
+   * Evita repetir el aviso del propio día del vencimiento
+   */
+  dueNoticeSentFor?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -798,7 +802,7 @@ export interface AdminInvitation {
 export interface Notification {
   id: number;
   user: number | User;
-  type: 'recordatorio' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
+  type: 'recordatorio' | 'vencimiento' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
   message: string;
   reservation?: (number | null) | Reservation;
   readAt?: string | null;
@@ -1577,6 +1581,7 @@ export interface ReservationSelect<T extends boolean = true> {
       };
   quotaOverrideReason?: T;
   reminderSentFor?: T;
+  dueNoticeSentFor?: T;
   updatedAt?: T;
   createdAt?: T;
 }

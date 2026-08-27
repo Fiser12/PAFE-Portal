@@ -1,7 +1,11 @@
 import type { Payload } from 'payload'
 import { addDays, madridDateOf } from '../domain/loan-terms'
 import { reminderEmail } from '../domain/messages'
-import { REMINDER_DAYS_BEFORE, needsReminder } from '../domain/reminders'
+import {
+  REMINDER_DAYS_BEFORE,
+  needsDueDayReminder,
+  needsReminder,
+} from '../domain/reminders'
 import { dayOf, dayToInstant, loadItemTitle, loadUser, relationId } from './shared'
 import { notify } from './notifications'
 
@@ -35,17 +39,24 @@ export const runDueReminders = async ({
   let sent = 0
   for (const reservation of candidates.docs) {
     const dueISO = dayOf(reservation.dueDate)
-    if (
-      !dueISO ||
-      !needsReminder({
+    if (!dueISO) continue
+
+    const onDueDay = needsDueDayReminder({
+      status: reservation.status,
+      dueISO,
+      todayISO,
+      dueNoticeSentForISO: dayOf(reservation.dueNoticeSentFor),
+    })
+    const beforehand =
+      !onDueDay &&
+      needsReminder({
         status: reservation.status,
         dueISO,
         todayISO,
         reminderSentForISO: dayOf(reservation.reminderSentFor),
       })
-    ) {
-      continue
-    }
+
+    if (!onDueDay && !beforehand) continue
 
     const owner = await loadUser(payload, relationId(reservation.user))
     const title = await loadItemTitle(payload, relationId(reservation.item))
@@ -66,7 +77,7 @@ export const runDueReminders = async ({
       payload,
       userId: owner.id,
       reservationId: reservation.id,
-      type: 'recordatorio',
+      type: onDueDay ? 'vencimiento' : 'recordatorio',
       title,
       dueISO,
     })
@@ -74,7 +85,9 @@ export const runDueReminders = async ({
     await payload.update({
       collection: 'reservation',
       id: reservation.id,
-      data: { reminderSentFor: dayToInstant(dueISO) },
+      data: onDueDay
+        ? { dueNoticeSentFor: dayToInstant(dueISO) }
+        : { reminderSentFor: dayToInstant(dueISO) },
       overrideAccess: true,
     })
     sent += 1

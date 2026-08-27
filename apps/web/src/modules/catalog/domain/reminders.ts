@@ -16,5 +16,22 @@ export const needsReminder = ({
 }): boolean => {
   if (status !== 'activa') return false
   if (reminderSentForISO === dueISO) return false
-  return todayISO >= addDays(dueISO, -REMINDER_DAYS_BEFORE) && todayISO <= dueISO
+  // El día del vencimiento tiene su propio aviso
+  return todayISO >= addDays(dueISO, -REMINDER_DAYS_BEFORE) && todayISO < dueISO
+}
+
+export const needsDueDayReminder = ({
+  status,
+  dueISO,
+  todayISO,
+  dueNoticeSentForISO,
+}: {
+  status: ReservationStatus
+  dueISO: string
+  todayISO: string
+  dueNoticeSentForISO?: string | null
+}): boolean => {
+  if (status !== 'activa') return false
+  if (dueNoticeSentForISO === dueISO) return false
+  return todayISO === dueISO
 }

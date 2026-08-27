@@ -2,6 +2,7 @@ import { LATE_RETURN_MESSAGE, LOSS_MESSAGE, reminderEmail, toSpanishDate } from 
 
 export const NOTIFICATION_TYPES = [
   'recordatorio',
+  'vencimiento',
   'devolucion-tardia',
   'perdida',
   'recogida',
@@ -22,6 +23,7 @@ export const notificationFor = ({
 }): { type: NotificationType; message: string } => {
   const message = (() => {
     switch (type) {
+      case 'vencimiento':
       case 'recordatorio': {
         const { eu, es } = reminderEmail({ title, dueISO: dueISO ?? '' })
         return `${eu}\n\n${es}`
