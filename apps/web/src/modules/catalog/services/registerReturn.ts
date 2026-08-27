@@ -15,6 +15,7 @@ import {
   sendEmailSafely,
   type ServiceContext,
 } from './shared'
+import { notify } from './notifications'
 
 export const registerReturn = async ({
   payload,
@@ -42,7 +43,16 @@ export const registerReturn = async ({
     overrideAccess: true,
   })
 
-  if (late) await applyLateReturn({ payload, reservation, returnISO })
+  const title = await loadItemTitle(payload, relationId(reservation.item))
+  await notify({
+    payload,
+    userId: relationId(reservation.user),
+    reservationId,
+    type: late ? 'devolucion-tardia' : 'devolucion',
+    title,
+  })
+
+  if (late) await applyLateReturn({ payload, reservation, returnISO, title })
 
   return returned
 }
@@ -51,13 +61,14 @@ const applyLateReturn = async ({
   payload,
   reservation,
   returnISO,
+  title,
 }: {
   payload: Awaited<ServiceContext['payload']>
   reservation: Reservation
   returnISO: string
+  title: string
 }): Promise<void> => {
   const owner = await loadUser(payload, relationId(reservation.user))
-  const title = await loadItemTitle(payload, relationId(reservation.item))
 
   const penalty = registerLateReturn({
     lateCount: owner.lateReturnsCount ?? 0,

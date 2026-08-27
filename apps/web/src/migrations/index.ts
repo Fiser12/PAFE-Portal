@@ -8,6 +8,7 @@ import * as migration_20260723_180019_questionnaire_executions from './20260723_
 import * as migration_20260723_182706_editor_layout from './20260723_182706_editor_layout';
 import * as migration_20260723_231517_formaciones from './20260723_231517_formaciones';
 import * as migration_20260827_131010 from './20260827_131010';
+import * as migration_20260827_154722 from './20260827_154722';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20260827_131010.up,
     down: migration_20260827_131010.down,
-    name: '20260827_131010'
+    name: '20260827_131010',
+  },
+  {
+    up: migration_20260827_154722.up,
+    down: migration_20260827_154722.down,
+    name: '20260827_154722'
   },
 ];

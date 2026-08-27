@@ -3,6 +3,7 @@ import { addDays, madridDateOf } from '../domain/loan-terms'
 import { reminderEmail } from '../domain/messages'
 import { REMINDER_DAYS_BEFORE, needsReminder } from '../domain/reminders'
 import { dayOf, dayToInstant, loadItemTitle, loadUser, relationId } from './shared'
+import { notify } from './notifications'
 
 export const runDueReminders = async ({
   payload,
@@ -60,6 +61,15 @@ export const runDueReminders = async ({
       )
       continue
     }
+
+    await notify({
+      payload,
+      userId: owner.id,
+      reservationId: reservation.id,
+      type: 'recordatorio',
+      title,
+      dueISO,
+    })
 
     await payload.update({
       collection: 'reservation',

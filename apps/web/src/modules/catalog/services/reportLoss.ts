@@ -13,6 +13,7 @@ import {
   sendEmailSafely,
   type ServiceContext,
 } from './shared'
+import { notify } from './notifications'
 
 export const REPLACEMENT_MONTHS = 1
 
@@ -44,6 +45,7 @@ export const reportLoss = async ({
   const owner = await loadUser(payload, relationId(reservation.user))
   const title = await loadItemTitle(payload, relationId(reservation.item))
   await sendEmailSafely(payload, { to: owner.email, ...lossEmail({ title }) })
+  await notify({ payload, userId: owner.id, reservationId, type: 'perdida', title })
 
   return lost
 }

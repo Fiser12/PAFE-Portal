@@ -4,7 +4,7 @@ export const LATE_RETURN_MESSAGE =
 export const LOSS_MESSAGE =
   'Por otro lado, en caso de ruptura o pérdida, deberá comprar uno similar y entregarlo a PAFE antes de un mes.'
 
-const toSpanishDate = (iso: string): string => iso.split('-').reverse().join('-')
+export const toSpanishDate = (iso: string): string => iso.split('-').reverse().join('-')
 
 export const reminderEmail = ({ title, dueISO }: { title: string; dueISO: string }) => {
   const eu = `Gogoratu nahi dizugu ${dueISO}an itzuli behar duzula ${title}`

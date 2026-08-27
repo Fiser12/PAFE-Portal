@@ -6,11 +6,13 @@ import {
   dayToInstant,
   fail,
   isOwnerPenalizedAt,
+  loadItemTitle,
   loadReservation,
   loadUser,
   relationId,
   type ServiceContext,
 } from './shared'
+import { notify } from './notifications'
 
 export const registerPickup = async ({
   payload,
@@ -31,7 +33,7 @@ export const registerPickup = async ({
   const pickupISO = tuesdayOfWeek(madridDateOf(pickupDate ?? now))
   const dueISO = computeDueDate(pickupISO, { penalized: isOwnerPenalizedAt(owner, now) })
 
-  return payload.update({
+  const active = await payload.update({
     collection: 'reservation',
     id: reservationId,
     data: {
@@ -41,4 +43,15 @@ export const registerPickup = async ({
     },
     overrideAccess: true,
   })
+
+  await notify({
+    payload,
+    userId: owner.id,
+    reservationId,
+    type: 'recogida',
+    title: await loadItemTitle(payload, relationId(reservation.item)),
+    dueISO,
+  })
+
+  return active
 }

@@ -7,11 +7,13 @@ import {
   dayToInstant,
   fail,
   isOwnerPenalizedAt,
+  loadItemTitle,
   loadReservation,
   loadUser,
   relationId,
   type ServiceContext,
 } from './shared'
+import { notify } from './notifications'
 
 export const requestExtension = async ({
   payload,
@@ -37,13 +39,25 @@ export const requestExtension = async ({
     }),
   )
 
-  return payload.update({
+  const newDueISO = extendDueDate(dueISO as string)
+  const extended = await payload.update({
     collection: 'reservation',
     id: reservationId,
     data: {
-      dueDate: dayToInstant(extendDueDate(dueISO as string)),
+      dueDate: dayToInstant(newDueISO),
       extension: { requestedAt: dayToInstant(todayISO) },
     },
     overrideAccess: true,
   })
+
+  await notify({
+    payload,
+    userId: ownerId,
+    reservationId,
+    type: 'prorroga',
+    title: await loadItemTitle(payload, relationId(reservation.item)),
+    dueISO: newDueISO,
+  })
+
+  return extended
 }

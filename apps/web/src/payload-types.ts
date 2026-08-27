@@ -73,6 +73,7 @@ export interface Config {
     verifications: Verification;
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
+    notification: Notification;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -116,6 +117,7 @@ export interface Config {
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
+    notification: NotificationSelect<false> | NotificationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -791,6 +793,20 @@ export interface AdminInvitation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification".
+ */
+export interface Notification {
+  id: number;
+  user: number | User;
+  type: 'recordatorio' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
+  message: string;
+  reservation?: (number | null) | Reservation;
+  readAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tasks-completed".
  */
 export interface TasksCompleted {
@@ -1356,6 +1372,10 @@ export interface PayloadLockedDocument {
         value: number | Reservation;
       } | null)
     | ({
+        relationTo: 'notification';
+        value: number | Notification;
+      } | null)
+    | ({
         relationTo: 'catalog-item';
         value: number | CatalogItem;
       } | null)
@@ -1557,6 +1577,19 @@ export interface ReservationSelect<T extends boolean = true> {
       };
   quotaOverrideReason?: T;
   reminderSentFor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification_select".
+ */
+export interface NotificationSelect<T extends boolean = true> {
+  user?: T;
+  type?: T;
+  message?: T;
+  reservation?: T;
+  readAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2306,6 +2339,7 @@ export interface TaskCreateCollectionExport {
     batchSize?: number | null;
     collectionSlug:
       | 'reservation'
+      | 'notification'
       | 'catalog-item'
       | 'cases'
       | 'tasks'
