@@ -67,4 +67,36 @@ export default [
       sequence: { shuffle: false },
     },
   }),
+  defineProject({
+    root: `${import.meta.dirname}/apps/web`,
+    resolve: {
+      alias: { "@": `${import.meta.dirname}/apps/web/src` },
+    },
+    test: {
+      name: "web-unit",
+      environment: "node",
+      include: ["test/unit/**/*.test.ts"],
+      sequence: { shuffle: false },
+    },
+  }),
+  defineProject({
+    root: `${import.meta.dirname}/apps/web`,
+    resolve: {
+      alias: { "@": `${import.meta.dirname}/apps/web/src` },
+    },
+    test: {
+      name: "web-vertical",
+      environment: "node",
+      include: ["test/vertical/**/*.test.ts"],
+      globalSetup: ["./test/vertical/global-setup.ts"],
+      pool: "forks",
+      maxWorkers: 1,
+      isolate: false,
+      fileParallelism: false,
+      server: { deps: { inline: ["payload-auth"] } },
+      hookTimeout: 180_000,
+      testTimeout: 60_000,
+      sequence: { shuffle: false },
+    },
+  }),
 ];
