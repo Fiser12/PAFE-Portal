@@ -20,7 +20,12 @@ export default async function CatalogItemPage({ params }: Props) {
         return notFound()
     }
 
-    return <CatalogItemClient item={catalogItem} >
+    return <CatalogItemClient
+        item={catalogItem}
+        contributions={
+            catalogItem.contributions ? <RichText data={catalogItem.contributions} /> : null
+        }
+    >
         {catalogItem.content ? <RichText data={catalogItem.content} /> : null}
     </CatalogItemClient>
 } 

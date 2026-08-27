@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { CatalogSearch } from '@/modules/catalog/ui/CatalogSearch'
+import { CatalogIntro } from '@/modules/catalog/ui/CatalogIntro'
 
 export default async function CatalogPage() {
   const payload = await getPayload({ config: configPromise })
@@ -11,5 +12,12 @@ export default async function CatalogPage() {
     sort: 'id',
   })
 
-  return <CatalogSearch categories={categories.docs} />
+  return (
+    <>
+      <div className="container mx-auto px-4 pt-8">
+        <CatalogIntro />
+      </div>
+      <CatalogSearch categories={categories.docs} />
+    </>
+  )
 }

@@ -8,6 +8,7 @@ import { useUser } from '@/lib/auth/useUser'
 import { Button } from '@/components/ui/button'
 import { CMSLink } from '@/components/legacy/Link'
 import { getNavItems, isNavItemActive } from './nav-items'
+import { NotificationsBell } from '@/modules/catalog/ui/NotificationsBell'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -46,7 +47,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       {cmsItems.map(({ link }, i) => (
         <CMSLink key={i} {...link} appearance="link" className={linkClasses} />
       ))}
-      {!user && (
+      {user ? (
+        <NotificationsBell />
+      ) : (
         <Button asChild size="sm" className="ml-2">
           <Link href="/login">Entrar</Link>
         </Button>

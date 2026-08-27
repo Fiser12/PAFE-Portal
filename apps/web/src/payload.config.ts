@@ -15,6 +15,10 @@ import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { migrations } from './migrations'
+import {
+  DUE_REMINDERS_QUEUE,
+  dueRemindersTask,
+} from '@/modules/catalog/jobs/dueRemindersTask'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -75,6 +79,10 @@ export default buildConfig({
     : {}),
   db: postgresAdapter({
     prodMigrations: migrations,
+    // En dev el esquema se sincroniza con push, pero `next build` también
+    // instancia Payload: sin esto, drizzle abre un prompt interactivo por cada
+    // columna nueva y el build se queda colgado para siempre.
+    push: process.env.PAYLOAD_DISABLE_PUSH !== 'true',
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
@@ -121,6 +129,14 @@ export default buildConfig({
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
-    tasks: [],
+    tasks: [dueRemindersTask],
+    autoRun: [
+      {
+        cron: '15 6 * * *',
+        limit: 100,
+        queue: DUE_REMINDERS_QUEUE,
+      },
+    ],
+    shouldAutoRun: () => process.env.DISABLE_JOBS_AUTORUN !== 'true',
   },
 })

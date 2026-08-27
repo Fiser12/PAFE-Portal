@@ -12,7 +12,8 @@
     "start:web": "turbo run start --filter=web",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=web",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:web": "vitest run --config vitest.config.ts --project web-unit --project web-vertical"
   },
   "devDependencies": {
     "@testing-library/dom": "10.4.1",

@@ -73,6 +73,7 @@ export interface Config {
     verifications: Verification;
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
+    notification: Notification;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -116,6 +117,7 @@ export interface Config {
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
+    notification: NotificationSelect<false> | NotificationSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -146,10 +148,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -158,6 +162,7 @@ export interface Config {
   user: User;
   jobs: {
     tasks: {
+      dueReminders: TaskDueReminders;
       createCollectionExport: TaskCreateCollectionExport;
       createCollectionImport: TaskCreateCollectionImport;
       schedulePublish: TaskSchedulePublish;
@@ -193,6 +198,14 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  /**
+   * A partir de la tercera, los préstamos pasan a 14 días durante 6 meses
+   */
+  lateReturnsCount?: number | null;
+  /**
+   * Vaciar este campo levanta la penalización (perdón del staff)
+   */
+  penalizedUntil?: string | null;
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
   /**
@@ -241,7 +254,38 @@ export interface Reservation {
   id: number;
   item: number | CatalogItem;
   user: number | User;
+  status: 'reservada' | 'activa' | 'devuelta' | 'perdida' | 'cancelada';
   reservationDate: string;
+  /**
+   * Martes de reunión en que la familia recoge el material
+   */
+  pickupDate?: string | null;
+  /**
+   * Recogida + 28 días (14 si la familia está penalizada)
+   */
+  dueDate?: string | null;
+  extension?: {
+    requestedAt?: string | null;
+  };
+  returnedAt?: string | null;
+  returnedLate?: boolean | null;
+  loss?: {
+    reportedAt?: string | null;
+    replacementDeadline?: string | null;
+    replacedAt?: string | null;
+  };
+  /**
+   * Obligatoria cuando el staff supera el máximo de 2 materiales por familia
+   */
+  quotaOverrideReason?: string | null;
+  /**
+   * Evita repetir el aviso de los 5 días; una prórroga habilita uno nuevo
+   */
+  reminderSentFor?: string | null;
+  /**
+   * Evita repetir el aviso del propio día del vencimiento
+   */
+  dueNoticeSentFor?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -256,11 +300,25 @@ export interface CatalogItem {
   author?: string | null;
   type: 'libro' | 'juego' | 'programa';
   language?: ('castellano' | 'euskera' | 'bilingue') | null;
-  /**
-   * Duración del préstamo: libros 30 días, juegos 20, programas 15–30
-   */
-  loanDays?: number | null;
   content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Sugerencias de uso recogidas de las familias: perfiles, objetivos, para qué trabajar
+   */
+  contributions?: {
     root: {
       type: string;
       children: {
@@ -734,6 +792,20 @@ export interface AdminInvitation {
   role: 'admin' | 'profesional' | 'familia';
   token: string;
   url?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification".
+ */
+export interface Notification {
+  id: number;
+  user: number | User;
+  type: 'recordatorio' | 'vencimiento' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
+  message: string;
+  reservation?: (number | null) | Reservation;
+  readAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1222,7 +1294,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
+        taskSlug: 'inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1255,10 +1327,20 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
+  taskSlug?:
+    ('inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
+  meta?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1292,6 +1374,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reservation';
         value: number | Reservation;
+      } | null)
+    | ({
+        relationTo: 'notification';
+        value: number | Notification;
       } | null)
     | ({
         relationTo: 'catalog-item';
@@ -1400,6 +1486,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  lateReturnsCount?: T;
+  penalizedUntil?: T;
   reservations?: T;
   assignedCases?: T;
   groups?: T;
@@ -1473,7 +1561,40 @@ export interface AdminInvitationsSelect<T extends boolean = true> {
 export interface ReservationSelect<T extends boolean = true> {
   item?: T;
   user?: T;
+  status?: T;
   reservationDate?: T;
+  pickupDate?: T;
+  dueDate?: T;
+  extension?:
+    | T
+    | {
+        requestedAt?: T;
+      };
+  returnedAt?: T;
+  returnedLate?: T;
+  loss?:
+    | T
+    | {
+        reportedAt?: T;
+        replacementDeadline?: T;
+        replacedAt?: T;
+      };
+  quotaOverrideReason?: T;
+  reminderSentFor?: T;
+  dueNoticeSentFor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification_select".
+ */
+export interface NotificationSelect<T extends boolean = true> {
+  user?: T;
+  type?: T;
+  message?: T;
+  reservation?: T;
+  readAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1487,8 +1608,8 @@ export interface CatalogItemSelect<T extends boolean = true> {
   author?: T;
   type?: T;
   language?: T;
-  loanDays?: T;
   content?: T;
+  contributions?: T;
   quantity?: T;
   reservations?: T;
   categories?: T;
@@ -2024,6 +2145,7 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  meta?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2119,6 +2241,24 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats".
+ */
+export interface PayloadJobsStat {
+  id: number;
+  stats?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2165,6 +2305,16 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats_select".
+ */
+export interface PayloadJobsStatsSelect<T extends boolean = true> {
+  stats?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -2172,6 +2322,16 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskDueReminders".
+ */
+export interface TaskDueReminders {
+  input?: unknown;
+  output: {
+    sent: number;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2184,6 +2344,7 @@ export interface TaskCreateCollectionExport {
     batchSize?: number | null;
     collectionSlug:
       | 'reservation'
+      | 'notification'
       | 'catalog-item'
       | 'cases'
       | 'tasks'
