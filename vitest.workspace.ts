@@ -89,6 +89,7 @@ export default [
       environment: "node",
       include: ["test/vertical/**/*.test.ts"],
       globalSetup: ["./test/vertical/global-setup.ts"],
+      setupFiles: ["./test/vertical/setup.ts"],
       pool: "forks",
       maxWorkers: 1,
       isolate: false,
@@ -96,7 +97,8 @@ export default [
       server: { deps: { inline: ["payload-auth"] } },
       hookTimeout: 180_000,
       testTimeout: 60_000,
-      sequence: { shuffle: false },
+      // Grupo propio: corre en un solo worker, a diferencia del resto
+      sequence: { shuffle: false, groupOrder: 1 },
     },
   }),
 ];
