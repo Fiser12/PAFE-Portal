@@ -1,9 +1,12 @@
 import type { Payload } from 'payload'
+import type { User } from '@/payload-types'
 
 let seq = 0
 const uniq = () => `${Date.now().toString(36)}-${++seq}`
 
-export const createUser = (payload: Payload, role: string[], name = 'Usuario Test') =>
+type Role = NonNullable<User['role']>
+
+export const createUser = (payload: Payload, role: Role, name = 'Usuario Test') =>
   payload.create({
     collection: 'users',
     data: { email: `u-${uniq()}@pafe.test`, name, role, emailVerified: true },
@@ -22,7 +25,7 @@ const getTaxonomy = (payload: Payload) =>
   (taxonomyId ??= payload
     .create({
       collection: 'taxonomy',
-      data: { name: `Tests ${uniq()}` },
+      data: { name: `Tests ${uniq()}`, slug: `tests-${uniq()}` },
       overrideAccess: true,
     })
     .then((doc) => doc.id))
@@ -37,7 +40,7 @@ export const createItem = async (
       title: opts.title ?? `Material ${uniq()}`,
       type: 'libro',
       quantity: opts.quantity ?? 1,
-      categories: [await getTaxonomy(payload)],
+      categories: [Number(await getTaxonomy(payload))],
     },
     overrideAccess: true,
   })

@@ -7,17 +7,19 @@ se toca un test si tiene un error demostrable contra la spec.
 
 ## Ejecución
 
-Requiere Node ≥22 (campo `engines`; con nvm: `nvm use 22`) y Docker en marcha.
+Todo se ejecuta **dentro del devcontainer** (nunca desde el host):
 
 ```bash
-pnpm test:web                 # unit + vertical
-pnpm vitest run --project web-unit       # solo dominio puro (sin Docker)
-pnpm vitest run --project web-vertical   # arranca pafe-test-pg (Docker) él solo
+docker exec pafe-portal_devcontainer-app-1 bash -c "cd /workspace && pnpm test:web"   # unit + vertical
+docker exec pafe-portal_devcontainer-app-1 bash -c "cd /workspace && pnpm test"       # todo el repo
 ```
 
-El vertical usa el contenedor `pafe-test-pg` (postgres:17-alpine, puerto
-55432); lo crea si no existe y recrea el esquema en cada run (drizzle push).
-`docker rm -f pafe-test-pg` para limpiar. El fichero
+La BD de los verticales es el servicio `test_db` del propio devcontainer
+(Postgres en tmpfs, efímero), que inyecta `TEST_DATABASE_URL`; el arnés
+recrea el esquema en cada ejecución (drizzle push) y falla con un mensaje
+explícito si se lanza fuera del devcontainer.
+
+El fichero
 `test/vertical/harness.smoke.test.ts` debe estar SIEMPRE en verde: valida el
 arnés con el modelo actual.
 
@@ -83,11 +85,33 @@ el doc de reserva actualizado. Las server actions serán wrappers finos
   guardar de forma que `iso.slice(0, 10)` dé el día correcto (recomendado:
   mediodía UTC). Los tests solo comparan por día.
 
+## Build
+
+`pnpm build` fija `PAYLOAD_DISABLE_PUSH=true`: `next build` instancia Payload y,
+con push activo, drizzle abre un prompt por cada columna nueva y el build se
+cuelga sin fin.
+
+Para validar el build hay que apuntar a una **base virgen o al día**, nunca a la
+de dev: con `prodMigrations`, Payload migra al arrancar y, al ver el marcador de
+push (`batch: -1`) que deja el desarrollo, pregunta si continuar y vuelve a
+colgarse. Contra una base vacía aplica todas las migraciones y compila:
+
+```bash
+docker exec pafe-portal_devcontainer-test_db-1 \
+  psql -U pafe_test -h 127.0.0.1 -d pafe_test -c "CREATE DATABASE build_check;"
+
+docker exec -e DATABASE_URL="postgresql://pafe_test:pafe_test@test_db:5432/build_check" \
+  -e SEED_MOCK_DATA=false pafe-portal_devcontainer-app-1 \
+  bash -c "cd /workspace && pnpm build:web"
+```
+
+`SEED_MOCK_DATA=false` importa: el seed corre al arrancar Payload y un fallo suyo
+aparece como `<Html> should not be imported outside of pages/_document` en /404,
+que no tiene nada que ver con la causa real.
+
 ## Notas
 
-- `catalog-item.loanDays` (30/20/15 por tipo) queda DEROGADO por la nueva
-  norma: 28 días para todo. Los tests imponen +28; retirar el campo o
-  ignorarlo es decisión de implementación.
-- El rojo actual incluye errores de tsc por módulos/campos inexistentes; se
-  resuelven al implementar y regenerar payload-types. No “arreglar” los tests
-  para que compilen antes de tiempo.
+- `catalog-item.loanDays` (30/20/15 por tipo) quedó DEROGADO por la nueva
+  norma —28 días para todo— y se retiró del modelo.
+- En dev el esquema se sincroniza con `push`; las migraciones son solo para
+  producción.

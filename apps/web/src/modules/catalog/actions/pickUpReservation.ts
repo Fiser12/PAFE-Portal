@@ -3,14 +3,14 @@
 import { revalidatePath } from 'next/cache'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { LoanRuleError } from '../domain/errors'
-import { registerReturn } from '../services'
+import { registerPickup } from '../services'
 import { relationId } from '../services/shared'
 
-export async function returnBook(reservationId: number) {
+export async function pickUpReservation(reservationId: number) {
   const { payload, user } = await getSessionUser()
   if (!user) throw new LoanRuleError('sin-permiso')
 
-  const reservation = await registerReturn({
+  const reservation = await registerPickup({
     payload,
     user,
     reservationId,

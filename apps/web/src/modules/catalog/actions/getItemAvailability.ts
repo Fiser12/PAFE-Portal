@@ -2,31 +2,11 @@
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { getAvailability } from '../services'
 
 export async function getItemAvailability(itemId: number) {
-  try {
-    const payload = await getPayload({ config: await configPromise })
-    const item = await payload.findByID({
-      collection: 'catalog-item',
-      id: itemId,
-      depth: 1,
-    })
+  const payload = await getPayload({ config: await configPromise })
+  const { total, available } = await getAvailability({ payload, itemId })
 
-    if (!item) {
-      throw new Error('Item not found')
-    }
-
-    const reserved = item.reservations?.docs?.length ?? 0
-    const total = item.quantity ?? 0
-    const available = Math.max(total - reserved, 0)
-
-    return {
-      available,
-      total,
-      reserved,
-    }
-  } catch (error) {
-    console.error('Error getting item availability:', error)
-    throw error
-  }
+  return { available, total, reserved: total - available }
 }

@@ -25,12 +25,17 @@ export const testEmailAdapter = () => ({
   name: 'test-capture',
   defaultFromAddress: 'test@pafe.local',
   defaultFromName: 'PAFE Test',
-  sendEmail: async (message: SentEmail) => {
+  sendEmail: async (message: Record<string, unknown>) => {
     if (emailFailures.failNextSend) {
       emailFailures.failNextSend = false
       throw new Error('fallo simulado de envío')
     }
-    sentEmails.push(message)
+    sentEmails.push({
+      to: message.to,
+      subject: message.subject as string | undefined,
+      text: message.text as string | undefined,
+      html: message.html as string | undefined,
+    })
     return {}
   },
 })

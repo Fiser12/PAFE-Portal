@@ -267,6 +267,12 @@ stateDiagram-v2
 - Sin sanciones automáticas por no reponer una pérdida: la fecha límite es una
   herramienta de seguimiento del staff.
 - El cupo excepcional no caduca: la reserva extra convive hasta devolverse.
+- **Deuda conocida (2026-08-27)**: reservar y registrar una devolución tardía
+  hacen comprobación-y-acción sin transacción. Dos operaciones simultáneas
+  sobre la misma familia o el mismo material podrían saltarse el cupo/stock o
+  perder un incremento del contador de tardías. Asumido: el volumen real
+  (staff registrando en reuniones, decenas de familias) lo hace improbable.
+  El arreglo es envolver en transacción de Payload.
 
 ## 10. Open Questions & Assumptions
 
@@ -311,8 +317,16 @@ Functional core / imperative shell (estándar de la casa):
   `{ payload, user }`, orquestan Local API + dominio + emails. Las server
   actions quedan como wrappers finos (`getSessionUser()` + servicio +
   `revalidatePath`). Esto hace los servicios testeables sin mockear Next.
-- **Job**: task de la cola de jobs de Payload (`jobs` ya configurado con secret
-  de Vercel Cron) ejecutada a diario; usa `reminders.ts` + email.
+- **Job**: task `dueReminders` con `schedule` diario (06:00) que se auto-encola
+  en la cola `recordatorios`. Quién la dispara depende del entorno, y ambos
+  quedan cubiertos:
+  - **Docker self-hosted**: `jobs.autoRun` en `payload.config.ts` (proceso vivo).
+  - **Vercel**: `vercel.json` con un cron diario contra
+    `/api/payload-jobs/run?queue=recordatorios`, autenticado con
+    `Bearer CRON_SECRET` (`jobs.access.run` ya lo valida). El endpoint evalúa
+    los `schedule` además de drenar la cola.
+  En Vercel `autoRun` no llega a ejecutarse (no hay proceso persistente), y en
+  Docker el cron externo simplemente no existe: no se pisan.
 - **Email**: adapter Resend existente; sin `RESEND_API_KEY` (dev/test) los
   emails van a consola / a un adapter de captura en tests.
 
@@ -330,7 +344,7 @@ Functional core / imperative shell (estándar de la casa):
   Las reservas existentes no migran a `status: activa`: son pre-norma → migrar a
   `reservada` sin vencimiento y que el staff las regularice al siguiente martes.
 
-## T3. Estrategia de tests (SE ESCRIBEN ANTES DE IMPLEMENTAR)
+## T3. Estrategia de tests
 
 Acordado: cobertura muy potente, **tests verticales**, escritos con Fable antes
 de la implementación (que hará Opus).

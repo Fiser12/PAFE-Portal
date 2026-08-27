@@ -25,7 +25,12 @@ describe('arnés vertical', () => {
 
     const reservation = await payload.create({
       collection: 'reservation',
-      data: { item: item.id, user: familia.id, reservationDate: new Date().toISOString() },
+      data: {
+        item: item.id,
+        user: familia.id,
+        status: 'reservada',
+        reservationDate: new Date().toISOString(),
+      },
       overrideAccess: true,
     })
     const found = await payload.findByID({ collection: 'reservation', id: reservation.id })

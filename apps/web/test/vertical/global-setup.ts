@@ -1,42 +1,32 @@
-import { execSync } from 'node:child_process'
-import { TEST_DB } from './helpers/db'
+import { Client } from 'pg'
+import { TEST_DATABASE_URL } from './helpers/db'
 
-const sh = (cmd: string) => execSync(cmd, { stdio: 'pipe' }).toString().trim()
-
-const isRunning = () => {
-  try {
-    return sh(`docker inspect -f '{{.State.Running}}' ${TEST_DB.container}`) === 'true'
-  } catch {
-    return false
-  }
+const connect = async (): Promise<Client> => {
+  const client = new Client({ connectionString: TEST_DATABASE_URL })
+  await client.connect()
+  return client
 }
 
-export default function globalSetup() {
-  if (!isRunning()) {
-    try {
-      sh(`docker rm -f ${TEST_DB.container}`)
-    } catch {
-      // no existía: nada que borrar
-    }
-    sh(
-      `docker run -d --name ${TEST_DB.container} ` +
-        `-e POSTGRES_USER=${TEST_DB.user} -e POSTGRES_PASSWORD=${TEST_DB.password} ` +
-        `-e POSTGRES_DB=${TEST_DB.database} -p ${TEST_DB.port}:5432 postgres:17-alpine`,
-    )
-  }
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export default async function globalSetup() {
   const deadline = Date.now() + 60_000
   for (;;) {
     try {
-      sh(`docker exec ${TEST_DB.container} pg_isready -U ${TEST_DB.user} -d ${TEST_DB.database}`)
-      break
-    } catch {
-      if (Date.now() > deadline) throw new Error(`${TEST_DB.container} no responde tras 60s`)
-      execSync('sleep 1')
+      const client = await connect()
+      // Esquema limpio en cada ejecución: drizzle push lo reconstruye al arrancar
+      await client.query('DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;')
+      await client.end()
+      return
+    } catch (error) {
+      if (Date.now() > deadline) {
+        throw new Error(
+          `No hay Postgres de test en ${TEST_DATABASE_URL}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        )
+      }
+      await sleep(1000)
     }
   }
-  // Esquema limpio en cada run: drizzle push lo reconstruye al arrancar Payload
-  sh(
-    `docker exec ${TEST_DB.container} psql -U ${TEST_DB.user} -d ${TEST_DB.database} ` +
-      `-c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'`,
-  )
 }

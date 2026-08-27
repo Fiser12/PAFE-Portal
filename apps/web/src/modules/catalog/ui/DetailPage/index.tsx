@@ -12,9 +12,10 @@ import { ReservationsTable } from '../ReservationsTable'
 interface Props {
     item: CatalogItem
     children: React.ReactNode
+    contributions?: React.ReactNode
 }
 
-export function CatalogItemClient({ item, children }: Props) {
+export function CatalogItemClient({ item, children, contributions }: Props) {
     const { user } = useUser()
     const isCatalogAdmin = isStaff(user)
     // Clave compartida: useReservationsRefresh() la invalida al reservar/devolver
@@ -50,6 +51,14 @@ export function CatalogItemClient({ item, children }: Props) {
                             </p>
                         </div>
                         <ReservationForm itemId={item.id} />
+                        {contributions && (
+                            <section className="mt-6">
+                                <h2 className="mb-2 text-lg font-semibold">
+                                    Aportaciones de las familias
+                                </h2>
+                                <div className="prose max-w-none">{contributions}</div>
+                            </section>
+                        )}
                     </div>
                 </div>
                 {isCatalogAdmin && <ReservationsTable itemId={item.id} />}

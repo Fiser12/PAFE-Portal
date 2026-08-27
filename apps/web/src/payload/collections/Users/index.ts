@@ -10,9 +10,12 @@ import {
   isStaffAccess,
   staffOrSelfAccess,
 } from '@/core/permissions'
+import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
+
+const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
@@ -39,6 +42,28 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
+    {
+      label: 'Devoluciones tardías',
+      name: 'lateReturnsCount',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      access: { update: staffFieldAccess },
+      admin: {
+        position: 'sidebar',
+        description: 'A partir de la tercera, los préstamos pasan a 14 días durante 6 meses',
+      },
+    },
+    {
+      label: 'Penalizada hasta',
+      name: 'penalizedUntil',
+      type: 'date',
+      access: { update: staffFieldAccess },
+      admin: {
+        position: 'sidebar',
+        description: 'Vaciar este campo levanta la penalización (perdón del staff)',
+      },
+    },
     // name/email/emailVerified/image/role are injected automatically by the
     // better-auth plugin (see src/payload/plugins/better-auth)
     {

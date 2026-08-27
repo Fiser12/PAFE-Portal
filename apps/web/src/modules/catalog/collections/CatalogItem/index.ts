@@ -83,20 +83,20 @@ export const CatalogItem: CollectionConfig = {
       },
     },
     {
-      label: 'Días de préstamo',
-      name: 'loanDays',
-      type: 'number',
-      required: false,
-      admin: {
-        position: 'sidebar',
-        description: 'Duración del préstamo: libros 30 días, juegos 20, programas 15–30',
-      },
-    },
-    {
       label: 'Contenido',
       name: 'content',
       type: 'richText',
       required: false,
+    },
+    {
+      label: 'Aportaciones de las familias',
+      name: 'contributions',
+      type: 'richText',
+      required: false,
+      admin: {
+        description:
+          'Sugerencias de uso recogidas de las familias: perfiles, objetivos, para qué trabajar',
+      },
     },
     {
       label: 'Cantidad total',

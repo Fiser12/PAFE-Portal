@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/payload-jobs/run?queue=recordatorios",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}

@@ -7,6 +7,11 @@ import librosJson from './data/libros.json'
 import juegosJson from './data/juegos.json'
 import programasJson from './data/programas.json'
 import cortosJson from './data/cortos.json'
+import {
+  computeDueDate,
+  madridDateOf,
+  tuesdayOfWeek,
+} from '@/modules/catalog/domain/loan-terms'
 
 const PASSWORD = 'test1234!'
 
@@ -105,7 +110,6 @@ const TAXONOMY: { slug: string; name: string; type: string }[] = [
   { slug: 'profesionales', name: 'Profesionales', type: 'destinatario' },
 ]
 
-const LOAN_DAYS: Record<string, number> = { libro: 30, juego: 20, programa: 15 }
 
 interface CatalogItemData {
   type: string
@@ -251,7 +255,6 @@ export async function seedMockData(payload: Payload): Promise<void> {
           type: item.type,
           author: item.author ?? undefined,
           language: item.language ?? undefined,
-          loanDays: LOAN_DAYS[item.type],
           quantity: item.quantity,
           // «Si no hay content, no se pone»: solo el texto real de las fichas
           content: item.content && item.content.length > 0 ? richTextParas(item.content) : undefined,
@@ -337,12 +340,36 @@ export async function seedMockData(payload: Payload): Promise<void> {
   }
 
   // --- Reservas de la familia (para probar el flujo de préstamo) ------------
+  // Dos: una pendiente de recoger y un préstamo en curso. Es el cupo máximo.
   const existingReservations = await payload.count({ collection: 'reservation' })
   if (existingReservations.totalDocs === 0) {
-    for (const itemId of catalogIds.slice(0, 3)) {
+    const today = madridDateOf(new Date())
+    const pickupDay = tuesdayOfWeek(today)
+    const [pendingItem, activeItem] = catalogIds
+
+    if (pendingItem) {
       await payload.create({
         collection: 'reservation',
-        data: { item: itemId, user: familiaId, reservationDate: now } as never,
+        data: {
+          item: pendingItem,
+          user: familiaId,
+          status: 'reservada',
+          reservationDate: now,
+        },
+      })
+    }
+
+    if (activeItem) {
+      await payload.create({
+        collection: 'reservation',
+        data: {
+          item: activeItem,
+          user: familiaId,
+          status: 'activa',
+          reservationDate: now,
+          pickupDate: `${pickupDay}T12:00:00.000Z`,
+          dueDate: `${computeDueDate(pickupDay, { penalized: false })}T12:00:00.000Z`,
+        },
       })
     }
   }

@@ -2,15 +2,19 @@
 
 import type { Reservation } from '@/payload-types'
 import { useUser } from '@/lib/auth/useUser'
+import { isStaff } from '@/core/permissions'
 import useSWR from 'swr'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { getItemReservations, getUserReservations, returnBook } from '../../actions'
+import { getItemReservations, getUserReservations } from '../../actions'
 import { useReservationsRefresh } from '../../hooks/useReservationsRefresh'
+import { isPenalized } from '../../domain/penalties'
+import { madridDateOf } from '../../domain/loan-terms'
+import { ReservationActions } from '../ReservationActions'
+import { STATUS_LABELS, STATUS_VARIANTS, formatDay } from '../reservationLabels'
 
 interface Props {
   itemId?: number
@@ -30,6 +34,7 @@ const fetcher = async (key: [string, number | string]) => {
 
 export function ReservationsTable({ itemId }: Props) {
   const { user } = useUser()
+  const staff = isStaff(user)
   const router = useRouter()
 
   const swrKey = itemId
@@ -45,16 +50,7 @@ export function ReservationsTable({ itemId }: Props) {
   // Refresca también la disponibilidad y el estado "ya reservado" del detalle
   const refreshReservations = useReservationsRefresh()
 
-  const title = itemId ? 'Reservas actuales' : 'Mis reservas'
-
-  const handleReturn = async (reservationId: number) => {
-    try {
-      await returnBook(reservationId)
-      refreshReservations()
-    } catch (err) {
-      console.error('Error al devolver el libro:', err)
-    }
-  }
+  const title = itemId ? 'Reservas y préstamos' : 'Mis préstamos'
 
   if (isLoading) {
     return (
@@ -89,6 +85,19 @@ export function ReservationsTable({ itemId }: Props) {
     if (typeof reservationUser === 'object' && reservationUser) return reservationUser.email
     return String(reservationUser)
   }
+
+  const getUserId = (reservationUser: Reservation['user']) =>
+    typeof reservationUser === 'object' && reservationUser ? reservationUser.id : reservationUser
+
+  const isPenalizedOwner = (reservationUser: Reservation['user']) =>
+    typeof reservationUser === 'object' && reservationUser
+      ? isPenalized({
+          penalizedUntilISO: reservationUser.penalizedUntil
+            ? madridDateOf(new Date(reservationUser.penalizedUntil))
+            : null,
+          atISO: madridDateOf(new Date()),
+        })
+      : false
 
   const handleCardClick = (reservation: Reservation) => {
     // Solo navegar al libro si no es una vista de itemId específico
@@ -129,26 +138,30 @@ export function ReservationsTable({ itemId }: Props) {
                       </Link>
                     )}
                   </h4>
-                  <Badge variant="success">Activa</Badge>
+                  <Badge variant={STATUS_VARIANTS[reservation.status]}>
+                    {STATUS_LABELS[reservation.status]}
+                  </Badge>
                 </div>
                 <span className="self-start rounded border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground sm:self-auto">
-                  {new Date(reservation.reservationDate).toLocaleDateString('es-ES')}
+                  {reservation.status === 'activa'
+                    ? `Devolver el ${formatDay(reservation.dueDate)}`
+                    : formatDay(reservation.reservationDate)}
                 </span>
               </div>
 
-              <div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive sm:w-auto"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleReturn(reservation.id)
-                  }}
-                >
-                  Devolver
-                </Button>
-              </div>
+              {reservation.loss?.replacementDeadline && !reservation.loss.replacedAt && (
+                <p className="text-sm text-destructive">
+                  Reposición pendiente antes del {formatDay(reservation.loss.replacementDeadline)}
+                </p>
+              )}
+
+              <ReservationActions
+                reservation={reservation}
+                isStaff={staff}
+                isOwner={String(getUserId(reservation.user)) === String(user?.id)}
+                penalized={isPenalizedOwner(reservation.user)}
+                onDone={refreshReservations}
+              />
             </CardContent>
           </Card>
         ))}

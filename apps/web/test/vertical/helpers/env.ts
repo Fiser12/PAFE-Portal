@@ -1,7 +1,7 @@
 import { TEST_DATABASE_URL } from './db'
 
 // drizzle push solo sincroniza el esquema fuera de production
-process.env.NODE_ENV = 'development'
+Object.assign(process.env, { NODE_ENV: 'development' })
 process.env.PAYLOAD_SECRET ||= 'test-payload-secret'
 process.env.BETTER_AUTH_SECRET ||= 'test-better-auth-secret'
 process.env.AUTH_CLIENT_ID ||= 'test-google-client-id'

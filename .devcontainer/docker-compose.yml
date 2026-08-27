@@ -13,10 +13,14 @@ services:
       # Se fija aquí para que un .env.local antiguo con localhost no restaure
       # accidentalmente la dependencia de network_mode: host.
       DATABASE_URL: postgresql://devuser:devsecret@devcontainer_db:5432/devcontainer_db
+      # Base de los tests verticales: efímera, se recrea en cada ejecución
+      TEST_DATABASE_URL: postgresql://pafe_test:pafe_test@test_db:5432/pafe_test
     env_file:
       - .devcontainer.env
     depends_on:
       devcontainer_db:
+        condition: service_healthy
+      test_db:
         condition: service_healthy
     expose:
       - "3000"
@@ -39,6 +43,25 @@ services:
       - default_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U devuser -d devcontainer_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  test_db:
+    image: postgres:17-alpine
+    restart: always
+    tmpfs:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pafe_test
+      - POSTGRES_USER=pafe_test
+      - POSTGRES_DB=pafe_test
+    expose:
+      - "5432"
+    networks:
+      - default_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U pafe_test -d pafe_test"]
       interval: 5s
       timeout: 5s
       retries: 10
