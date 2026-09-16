@@ -18,7 +18,7 @@ describe('los textos de la interfaz', () => {
 
   // Palabras que se escriben igual en los dos idiomas: que coincidan no
   // significa que estén sin traducir.
-  const IGUALES_A_PROPOSITO = new Set(['tipoPrograma', 'navMoodle', 'catalogoMaterialUno', 'catalogoMaterialVarios'])
+  const IGUALES_A_PROPOSITO = new Set(['tipoPrograma', 'navMoodle', 'catalogoMaterialUno', 'catalogoMaterialVarios', 'calAgenda'])
 
   it('el euskera no es una copia del castellano', () => {
     const es = textosDe('es')

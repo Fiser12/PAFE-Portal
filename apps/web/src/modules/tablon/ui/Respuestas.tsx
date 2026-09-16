@@ -1,6 +1,8 @@
 'use client'
 
-import { useTextos } from '@/components/IdiomaProvider'
+import { useIdioma } from '@/components/IdiomaProvider'
+import type { CodigoIdioma } from '@/core/localization'
+import { diaYMes } from '@/modules/calendario/domain/fechas'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { Trash2 } from 'lucide-react'
@@ -9,14 +11,14 @@ import { Textarea } from '@/components/ui/textarea'
 import type { Respuesta, User } from '@/payload-types'
 import { cargarRespuestas, enviarRespuesta, retirarRespuesta } from '../actions/respuestas'
 
-const fecha = (iso?: string | null) =>
-  iso ? new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }) : ''
+const fecha = (iso: string | null | undefined, idioma: CodigoIdioma) =>
+  iso ? diaYMes(new Date(iso), idioma) : ''
 
 const quien = (autor: Respuesta['author']): string =>
   typeof autor === 'object' && autor !== null ? ((autor as User).name ?? 'Alguien') : 'Alguien'
 
 export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuarioId: number }) {
-  const t = useTextos()
+  const { idioma, t } = useIdioma()
   const { data, isLoading, mutate } = useSWR(['respuestas', noticiaId], () =>
     cargarRespuestas(noticiaId),
   )
@@ -62,7 +64,7 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
             <li key={respuesta.id} className="rounded-md border p-4">
               <div className="mb-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>
-                  {quien(respuesta.author)} · {fecha(respuesta.createdAt)}
+                  {quien(respuesta.author)} · {fecha(respuesta.createdAt, idioma)}
                 </span>
                 {Number(
                   typeof respuesta.author === 'object' && respuesta.author !== null
