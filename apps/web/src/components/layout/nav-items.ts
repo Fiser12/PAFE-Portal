@@ -4,9 +4,8 @@ import { isActiveUser, isStaff } from '@/core/permissions'
 export interface NavItem {
   label: string
   href: string
+  /** Se abre en su propia pestaña con un enlace normal, fuera del router de Next */
   external?: boolean
-  /** Sirve fuera del router de Next (la wiki es estática): enlace normal, misma pestaña */
-  plainLink?: boolean
 }
 
 /**
@@ -21,7 +20,8 @@ export function getNavItems(user: User | null): NavItem[] {
   if (isActiveUser(user)) items.push({ label: 'Catálogo', href: '/catalog' })
   items.push({ label: 'Foro', href: 'https://foro.pafe-formakuntza.com/', external: true })
   if (user) {
-    items.push({ label: 'Wiki', href: '/wiki', plainLink: true })
+    // La wiki es un sitio aparte servido fuera del router: se abre en otra pestaña
+    items.push({ label: 'Wiki', href: '/wiki', external: true })
     // Moodle conserva su propio inicio de sesión: se abre aparte
     items.push({
       label: 'Moodle',

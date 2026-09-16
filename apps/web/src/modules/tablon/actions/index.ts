@@ -2,6 +2,7 @@
 
 import type { Noticia } from '@/payload-types'
 import { isActiveUser, isStaff } from '@/core/permissions'
+import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { noticiasDelTablon } from '../services'
 import { AREAS_DEL_TABLON, areasVisiblesPara } from '../domain/areas'
@@ -38,7 +39,14 @@ export const cargarTablon = async (
   const { payload, user } = await getSessionUser()
   if (!user || !isActiveUser(user)) return SIN_PERMISO
 
-  const noticias = await noticiasDelTablon({ payload, user, area, archivadas, now: new Date() })
+  const noticias = await noticiasDelTablon({
+    payload,
+    user,
+    area,
+    archivadas,
+    now: new Date(),
+    locale: await getIdioma(),
+  })
   const areas = areasVisiblesPara({
     grupos: nombresDeSusGrupos(user),
     esStaff: isStaff(user),

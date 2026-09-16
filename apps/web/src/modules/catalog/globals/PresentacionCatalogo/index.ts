@@ -24,6 +24,7 @@ export const PresentacionCatalogo: GlobalConfig = {
       label: 'Texto',
       name: 'texto',
       type: 'richText',
+      localized: true,
       defaultValue: TEXTO_INICIAL,
       admin: {
         description: 'Lo que lee quien entra al catálogo, encima de la búsqueda',

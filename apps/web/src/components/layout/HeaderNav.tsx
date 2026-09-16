@@ -9,13 +9,18 @@ import { Button } from '@/components/ui/button'
 import { CMSLink } from '@/components/legacy/Link'
 import { getNavItems, isNavItemActive } from './nav-items'
 import { NotificationsBell } from '@/modules/catalog/ui/NotificationsBell'
+import { SelectorIdioma } from './SelectorIdioma'
 
 import type { Header as HeaderType } from '@/payload-types'
+import type { CodigoIdioma } from '@/core/localization'
 
 const linkClasses =
   'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
 
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
+export const HeaderNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = ({
+  data,
+  idioma,
+}) => {
   const { user } = useUser()
   const pathname = usePathname()
   const items = getNavItems(user)
@@ -34,14 +39,6 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           >
             {item.label}
           </a>
-        ) : item.plainLink ? (
-          <a
-            key={item.href}
-            href={item.href}
-            className={cn(linkClasses, isNavItemActive(item, pathname) && 'bg-accent text-foreground')}
-          >
-            {item.label}
-          </a>
         ) : (
           <Link
             key={item.href}
@@ -55,6 +52,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       {cmsItems.map(({ link }, i) => (
         <CMSLink key={i} {...link} appearance="link" className={linkClasses} />
       ))}
+      <SelectorIdioma idioma={idioma} />
       {user ? (
         <NotificationsBell />
       ) : (

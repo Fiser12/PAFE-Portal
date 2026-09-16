@@ -1,6 +1,7 @@
 'use server'
 
 import type { Where } from 'payload'
+import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { fichaDeLaWiki } from '../domain/wikiFichas'
 
@@ -34,6 +35,7 @@ export async function getCatalogSearchResult(id: number | string): Promise<unkno
       collection: 'search',
       id,
       depth: 1,
+      locale: await getIdioma(),
       overrideAccess: false,
       user,
     })
@@ -71,6 +73,7 @@ export async function searchCatalog({
     collection: 'search',
     where: and.length > 0 ? { and } : {},
     depth: 1,
+    locale: await getIdioma(),
     page,
     limit,
     sort: 'title',

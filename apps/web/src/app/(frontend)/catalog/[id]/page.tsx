@@ -3,6 +3,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { isActiveUser } from '@/core/permissions'
 import { CatalogItemClient } from '@/modules/catalog/ui/DetailPage'
 import { fichaDeLaWiki } from '@/modules/catalog/domain/wikiFichas'
+import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
@@ -17,6 +18,7 @@ export default async function CatalogItemPage({ params }: Props) {
         collection: 'catalog-item',
         id: (await params).id,
         depth: 2,
+        locale: await getIdioma(),
     })
 
     if (!catalogItem) {

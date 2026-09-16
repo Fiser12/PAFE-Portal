@@ -17,13 +17,18 @@ import {
 } from '@/components/ui/sheet'
 import { CMSLink } from '@/components/legacy/Link'
 import { getNavItems, isNavItemActive } from './nav-items'
+import { SelectorIdioma } from './SelectorIdioma'
 
 import type { Header as HeaderType } from '@/payload-types'
+import type { CodigoIdioma } from '@/core/localization'
 
 const linkClasses =
   'block rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
 
-export const MobileNav: React.FC<{ data: HeaderType }> = ({ data }) => {
+export const MobileNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = ({
+  data,
+  idioma,
+}) => {
   const [open, setOpen] = useState(false)
   const { user } = useUser()
   const pathname = usePathname()
@@ -40,7 +45,10 @@ export const MobileNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       </SheetTrigger>
       <SheetContent side="right" className="flex w-4/5 flex-col gap-0 p-0 sm:max-w-xs">
         <SheetHeader className="border-b p-4 text-left">
-          <SheetTitle className="font-bubblegum text-2xl font-black text-primary">PAFE</SheetTitle>
+          <div className="flex items-center justify-between gap-2">
+            <SheetTitle className="font-bubblegum text-2xl font-black text-primary">PAFE</SheetTitle>
+            <SelectorIdioma idioma={idioma} />
+          </div>
           <SheetDescription className="sr-only">Menú de navegación</SheetDescription>
         </SheetHeader>
         <nav className="flex flex-col gap-1 overflow-y-auto p-4">
@@ -52,18 +60,6 @@ export const MobileNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={linkClasses}
-                onClick={close}
-              >
-                {item.label}
-              </a>
-            ) : item.plainLink ? (
-              <a
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  linkClasses,
-                  isNavItemActive(item, pathname) && 'bg-accent text-foreground',
-                )}
                 onClick={close}
               >
                 {item.label}
