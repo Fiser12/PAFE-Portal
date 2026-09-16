@@ -13,6 +13,7 @@ import {
 import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
+import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
@@ -78,6 +79,16 @@ export const Users: CollectionConfig = {
       type: 'relationship',
       relationTo: COLLECTION_SLUG_CASES,
       hasMany: true,
+    },
+    {
+      label: 'Áreas del tablón',
+      name: 'areasSuscritas',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_TAXONOMY,
+      hasMany: true,
+      admin: {
+        description: 'Áreas de las que esta persona recibe aviso cuando se publica algo',
+      },
     },
     {
       label: 'Grupos',

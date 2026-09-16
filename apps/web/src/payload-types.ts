@@ -74,6 +74,7 @@ export interface Config {
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
     notification: Notification;
+    noticia: Noticia;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -118,6 +119,7 @@ export interface Config {
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     notification: NotificationSelect<false> | NotificationSelect<true>;
+    noticia: NoticiaSelect<false> | NoticiaSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -163,6 +165,7 @@ export interface Config {
   jobs: {
     tasks: {
       dueReminders: TaskDueReminders;
+      avisosTablon: TaskAvisosTablon;
       createCollectionExport: TaskCreateCollectionExport;
       createCollectionImport: TaskCreateCollectionImport;
       schedulePublish: TaskSchedulePublish;
@@ -208,6 +211,10 @@ export interface User {
   penalizedUntil?: string | null;
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
+  /**
+   * Áreas de las que esta persona recibe aviso cuando se publica algo
+   */
+  areasSuscritas?: (number | Taxonomy)[] | null;
   /**
    * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
    */
@@ -802,10 +809,58 @@ export interface AdminInvitation {
 export interface Notification {
   id: number;
   user: number | User;
-  type: 'recordatorio' | 'vencimiento' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
+  type:
+    | 'recordatorio'
+    | 'vencimiento'
+    | 'devolucion-tardia'
+    | 'perdida'
+    | 'recogida'
+    | 'prorroga'
+    | 'devolucion'
+    | 'noticia';
   message: string;
   reservation?: (number | null) | Reservation;
+  noticia?: (number | null) | Noticia;
   readAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticia".
+ */
+export interface Noticia {
+  id: number;
+  title: string;
+  area: number | Taxonomy;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Con una fecha futura, la noticia no se muestra ni avisa hasta que llega
+   */
+  publishedAt: string;
+  /**
+   * Las fijadas salen arriba del tablón
+   */
+  pinned?: boolean | null;
+  author?: (number | null) | User;
+  /**
+   * Se avisa una sola vez; editar la noticia no vuelve a avisar
+   */
+  notifiedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1294,7 +1349,13 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
+        taskSlug:
+          | 'inline'
+          | 'dueReminders'
+          | 'avisosTablon'
+          | 'createCollectionExport'
+          | 'createCollectionImport'
+          | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1328,7 +1389,15 @@ export interface PayloadJob {
       }[]
     | null;
   taskSlug?:
-    ('inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
+    | (
+        | 'inline'
+        | 'dueReminders'
+        | 'avisosTablon'
+        | 'createCollectionExport'
+        | 'createCollectionImport'
+        | 'schedulePublish'
+      )
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1378,6 +1447,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notification';
         value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'noticia';
+        value: number | Noticia;
       } | null)
     | ({
         relationTo: 'catalog-item';
@@ -1490,6 +1563,7 @@ export interface UsersSelect<T extends boolean = true> {
   penalizedUntil?: T;
   reservations?: T;
   assignedCases?: T;
+  areasSuscritas?: T;
   groups?: T;
   name?: T;
   email?: T;
@@ -1594,7 +1668,23 @@ export interface NotificationSelect<T extends boolean = true> {
   type?: T;
   message?: T;
   reservation?: T;
+  noticia?: T;
   readAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticia_select".
+ */
+export interface NoticiaSelect<T extends boolean = true> {
+  title?: T;
+  area?: T;
+  body?: T;
+  publishedAt?: T;
+  pinned?: T;
+  author?: T;
+  notifiedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2335,6 +2425,16 @@ export interface TaskDueReminders {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskAvisosTablon".
+ */
+export interface TaskAvisosTablon {
+  input?: unknown;
+  output: {
+    avisadas: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskCreateCollectionExport".
  */
 export interface TaskCreateCollectionExport {
@@ -2345,6 +2445,7 @@ export interface TaskCreateCollectionExport {
     collectionSlug:
       | 'reservation'
       | 'notification'
+      | 'noticia'
       | 'catalog-item'
       | 'cases'
       | 'tasks'

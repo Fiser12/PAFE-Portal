@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
-import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import { hiddenUnlessStaff, isAdminAccess, isStaffAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { TABLON_NOTIFICATION_TYPES } from '@/modules/tablon/domain/avisos'
 import { NOTIFICATION_TYPES } from '../../domain/notifications'
 import { COLLECTION_SLUG_RESERVATION } from '../Reservation'
 
@@ -40,7 +41,10 @@ export const Notification: CollectionConfig = {
       name: 'type',
       type: 'select',
       required: true,
-      options: NOTIFICATION_TYPES.map((value) => ({ label: value, value })),
+      options: [...NOTIFICATION_TYPES, ...TABLON_NOTIFICATION_TYPES].map((value) => ({
+        label: value,
+        value,
+      })),
     },
     {
       label: 'Mensaje',
@@ -53,6 +57,13 @@ export const Notification: CollectionConfig = {
       name: 'reservation',
       type: 'relationship',
       relationTo: COLLECTION_SLUG_RESERVATION,
+      hasMany: false,
+    },
+    {
+      label: 'Noticia',
+      name: 'noticia',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_NOTICIA,
       hasMany: false,
     },
     {

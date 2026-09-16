@@ -158,6 +158,46 @@ describe('avisos de una noticia nueva', () => {
     expect(await avisos(Number(familia.id))).toHaveLength(1)
   })
 
+  it('publicar desde el panel también avisa, sin pasar por el servicio', async () => {
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    await elegirAreas({ payload, user: familia, areaIds: [Number(area.id)] })
+
+    // Tal cual lo hace el panel de Payload: create directo sobre la colección
+    await payload.create({
+      collection: 'noticia',
+      data: {
+        title: 'Publicada desde el panel',
+        area: Number(area.id),
+        publishedAt: at('2026-09-16').toISOString(),
+      },
+      overrideAccess: true,
+    })
+
+    expect(await avisos(Number(familia.id))).toHaveLength(1)
+    expect(emailsTo(familia.email)).toHaveLength(1)
+  })
+
+  it('suscribirse a algo que no es un área del tablón no cuenta', async () => {
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    const tema = await payload.create({
+      collection: 'taxonomy',
+      data: { name: `Tema ${Date.now()}`, slug: `tema-${Date.now()}`, payload: { types: ['tematica'] } },
+      overrideAccess: true,
+    })
+
+    await elegirAreas({ payload, user: familia, areaIds: [Number(area.id), Number(tema.id)] })
+
+    const guardado = await payload.findByID({
+      collection: 'users',
+      id: familia.id,
+      depth: 0,
+      overrideAccess: true,
+    })
+    expect(guardado.areasSuscritas).toEqual([Number(area.id)])
+  })
+
   it('quien se da de baja de un área deja de recibir avisos', async () => {
     const staff = await createStaff(payload)
     const familia = await createFamilia(payload)

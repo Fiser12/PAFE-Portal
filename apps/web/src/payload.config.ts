@@ -19,6 +19,7 @@ import {
   DUE_REMINDERS_QUEUE,
   dueRemindersTask,
 } from '@/modules/catalog/jobs/dueRemindersTask'
+import { avisosTablonTask } from '@/modules/tablon/jobs/avisosTablonTask'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -129,7 +130,7 @@ export default buildConfig({
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
-    tasks: [dueRemindersTask],
+    tasks: [dueRemindersTask, avisosTablonTask],
     autoRun: [
       {
         cron: '15 6 * * *',
