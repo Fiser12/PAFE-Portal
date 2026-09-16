@@ -19,9 +19,13 @@ export default async function NoticiaPage({ params }: Props) {
   const { payload, user } = await getSessionUser()
   if (!isActiveUser(user)) redirect('/login')
 
+  const id = (await params).id
   const noticia = await payload
-    .findByID({ collection: 'noticia', id: (await params).id, depth: 1, overrideAccess: true })
-    .catch(() => null)
+    .findByID({ collection: 'noticia', id, depth: 1, overrideAccess: true })
+    .catch((error) => {
+      payload.logger.error(`[tablon] no se pudo leer la noticia ${id}: ${error}`)
+      return null
+    })
 
   if (!noticia) return notFound()
 

@@ -18,6 +18,16 @@ export const avisarAlPublicar: CollectionAfterChangeHook<Noticia> = async ({
   if (!estaPublicada({ publishedAt: doc.publishedAt, now: new Date() })) return doc
 
   const { avisarDeNoticia } = await import('../../../services')
-  await avisarDeNoticia({ payload: req.payload, noticia: doc, req })
+  try {
+    await avisarDeNoticia({ payload: req.payload, noticia: doc, req })
+  } catch (error) {
+    // La noticia se guarda igual y el cron reintenta: perder lo que el staff
+    // acaba de escribir es peor que un aviso que llega tarde
+    req.payload.logger.error(
+      `[tablon] la noticia ${doc.id} se guardó, pero el aviso falló: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    )
+  }
   return doc
 }

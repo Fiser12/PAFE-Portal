@@ -29,7 +29,7 @@ const resumen = (noticia: Noticia): string => {
 
 export function Tablon() {
   const [areaId, setAreaId] = useState<number | undefined>()
-  const { data, isLoading, mutate } = useSWR(['tablon', areaId], () => cargarTablon(areaId))
+  const { data, error, isLoading, mutate } = useSWR(['tablon', areaId], () => cargarTablon(areaId))
   const [suscritas, setSuscritas] = useState<number[]>([])
 
   useEffect(() => {
@@ -37,16 +37,24 @@ export function Tablon() {
   }, [data?.suscritas])
 
   const alternarArea = async (id: number) => {
+    const anterior = suscritas
     const siguiente = suscritas.includes(id)
       ? suscritas.filter((a) => a !== id)
       : [...suscritas, id]
     setSuscritas(siguiente)
-    await guardarAreasSuscritas(siguiente)
+
+    const guardado = await guardarAreasSuscritas(siguiente).catch(() => false)
+    if (!guardado) {
+      setSuscritas(anterior)
+      return
+    }
     void mutate()
   }
 
   const noticias = data?.noticias ?? []
   const areas = data?.areas ?? []
+
+  if (data?.acceso === 'sin-permiso') return null
 
   return (
     <section>
@@ -77,6 +85,10 @@ export function Tablon() {
 
       {isLoading ? (
         <p className="py-6 text-sm text-muted-foreground">Cargando el tablón…</p>
+      ) : error ? (
+        <p className="py-6 text-sm text-muted-foreground">
+          No se pudo cargar el tablón. Recarga la página para volver a intentarlo.
+        </p>
       ) : noticias.length === 0 ? (
         <p className="py-6 text-sm text-muted-foreground">Todavía no hay nada publicado aquí.</p>
       ) : (
@@ -103,7 +115,7 @@ export function Tablon() {
         </div>
       )}
 
-      {areas.length > 0 && (
+      {areas.length > 0 && !error && (
         <div className="mt-4 rounded-md border p-4">
           <p className="mb-2 text-sm font-medium">Avísame de estas áreas</p>
           <div className="flex flex-wrap gap-2">

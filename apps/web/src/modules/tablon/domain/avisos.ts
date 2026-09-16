@@ -2,14 +2,20 @@ export const TABLON_NOTIFICATION_TYPES = ['noticia'] as const
 
 export type TablonNotificationType = (typeof TABLON_NOTIFICATION_TYPES)[number]
 
-/** Nadie recibe aviso de lo que publica, aunque esté suscrito al área */
+/**
+ * Nadie recibe aviso de lo que publica, y nadie lo recibe dos veces: si un
+ * fallo dejó el aviso a medias, el reintento solo alcanza a quien falta.
+ */
 export const destinatariosDelAviso = ({
   suscriptores,
   autorId,
+  yaAvisados = [],
 }: {
   suscriptores: number[]
   autorId?: number | null
-}): number[] => [...new Set(suscriptores)].filter((id) => id !== autorId)
+  yaAvisados?: number[]
+}): number[] =>
+  [...new Set(suscriptores)].filter((id) => id !== autorId && !yaAvisados.includes(id))
 
 export const avisoDeNoticia = ({
   title,

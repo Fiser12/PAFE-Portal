@@ -6,7 +6,12 @@ import { createArea, createFamilia, createStaff } from './helpers/factory'
 import { at } from './helpers/dates'
 import { emailFailures, emailsTo, resetEmails } from './helpers/email'
 import { userNotifications } from '@/modules/catalog/services'
-import { editarNoticia, elegirAreas, publicarNoticia } from '@/modules/tablon/services'
+import {
+  avisarDeNoticia,
+  editarNoticia,
+  elegirAreas,
+  publicarNoticia,
+} from '@/modules/tablon/services'
 
 let payload: Payload
 
@@ -215,5 +220,28 @@ describe('avisos de una noticia nueva', () => {
     })
 
     expect(await avisos(Number(familia.id))).toHaveLength(0)
+  })
+})
+
+describe('reintentos: avisar dos veces no molesta dos veces', () => {
+  it('volver a avisar de la misma noticia no duplica el aviso', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    await elegirAreas({ payload, user: familia, areaIds: [Number(area.id)] })
+
+    const noticia = await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Solo una vez',
+      body: '.',
+      areaId: Number(area.id),
+      now: at('2026-09-16'),
+    })
+
+    // Lo que hace el cron si un fallo a mitad dejó la noticia sin marcar
+    await avisarDeNoticia({ payload, noticia })
+
+    expect(await avisos(Number(familia.id))).toHaveLength(1)
   })
 })

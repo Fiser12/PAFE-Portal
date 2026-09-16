@@ -35,6 +35,22 @@ const enviarCorreoSinRomper = async (
   }
 }
 
+const yaAvisadosDe = async (
+  payload: Payload,
+  noticiaId: number | string,
+  req?: PayloadRequest,
+): Promise<number[]> => {
+  const result = await payload.find({
+    collection: 'notification',
+    where: { noticia: { equals: noticiaId } },
+    depth: 0,
+    limit: 0,
+    overrideAccess: true,
+    req,
+  })
+  return result.docs.map((aviso) => idDe(aviso.user as number | { id: number }))
+}
+
 const suscriptoresDelArea = async (
   payload: Payload,
   areaId: number,
@@ -63,10 +79,14 @@ export const avisarDeNoticia = async ({
   req?: PayloadRequest
 }): Promise<number> => {
   const areaId = idDe(noticia.area)
-  const suscriptores = await suscriptoresDelArea(payload, areaId, req)
+  const [suscriptores, yaAvisados] = await Promise.all([
+    suscriptoresDelArea(payload, areaId, req),
+    yaAvisadosDe(payload, noticia.id, req),
+  ])
   const destinatarios = destinatariosDelAviso({
     suscriptores: suscriptores.map((u) => Number(u.id)),
     autorId: noticia.author ? idDe(noticia.author) : null,
+    yaAvisados,
   })
 
   const area = await payload.findByID({
@@ -90,6 +110,9 @@ export const avisarDeNoticia = async ({
       overrideAccess: true,
       req,
     })
+  }
+
+  for (const userId of destinatarios) {
     const destinatario = suscriptores.find((u) => Number(u.id) === userId)
     if (destinatario?.email) {
       await enviarCorreoSinRomper(payload, { to: destinatario.email, ...correo })
@@ -267,11 +290,21 @@ export const avisarDeNoticiasPendientes = async ({
     overrideAccess: true,
   })
 
+  let avisadas = 0
   for (const noticia of pendientes.docs as Noticia[]) {
-    await avisarDeNoticia({ payload, noticia })
+    try {
+      await avisarDeNoticia({ payload, noticia })
+      avisadas += 1
+    } catch (error) {
+      payload.logger.error(
+        `[tablon] no se pudo avisar de la noticia ${noticia.id}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      )
+    }
   }
 
-  return { avisadas: pendientes.docs.length }
+  return { avisadas }
 }
 
 export { nombreDelArea }
