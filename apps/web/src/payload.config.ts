@@ -8,9 +8,8 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 import { collections } from './payload/collections'
+import { globals } from './payload/globals'
 import { Users } from './payload/collections/Users'
-import { Footer } from './payload/admin_components/Footer/config'
-import { Header } from './payload/admin_components/Header/config'
 import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -97,7 +96,7 @@ export default buildConfig({
     },
   },
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals,
   plugins: plugins,
   secret: process.env.PAYLOAD_SECRET,
   // Carga datos de prueba al arrancar solo si SEED_MOCK_DATA=true (dev).

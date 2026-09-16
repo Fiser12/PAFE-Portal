@@ -3,6 +3,7 @@ import sharp from 'sharp'
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { collections } from '@/payload/collections'
+import { globals } from '@/payload/globals'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { betterAuthPluginInstance } from '@/payload/plugins/better-auth'
 import { plugin as searchPlugin } from '@/payload/plugins/search/plugin'
@@ -19,6 +20,7 @@ export const buildTestConfig = () =>
   buildConfig({
     secret: process.env.PAYLOAD_SECRET as string,
     collections,
+    globals,
     editor: defaultLexical,
     email: testEmailAdapter,
     plugins: [betterAuthPluginInstance, searchPlugin],
