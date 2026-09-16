@@ -1,6 +1,7 @@
 "use client";
 
 import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
+import { Tablon } from '@/modules/tablon/ui/Tablon'
 import CalendarView from '@/components/legacy/CalendarView'
 import { useUser } from '@/lib/auth/useUser';
 import Link from 'next/link';
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <div className="container flex flex-col gap-8 py-8">
       {user ? (<React.Fragment>
+        <Tablon />
         <section>
           <h2 className="mb-4 text-2xl font-semibold sm:text-3xl">Calendario</h2>
           <CalendarView />
