@@ -38,8 +38,8 @@ const config = {
         xl: '2rem',
       },
       screens: {
-        '2xl': '86rem',
-        lg: '72rem',
+        '2xl': '92rem',
+        lg: '78rem',
       },
     },
     extend: {

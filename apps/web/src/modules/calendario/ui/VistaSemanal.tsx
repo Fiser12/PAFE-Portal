@@ -8,9 +8,10 @@ import { colorDe } from '../domain/calendarios'
 import type { DiaDeAgenda, Entrada } from '../domain/entradas'
 import { diaCorto, hora } from '../domain/fechas'
 import { colocar, rangoDe, sinHora } from '../domain/rejilla'
+import { ALTO_VISTA } from './Agenda'
 
 /** Alto de una hora en la rejilla, en píxeles */
-const ALTO_HORA = 44
+const ALTO_HORA = 38
 const ANCHO_HORAS = 44
 
 interface Props {
@@ -60,10 +61,13 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
   const bandaSuperior = dias.some((dia) => sinHora(dia.entradas).length > 0)
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-auto" style={{ height: ALTO_VISTA }}>
       <div className="min-w-[640px]">
-        {/* Cabecera de días */}
-        <div className="flex border-b" style={{ paddingLeft: ANCHO_HORAS }}>
+        {/* Cabecera de días, fija al desplazar */}
+        <div
+          className="sticky top-0 z-20 flex border-b bg-card"
+          style={{ paddingLeft: ANCHO_HORAS }}
+        >
           {dias.map((dia) => (
             <div
               key={dia.dia.toISOString()}
@@ -79,7 +83,10 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
 
         {/* Lo que no tiene hora: noticias y jornadas completas */}
         {bandaSuperior && (
-          <div className="flex border-b bg-muted/30" style={{ paddingLeft: ANCHO_HORAS }}>
+          <div
+            className="sticky z-10 flex border-b bg-muted/30"
+            style={{ paddingLeft: ANCHO_HORAS, top: 26 }}
+          >
             {dias.map((dia) => (
               <div
                 key={dia.dia.toISOString()}

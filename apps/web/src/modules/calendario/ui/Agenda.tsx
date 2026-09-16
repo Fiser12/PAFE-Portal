@@ -35,6 +35,9 @@ import { VistaSemanal } from './VistaSemanal'
 const ZONA = 'Europe/Madrid'
 const UNA_SEMANA = 7 * 24 * 60 * 60 * 1000
 
+/** Las dos vistas miden lo mismo: cambiar de pestaña no debe mover la página */
+export const ALTO_VISTA = 420
+
 /** Lo que viaja del servidor al navegador: las fechas van como texto */
 export interface OcurrenciaPlana extends Omit<Ocurrencia, 'inicio' | 'fin'> {
   inicio: string
@@ -324,7 +327,11 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
                     {t.calVolverAHoy}
                   </Button>
                 )}
-                <div ref={scrollRef} className="max-h-80 space-y-3 overflow-y-auto pr-1">
+                <div
+                  ref={scrollRef}
+                  className="space-y-3 overflow-y-auto pr-1"
+                  style={{ height: ALTO_VISTA }}
+                >
                 {dias.map((dia) => (
                   <div
                     key={dia.dia.toISOString()}
