@@ -70,3 +70,8 @@ apps/web/scripts/seed-remote.env
 
 # Wiki construida y copiada por scripts/build-wiki.mjs
 apps/web/public/wiki/
+
+# copias de producción para ensayos locales
+.backup-r2/
+*.dump
+prod.env
