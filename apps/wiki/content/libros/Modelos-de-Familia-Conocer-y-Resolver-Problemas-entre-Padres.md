@@ -16,7 +16,7 @@ tags: [estrategico, adolescencia, familia, parentalidad, terapia-breve]
 - **Título original**: *Modelli di famiglia*, con copyright de 2001 de Ponte alle Grazie (Milán).
 - **Edición consultada**: Herder Editorial, Barcelona, copyright de 2003, primera edición en su cuarta reimpresión; traducción de Jordi Bargalló Chaves y revisión de Adela Resurrección Castillo (pp. 3-4).
 - **Origen del material**: consultas y terapias del Centro di Terapia Strategica de Arezzo y de los centros afiliados italianos, discutidas en encuentros mensuales (p. 52).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Modelos%20de%20Familia%20Conocer%20y%20Resolver%20Problemas%20entre%20Padres-e0935e051d120f40ec76bb18892894eb65db1c77.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Modelos%20de%20Familia%20Conocer%20y%20Resolver%20Problemas%20entre%20Padres-e0935e051d120f40ec76bb18892894eb65db1c77.pdf)
 
 ## De qué va
 

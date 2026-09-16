@@ -15,7 +15,7 @@ tags: [estructural, sistemico, terapia-familiar, familia, limites]
 - Autor: Salvador Minuchin.
 - Título original: *Families & Family Therapy* (1974, The President and Fellows of Harvard College).
 - Edición consultada: Editorial Gedisa; octava reimpresión, Barcelona, marzo de 2003, y primera reimpresión en México, agosto de 2004. Traducción de Víctor Fichman.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Familia%20y%20Terapia%20Familiar-78cc5a7532ba609d1148757f9808a87c383c60af.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Familia%20y%20Terapia%20Familiar-78cc5a7532ba609d1148757f9808a87c383c60af.pdf)
 
 ## De qué va
 

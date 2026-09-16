@@ -15,7 +15,7 @@ tags: [trauma, infancia, adolescencia, resiliencia, grupal]
 - Autores: Jorge Barudy y Maryorie Dantagnan.
 - Subtítulo: *Manual y técnicas terapéuticas para apoyar y promover la resiliencia de los niños, niñas y adolescentes*.
 - Edición consultada: Editorial Gedisa, primera edición, Barcelona, febrero de 2011.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Fiesta%20M%C3%A1gica%20y%20Realista%20de%20la%20Resiliencia%20Infantil-b472e3dcfc0f85cbf28116851959dd91cef022d9.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Fiesta%20M%C3%A1gica%20y%20Realista%20de%20la%20Resiliencia%20Infantil-b472e3dcfc0f85cbf28116851959dd91cef022d9.pdf)
 
 ## De qué va
 

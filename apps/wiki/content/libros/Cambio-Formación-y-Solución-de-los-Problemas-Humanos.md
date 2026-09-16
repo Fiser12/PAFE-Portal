@@ -14,7 +14,7 @@ tags: [sistemico, estrategico, terapia-breve, pareja, familia]
 
 - Autores: Paul Watzlawick, John H. Weakland y Richard Fisch. Prefacio de Milton H. Erickson.
 - Editorial y año: Herder Editorial (Barcelona). Título original *Change: Principles of Problem Formation and Problem Resolution* (© 1974, W. W. Norton, Nueva York); primera edición en castellano 1976; edición digital de referencia 2012. Traducción de Alfredo Guéra Miralles.
-- Recurso original en el portal PAFE: [PDF](https://pafe-portal.vercel.app/api/files/file/Cambio%20Formaci%C3%B3n%20y%20Soluci%C3%B3n%20de%20los%20Problemas%20Humanos-6b7e45d96d6023145a9f002cc90073dbbe61dd81.pdf)
+- Recurso original en el portal PAFE: [PDF](https://pafe-formakuntza.com/api/files/file/Cambio%20Formaci%C3%B3n%20y%20Soluci%C3%B3n%20de%20los%20Problemas%20Humanos-6b7e45d96d6023145a9f002cc90073dbbe61dd81.pdf)
 
 ## De qué va
 

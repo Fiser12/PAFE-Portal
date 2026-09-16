@@ -15,7 +15,7 @@ tags: [estrategico, pareja, terapia-breve, comunicacion]
 - Autor: Giorgio Nardone (traducción de Jordi Bargalló Chaves)
 - Editorial: Herder Editorial, Barcelona. © 2005 Ponte alle Grazie (Milán); © 2006 Herder; © 2012 de la edición digital (consta en los créditos de la fuente)
 - Subtítulo: *Estrategias de comunicación para mitigar los conflictos en las relaciones de pareja*
-- Recurso original: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Corrigeme%20si%20me%20equivoco%20-%20Giorgio%20Nardone-2a7da3d6149c826b65a7d393952a5c79b4d51567.pdf)
+- Recurso original: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Corrigeme%20si%20me%20equivoco%20-%20Giorgio%20Nardone-2a7da3d6149c826b65a7d393952a5c79b4d51567.pdf)
 
 ## De qué va
 

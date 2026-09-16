@@ -16,7 +16,7 @@ tags: [estrategico, sistemico, escolar, infancia, terapia-breve]
 - Subtítulo: *Comunicación y problem-solving para los problemas escolares*.
 - Título original: *L'intervento strategico nei contesti educativi* (Giuffrè Editore, 1995).
 - Edición consultada: Herder Editorial, Barcelona, 2004; traducción de Jordi Bargalló Chaves.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20intervenci%C3%B3n%20estrat%C3%A9gica%20en%20los%20contextos%20educativos-2613a27ea7e93f904d10fdb78ecb80f477140731.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20intervenci%C3%B3n%20estrat%C3%A9gica%20en%20los%20contextos%20educativos-2613a27ea7e93f904d10fdb78ecb80f477140731.pdf)
 
 ## De qué va
 

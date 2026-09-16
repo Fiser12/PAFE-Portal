@@ -3,6 +3,9 @@ packages:
   - "packages/*"
   # Fork MUI de react-rrule-builder-ts: fuera del workspace tras migrar a shadcn
   - "!packages/react-rule-builder"
+  # La wiki trae el árbol de dependencias de Quartz y se construye con su propio
+  # toolkit (apps/wiki/okf): fuera del workspace para no arrastrarlo en cada install
+  - "!apps/wiki"
 
 onlyBuiltDependencies:
   - esbuild

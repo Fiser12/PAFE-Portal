@@ -16,7 +16,7 @@ tags: [sistemico, familia, pareja, formacion]
 - **Edición**: Editorial Mediterráneo, Santiago de Chile, con copyright de 2005. *La página de créditos contiene marcadores de posición sin rellenar —número de registro, ISBN e imprenta—, lo que indica que el archivo procede de una prueba de imprenta y no de la edición definitiva* (p. 4).
 - **Alcance del documento**: *el PDF contiene 64 páginas de un manual que reúne más de cuarenta capítulos. Incluye portada, relación de autores, índice completo, prólogo, introducción y los tres primeros capítulos; el resto de la obra no está en la fuente.* En el índice, además, los números de página figuran sin asignar.
 - **Autores del extracto**: Humberto Maturana, Tom Andersen y Kurt Ludewig (pp. 9 y 19-63).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20familiar%20y%20de%20pareja-66b138466b5a8402fbdecd580e99b062014f74a1.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20familiar%20y%20de%20pareja-66b138466b5a8402fbdecd580e99b062014f74a1.pdf)
 
 ## De qué va
 

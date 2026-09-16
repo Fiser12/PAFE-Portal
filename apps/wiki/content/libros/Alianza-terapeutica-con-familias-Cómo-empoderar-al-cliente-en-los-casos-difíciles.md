@@ -14,7 +14,7 @@ tags: [sistemico, alianza-terapeutica, conflicto-familiar, adolescencia, trauma]
 
 - Autores: Valentín Escudero Carranza (Universidad de A Coruña, UIICF) y Myrna L. Friedlander (Universidad de Albany, Nueva York). Traducción de Sagrah Rubio y Valentín Escudero.
 - Editorial: Herder Editorial, Barcelona, 1.ª edición digital 2019 (original: *Therapeutic Alliances with Families*, © 2017 Springer International Publishing). ISBN digital 978-84-254-4169-1.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Alianza%20terapeutica%20con%20familias%20C%C3%B3mo%20empoderar%20al%20cliente%20en%20los%20casos%20dif%C3%ADciles-71797457ebaced7c7ad3828866d6246936eff75c.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Alianza%20terapeutica%20con%20familias%20C%C3%B3mo%20empoderar%20al%20cliente%20en%20los%20casos%20dif%C3%ADciles-71797457ebaced7c7ad3828866d6246936eff75c.pdf)
 
 ## De qué va
 

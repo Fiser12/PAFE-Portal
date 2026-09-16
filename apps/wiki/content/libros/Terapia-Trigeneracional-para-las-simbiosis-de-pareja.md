@@ -17,7 +17,7 @@ tags: [sistemico, pareja, familia-de-origen]
 - **Publicación original**: en *La crisi della coppia. Una prospettiva sistemico-relazionale*, volumen coordinado por Maurizio Andolfi, Raffaello Cortina Editore, 1999 (p. 1).
 - **Título**: la cita latina —«ni contigo ni sin ti puedo vivir»— procede de Ovidio y Marcial y alude al tormento de la ambivalencia afectiva, según explica el propio autor en nota (p. 1).
 - **Paginación**: el documento reproduce el artículo con la numeración de la publicación original, que arranca en el número 9; la primera página del PDF corresponde a esa.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20Trigeneracional%20para%20las%20simbiosis%20de%20pareja-e85126342e29294efefde7c7f5665e4ddb827dd8.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20Trigeneracional%20para%20las%20simbiosis%20de%20pareja-e85126342e29294efefde7c7f5665e4ddb827dd8.pdf)
 
 ## De qué va
 

@@ -16,7 +16,7 @@ tags: [estructural, sistemico, familia, formacion, limites]
 - **Título original**: *Family Therapy Techniques*, publicado por Harvard University Press, con copyright de 1981.
 - **Edición consultada**: Paidós, colección Terapia Familiar; copyright de las ediciones en castellano de 1983 en Paidós Ibérica y edición de 2004 para Argentina y Uruguay de Paidós SAICF, con 288 páginas; ISBN 950-12-4699-X (pp. 3-5).
 - **Estructura**: dieciocho capítulos, del entrenamiento de la espontaneidad del terapeuta a la reflexión final sobre los límites de la técnica (pp. 8-144).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Tecnicas%20de%20Terapia%20Familiar-ea4eb39e21de4004fc33d27c0137325c54d17cd6.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Tecnicas%20de%20Terapia%20Familiar-ea4eb39e21de4004fc33d27c0137325c54d17cd6.pdf)
 
 ## De qué va
 

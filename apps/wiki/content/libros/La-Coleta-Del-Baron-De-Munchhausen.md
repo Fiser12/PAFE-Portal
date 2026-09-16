@@ -15,7 +15,7 @@ tags: [sistemico, constructivismo, terapia-breve, comunicacion, familia]
 - **Autor**: Paul Watzlawick; el texto sobre depresión está firmado también por James C. Coyne.
 - **Título**: *La coleta del barón de Münchhausen. Psicoterapia y realidad*.
 - **Composición**: miscelánea de once textos publicados originalmente entre 1975 y 1988; el prefacio está fechado en mayo de 1989 (pp. 3-4 y 173-174 PDF). La extracción consultada no identifica editorial, edición ni ISBN.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Coleta%20Del%20Baron%20De%20Munchhausen-ad40a8c5adeacece9bf0af6f55b7fec12456ad8f.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Coleta%20Del%20Baron%20De%20Munchhausen-ad40a8c5adeacece9bf0af6f55b7fec12456ad8f.pdf)
 
 ## De qué va
 

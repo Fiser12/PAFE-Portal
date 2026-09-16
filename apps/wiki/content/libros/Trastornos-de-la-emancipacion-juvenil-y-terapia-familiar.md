@@ -15,7 +15,7 @@ tags: [estrategico, familia, adolescencia, psicosis]
 - **Autor**: Jay Haley, con reconocimiento explícito de la contribución de Cloé Madanes al enfoque y a la supervisión de los casos (pp. 2 y 12).
 - **Edición consultada**: Amorrortu editores, Buenos Aires. *El texto extraído no incluye página de créditos con año ni ISBN; el original inglés es «Leaving Home».*
 - **Estructura**: introducción con datos de resultados y once capítulos, de la crítica a las teorías dominantes al repaso de cuestiones irresueltas (p. 6).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Trastornos%20de%20la%20emancipacion%20juvenil%20y%20terapia%20familiar-c0e2efd707c87b904d18e6febe2df5dc469dbb97.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Trastornos%20de%20la%20emancipacion%20juvenil%20y%20terapia%20familiar-c0e2efd707c87b904d18e6febe2df5dc469dbb97.pdf)
 
 ## De qué va
 

@@ -15,7 +15,7 @@ tags: [sistemico, terapia-familiar, infancia, adolescencia, emociones]
 - **Autora**: Mercedes Bermejo Boixareu
 - **Editorial y fecha**: Desclée De Brouwer, 2018
 - **ISBN**: 978-84-330-3834-0
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Danza%20de%20las%20Emociones%20Familiares.%20Terapia%20Emocional%20Sist%C3%A9mica%20Aplicada%20a%20Ni%C3%B1os%20y%20Adolescentes-7b461bb5639ae5f5dc66ca4a69625359f3c21819.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Danza%20de%20las%20Emociones%20Familiares.%20Terapia%20Emocional%20Sist%C3%A9mica%20Aplicada%20a%20Ni%C3%B1os%20y%20Adolescentes-7b461bb5639ae5f5dc66ca4a69625359f3c21819.pdf)
 
 ## De qué va
 

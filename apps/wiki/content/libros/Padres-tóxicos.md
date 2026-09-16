@@ -15,7 +15,7 @@ tags: [maltrato-infantil, trauma, familia, adultos, adicciones]
 - **Autor**: Joseluis Canales, «Dado», nacido en Ciudad de México en 1972; psicólogo clínico y psicoterapeuta con formación en tanatología, intervención en crisis, psicotrauma, suicidio, adicciones y trastornos alimentarios, y autor previo de un libro sobre suicidio publicado en 2013 (p. 294). *El manifiesto del portal no registraba autoría.*
 - **Edición consultada**: Ediciones Culturales Paidós, sello Paidós, México, primera edición de julio de 2014 (p. 295).
 - **Género**: divulgación clínica en primera persona. El autor abre relatando su propia terapia y su historia familiar, y alterna capítulos temáticos con testimonios de pacientes y colegas (pp. 5-11).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Padres%20t%C3%B3xicos-05a52840f19dca364309285310638ac4e4ac7878.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Padres%20t%C3%B3xicos-05a52840f19dca364309285310638ac4e4ac7878.pdf)
 
 ## De qué va
 

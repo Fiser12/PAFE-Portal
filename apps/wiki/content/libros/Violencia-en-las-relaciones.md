@@ -15,7 +15,7 @@ tags: [violencia-de-pareja, trauma, familia, adultos]
 - **Autor**: José Navarro Góngora (p. 2).
 - **Edición consultada**: Herder Editorial, Barcelona, con copyright del autor de 2014 y de la editorial de 2015; ISBN 978-84-254-3412-9.
 - **Estructura**: introducción y siete capítulos, con lecturas recomendadas al final de cada uno y apéndices alojados en la web de la editorial, entre ellos uno sobre transmisión intergeneracional de la violencia (pp. 7-14 y 219).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Violencia%20en%20las%20relaciones-2fcbdf05c82be497518fb82f98a2504ec2be6a2b.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Violencia%20en%20las%20relaciones-2fcbdf05c82be497518fb82f98a2504ec2be6a2b.pdf)
 
 ## De qué va
 

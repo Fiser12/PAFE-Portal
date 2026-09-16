@@ -15,7 +15,7 @@ tags: [sistemico, constructivismo, comunicacion, conflicto-familiar, organizacio
 - Autor: Paul Watzlawick.
 - Edición consultada: Editorial Herder, Barcelona; copyright de la edición española de 1987, cuarta edición de 1995. ISBN 84-254-1596-9.
 - El índice enumera un prólogo, doce ensayos breves y un índice bibliográfico.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Lo%20malo%20de%20lo%20bueno%20o%20las%20soluciones%20de%20Hec%C3%A1te-d3b87528e11d0f34d434fe76930e9e762b973333.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Lo%20malo%20de%20lo%20bueno%20o%20las%20soluciones%20de%20Hec%C3%A1te-d3b87528e11d0f34d434fe76930e9e762b973333.pdf)
 
 ## De qué va
 

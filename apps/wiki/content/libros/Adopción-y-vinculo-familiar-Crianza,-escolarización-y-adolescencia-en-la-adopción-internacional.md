@@ -14,7 +14,7 @@ tags: [psicodinamico, adopcion, infancia, familia, crianza]
 
 - Compiladoras: Vinyet Mirabent y Elena Ricart. Es una obra colectiva del Equipo de Adopciones de la ICIF (psicólogos, psicopedagogos, trabajadores sociales y educadores de la Fundació Vidal i Barraquer), con autoría capitular del equipo y la colaboración de Laura Cano, maestra.
 - Editorial: Herder Editorial, Barcelona, 2012 (© Fundació Vidal i Barraquer). ISBN digital 978-84-254-3179-1.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Adopci%C3%B3n%20y%20vinculo%20familiar%20Crianza%2C%20escolarizaci%C3%B3n%20y%20adolescencia%20en%20la%20adopci%C3%B3n%20internacional-54f2b9aacb2163edb60d258daba7821cc4211961.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Adopci%C3%B3n%20y%20vinculo%20familiar%20Crianza%2C%20escolarizaci%C3%B3n%20y%20adolescencia%20en%20la%20adopci%C3%B3n%20internacional-54f2b9aacb2163edb60d258daba7821cc4211961.pdf)
 
 ## De qué va
 

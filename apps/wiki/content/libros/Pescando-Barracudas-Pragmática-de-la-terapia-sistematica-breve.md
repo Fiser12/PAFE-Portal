@@ -16,7 +16,7 @@ tags: [sistemico, estrategico, familia, terapia-breve, formacion]
 - **Título original**: *Fishing for Barracuda. Pragmatics of Brief Systemic Therapy*, W. W. Norton, Nueva York, con copyright de 1985.
 - **Edición consultada**: Ediciones Paidós Ibérica, Barcelona, con copyright de la edición castellana en 1987 y reimpresión de 2008; traducción de Ofelia Castillo (p. 4).
 - **Estructura**: ocho capítulos, de la selección de casos al cuidado del propio terapeuta, más referencias bibliográficas (p. 5).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Pescando%20Barracudas%20Pragm%C3%A1tica%20de%20la%20terapia%20sistematica%20breve-5e2ed6504780d26503441f86e63233c366dbaa9b.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Pescando%20Barracudas%20Pragm%C3%A1tica%20de%20la%20terapia%20sistematica%20breve-5e2ed6504780d26503441f86e63233c366dbaa9b.pdf)
 
 ## De qué va
 

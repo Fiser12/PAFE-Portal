@@ -17,7 +17,7 @@ tags: [narrativo, constructivismo, sistemico]
 - **Edición consultada**: 2.ª edición, Biblioteca de Psicología Desclée de Brouwer; copyright de autores y editorial de 2001, ISBN 84-330-1560-5. El colofón fecha esta impresión el 21 de febrero de 2005 (pp. 4, 6-7 y 370 PDF).
 - **Alcance del PDF**: volumen completo de 374 páginas PDF: preliminares e índice (pp. 1-23), tres partes de contenido (pp. 24-338), bibliografía (pp. 340-365), índice de figuras y catálogo editorial (pp. 366-370), más páginas finales en blanco (pp. 371-374).
 - **Advertencia catalográfica**: el manifiesto del destilado atribuye el ítem a Carl Gustav Jung, pero la portada, los créditos y todo el contenido extraído identifican exclusivamente esta obra de Fernández Liria y Rodríguez Vega. No contiene textos de Jung ni corresponde a su obra homónima.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Pr%C3%A1ctica%20de%20la%20Psicoterapia-8de7d171067ac94456d3b3853d81f21f7fa82b7e.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Pr%C3%A1ctica%20de%20la%20Psicoterapia-8de7d171067ac94456d3b3853d81f21f7fa82b7e.pdf)
 
 ## De qué va
 

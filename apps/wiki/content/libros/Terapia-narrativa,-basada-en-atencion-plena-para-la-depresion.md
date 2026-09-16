@@ -15,7 +15,7 @@ tags: [narrativo, depresion, adultos]
 - **Autores**: Beatriz Rodríguez Vega y Alberto Fernández Liria (p. 6). *El manifiesto del portal registraba solo a Rodríguez Vega.*
 - **Edición consultada**: Editorial Desclée de Brouwer, Bilbao, 2012, colección Biblioteca de Psicología; ISBN 978-84-330-2561-6 (p. 7).
 - **Estructura**: introducción y cinco bloques —perspectiva teórica, confluencia entre narrativa y atención plena, narrativas de la depresión, proceso psicoterapéutico y técnicas conversacionales— (pp. 10-14).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20narrativa%2C%20basada%20en%20atencion%20plena%20para%20la%20depresion-6f06d84dffe95e35030ae11ffdc3488bfe25666d.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20narrativa%2C%20basada%20en%20atencion%20plena%20para%20la%20depresion-6f06d84dffe95e35030ae11ffdc3488bfe25666d.pdf)
 
 ## De qué va
 

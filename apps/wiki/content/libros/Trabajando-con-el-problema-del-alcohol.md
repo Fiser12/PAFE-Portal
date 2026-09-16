@@ -15,7 +15,7 @@ tags: [centrado-en-soluciones, adicciones, terapia-breve, adultos]
 - **Autores**: Insoo Kim Berg y Scott D. Miller, del Brief Family Therapy Center de Milwaukee (p. 2).
 - **Edición**: *el texto extraído no incluye página de créditos, de modo que no constan editorial, año ni ISBN. El original inglés es «Working with the Problem Drinker», publicado a comienzos de los años noventa, y las referencias internas más recientes son de 1989.*
 - **Estructura**: introducción, nueve capítulos y epílogo, con un caso completo desarrollado sesión por sesión en el capítulo octavo (pp. 3-117).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Trabajando%20con%20el%20problema%20del%20alcohol-d541a9c110b761cc2221e25803fa9c239f1cbec0.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Trabajando%20con%20el%20problema%20del%20alcohol-d541a9c110b761cc2221e25803fa9c239f1cbec0.pdf)
 
 ## De qué va
 

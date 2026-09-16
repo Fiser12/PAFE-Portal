@@ -16,7 +16,7 @@ tags: [sistemico, terapia-familiar, estructural, familia, comunicacion]
 - **Autor**: Salvador Garibay Rivas
 - **Título**: *Enfoque sistémico. Una introducción a la psicoterapia familiar*
 - **Edición**: 2.ª edición, Editorial El Manual Moderno, México, 2013. ISBN 978-607-448-338-3; ISBN electrónico 978-607-448-339-0
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Enfoque%20Sistemico.%20Una%20Introduccion%20a%20La%20Psicoterapia%20Familiar-25feb4c414d8bffffd0bd6e1cb058e32b2a8324e.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Enfoque%20Sistemico.%20Una%20Introduccion%20a%20La%20Psicoterapia%20Familiar-25feb4c414d8bffffd0bd6e1cb058e32b2a8324e.pdf)
 
 ## De qué va
 

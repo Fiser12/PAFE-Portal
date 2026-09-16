@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, fobias, toc, panico]
 
 - **Autores**: Giorgio Nardone y Paul Watzlawick; traducción de Antoni Martínez-Riu.
 - **Edición**: original italiano *L'arte del cambiamento*, © 1990; primera edición castellana, Herder Editorial, 1992; edición digital de referencia, 2012. ISBN digital 978-84-254-3004-6 (PDF pp. 3-4).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20arte%20del%20cambio%20Transtornos%20f%C3%B3bicos%20y%20obsesivos-d61a67add215bd602f38fb21358701dac4bbe788.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20arte%20del%20cambio%20Transtornos%20f%C3%B3bicos%20y%20obsesivos-d61a67add215bd602f38fb21358701dac4bbe788.pdf)
 
 ## De qué va
 

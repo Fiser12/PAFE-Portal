@@ -16,7 +16,7 @@ tags: [estrategico, terapia-breve, toc, ansiedad, adultos]
 - **Subtítulo**: *Entenderlas y superarlas en tiempo breve*. Traducción de Maria Pons Irazazábal.
 - **Edición**: el texto extraído no incluye página de créditos; las referencias internas más recientes son de 2013, año de la edición italiana original.
 - **Origen del material**: investigación-intervención del Centro di Terapia Strategica de Arezzo, que la obra cifra en más de veinticinco años y más de veinte mil casos tratados (p. 7).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Obsesiones%20Compulsiones%20Manias-2bf7e022c5209befc4502486bafedf343be1f8bc.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Obsesiones%20Compulsiones%20Manias-2bf7e022c5209befc4502486bafedf343be1f8bc.pdf)
 
 ## De qué va
 

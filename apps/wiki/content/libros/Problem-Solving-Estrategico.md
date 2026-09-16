@@ -16,7 +16,7 @@ tags: [estrategico, terapia-breve, coaching, organizaciones, problem-solving]
 - **Título original**: *Problem solving strategico da tasca*, es decir, un volumen de bolsillo pensado como manual breve.
 - **Edición consultada**: Herder Editorial, Barcelona, con copyright de 2010 y de 2012 para esta edición; traducción de María Pons Irazazábal (pp. 2-3).
 - **Extensión**: 76 páginas, con seis capítulos y una biobibliografía final de las obras del autor (pp. 4 y 63-76).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Problem%20Solving%20Estrategico-c6e1b91593bf71b43a6bf2971be427348b41ce76.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Problem%20Solving%20Estrategico-c6e1b91593bf71b43a6bf2971be427348b41ce76.pdf)
 
 ## De qué va
 

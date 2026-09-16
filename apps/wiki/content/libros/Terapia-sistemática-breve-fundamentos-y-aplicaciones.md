@@ -17,7 +17,7 @@ tags: [sistemico, narrativo, terapia-breve, infancia, pareja]
 - **Título**: *el manifiesto arrastra una errata —«terapia sistemática»— por «terapia sistémica»*, que se mantiene en el slug por corresponder al nombre del archivo original.
 - **Estructura**: presentación, introducción histórica, una primera parte de fundamentos con cuatro capítulos y una segunda de aplicaciones organizada en terapia infanto-juvenil, de parejas y con adultos. *El índice reproducido detalla hasta el capítulo 19, mientras que la relación de autores recoge colaboraciones para capítulos posteriores* (pp. 8-13).
 - **Autoría de capítulo**: Hardy Schaefer, Ítalo Latorre, Margarita Tarragona, Jorge Ayala, Marta Campillo, Rodrigo Mardones, Angélica Guzmán, Leticia Uribe, María Eugenia Nadurille, Bismarck Pinto, Natalia Alonso, Carolina Letelier y Paulo Daniel Acero, entre otros.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20sistem%C3%A1tica%20breve%20fundamentos%20y%20aplicaciones-c44fd61a0279592a9fee819f7ef06fc758301671.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20sistem%C3%A1tica%20breve%20fundamentos%20y%20aplicaciones-c44fd61a0279592a9fee819f7ef06fc758301671.pdf)
 
 ## De qué va
 

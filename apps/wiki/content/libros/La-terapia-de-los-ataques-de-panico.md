@@ -16,7 +16,7 @@ tags: [terapia-breve, estrategico, panico, ansiedad, fobias]
 - **Título original**: *La terapia degli attacchi di panico*.
 - **Edición consultada**: Adriano Salani Editore / Herder Editorial, edición digital en castellano, 2016. Traducción de Maria Pons Irazazábal. ISBN digital 978-84-254-3909-4 (PDF pp. 2-3).
 - **Alcance**: monografía profesional sobre terapia breve estratégica del pánico; incluye historia y formulación, datos de investigación-intervención, criterios de eficacia, diagnóstico diferencial, protocolo, siete casos seleccionados y apéndice neurocientífico (PDF p. 4).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20terapia%20de%20los%20ataques%20de%20panico-ab3ebbed624d4b173fbf355ea6ff6d850cb33992.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20terapia%20de%20los%20ataques%20de%20panico-ab3ebbed624d4b173fbf355ea6ff6d850cb33992.pdf)
 
 ## De qué va
 

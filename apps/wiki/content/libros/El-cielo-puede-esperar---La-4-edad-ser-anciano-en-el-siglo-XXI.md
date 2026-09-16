@@ -17,7 +17,7 @@ tags: [envejecimiento, sistemico, ciclo-vital, enfermedad-cronica]
 - **Título completo**: *El cielo puede esperar. La cuarta edad: ser anciano en el siglo XXI*.
 - **Edición consultada**: Ediciones Morata, Madrid, 2013; colección «Terapia Familiar Iberoamericana», dirigida por Roberto Pereira; E-ISBN 978-84-7112-714-3 (pp. 2, 4, 6-7 PDF).
 - **Origen declarado**: el volumen procede de la segunda tesis doctoral del autor y articula experiencia clínica, reflexión sistémica y divulgación biomédica (pp. 12-14, 31-35, 228).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20cielo%20puede%20esperar%20-%20La%204%20edad%20ser%20anciano%20en%20el%20siglo%20XXI-7069d8764e34c1811e4960c60555be1d96d42d34.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20cielo%20puede%20esperar%20-%20La%204%20edad%20ser%20anciano%20en%20el%20siglo%20XXI-7069d8764e34c1811e4960c60555be1d96d42d34.pdf)
 
 ## De qué va
 

@@ -14,7 +14,7 @@ tags: [estrategico, sistemico, terapia-breve, formacion, familia]
 
 - Autor: Jay Haley.
 - Editorial: Amorrortu editores (Buenos Aires - Madrid). Año no consta en el texto extraído.
-- Recurso original en el portal PAFE: [Aprender y enseñar terapia (PDF)](https://pafe-portal.vercel.app/api/files/file/Aprender%20y%20ense%C3%B1ar%20terapia-a96df03cc28d81b45b5bf7b146d391d73c01931a.pdf)
+- Recurso original en el portal PAFE: [Aprender y enseñar terapia (PDF)](https://pafe-formakuntza.com/api/files/file/Aprender%20y%20ense%C3%B1ar%20terapia-a96df03cc28d81b45b5bf7b146d391d73c01931a.pdf)
 
 ## De qué va
 

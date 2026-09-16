@@ -16,7 +16,7 @@ tags: [apego, infancia, maltrato-infantil]
 - **Naturaleza del documento**: no es un libro, sino un capítulo de revisión publicado en *Avances en Psiquiatría Biológica*, volumen 8, de 2007; ocupa la numeración impresa 43 a 56 y el propio texto se refiere a sí mismo como capítulo (pp. 2 y 7).
 - **Extensión**: 14 páginas de PDF, con índice inicial, seis secciones, conclusiones y referencias (pp. 1-14).
 - **Nota de procedencia**: *la extracción automática original de este PDF era ilegible —sus fuentes no exponían mapa Unicode— y se regeneró con poppler para poder destilarlo.*
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Neurobilog%C3%ADa%20del%20apego-100834674b9147d452661e2a13861f3266499b47.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Neurobilog%C3%ADa%20del%20apego-100834674b9147d452661e2a13861f3266499b47.pdf)
 
 ## De qué va
 

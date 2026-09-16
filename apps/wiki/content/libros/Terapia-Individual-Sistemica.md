@@ -15,7 +15,7 @@ tags: [sistemico, familia-de-origen, adultos]
 - **Autor**: Alfredo Canevaro (pp. 4-5).
 - **Edición consultada**: Ediciones Morata, colección «Terapia Familiar Iberoamericana» dirigida por Roberto Pereira (pp. 5 y 9).
 - **Estructura**: prefacio, introducción con una investigación preliminar, nueve capítulos, epílogo y dos apéndices —uno sobre fracasos y abandonos, otro con el cuestionario de seguimiento—, más bibliografía (pp. 12-13).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20Individual%20Sistemica-9728232a4399d88d82aa82e44d81db186ae1520a.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20Individual%20Sistemica-9728232a4399d88d82aa82e44d81db186ae1520a.pdf)
 
 ## De qué va
 

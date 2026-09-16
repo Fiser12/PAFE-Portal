@@ -18,7 +18,7 @@ tags: [constructivismo, comunicacion, sistemico, terapia-breve, paradoja]
 - **Edición consultada**: Herder Editorial, Barcelona, copyright de 2014; traducción repartida entre seis traductores según el capítulo (p. 6).
 - **Procedencia de los textos**: cuatro obras previas —*Teoría de la comunicación humana* con Beavin y Jackson (capítulos 2, 3, 5 y 6), *El lenguaje del cambio*, *Cambio* con Weakland y Fisch (capítulo 8) y *La coleta del barón Münchhausen*— según las referencias que el propio volumen detalla (pp. 359-360).
 - **Epílogos**: un recuerdo personal de Friedemann Schulz von Thun (pp. 333-336) y una conversación con Bernhard Pörksen publicada por primera vez en 2002 (pp. 337-356).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/No%20Es%20Posible%20No%20Comunicar-c93173ea455783237e0020dde4725c47b8726523.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/No%20Es%20Posible%20No%20Comunicar-c93173ea455783237e0020dde4725c47b8726523.pdf)
 
 ## De qué va
 

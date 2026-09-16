@@ -17,7 +17,7 @@ tags: [sistemico, pareja, familia, violencia-familiar, violencia-de-pareja]
 - **Autoría interna indicada en el índice**: Linares y Semboloni firman conjuntamente el capítulo 1; Semboloni, el capítulo 2; y Linares, los capítulos 3 y 5. En el capítulo 4, Linares firma las secciones de *Otello*, *Carmen* y «Parejas inteligentes y parejas tontas»; Pereira, la de *Aída*; Sluzki, la de Barbazul; y Ortega, la de Orfeo.
 - **Edición consultada**: Editorial Gedisa, Barcelona, primera edición, marzo de 2014.
 - **eISBN**: 978-84-9784-823-7.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Familia%20en%20la%20%C3%93pera-c8784ced6c70e0fa2f87ef87169a5e19ec16ffe9.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Familia%20en%20la%20%C3%93pera-c8784ced6c70e0fa2f87ef87169a5e19ec16ffe9.pdf)
 
 ## De qué va
 

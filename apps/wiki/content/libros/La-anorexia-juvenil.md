@@ -17,7 +17,7 @@ tags: [estrategico, sistemico, trastornos-alimentarios, adolescencia, familia]
 - **Título original**: *L’anoressia giovanile*; traducción de Maria Pons Irazazábal.
 - **Edición**: Ponte alle Grazie, Milán, 2017; Herder Editorial, Barcelona, 1.ª edición digital, 2018. ISBN digital 978-84-254-4204-9 (pp. 2-3).
 - **Alcance del archivo**: PDF completo de 142 páginas. La obra ocupa pp. 2-128: presentación, cinco capítulos, dos casos en apéndice y bibliografía; pp. 129-142 son información y catálogo editorial.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20anorexia%20juvenil-abc26d0e9bd57be38397cee7eb5f01edb394cec9.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20anorexia%20juvenil-abc26d0e9bd57be38397cee7eb5f01edb394cec9.pdf)
 
 ## De qué va
 

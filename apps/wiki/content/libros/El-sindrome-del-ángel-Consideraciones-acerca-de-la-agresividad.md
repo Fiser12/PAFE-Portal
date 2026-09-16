@@ -17,7 +17,7 @@ tags: [violencia-familiar, trauma, limites, sistemico]
 - **Título completo**: *El Síndrome del Ángel. Consideraciones a propósito de la agresividad*.
 - **Edición consultada**: Paidós, Buenos Aires, primera edición digital, octubre de 2012; ISBN 978-950-12-0018-8 (pp. 5-6 PDF).
 - **Naturaleza del texto**: formalización teórico-clínica apoyada en bibliografía, docencia y observaciones de consulta; no es un manual diagnóstico ni un ensayo controlado (pp. 12-14, 48, 145-155).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20sindrome%20del%20%C3%A1ngel%20Consideraciones%20acerca%20de%20la%20agresividad-d4f34ad32e48df5514bc868c45809034081550c2.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20sindrome%20del%20%C3%A1ngel%20Consideraciones%20acerca%20de%20la%20agresividad-d4f34ad32e48df5514bc868c45809034081550c2.pdf)
 
 ## De qué va
 

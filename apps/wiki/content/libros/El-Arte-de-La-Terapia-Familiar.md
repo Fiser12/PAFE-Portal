@@ -15,7 +15,7 @@ tags: [estructural, sistemico, formacion, familia]
 - Salvador Minuchin, con Wai-Yung Lee y George M. Simón.
 - Ediciones Paidós (colección Terapia Familiar), Barcelona, 1.ª edición 1998. Título original: *Mastering Family Therapy. Journeys of Growth and Transformation* (John Wiley & Sons, 1996). ISBN 84-493-0572-1 (p. 5).
 - Prólogo de Braulio Montalvo.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20Arte%20de%20La%20Terapia%20Familiar-a6cfcb560ae4e3ac11de854c539702d4fdbc69fc.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20Arte%20de%20La%20Terapia%20Familiar-a6cfcb560ae4e3ac11de854c539702d4fdbc69fc.pdf)
 
 ## De qué va
 

@@ -14,7 +14,7 @@ tags: [sistemico, narrativo, apego, pareja, adicciones]
 
 - **Autores**: Rudi Dallos y Arlene Vetere (el registro de la biblioteca solo lista a Vetere; la portadilla y los créditos del texto atribuyen la obra a ambos).
 - **Editorial y año**: Ediciones Morata, Madrid, 2012 (edición española, trad. de Roc Filella Escolá). Obra original: *Systemic Therapy and Attachment Narratives*, Routledge, 2009. ISBN 978-84-7112-689-4.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Apego%20y%20Terapia%20Narrativa.%20Un%20modelo%20integrador-d72af84abe21aeeb1231ccf19b674611826a00df.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Apego%20y%20Terapia%20Narrativa.%20Un%20modelo%20integrador-d72af84abe21aeeb1231ccf19b674611826a00df.pdf)
 
 ## De qué va
 

@@ -14,7 +14,7 @@ tags: [sistemico, terapia-familiar, constructivismo, familia, comunitario]
 
 - **Coordinadores**: Raúl Medina, Esteban Laso y Eduardo Hernández; obra colectiva con capítulos de profesionales vinculados a la Red Europea y Latinoamericana de Escuelas Sistémicas (RELATES).
 - **Edición**: Ediciones Morata, 2019. Nueva edición revisada y ampliada de *Pensamiento sistémico. Nuevas perspectivas y contextos de intervención* (2014). ISBN en papel 978-84-7112-930-7; ISBN electrónico 978-84-7112-940-6 (PDF p. 4).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20Modelo%20Sist%C3%A9mico%20ante%20el%20Malestar%20Contempor%C3%A1neo%20Psicoterapia%20Relacional%20e%20Intervenciones%20Sociales-0d14cf9366bd5c39a5606f59f6dca85730fa2bdd.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20Modelo%20Sist%C3%A9mico%20ante%20el%20Malestar%20Contempor%C3%A1neo%20Psicoterapia%20Relacional%20e%20Intervenciones%20Sociales-0d14cf9366bd5c39a5606f59f6dca85730fa2bdd.pdf)
 
 ## De qué va
 

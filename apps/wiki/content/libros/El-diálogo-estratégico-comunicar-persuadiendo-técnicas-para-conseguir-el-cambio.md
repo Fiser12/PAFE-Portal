@@ -15,7 +15,7 @@ tags: [estrategico, terapia-breve, comunicacion, ansiedad, pareja]
 - **Autores**: Giorgio Nardone y Alessandro Salvini; los capítulos 1 y 3 fueron redactados con la colaboración de Simona De Antoniis.
 - **Título original**: *Il dialogo strategico*.
 - **Edición**: Herder Editorial, Barcelona, 1.ª edición digital 2014; original italiano de Ponte alle Grazie, 2004. Traducción de Jordi Bargalló.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20di%C3%A1logo%20estrat%C3%A9gico%20comunicar%20persuadiendo%20t%C3%A9cnicas%20para%20conseguir%20el%20cambio-3867fa28ef2a8fcef590228b86d40151b5735cf3.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20di%C3%A1logo%20estrat%C3%A9gico%20comunicar%20persuadiendo%20t%C3%A9cnicas%20para%20conseguir%20el%20cambio-3867fa28ef2a8fcef590228b86d40151b5735cf3.pdf)
 
 ## De qué va
 

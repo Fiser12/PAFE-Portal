@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, trauma, duelo, adultos]
 
 - Autoras: Federica Cagnoni y Roberta Milanese. Epílogo de Giorgio Nardone.
 - Herder Editorial, Barcelona, 2010 (original: *Cambiare il passato*, Ponte alle Grazie, Milán, 2009). Traducción de Jordi Bargalló. ISBN 978-84-254-2623-0.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Cambiar%20el%20Pasado%20Superar%20las%20Experiencias%20Traum%C3%A1ticas%20con%20la%20Terapia%20Estrat%C3%A9gica-715c604c04ad2a14a27b063dc86bf307705f815b.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Cambiar%20el%20Pasado%20Superar%20las%20Experiencias%20Traum%C3%A1ticas%20con%20la%20Terapia%20Estrat%C3%A9gica-715c604c04ad2a14a27b063dc86bf307705f815b.pdf)
 
 ## De qué va
 

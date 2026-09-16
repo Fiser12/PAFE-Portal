@@ -14,7 +14,7 @@ tags: [sistemico, trastornos-alimentarios, adolescencia, familia]
 
 - Autoría: Luigi Onnis (coordinador) y el grupo del Servicio de Terapia Familiar del Departamento de Ciencias Psiquiátricas de la Universidad «La Sapienza» de Roma (S. D'Amore, F. Tarantino, M. Bernardini, A. Pizzimenti, L. Di Gregorio, M. Antenucci, A. Leonelli, A. Giambartolomei, G. Marino, A. Mulè, A. Vietri, C. Romano, M. Giannunzi).
 - Editorial: Gedisa, colección Terapia Familiar (p. 5). Año no indicado en el texto extraído.
-- Recurso original: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/EL%20tiempo%20congelado%20anorexia%20y%20bulimia%20entre%20individuo%2C%20familia%20-2b925ce0b06d15e7def3ac5fd0cca6cab09a03ec.pdf)
+- Recurso original: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/EL%20tiempo%20congelado%20anorexia%20y%20bulimia%20entre%20individuo%2C%20familia%20-2b925ce0b06d15e7def3ac5fd0cca6cab09a03ec.pdf)
 
 ## De qué va
 

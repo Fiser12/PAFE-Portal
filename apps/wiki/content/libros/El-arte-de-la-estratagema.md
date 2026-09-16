@@ -15,7 +15,7 @@ tags: [estrategico, terapia-breve, problem-solving, comunicacion]
 - Autor: Giorgio Nardone.
 - Subtítulo: *Cómo resolver problemas difíciles mediante soluciones simples*.
 - Traducción: Maria Pons Irazazábal (consta en la portada extraída).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20arte%20de%20la%20estratagema-7393499908b93bb9c93e5843a4f6ebe844411f08.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20arte%20de%20la%20estratagema-7393499908b93bb9c93e5843a4f6ebe844411f08.pdf)
 
 ## De qué va
 

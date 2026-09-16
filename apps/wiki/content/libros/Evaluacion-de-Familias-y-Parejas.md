@@ -16,7 +16,7 @@ tags: [estructural, sistemico, terapia-familiar, pareja, familia]
 - **Autores**: Salvador Minuchin, Michael P. Nichols y Wai-Yung Lee; los tres prepararon la introducción, Nichols introdujo las cinco partes y Lee escribió el epílogo (PDF p. 7).
 - **Título completo**: *Evaluación de familias y parejas. Del síntoma al sistema*.
 - **Edición**: original inglés de 2007; primera edición mexicana, Paidós, julio de 2011; traducción de Pilar Carril. ISBN 978-607-7626-73-2 (PDF pp. 1-3).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Evaluacion%20de%20Familias%20y%20Parejas-406889a2f1a91ff29ef5c66080f36d4bd7391f48.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Evaluacion%20de%20Familias%20y%20Parejas-406889a2f1a91ff29ef5c66080f36d4bd7391f48.pdf)
 
 ## De qué va
 

@@ -15,7 +15,7 @@ tags: [estrategico, constructivismo, terapia-breve, comunicacion, pareja]
 - **Autor**: Giorgio Nardone.
 - **Título original**: *L’arte di mentire a se stessi e agli altri*.
 - **Edición**: Herder Editorial, Barcelona, 1.ª edición digital, 2016; original italiano de Adriano Salani Editore, 2014. Traducción de Antoni Martínez Riu.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20arte%20de%20mentirse%20a%20si%20mismo-06ac24525a6e9fd1c48a98c537afceae0f33e022.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20arte%20de%20mentirse%20a%20si%20mismo-06ac24525a6e9fd1c48a98c537afceae0f33e022.pdf)
 
 ## De qué va
 

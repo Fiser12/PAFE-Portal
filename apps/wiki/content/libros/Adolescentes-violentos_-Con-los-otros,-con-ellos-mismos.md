@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, violencia-familiar, adolescencia]
 
 - Autoras/es: Elena Boggiani, Elisa Balbi, Giulia Rinaldi, Michele Dolci. Prefacio y epílogo de Giorgio Nardone.
 - Editorial: Herder (Barcelona), 2013; edición original italiana *Adolescenti violenti*, Adriano Salani Editore, 2009 (consta en la ficha de la edición digital).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Adolescentes%20violentos_%20Con%20los%20otros%2C%20con%20ellos%20mismos-84d68c53874355732bee1f6c01f21290ea6a281a.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Adolescentes%20violentos_%20Con%20los%20otros%2C%20con%20ellos%20mismos-84d68c53874355732bee1f6c01f21290ea6a281a.pdf)
 
 ## De qué va
 

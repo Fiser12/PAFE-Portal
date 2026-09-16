@@ -15,7 +15,7 @@ tags: [parentalidad, trauma, violencia-de-genero, resiliencia, grupal]
 - Autores: Jorge Barudy, Maryorie Dantagnan, Emília Comas y María Vergara.
 - Subtítulo: *Manual para apoyar la crianza bien tratante y promover la resiliencia de madres y padres*.
 - Edición consultada: Editorial Gedisa, primera edición, Barcelona, octubre de 2014.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20inteligencia%20maternal%20manual%20para%20apoyar%20la%20crianza%20bien%20tratante%20y%20promover%20la%20resiliencia%20de%20madres%20y%20padres-482b333727082f4a059642829ae09763431c8211.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20inteligencia%20maternal%20manual%20para%20apoyar%20la%20crianza%20bien%20tratante%20y%20promover%20la%20resiliencia%20de%20madres%20y%20padres-482b333727082f4a059642829ae09763431c8211.pdf)
 
 ## De qué va
 

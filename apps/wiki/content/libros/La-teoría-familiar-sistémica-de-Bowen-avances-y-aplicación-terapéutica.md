@@ -15,7 +15,7 @@ tags: [sistemico, familia, pareja, evaluacion-familiar, violencia-familiar]
 - **Autores y coordinación**: Mariana Martínez Berlanga y Martiño Rodríguez-González.
 - **Autores de capítulos**: Martiño Rodríguez-González; Daniel V. Papero; Elizabeth A. Skowron, John J. Van Epps, Elizabeth A. Cipriano-Essel y Petra L. Woehrle; Randall T. Frost; Mariana Martínez Berlanga.
 - **Edición**: primera edición en español, McGraw-Hill/Interamericana de España, 2015. ISBN 978-84-481-9492-5.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20teor%C3%ADa%20familiar%20sist%C3%A9mica%20de%20Bowen%20avances%20y%20aplicaci%C3%B3n%20terap%C3%A9utica-5727aa8a90632507ec0823e99feea94bc4f68bb0.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20teor%C3%ADa%20familiar%20sist%C3%A9mica%20de%20Bowen%20avances%20y%20aplicaci%C3%B3n%20terap%C3%A9utica-5727aa8a90632507ec0823e99feea94bc4f68bb0.pdf)
 
 ## De qué va
 

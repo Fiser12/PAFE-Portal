@@ -16,7 +16,7 @@ tags: [sistemico, epistemologia, formacion]
 - **Autor**: Guido Lagos Garay (p. 1). *El manifiesto del portal atribuía el documento a Gregory Bateson: no es un texto de Bateson, sino un ensayo sobre su obra.*
 - **Naturaleza del documento**: *artículo de 11 páginas, con subtítulo «Un intento de lectura/escritura terapéutica». El texto extraído no consigna revista, editorial ni año de publicación.*
 - **Contenido**: ocho apartados y bibliografía final (pp. 1-11).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Un%20pensamiento%20complejo%20para%20pensar%20la%20complejidad-48ef020fe88628fd271245e4996f59ca7af7c308.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Un%20pensamiento%20complejo%20para%20pensar%20la%20complejidad-48ef020fe88628fd271245e4996f59ca7af7c308.pdf)
 
 ## De qué va
 

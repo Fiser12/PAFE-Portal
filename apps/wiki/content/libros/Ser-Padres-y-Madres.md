@@ -17,7 +17,7 @@ tags: [parentalidad, infancia, crianza, familia]
 - **Edición**: obra autoeditada bajo licencia Creative Commons, con ISBN y depósito legal consignados como «solicitado»; el texto no indica año (p. 3).
 - **Origen del material**: selección de las consultas que los lectores enviaron a la web durante dos años, agrupadas por temas (p. 9).
 - **Estructura**: diecinueve capítulos temáticos en formato consulta-respuesta; *el texto extraído no presenta encabezado para un capítulo 2 y la numeración salta del primero al tercero*.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Ser%20Padres%20y%20Madres-ca31bbad49e69b935cbb8138b2b69ffdb98f33bc.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Ser%20Padres%20y%20Madres-ca31bbad49e69b935cbb8138b2b69ffdb98f33bc.pdf)
 
 ## De qué va
 

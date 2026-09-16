@@ -16,7 +16,7 @@ tags: [sistemico, narrativo, comunitario, formacion, mediacion-familiar]
 - **Edición**: copyright de 2014 de la Red Europea y Latinoamericana de Escuelas Sistémicas (RELATES), la Universidad del Valle de Atemajac y el Instituto Tzapopan, con sello editorial Lítteris en Guadalajara. La introducción está firmada en la primavera de 2014.
 - **Origen**: recopilación de aportaciones de las escuelas que integran RELATES, red fundada en 2004 por iniciativa de Juan Luis Linares y Roberto Pereira junto a colegas de Argentina, Colombia, Perú y México, y que en 2013 pasó de llamarse «Española» a «Europea» y agrupaba veintiocho instituciones (pp. 12-14).
 - **Estructura**: tres apartados —modelos y estilos, intervenciones en problemáticas específicas y contextos de intervención interdisciplinarios— (pp. 20, 210 y 382).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Pensamiento%20Sistem%C3%A1tico-d3403538a15910fa9175d4e39194ffc40089640e.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Pensamiento%20Sistem%C3%A1tico-d3403538a15910fa9175d4e39194ffc40089640e.pdf)
 
 ## De qué va
 

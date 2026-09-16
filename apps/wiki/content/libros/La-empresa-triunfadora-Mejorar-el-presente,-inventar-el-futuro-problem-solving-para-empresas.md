@@ -17,7 +17,7 @@ tags: [estrategico, organizaciones, comunicacion]
 - **Título original**: *L'azienda vincente*.
 - **Edición original**: Ponte alle Grazie / Adriano Salani Editore, 2012.
 - **Edición consultada**: Paidós, sello de Espasa Libros; primera edición electrónica en castellano, febrero de 2017; traducción de María del Carmen Torres García y Teresa Lanero Ladrón de Guevara. ISBN 978-84-493-3313-2 (PDF p. 267).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20empresa%20triunfadora%20Mejorar%20el%20presente%2C%20inventar%20el%20futuro%20problem%20solving%20para%20empresas-2c3f9abcee966144fa4d967c7f155a81924223b8.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20empresa%20triunfadora%20Mejorar%20el%20presente%2C%20inventar%20el%20futuro%20problem%20solving%20para%20empresas-2c3f9abcee966144fa4d967c7f155a81924223b8.pdf)
 
 ## De qué va
 

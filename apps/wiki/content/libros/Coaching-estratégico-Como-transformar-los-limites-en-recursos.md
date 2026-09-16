@@ -14,7 +14,7 @@ tags: [estrategico, coaching, adultos, emociones]
 
 - Autores: Paolo Mordazzi y Roberta Milanese (prólogo y conclusiones de Giorgio Nardone)
 - Editorial: Herder Editorial, Barcelona; edición digital de 2012 (original italiano: Ponte alle Grazie, Milán, 2007). Traducción de Jordi Bargalló Chaves (p. 3-4)
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Coaching%20estrat%C3%A9gico%20Como%20transformar%20los%20limites%20en%20recursos-046f6ebe5a40660c556b59ba0acbeb1597d45775.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Coaching%20estrat%C3%A9gico%20Como%20transformar%20los%20limites%20en%20recursos-046f6ebe5a40660c556b59ba0acbeb1597d45775.pdf)
 
 ## De qué va
 

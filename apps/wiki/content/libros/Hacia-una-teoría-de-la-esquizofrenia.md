@@ -17,7 +17,7 @@ tags: [sistemico, comunicacion, doble-vinculo, esquizofrenia]
 - **Publicación original**: «Toward a Theory of Schizophrenia», *Behavioral Science*, vol. 1, n.º 4, 1956
 - **Contexto**: informe preliminar del Proyecto para el Estudio de la Comunicación Esquizofrénica, iniciado con apoyo de la Rockefeller Foundation y continuado por la Josiah Macy Jr. Foundation
 - **Contenido útil**: el ensayo completo ocupa las p. 1-13 y concluye, con sus referencias adicionales, al inicio de la p. 14. El texto que comienza después en esa página pertenece a otro ensayo y no se destila aquí
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Hacia%20una%20teor%C3%ADa%20de%20la%20esquizofrenia-43b2d3169b713441b325affbd3728b63e5774b92.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Hacia%20una%20teor%C3%ADa%20de%20la%20esquizofrenia-43b2d3169b713441b325affbd3728b63e5774b92.pdf)
 
 ## De qué va
 

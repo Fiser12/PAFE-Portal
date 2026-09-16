@@ -14,7 +14,7 @@ tags: [sistemico, alianza-terapeutica, conflicto-familiar, adolescencia]
 
 - Autor: Valentín Escudero Carranza (dirección del manual), con coordinación de Cristina Muñiz de la Peña; Fundación Meniños (Programa "Conecta") y Unidad de Investigación en Intervención y Cuidado Familiar (UIICF), Universidad de A Coruña.
 - Editorial/año: Fundación Meniños, 2011 (consta en el copyright de la obra).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Adolescentes%20y%20Familias%20en%20Conflicto.%20Manual%20de%20Tratamiento-e399899f0b8a062ffd733d10a67d2fd97be041b2.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Adolescentes%20y%20Familias%20en%20Conflicto.%20Manual%20de%20Tratamiento-e399899f0b8a062ffd733d10a67d2fd97be041b2.pdf)
 
 ## De qué va
 

@@ -16,7 +16,7 @@ tags: [sistemico, terapia-familiar, familia, ciclo-vital]
 - **Título**: *Los vínculos familiares. Una psicopatología de las relaciones familiares*.
 - **Edición consultada**: primera edición virtual y en papel, e-libro.net, febrero de 2002; copyright del autor de 2001. ISBN 99934-70-39-2 (PDF pp. 1-3).
 - **Origen**: material de apoyo para el curso «Psicopatología de las Relaciones Familiares» de la UNEV, ampliado posteriormente. El autor aclara que no pretende ser tratado ni manual (PDF p. 5).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Los%20v%C3%ADnculos%20familiares%20-%20Una%20psicopatolog%C3%ADa%20de%20las%20relaciones%20familiares-964455eacb1ac060809447456804a95e09c275f8.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Los%20v%C3%ADnculos%20familiares%20-%20Una%20psicopatolog%C3%ADa%20de%20las%20relaciones%20familiares-964455eacb1ac060809447456804a95e09c275f8.pdf)
 
 ## De qué va
 

@@ -16,7 +16,7 @@ tags: [pareja, psicodinamico, apego, sistemico, violencia-de-pareja]
 - **Título original**: *Couple Therapy*, publicado por Palgrave Macmillan, con copyright de los autores de 2008.
 - **Edición consultada**: Ediciones Morata, Madrid, 2010; ISBN digital 978-84-7112-693-1 (p. 3).
 - **Estructura**: introducción, ocho capítulos y un epílogo sobre la supervivencia del terapeuta, más bibliografía e índices (pp. 5-6 y 167-168).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20de%20pareja%20-%20El%20yo%20en%20la%20relaci%C3%B3n-8cd88986eea40dfe74218ed06684753fd31529a0.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20de%20pareja%20-%20El%20yo%20en%20la%20relaci%C3%B3n-8cd88986eea40dfe74218ed06684753fd31529a0.pdf)
 
 ## De qué va
 

@@ -15,7 +15,7 @@ tags: [sistemico, mediacion-familiar, conflicto-familiar, familia, divorcio]
 - **Autora**: Mònica Buscarons Gelabertó (psicopedagoga, mediadora familiar y formadora en conflictología).
 - **Metálogo (prólogo)**: Marinés Suares.
 - **Editorial / año**: Editorial UOC, primera edición digital noviembre 2018 (consta en la fuente, p. 4).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/An%C3%A1lisis%20de%20conflictos%20familiares%20Un%20enfoque%20sistematico-8ad5fa8e10f47f4b0211b913d1df5cc2fde65711.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/An%C3%A1lisis%20de%20conflictos%20familiares%20Un%20enfoque%20sistematico-8ad5fa8e10f47f4b0211b913d1df5cc2fde65711.pdf)
 
 ## De qué va
 

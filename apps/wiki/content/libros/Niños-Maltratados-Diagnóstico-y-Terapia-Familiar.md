@@ -17,7 +17,7 @@ tags: [sistemico, maltrato-infantil, proteccion-infantil, diagnostico, familia]
 - **Título original**: *La famiglia maltrattante. Diagnosi e terapia*, Raffaello Cortina Editore, Milán, con copyright de 1989.
 - **Edición consultada**: Ediciones Paidós Ibérica, Barcelona, primera edición de 1991 y primera reimpresión de 1994; traducción de Nélida Bellani y Claudia I. Torquati (p. 3).
 - **Continuación**: el propio Cirillo retomó y revisó este material quince años después en [[libros/Malos-padres]], donde aparecen los datos de seguimiento que aquí faltan.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Ni%C3%B1os%20Maltratados%20Diagn%C3%B3stico%20y%20Terapia%20Familiar-280a0fb2004058ef4cf86ebc63a9c7d2db99bc57.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Ni%C3%B1os%20Maltratados%20Diagn%C3%B3stico%20y%20Terapia%20Familiar-280a0fb2004058ef4cf86ebc63a9c7d2db99bc57.pdf)
 
 ## De qué va
 

@@ -17,7 +17,7 @@ tags: [sistemico, divorcio, familia, parentalidad, violencia-de-genero]
 - **Prólogo**: Aldo Morrone, traducido por Linares (pp. 9-11).
 - **Edición consultada**: Editorial Gedisa, Barcelona, primera edición de junio de 2015.
 - **Estructura**: tres partes y trece capítulos, con aportaciones desde España, Italia, Perú y Chile, más colaboradores y bibliografía (pp. 8 y 159-164).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Pr%C3%A1cticas%20alineadoras%20familiares%20El%20sindrome%20de%20alienaci%C3%B3n%20parental%20reformulado-7533a76b8cedc1cc7ef3c7216dc140a52122f0f3.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Pr%C3%A1cticas%20alineadoras%20familiares%20El%20sindrome%20de%20alienaci%C3%B3n%20parental%20reformulado-7533a76b8cedc1cc7ef3c7216dc140a52122f0f3.pdf)
 
 ## De qué va
 

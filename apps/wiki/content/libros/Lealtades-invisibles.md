@@ -17,7 +17,7 @@ tags: [sistemico, terapia-familiar, familia-de-origen, familia, infancia]
 - **Título original**: *Invisible Loyalties: Reciprocity in Intergenerational Family Therapy*.
 - **Edición original**: Harper & Row, 1973.
 - **Edición consultada**: Amorrortu, primera edición castellana de 1983, primera reimpresión de 1994; traducción de Inés Pardal (PDF p. 1).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Lealtades%20invisibles-ced6e9bb47c02b62edcab87a90a35ee26d25f9ee.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Lealtades%20invisibles-ced6e9bb47c02b62edcab87a90a35ee26d25f9ee.pdf)
 
 ## De qué va
 

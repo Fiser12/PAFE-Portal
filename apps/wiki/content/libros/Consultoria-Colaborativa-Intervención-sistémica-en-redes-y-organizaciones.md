@@ -14,7 +14,7 @@ tags: [sistemico, constructivismo, organizaciones, comunitario]
 
 - **Coordinadores**: Raúl Medina, Esteban Agulló, Remberto Castro, Rocío Calderón y Luz de Lourdes Eguiluz. Obra colectiva con capítulos de A. Berenice Torres, Félix Castillo, Anabel Carreras, Jaime Inclán, Alberto Carreras, Ana Sofía Ibarra Castro, Lia Mastropaolo, María Silveria Agulló y Julio Rodríguez.
 - **Editorial / año**: © 2009, Centro Universitario de la Ciénega, Universidad de Guadalajara (E Libro Red Américas); ISBN 978-607-7848-01-1 (consta en la fuente, p. 5).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Consultoria%20Colaborativa%20Intervenci%C3%B3n%20sist%C3%A9mica%20en%20redes%20y%20organizaciones-df0aaa82cdd730ee64bb65128cd77a6098d719ab.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Consultoria%20Colaborativa%20Intervenci%C3%B3n%20sist%C3%A9mica%20en%20redes%20y%20organizaciones-df0aaa82cdd730ee64bb65128cd77a6098d719ab.pdf)
 
 ## De qué va
 

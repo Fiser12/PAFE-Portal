@@ -15,7 +15,7 @@ tags: [sistemico, familia, violencia-familiar, personalidad, diagnostico]
 - **Autor**: Juan Luis Linares, de la Escuela de Terapia Familiar del Hospital de Sant Pau de Barcelona (p. 6).
 - **Edición consultada**: Herder Editorial, Barcelona, con copyright de 2012; ISBN 978-84-254-3062-6 (p. 7).
 - **Estructura**: siete capítulos, reflexiones finales, un glosario extenso de los términos del modelo y bibliografía (pp. 8-257).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20Familiar%20Ultramoderna.%20La%20Inteligencia%20Terapeutica-ba58577755ec3142a94549e682ccdccabc3162d2.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20Familiar%20Ultramoderna.%20La%20Inteligencia%20Terapeutica-ba58577755ec3142a94549e682ccdccabc3162d2.pdf)
 
 ## De qué va
 

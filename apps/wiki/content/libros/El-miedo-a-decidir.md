@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, ansiedad, adultos, panico]
 
 - **Autor**: Giorgio Nardone; traducción de Paula Caballero Sánchez y Carmen Torres García.
 - **Edición**: original italiano *La paura delle decisioni*, Adriano Salani Editore, 2014; primera edición electrónica en castellano, Paidós / Espasa Libros, febrero de 2016. ISBN 978-84-493-3199-2 (PDF p. 76).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20miedo%20a%20decidir-5c31448b922e3513cb25818019c6a6b727afdb48.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20miedo%20a%20decidir-5c31448b922e3513cb25818019c6a6b727afdb48.pdf)
 
 ## De qué va
 

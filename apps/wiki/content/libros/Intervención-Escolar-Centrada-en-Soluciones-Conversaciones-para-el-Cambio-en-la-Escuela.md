@@ -17,7 +17,7 @@ tags: [centrado-en-soluciones, terapia-breve, sistemico, escolar, infancia]
 - **Edición consultada**: Herder Editorial, Barcelona, 1.ª edición digital, 2018
 - **ISBN digital**: 978-84-254-4066-3
 - **Autoría interna**: los doce primeros capítulos y el epílogo son de Herrero de Vega y Beyebach; la cuarta parte reúne experiencias firmadas por profesionales invitados, entre ellos María Garrapucho, Nerea Gardeta, Elin Carlsson, Ben Furman, David Riera, Anna Sala, Paula Villar, Estrella Romero, Laura López-Romero, Hans Pier Jara Iglesias, Marian Casarrubios, Pilar Ortiz y Jorge Ayala.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Intervenci%C3%B3n%20Escolar%20Centrada%20en%20Soluciones%20Conversaciones%20para%20el%20Cambio%20en%20la%20Escuela-24ee23225e5ecad5834ce06d9a6ddb1470f96a48.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Intervenci%C3%B3n%20Escolar%20Centrada%20en%20Soluciones%20Conversaciones%20para%20el%20Cambio%20en%20la%20Escuela-24ee23225e5ecad5834ce06d9a6ddb1470f96a48.pdf)
 
 ## De qué va
 

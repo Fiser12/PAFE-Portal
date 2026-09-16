@@ -18,7 +18,7 @@ tags: [sistemico, psicosis, familia, esquizofrenia, adultos]
 - **Edición consultada**: Ediciones Morata, edición digital (p. 5).
 - **Estructura**: trece capítulos, del recorrido histórico de las ideas sistémicas sobre la psicosis a las reflexiones finales (pp. 6-7).
 - **Origen del material**: Programa de Trastornos Psicóticos de la Unidad de Psicoterapia del Hospital de la Santa Creu i Sant Pau de Barcelona (p. 138).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20familiar%20de%20las%20psicosis.%20Entre%20la%20destriangulaci%C3%B3n%20y%20la%20reconfirmaci%C3%B3n-d27bc6ceeee24ee3583ab6380f9be8021ad69f71.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20familiar%20de%20las%20psicosis.%20Entre%20la%20destriangulaci%C3%B3n%20y%20la%20reconfirmaci%C3%B3n-d27bc6ceeee24ee3583ab6380f9be8021ad69f71.pdf)
 
 ## De qué va
 

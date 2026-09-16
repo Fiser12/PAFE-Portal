@@ -15,7 +15,7 @@ tags: [sistemico, estructural, violencia-familiar, trastornos-alimentarios, fami
 - **Autor**: Salvador Minuchin (capítulo «Cuarteto» en colaboración con Virginia Goldner)
 - **Título original**: *Family Kaleidoscope*, Harvard University Press, 1984
 - **Edición en castellano**: Ediciones Paidós Ibérica, Barcelona / Editorial Paidós, Buenos Aires; 1.ª edición 1985, 2.ª reimpresión 1994. Traducción de Rubén Masera. ISBN 84-7509-367-1
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Caleidoscopio%20familiar-a5475f77d657fdd103bc73c310492b84761ee242.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Caleidoscopio%20familiar-a5475f77d657fdd103bc73c310492b84761ee242.pdf)
 
 ## De qué va
 

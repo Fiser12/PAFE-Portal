@@ -14,7 +14,7 @@ tags: [sistemico, terapia-familiar, familia, infancia, pareja]
 
 - **Autor**: Ángel Alberto Valdés Cuervo, con la colaboración de Landy A. Esquivel Alcocer y Katty Artiles Armada.
 - **Edición**: Editorial El Manual Moderno, México, 2007. ISBN 978-970-729-294-9 (PDF pp. 5-7).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Familia%20y%20desarrollo-04e9e3f51c81db230d003693c6eb2f5b4febffb2.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Familia%20y%20desarrollo-04e9e3f51c81db230d003693c6eb2f5b4febffb2.pdf)
 
 ## De qué va
 

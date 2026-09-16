@@ -16,7 +16,7 @@ tags: [ericksoniano, terapia-breve, comunicacion, adultos]
 - **Título original**: *Taproots. Underlying Principles of Milton Erickson's Therapy and Hypnosis*, W. W. Norton, Nueva York y Londres, con copyright de 1987.
 - **Edición consultada**: Ediciones Paidós Ibérica, Barcelona, primera edición de 1993 y primera reimpresión de 1995; traducción de Jorge Piatigorsky (p. 2).
 - **Estructura**: diez capítulos y una sección de recursos —bibliografía, videos y grabaciones de Erickson, investigaciones y glosario— (pp. 2-4).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Raices%20Profundas-99de86e26afb579167c4d1cf978aa2cc0f694a5a.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Raices%20Profundas-99de86e26afb579167c4d1cf978aa2cc0f694a5a.pdf)
 
 ## De qué va
 

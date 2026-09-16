@@ -16,7 +16,7 @@ tags: [sistemico, maltrato-infantil, proteccion-infantil, infancia, adopcion]
 - **Paratextos**: prólogo a la edición en castellano de Jorge Barudy (pp. 15-16) y prefacio de Paola Di Blasio (pp. 17-24).
 - **Obra precedente**: continúa y revisa *Niños maltratados. Diagnóstico y terapia familiar*, escrito con Paola Di Blasio (original italiano de 1989, *La famiglia maltrattante*; edición castellana de Paidós, 1997), según la nota del prefacio y la introducción (pp. 18 y 25).
 - **Edición consultada**: Editorial Gedisa, Barcelona, colección Terapia Familiar. El texto extraído no consigna año de edición ni título original.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Malos%20padres-95322652df72806ebb2a57e72aae62045b38e128.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Malos%20padres-95322652df72806ebb2a57e72aae62045b38e128.pdf)
 
 ## De qué va
 

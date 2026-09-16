@@ -15,7 +15,7 @@ tags: [sistemico, constructivismo, terapia-breve, adultos]
 - **Autores**: Marcelo R. Ceberio y Paul Watzlawick, en la colección Interacciones (pp. 1 y 3).
 - **Edición**: Editorial Teseo, Buenos Aires, primera edición de 2010, 340 páginas en el volumen impreso; ISBN 978-987-1354-61-0 (p. 4).
 - **Alcance del documento**: *el PDF disponible en el portal contiene solo 15 páginas —portada, datos catalográficos y el arranque de la introducción—, no la obra completa. Esta nota destila únicamente ese extracto: el cuerpo del libro, dedicado según su subtítulo al diseño y prescripción de tareas, no está en la fuente.*
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Si%20quieres%20ver%2C%20aprende%20a%20actuar-f8aada8d5a4d2c67f020327e6c41c6098374667e.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Si%20quieres%20ver%2C%20aprende%20a%20actuar-f8aada8d5a4d2c67f020327e6c41c6098374667e.pdf)
 
 ## De qué va
 

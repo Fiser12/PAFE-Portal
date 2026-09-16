@@ -10,7 +10,7 @@ configuration:
   locale: es-ES
   # Dominio del despliegue en Cloudflare Pages: de él dependen los enlaces
   # absolutos, el sitemap y el RSS. Cámbialo si se pone un dominio propio.
-  baseUrl: pafe-wiki.pages.dev
+  baseUrl: pafe-formakuntza.com/wiki
   ignorePatterns:
     - private
     - templates

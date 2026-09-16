@@ -15,7 +15,7 @@ tags: [sistemico, terapia-familiar, pareja, duelo, familia]
 - **Autora**: María José Pubill González.
 - **Título completo**: *Herramientas de terapia familiar. Técnicas narrativo-experienciales para un enfoque sistémico integrador*.
 - **Edición consultada**: Paidós, sello de Espasa Libros, primera edición electrónica, mayo de 2018. ISBN 978-84-493-3473-3 (PDF p. 308).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Herramientas%20de%20terapia%20familiar-591656fc826d6b035e9385fd32a8445b3f7067f7.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Herramientas%20de%20terapia%20familiar-591656fc826d6b035e9385fd32a8445b3f7067f7.pdf)
 
 ## De qué va
 

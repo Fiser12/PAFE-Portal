@@ -15,7 +15,7 @@ tags: [sistemico, trauma, adultos, terapia-familiar, emociones]
 - Autor: Richard C. Schwartz.
 - Título original: *Introduction to the Internal Family Systems Model* (2001, Trailheads Publications).
 - Edición consultada: Editorial Elefthería, primera edición en español, noviembre de 2015; traducción de The Center for Self Leadership.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Introducci%C3%B3n%20al%20modelo%20de%20los%20sistemas%20de%20la%20familia%20interna-25364ed5d1fe80de920531d2a1cabacd0de2d811.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Introducci%C3%B3n%20al%20modelo%20de%20los%20sistemas%20de%20la%20familia%20interna-25364ed5d1fe80de920531d2a1cabacd0de2d811.pdf)
 
 ## De qué va
 

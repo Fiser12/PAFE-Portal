@@ -15,7 +15,7 @@ tags: [terapia-breve, sistemico, constructivismo, familia, pareja]
 - **Autor**: Steve de Shazer. Prefacios de John E. Weakland y Lyman C. Wynne.
 - **Título original**: *Keys to Solution in Brief Therapy* (Norton and Co., Nueva York–Londres).
 - **Edición en castellano**: Ediciones Paidós Ibérica, Barcelona; traducción de Jorge Piatigorsky; 1.ª reimpresión en España, 1991. ISBN 84-7509-722-7.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Claves%20Para%20La%20Solucion%20en%20Terapia%20Breve-f00015494fb6fe925cd3fe89c35a0a1dbcb70fc0.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Claves%20Para%20La%20Solucion%20en%20Terapia%20Breve-f00015494fb6fe925cd3fe89c35a0a1dbcb70fc0.pdf)
 
 ## De qué va
 

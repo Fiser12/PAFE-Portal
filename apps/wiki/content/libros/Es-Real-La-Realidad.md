@@ -14,7 +14,7 @@ tags: [constructivismo, sistemico, comunicacion, epistemologia]
 
 - **Autor**: Paul Watzlawick.
 - **Edición consultada**: Herder Editorial, Barcelona, © 1979; traducción de Marciano Villanueva del original alemán *Wie wirklich ist die Wirklichkeit?* ISBN 978-84-254-2776-3 (PDF p. 2).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Es%20Real%20La%20Realidad-4a23c8049eb070ef52ad98668cffa9d425231b19.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Es%20Real%20La%20Realidad-4a23c8049eb070ef52ad98668cffa9d425231b19.pdf)
 
 ## De qué va
 

@@ -16,7 +16,7 @@ tags: [sistemico, psicosis, paradoja, familia]
 - **Título original**: *Paradosso e controparadosso*, publicado en italiano por Feltrinelli, Milán. El prefacio está fechado en Milán el 31 de octubre de 1974, con un reconocimiento añadido en Buenos Aires en agosto de 1982 (pp. 5-6).
 - **Edición consultada**: Paidós, segunda edición de 1991, con copyright de Feltrinelli consignado en 1986; traducción de Susana Frondizi de Bullrich, y de Inés Pardal en los capítulos 17 y 18 (p. 2).
 - **Naturaleza del texto**: los propios autores lo presentan como *informe preliminar* de un plan de investigación proyectado a finales de 1971 e iniciado en enero de 1972 (p. 5).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Paradoja%20y%20contraparadoja%20Un%20nuevo%20modelo%20en%20la%20terapia%20de%20la%20familia%20con%20transacci%C3%B3n%20esquizofr%C3%A9nica-6997a216f90be468d63da701ab34dddcd05f2f2c.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Paradoja%20y%20contraparadoja%20Un%20nuevo%20modelo%20en%20la%20terapia%20de%20la%20familia%20con%20transacci%C3%B3n%20esquizofr%C3%A9nica-6997a216f90be468d63da701ab34dddcd05f2f2c.pdf)
 
 ## De qué va
 

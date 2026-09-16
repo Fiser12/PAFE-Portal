@@ -17,7 +17,7 @@ tags: [sistemico, terapia-familiar, constructivismo, familia]
 - **Edición original**: Raffaello Cortina Editore, Milán, 2000.
 - **Edición consultada**: Paidós / Espasa Libros; traducción de Felipe Gálvez Sánchez, 2006; primera edición electrónica, febrero de 2018. ISBN 978-84-493-3420-7 (PDF pp. 419-420).
 - **Particularidad editorial**: el prólogo castellano fue reformulado a partir del original para añadir reflexiones y contexto español (PDF pp. 17-21, 342).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Historia%20de%20la%20Terapia%20Familiar%20Los%20Personajes%20y%20las%20Ideas-2abec951259d5abe467438f10fd0af94d949826d.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Historia%20de%20la%20Terapia%20Familiar%20Los%20Personajes%20y%20las%20Ideas-2abec951259d5abe467438f10fd0af94d949826d.pdf)
 
 ## De qué va
 

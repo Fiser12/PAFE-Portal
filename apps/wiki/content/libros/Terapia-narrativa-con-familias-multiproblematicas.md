@@ -16,7 +16,7 @@ tags: [narrativo, sistemico, familia, comunitario]
 - **Edición consultada**: Ediciones Morata, colección «Terapia Familiar Iberoamericana» dirigida por Roberto Pereira (pp. 4-6).
 - **Prólogo**: Raúl Medina Centeno, que replantea la propia categoría de familia «multiproblemática» y su complejidad (pp. 10-11).
 - **Estructura**: prólogo, introducción, doce capítulos y epílogo (pp. 8-9).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20narrativa%20con%20familias%20multiproblematicas-534b4ad73e1e36acadbd03a3d2224ba8786fc6ee.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20narrativa%20con%20familias%20multiproblematicas-534b4ad73e1e36acadbd03a3d2224ba8786fc6ee.pdf)
 
 ## De qué va
 

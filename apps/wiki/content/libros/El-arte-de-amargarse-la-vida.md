@@ -14,7 +14,7 @@ tags: [constructivismo, terapia-breve, comunicacion, pareja]
 
 - **Autor**: Paul Watzlawick.
 - **Edición de la fuente**: Círculo de Lectores, Barcelona, 1989, por licencia de Editorial Herder; traducción del alemán de Xavier Moll. Los créditos consignan © 1983 Paul Watzlawick y © 1984 Editorial Herder.
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20arte%20de%20amargarse%20la%20vida-50e775d0248b735938ebb1becf757277a6a1f30e.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20arte%20de%20amargarse%20la%20vida-50e775d0248b735938ebb1becf757277a6a1f30e.pdf)
 
 ## De qué va
 

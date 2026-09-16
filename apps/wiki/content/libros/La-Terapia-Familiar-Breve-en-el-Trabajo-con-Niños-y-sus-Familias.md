@@ -15,7 +15,7 @@ tags: [terapia-breve, sistemico, infancia, familia]
 - **Autor**: Mark Beyebach
 - **Publicación**: *FAM*, n.º 16, 1997, paginación impresa 27-46
 - **Alcance del archivo**: artículo completo de 20 páginas PDF; no es un libro, pese a su catalogación en la biblioteca, y no contiene capítulos, anexos ni bibliografía final independientes
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20Terapia%20Familiar%20Breve%20en%20el%20Trabajo%20con%20Ni%C3%B1os%20y%20sus%20Familias-4486569ec7522d76c79a70706ad26d3c9dcaf13d.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20Terapia%20Familiar%20Breve%20en%20el%20Trabajo%20con%20Ni%C3%B1os%20y%20sus%20Familias-4486569ec7522d76c79a70706ad26d3c9dcaf13d.pdf)
 
 ## De qué va
 

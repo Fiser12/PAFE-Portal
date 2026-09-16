@@ -17,7 +17,7 @@ tags: [sistemico, terapia-familiar, enfermedad-cronica, familia]
 - **Título original:** *Families, Illness and Disability*
 - **Edición original:** Basic Books, Nueva York, 1994
 - **Edición consultada:** Editorial Gedisa, Barcelona, primera edición en español, julio de 2000; traducción de Verónica Tirotta; ISBN 84-7432-708-3. <!-- p. 3-4 -->
-- **Fuente:** [PDF en PAFE Portal](https://pafe-portal.vercel.app/api/files/file/Familias%2C%20enfermedad%20y%20discapacidad-83c4175ba9078dcc59b3413848cb87562d823e8a.pdf)
+- **Fuente:** [PDF en PAFE Portal](https://pafe-formakuntza.com/api/files/file/Familias%2C%20enfermedad%20y%20discapacidad-83c4175ba9078dcc59b3413848cb87562d823e8a.pdf)
 
 ## De qué va
 

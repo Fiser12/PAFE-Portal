@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, parentalidad, familia, trastornos-alimentario
 
 - **Autor**: Giorgio Nardone y el equipo del Centro di Terapia Strategica (CTS) de Arezzo; los capítulos están firmados por Nardone y una treintena de colaboradores del CTS.
 - **Editorial / año**: Herder Editorial, Barcelona, 2015 (1ª edición digital; original italiano © 2012, Adriano Salani Editore, Milán). Consta en la fuente (p. 2-3).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Ayudar%20a%20los%20padres%20a%20ayudar%20a%20los%20hijos.%20Problemas%20y%20soluciones%20para%20el%20ciclo%20de%20la%20vida-74e36bd2c3a33f37546144aa71a1dfebf533ce60.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Ayudar%20a%20los%20padres%20a%20ayudar%20a%20los%20hijos.%20Problemas%20y%20soluciones%20para%20el%20ciclo%20de%20la%20vida-74e36bd2c3a33f37546144aa71a1dfebf533ce60.pdf)
 
 ## De qué va
 

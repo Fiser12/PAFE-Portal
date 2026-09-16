@@ -14,7 +14,7 @@ tags: [terapia-breve, sistemico, pareja, infancia, familia]
 
 - Autores: Mark Beyebach y Marga Herrero de Vega
 - Editorial: Herder Editorial, Barcelona, 2010 (consta en los créditos de la fuente)
-- Recurso original: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/200%20Tareas%20en%20Terapia%20Breve-ea04de5c899eaf0cf4df31eb2d86431f48f476c7.pdf)
+- Recurso original: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/200%20Tareas%20en%20Terapia%20Breve-ea04de5c899eaf0cf4df31eb2d86431f48f476c7.pdf)
 
 ## De qué va
 

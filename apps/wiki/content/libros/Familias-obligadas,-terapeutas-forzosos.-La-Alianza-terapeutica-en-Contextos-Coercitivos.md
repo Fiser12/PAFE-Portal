@@ -16,7 +16,7 @@ tags: [sistemico, terapia-familiar, alianza-terapeutica, adolescencia, violencia
 - **Autoras**: Ana Paula Relvas y Luciana Sotero
 - **Título**: *Familias obligadas, terapeutas forzosos. La Alianza Terapéutica en Contextos Coercitivos*
 - **Edición**: Ediciones Morata, Madrid, 2014. Traducción de Águeda Fernández Villares. Colección «Terapia Familiar Iberoamericana». ISBN 978-84-7112-798-3; E-ISBN 978-84-7112-799-0
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Familias%20obligadas%2C%20terapeutas%20forzosos.%20La%20Alianza%20terapeutica%20en%20Contextos%20Coercitivos-b7a68b05aa980aa7c0675a34db4ae86724e0d218.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Familias%20obligadas%2C%20terapeutas%20forzosos.%20La%20Alianza%20terapeutica%20en%20Contextos%20Coercitivos-b7a68b05aa980aa7c0675a34db4ae86724e0d218.pdf)
 
 ## De qué va
 

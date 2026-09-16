@@ -16,7 +16,7 @@ tags: [sistemico, epistemologia, comunicacion, doble-vinculo]
 - **Título original**: *Steps to an Ecology of Mind*, con copyright de 1972 de Chandler Publishing Company.
 - **Edición consultada**: Editorial Lohlé-Lumen, Buenos Aires, con ediciones de Carlos Lohlé consignadas en 1985 y 1991 y la de Lohlé-Lumen en 1998; traducción de Ramón Alcalde (pp. 2-3).
 - **Estructura**: una introducción y seis partes —metálogos, antropología, patología de la relación, biología y evolución, epistemología y ecología, y crisis en la ecología de la mente—, seguidas de una bibliografía integral compilada por Vern Carroll (pp. 7-354).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Pasos%20Hacia%20Una%20Ecologia%20De%20La%20Mente-7a069470514a1572669184198b53b5f59ba93a7d.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Pasos%20Hacia%20Una%20Ecologia%20De%20La%20Mente-7a069470514a1572669184198b53b5f59ba93a7d.pdf)
 
 ## De qué va
 

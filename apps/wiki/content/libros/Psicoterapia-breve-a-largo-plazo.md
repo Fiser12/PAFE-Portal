@@ -16,7 +16,7 @@ tags: [estrategico, terapia-breve, psicosis, personalidad, adultos]
 - **Título original**: *Psicoterapia breve a lungo termine*, con copyright de 2017 de Adriano Salani Editore, Milán.
 - **Edición consultada**: Herder Editorial, Barcelona, copyright de 2019, edición digital; traducción de Maria Pons Irazazábal (p. 3).
 - **Estructura**: prólogo, dos capítulos de marco, seis capítulos de caso con transcripciones y un capítulo final de resultados, más bibliografía (pp. 4-111).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Psicoterapia%20breve%20a%20largo%20plazo-871acc8dda5f53fddcc34e51468546442f9b7550.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Psicoterapia%20breve%20a%20largo%20plazo-871acc8dda5f53fddcc34e51468546442f9b7550.pdf)
 
 ## De qué va
 

@@ -14,7 +14,7 @@ tags: [estrategico, terapia-breve, escolar, infancia, adolescencia]
 
 - Autores: Elisa Balbi y Alessandro Artini (con prólogo de Alfonso Caruso y epílogo de Giorgio Nardone; traducción de Maria Pons Irazazábal)
 - Editorial: Herder Editorial, Barcelona, © 2011; edición digital de referencia, 2012 (edición original: Adriano Salani Editore, Milán, 2009; consta en los créditos de la fuente)
-- Recurso original: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Curar%20la%20escuela%20El%20Problem%20Solving%20Estrat%C3%A9gico%20para%20profesionales%20de%20la%20educaci%C3%B3n-e1ec1f85f23d0c6f9fc46b0db2a24e9cb4331797.pdf)
+- Recurso original: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Curar%20la%20escuela%20El%20Problem%20Solving%20Estrat%C3%A9gico%20para%20profesionales%20de%20la%20educaci%C3%B3n-e1ec1f85f23d0c6f9fc46b0db2a24e9cb4331797.pdf)
 
 ## De qué va
 

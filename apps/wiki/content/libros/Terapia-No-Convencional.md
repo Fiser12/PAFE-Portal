@@ -16,7 +16,7 @@ tags: [estrategico, ericksoniano, familia, ciclo-vital, terapia-breve]
 - **Edición consultada**: Amorrortu editores. *El texto extraído no incluye página de créditos, de modo que no consta año ni ISBN; el original inglés es «Uncommon Therapy».*
 - **Origen del material**: el proyecto de investigación sobre comunicación de Gregory Bateson, al que Haley se incorporó en enero de 1953 junto a John Weakland, y las visitas regulares a la consulta de Erickson en Phoenix (pp. 3-4).
 - **Estructura**: introducción, nueve capítulos y epílogo, organizados según las etapas del ciclo vital familiar (p. 3).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20No%20Convencional-cdf3aea658fceb2073ede4cae28a4fdfebac79ba.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20No%20Convencional-cdf3aea658fceb2073ede4cae28a4fdfebac79ba.pdf)
 
 ## De qué va
 

@@ -15,7 +15,7 @@ tags: [constructivismo, sistemico, terapia-breve, comunicacion, epistemologia]
 - **Autores**: Marcelo R. Ceberio y Paul Watzlawick; prólogo de Juan L. Linares. Es un manual de autoría conjunta, no un diálogo ni una compilación. Algunos apartados identifican de forma expresa la voz de Watzlawick «(P.W.)» o la de ambos «(P.W. y M.R.C.)» (PDF pp. 1-4 y 173).
 - **Título completo**: *La construcción del universo. Conceptos introductorios y reflexiones sobre epistemología, constructivismo y pensamiento sistémico*.
 - **Edición consultada**: Empresa Editorial Herder, Barcelona, 1998. ISBN 84-254-2083-0 (PDF pp. 1-2).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/La%20construcci%C3%B3n%20del%20universo-7d28379cc6372b8cfac67b227346e961fb625a1a.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/La%20construcci%C3%B3n%20del%20universo-7d28379cc6372b8cfac67b227346e961fb625a1a.pdf)
 
 ## De qué va
 

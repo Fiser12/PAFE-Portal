@@ -16,7 +16,7 @@ tags: [terapia-breve, estrategico, centrado-en-soluciones, constructivismo, fami
 - **Autores**: Brian Cade y William Hudson O'Hanlon
 - **Título mostrado en la obra**: *Guía breve de terapia breve*
 - **Editorial de la edición extraída**: Paidós, colección Terapia Familiar, Barcelona / Buenos Aires / México. El texto extraído no conserva con claridad el año ni los demás datos de la edición
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Gu%C3%ADa%20breve%20de%20terapia-41e956653233dd9353b26a0953f5b579d0f30c86.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Gu%C3%ADa%20breve%20de%20terapia-41e956653233dd9353b26a0953f5b579d0f30c86.pdf)
 
 ## De qué va
 

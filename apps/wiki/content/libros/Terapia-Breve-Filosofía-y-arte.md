@@ -17,7 +17,7 @@ tags: [estrategico, terapia-breve, constructivismo, sistemico, formacion]
 - **Edición consultada**: Empresa Editorial Herder, Barcelona, con copyright de 1999; ISBN 84-254-2084-9 (p. 2).
 - **Prólogo a la edición española**: Marcelo R. Ceberio, que reconstruye la fundación del Mental Research Institute en 1959 y el paso de la linealidad a los procesos circulares (pp. 3-4).
 - **Autores de capítulo**: además de los editores, Marcelo R. Ceberio, Heinz von Foerster, M. Wainstein, John Weakland, Steve de Shazer y colaboradores, Jeffrey Zeig, S. Geyenhofer y J. Komori, Cloé Madanes y A. Salvini (pp. 2-3).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20Breve%20Filosof%C3%ADa%20y%20arte-216cf5975a66e291f90ec132e472a45a54ceabd4.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20Breve%20Filosof%C3%ADa%20y%20arte-216cf5975a66e291f90ec132e472a45a54ceabd4.pdf)
 
 ## De qué va
 

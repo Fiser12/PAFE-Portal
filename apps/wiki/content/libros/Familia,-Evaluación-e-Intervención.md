@@ -15,7 +15,7 @@ tags: [sistemico, terapia-familiar, evaluacion-familiar, familia]
 
 - **Autores**: Silvia López Larrosa y Valentín Escudero Carranza
 - **Edición**: 3.ª edición, febrero de 2013; Editorial CCS, Madrid. Primera edición: 2003. ISBN electrónico 978-84-9023-625-3
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Familia%2C%20Evaluaci%C3%B3n%20e%20Intervenci%C3%B3n-74291858c9376d35560bfb99a881b0b8ceec2a60.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Familia%2C%20Evaluaci%C3%B3n%20e%20Intervenci%C3%B3n-74291858c9376d35560bfb99a881b0b8ceec2a60.pdf)
 
 ## De qué va
 

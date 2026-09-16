@@ -16,7 +16,7 @@ tags: [estrategico, terapia-breve, constructivismo, fobias, toc]
 - **Autores**: Giorgio Nardone y Paul Watzlawick; introducción de Paul Watzlawick.
 - **Título**: *El arte del cambio. Manual de terapia estratégica e hipnoterapia sin trance*.
 - **Edición consultada**: Herder, ISBN 84-254-1811-9. El PDF no reproduce una página legal legible; la introducción está fechada en Palo Alto, 1989 (p. 5 PDF).
-- **Recurso original**: [PDF en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/El%20Arte%20del%20Cambio-5e251282888ff8bcf31214b96f7ace3d4ff49564.pdf)
+- **Recurso original**: [PDF en el portal PAFE](https://pafe-formakuntza.com/api/files/file/El%20Arte%20del%20Cambio-5e251282888ff8bcf31214b96f7ace3d4ff49564.pdf)
 
 ## De qué va
 

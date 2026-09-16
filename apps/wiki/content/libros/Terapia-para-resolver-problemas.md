@@ -16,7 +16,7 @@ tags: [estrategico, familia, terapia-breve, formacion]
 - **Título original**: *Problem-Solving Therapy. New Strategies for Effective Family Therapy*, con copyright del autor de 1976.
 - **Edición consultada**: Amorrortu editores, Buenos Aires, biblioteca de psicología y psicoanálisis dirigida por Jorge Colapinto y David Maldavsky; primera edición en castellano de 1980, con reimpresiones hasta la cuarta de 1990; traducción de Zoraida J. Valcárcel; ISBN 950-518-454-9 (p. 4).
 - **Estructura**: prefacio, introducción, siete capítulos y un informe de caso final (pp. 5-8).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Terapia%20para%20resolver%20problemas-d975a198310774ef99eb1ba77197ba1de8bce394.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Terapia%20para%20resolver%20problemas-d975a198310774ef99eb1ba77197ba1de8bce394.pdf)
 
 ## De qué va
 

@@ -14,7 +14,7 @@ tags: [terapia-breve, estrategico, crianza, infancia, familia]
 
 - Autora: Marisol Ampudia. Prólogo de Giorgio Nardone (p. 6).
 - Editorial: Herder Editorial, Barcelona, 2010 (ISBN 978-84-254-2769-5), según consta en los créditos de la obra (p. 3).
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/Con%20la%20mejor%20intenci%C3%B3n%20-%20Cuentos%20para%20comprender%20lo%20que%20sienten%20los%20ni%C3%B1os-fbc0b8cd1652c48be1bb25c1dec36f8eb66548e8.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/Con%20la%20mejor%20intenci%C3%B3n%20-%20Cuentos%20para%20comprender%20lo%20que%20sienten%20los%20ni%C3%B1os-fbc0b8cd1652c48be1bb25c1dec36f8eb66548e8.pdf)
 
 ## De qué va
 

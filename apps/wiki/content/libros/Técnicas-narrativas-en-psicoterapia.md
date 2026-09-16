@@ -16,7 +16,7 @@ tags: [narrativo, formacion, adultos]
 - **Edición consultada**: Editorial Síntesis, Madrid, proyecto editorial Psicología Clínica, serie Guías Técnicas, dirigida por Manuel Muñoz López y Carmelo Vázquez Valverde; ISBN 978-84-995870-6-6 (pp. 3 y 47-51 del texto extraído).
 - **Estructura**: prólogo, diez capítulos, un anexo con mirada global a las estrategias narrativas, claves de corrección de los ejercicios de autoevaluación y bibliografía (pp. 7-11).
 - **Formato**: manual didáctico con ejercicios de autoevaluación al final de cada capítulo y sus soluciones al final del volumen.
-- [Recurso original en el portal PAFE](https://pafe-portal.vercel.app/api/files/file/T%C3%A9cnicas%20narrativas%20en%20psicoterapia-52d38027e5e9945906be8673eb46cc879a6dbbb7.pdf)
+- [Recurso original en el portal PAFE](https://pafe-formakuntza.com/api/files/file/T%C3%A9cnicas%20narrativas%20en%20psicoterapia-52d38027e5e9945906be8673eb46cc879a6dbbb7.pdf)
 
 ## De qué va
 

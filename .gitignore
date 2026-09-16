@@ -67,3 +67,6 @@ tsconfig.tsbuildinfo
 
 # Secretos del script de seed remoto
 apps/web/scripts/seed-remote.env
+
+# Wiki construida y copiada por scripts/build-wiki.mjs
+apps/web/public/wiki/
