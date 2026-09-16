@@ -53,16 +53,9 @@ plugins:
         - git
         - filesystem
     order: 10
-  # Desactivado: no compila en el runner de Vercel y tumba el build entero.
-  # Solo lo necesitaba okf-convention.md, que es documentación del toolkit.
-  - source: "github:quartz-community/syntax-highlighting"
-    enabled: false
-    options:
-      theme:
-        light: github-light
-        dark: github-dark
-      keepBackground: false
-    order: 20
+  # syntax-highlighting va fuera de la lista, no deshabilitado: el toolkit
+  # instala todo lo que aparezca aquí y ese plugin no compila en el runner de
+  # Vercel, lo que aborta el build entero. Solo lo usaba okf-convention.md.
   - source: "github:quartz-community/obsidian-flavored-markdown"
     enabled: true
     options:
