@@ -24,6 +24,12 @@ export function getNavItems(user: User | null): NavItem[] {
   items.push({ label: 'Foro', href: 'https://foro.pafe-formakuntza.com/', external: true })
   if (user) {
     items.push({ label: 'Wiki', href: '/wiki', plainLink: true })
+    // Moodle conserva su propio inicio de sesión: se abre aparte
+    items.push({
+      label: 'Moodle',
+      href: 'https://moodle.pafe-formakuntza.com/',
+      external: true,
+    })
   }
   if (isStaff(user)) {
     items.push({ label: 'Administración', href: '/admin' })
