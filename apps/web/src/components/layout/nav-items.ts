@@ -1,5 +1,5 @@
 import type { User } from '@/payload-types'
-import { isStaff } from '@/core/permissions'
+import { isActiveUser, isStaff } from '@/core/permissions'
 
 export interface NavItem {
   label: string
@@ -16,10 +16,9 @@ export interface NavItem {
  * panel o por su dirección.
  */
 export function getNavItems(user: User | null): NavItem[] {
-  const items: NavItem[] = [
-    { label: 'Inicio', href: '/' },
-    { label: 'Catálogo', href: '/catalog' },
-  ]
+  const items: NavItem[] = [{ label: 'Inicio', href: '/' }]
+  // El catálogo es material interno: solo se ofrece a quien ya tiene rol
+  if (isActiveUser(user)) items.push({ label: 'Catálogo', href: '/catalog' })
   items.push({ label: 'Foro', href: 'https://foro.pafe-formakuntza.com/', external: true })
   if (user) {
     items.push({ label: 'Wiki', href: '/wiki', plainLink: true })

@@ -1,5 +1,4 @@
-import { hiddenUnlessCatalogo, catalogoAccess } from '@/core/permissions'
-import { anyone } from '@/payload/access/anyone'
+import { hiddenUnlessCatalogo, catalogoAccess, isActiveUserAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -12,10 +11,10 @@ export const CatalogItem: CollectionConfig = {
     plural: 'Catálogo reservable',
   },
   access: {
-    // El catálogo es visible públicamente; solo el staff lo gestiona
+    // El catálogo solo lo ve quien tiene rol; solo el staff lo gestiona
     create: catalogoAccess,
     delete: catalogoAccess,
-    read: anyone,
+    read: isActiveUserAccess,
     update: catalogoAccess,
   },
   admin: {

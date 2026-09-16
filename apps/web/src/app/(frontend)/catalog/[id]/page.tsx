@@ -1,16 +1,18 @@
-import configPromise from '@payload-config'
-import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
+import { notFound, redirect } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { isActiveUser } from '@/core/permissions'
 import { CatalogItemClient } from '@/modules/catalog/ui/DetailPage'
 import { fichaDeLaWiki } from '@/modules/catalog/domain/wikiFichas'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
     params: Promise<{ id: string }>
 }
 
 export default async function CatalogItemPage({ params }: Props) {
-    const payload = await getPayload({ config: configPromise })
+    const { payload, user } = await getSessionUser()
+    if (!user || !isActiveUser(user)) redirect('/login')
+
     const catalogItem = await payload.findByID({
         collection: 'catalog-item',
         id: (await params).id,
