@@ -2,6 +2,89 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.users_areas_suscritas": {
+      "name": "users_areas_suscritas",
+      "schema": "",
+      "columns": {
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "enum_users_areas_suscritas",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "users_areas_suscritas_order_idx": {
+          "name": "users_areas_suscritas_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_areas_suscritas_parent_idx": {
+          "name": "users_areas_suscritas_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "users_areas_suscritas_parent_fk": {
+          "name": "users_areas_suscritas_parent_fk",
+          "tableFrom": "users_areas_suscritas",
+          "tableTo": "users",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.users_role": {
       "name": "users_role",
       "schema": "",
@@ -242,12 +325,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "taxonomy_id": {
-          "name": "taxonomy_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
         "groups_id": {
           "name": "groups_id",
           "type": "integer",
@@ -331,21 +408,6 @@
           "method": "btree",
           "with": {}
         },
-        "users_rels_taxonomy_id_idx": {
-          "name": "users_rels_taxonomy_id_idx",
-          "columns": [
-            {
-              "expression": "taxonomy_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "users_rels_groups_id_idx": {
           "name": "users_rels_groups_id_idx",
           "columns": [
@@ -395,19 +457,6 @@
           "tableTo": "cases",
           "columnsFrom": [
             "cases_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "users_rels_taxonomy_fk": {
-          "name": "users_rels_taxonomy_fk",
-          "tableFrom": "users_rels",
-          "tableTo": "taxonomy",
-          "columnsFrom": [
-            "taxonomy_id"
           ],
           "columnsTo": [
             "id"
@@ -1347,9 +1396,10 @@
           "primaryKey": false,
           "notNull": true
         },
-        "area_id": {
-          "name": "area_id",
-          "type": "integer",
+        "area": {
+          "name": "area",
+          "type": "enum_noticia_area",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -1404,7 +1454,7 @@
           "name": "noticia_area_idx",
           "columns": [
             {
-              "expression": "area_id",
+              "expression": "area",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1477,19 +1527,6 @@
         }
       },
       "foreignKeys": {
-        "noticia_area_id_taxonomy_id_fk": {
-          "name": "noticia_area_id_taxonomy_id_fk",
-          "tableFrom": "noticia",
-          "tableTo": "taxonomy",
-          "columnsFrom": [
-            "area_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
         "noticia_author_id_users_id_fk": {
           "name": "noticia_author_id_users_id_fk",
           "tableFrom": "noticia",
@@ -11504,6 +11541,16 @@
     }
   },
   "enums": {
+    "public.enum_users_areas_suscritas": {
+      "name": "enum_users_areas_suscritas",
+      "schema": "public",
+      "values": [
+        "avisos",
+        "formacion",
+        "actividades",
+        "recursos"
+      ]
+    },
     "public.enum_users_role": {
       "name": "enum_users_role",
       "schema": "public",
@@ -11545,6 +11592,16 @@
         "prorroga",
         "devolucion",
         "noticia"
+      ]
+    },
+    "public.enum_noticia_area": {
+      "name": "enum_noticia_area",
+      "schema": "public",
+      "values": [
+        "avisos",
+        "formacion",
+        "actividades",
+        "recursos"
       ]
     },
     "public.enum_catalog_item_type": {
@@ -11875,6 +11932,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "6db1c905-9a31-4971-bcf8-870552ea2aa3",
+  "id": "d42d9d68-fa52-4b8f-936a-2c859391c150",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

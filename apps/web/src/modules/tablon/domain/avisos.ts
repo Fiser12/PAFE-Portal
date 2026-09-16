@@ -52,12 +52,3 @@ export const correoDeNoticia = ({
     html: `<p>${escaparHtml(eu)}</p><p>${escaparHtml(es)}</p>`,
   }
 }
-
-/** Solo se sigue lo que es un área del tablón, aunque pidan seguir otra cosa */
-export const soloAreas = ({
-  pedidas,
-  areasReales,
-}: {
-  pedidas: number[]
-  areasReales: number[]
-}): number[] => [...new Set(pedidas)].filter((id) => areasReales.includes(id))

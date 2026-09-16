@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { isActiveUser } from '@/core/permissions'
-import type { Taxonomy } from '@/payload-types'
+import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { noticiaDelTablon } from '@/modules/tablon/services'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
@@ -29,7 +29,7 @@ export default async function NoticiaPage({ params }: Props) {
 
   if (!noticia) return notFound()
 
-  const area = typeof noticia.area === 'object' ? (noticia.area as Taxonomy).name : ''
+  const area = nombreDelArea(noticia.area)
 
   return (
     <article className="container mx-auto max-w-3xl px-4 py-8">

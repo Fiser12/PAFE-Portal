@@ -7,16 +7,14 @@ import { Pin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Noticia, Taxonomy } from '@/payload-types'
+import type { Noticia } from '@/payload-types'
+import { nombreDelArea } from '../domain/areas'
 import { cargarTablon, guardarAreasSuscritas } from '../actions'
 
 const fecha = (iso?: string | null) =>
   iso
     ? new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
     : ''
-
-const nombreDelArea = (area: Noticia['area']): string =>
-  typeof area === 'object' && area !== null ? ((area as Taxonomy).name ?? '') : ''
 
 const resumen = (noticia: Noticia): string => {
   const root = (noticia.body as { root?: { children?: unknown[] } } | null)?.root
@@ -28,19 +26,19 @@ const resumen = (noticia: Noticia): string => {
 }
 
 export function Tablon() {
-  const [areaId, setAreaId] = useState<number | undefined>()
-  const { data, error, isLoading, mutate } = useSWR(['tablon', areaId], () => cargarTablon(areaId))
-  const [suscritas, setSuscritas] = useState<number[]>([])
+  const [area, setArea] = useState<string | undefined>()
+  const { data, error, isLoading, mutate } = useSWR(['tablon', area], () => cargarTablon(area))
+  const [suscritas, setSuscritas] = useState<string[]>([])
 
   useEffect(() => {
     if (data?.suscritas) setSuscritas(data.suscritas)
   }, [data?.suscritas])
 
-  const alternarArea = async (id: number) => {
+  const alternarArea = async (value: string) => {
     const anterior = suscritas
-    const siguiente = suscritas.includes(id)
-      ? suscritas.filter((a) => a !== id)
-      : [...suscritas, id]
+    const siguiente = suscritas.includes(value)
+      ? suscritas.filter((a) => a !== value)
+      : [...suscritas, value]
     setSuscritas(siguiente)
 
     const guardado = await guardarAreasSuscritas(siguiente).catch(() => false)
@@ -62,21 +60,17 @@ export function Tablon() {
         <h2 className="text-2xl font-semibold sm:text-3xl">Tablón</h2>
         {areas.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            <Button
-              size="sm"
-              variant={areaId ? 'outline' : 'default'}
-              onClick={() => setAreaId(undefined)}
-            >
+            <Button size="sm" variant={area ? 'outline' : 'default'} onClick={() => setArea(undefined)}>
               Todas
             </Button>
-            {areas.map((area) => (
+            {areas.map((opcion) => (
               <Button
-                key={area.id}
+                key={opcion.value}
                 size="sm"
-                variant={areaId === Number(area.id) ? 'default' : 'outline'}
-                onClick={() => setAreaId(Number(area.id))}
+                variant={area === opcion.value ? 'default' : 'outline'}
+                onClick={() => setArea(opcion.value)}
               >
-                {area.name}
+                {opcion.label}
               </Button>
             ))}
           </div>
@@ -119,14 +113,14 @@ export function Tablon() {
         <div className="mt-4 rounded-md border p-4">
           <p className="mb-2 text-sm font-medium">Avísame de estas áreas</p>
           <div className="flex flex-wrap gap-2">
-            {areas.map((area) => (
+            {areas.map((opcion) => (
               <Button
-                key={area.id}
+                key={opcion.value}
                 size="sm"
-                variant={suscritas.includes(Number(area.id)) ? 'default' : 'outline'}
-                onClick={() => alternarArea(Number(area.id))}
+                variant={suscritas.includes(opcion.value) ? 'default' : 'outline'}
+                onClick={() => alternarArea(opcion.value)}
               >
-                {area.name}
+                {opcion.label}
               </Button>
             ))}
           </div>

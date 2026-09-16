@@ -214,7 +214,7 @@ export interface User {
   /**
    * Áreas de las que esta persona recibe aviso cuando se publica algo
    */
-  areasSuscritas?: (number | Taxonomy)[] | null;
+  areasSuscritas?: ('avisos' | 'formacion' | 'actividades' | 'recursos')[] | null;
   /**
    * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
    */
@@ -832,7 +832,7 @@ export interface Notification {
 export interface Noticia {
   id: number;
   title: string;
-  area: number | Taxonomy;
+  area: 'avisos' | 'formacion' | 'actividades' | 'recursos';
   body?: {
     root: {
       type: string;

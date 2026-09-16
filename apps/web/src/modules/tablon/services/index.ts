@@ -1,20 +1,18 @@
 import type { Payload, PayloadRequest } from 'payload'
-import type { Noticia, Taxonomy, User } from '@/payload-types'
+import type { Noticia, User } from '@/payload-types'
 import { isActiveUser, isStaff } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
 import { COLLECTION_SLUG_NOTICIA } from '@/core/collections-slugs'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
-import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso, soloAreas } from '../domain/avisos'
+import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso } from '../domain/avisos'
+import { type AreaDelTablon, nombreDelArea, soloAreas } from '../domain/areas'
 import { cuerpoRichText, estaPublicada, ordenarNoticias } from '../domain/noticias'
 
 export type Actor = Pick<User, 'id' | 'email'> & { role?: unknown }
 
 const idDe = (valor: number | { id: number } | null | undefined): number =>
   typeof valor === 'object' && valor !== null ? valor.id : (valor as number)
-
-const nombreDelArea = (area: Noticia['area']): string =>
-  typeof area === 'object' && area !== null ? ((area as Taxonomy).name ?? 'el tablón') : 'el tablón'
 
 /**
  * El aviso ya está guardado cuando se manda el correo: que falle el envío no
@@ -53,12 +51,12 @@ const yaAvisadosDe = async (
 
 const suscriptoresDelArea = async (
   payload: Payload,
-  areaId: number,
+  area: string,
   req?: PayloadRequest,
 ): Promise<User[]> => {
   const result = await payload.find({
     collection: 'users',
-    where: { areasSuscritas: { contains: areaId } },
+    where: { areasSuscritas: { contains: area } },
     depth: 0,
     limit: 0,
     overrideAccess: true,
@@ -78,9 +76,8 @@ export const avisarDeNoticia = async ({
   /** Dentro de un hook hay transacción abierta: sin `req` nada de esto se ve */
   req?: PayloadRequest
 }): Promise<number> => {
-  const areaId = idDe(noticia.area)
   const [suscriptores, yaAvisados] = await Promise.all([
-    suscriptoresDelArea(payload, areaId, req),
+    suscriptoresDelArea(payload, noticia.area, req),
     yaAvisadosDe(payload, noticia.id, req),
   ])
   const destinatarios = destinatariosDelAviso({
@@ -89,17 +86,11 @@ export const avisarDeNoticia = async ({
     yaAvisados,
   })
 
-  const area = await payload.findByID({
-    collection: 'taxonomy',
-    id: areaId,
-    depth: 0,
-    overrideAccess: true,
-    req,
-  })
-  const { type, message } = avisoDeNoticia({ title: noticia.title, area: area.name })
+  const area = nombreDelArea(noticia.area)
+  const { type, message } = avisoDeNoticia({ title: noticia.title, area })
   const correo = correoDeNoticia({
     title: noticia.title,
-    area: area.name,
+    area,
     url: `${getServerSideURL()}/noticias/${noticia.id}`,
   })
 
@@ -133,7 +124,7 @@ export const publicarNoticia = async ({
   user,
   title,
   body,
-  areaId,
+  area,
   pinned = false,
   publishedAt,
   now,
@@ -142,20 +133,20 @@ export const publicarNoticia = async ({
   user: Actor
   title: string
   body: string
-  areaId: number
+  area: AreaDelTablon
   pinned?: boolean
   publishedAt?: string
   now: Date
 }): Promise<Noticia> => {
   if (!isStaff(user as User)) throw new TablonRuleError('sin-permiso')
-  if (!areaId) throw new TablonRuleError('area-requerida')
+  if (!area) throw new TablonRuleError('area-requerida')
 
   const fecha = publishedAt ?? now.toISOString()
   const noticia = (await payload.create({
     collection: COLLECTION_SLUG_NOTICIA,
     data: {
       title,
-      area: areaId,
+      area,
       body: cuerpoRichText(body) as Noticia['body'],
       publishedAt: fecha,
       pinned,
@@ -238,13 +229,13 @@ export const noticiaDelTablon = async ({
 export const noticiasDelTablon = async ({
   payload,
   user,
-  areaId,
+  area,
   now,
   limit = 50,
 }: {
   payload: Payload
   user: Actor
-  areaId?: number
+  area?: string
   now: Date
   limit?: number
 }): Promise<Noticia[]> => {
@@ -255,7 +246,7 @@ export const noticiasDelTablon = async ({
     where: {
       and: [
         { publishedAt: { less_than_equal: now.toISOString() } },
-        ...(areaId ? [{ area: { equals: areaId } }] : []),
+        ...(area ? [{ area: { equals: area } }] : []),
       ],
     },
     depth: 1,
@@ -267,43 +258,22 @@ export const noticiasDelTablon = async ({
   return ordenarNoticias(result.docs as Noticia[])
 }
 
-const esArea = (termino: Taxonomy): boolean =>
-  Array.isArray(termino.payload?.types) && termino.payload.types.includes('area')
-
-/** Las áreas del tablón, que son los términos de taxonomía marcados como tales */
-export const areasDelTablon = async (payload: Payload): Promise<Taxonomy[]> => {
-  const taxonomia = await payload.find({
-    collection: 'taxonomy',
-    pagination: false,
-    sort: 'name',
-    overrideAccess: true,
-  })
-  return taxonomia.docs.filter(esArea)
-}
-
 /** Las áreas de las que esta persona quiere recibir aviso */
 export const elegirAreas = async ({
   payload,
   user,
-  areaIds,
+  areas,
 }: {
   payload: Payload
   user: Actor
-  areaIds: number[]
+  areas: string[]
 }): Promise<void> => {
   if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
-
-  const areas = await areasDelTablon(payload)
 
   await payload.update({
     collection: 'users',
     id: user.id,
-    data: {
-      areasSuscritas: soloAreas({
-        pedidas: areaIds,
-        areasReales: areas.map((area) => Number(area.id)),
-      }),
-    },
+    data: { areasSuscritas: soloAreas(areas) },
     overrideAccess: true,
   })
 }
@@ -345,5 +315,3 @@ export const avisarDeNoticiasPendientes = async ({
 
   return { avisadas }
 }
-
-export { nombreDelArea }

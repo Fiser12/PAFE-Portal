@@ -13,7 +13,7 @@ import {
 import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
-import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
+import { AREAS_DEL_TABLON } from '../../../modules/tablon/domain/areas'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
@@ -83,8 +83,8 @@ export const Users: CollectionConfig = {
     {
       label: 'Áreas del tablón',
       name: 'areasSuscritas',
-      type: 'relationship',
-      relationTo: COLLECTION_SLUG_TAXONOMY,
+      type: 'select',
+      options: [...AREAS_DEL_TABLON],
       hasMany: true,
       admin: {
         description: 'Áreas de las que esta persona recibe aviso cuando se publica algo',

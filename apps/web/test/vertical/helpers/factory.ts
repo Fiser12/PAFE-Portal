@@ -46,13 +46,3 @@ export const createItem = async (
   })
 
 /** Área del tablón: taxonomía con la faceta `area`, como las del foro */
-export const createArea = (payload: Payload, name = 'Área Test') =>
-  payload.create({
-    collection: 'taxonomy',
-    data: {
-      name: `${name} ${uniq()}`,
-      slug: `area-${uniq()}`,
-      payload: { types: ['area'] },
-    },
-    overrideAccess: true,
-  })

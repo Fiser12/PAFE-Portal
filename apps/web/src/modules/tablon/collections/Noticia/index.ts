@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
 import {
   hiddenUnlessStaff,
   isActiveUserAccess,
   isAdminAccess,
   isStaffAccess,
 } from '@/core/permissions'
+import { AREAS_DEL_TABLON } from '../../domain/areas'
 import { avisarAlPublicar } from './hooks/avisarAlPublicar'
 
 /**
@@ -47,10 +47,9 @@ export const Noticia: CollectionConfig = {
     {
       label: 'Área',
       name: 'area',
-      type: 'relationship',
-      relationTo: COLLECTION_SLUG_TAXONOMY,
+      type: 'select',
+      options: [...AREAS_DEL_TABLON],
       required: true,
-      hasMany: false,
       index: true,
     },
     {
