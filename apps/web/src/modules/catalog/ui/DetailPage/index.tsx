@@ -1,5 +1,7 @@
 'use client'
 
+import { useTextos } from '@/components/IdiomaProvider'
+import { rellenar } from '@/core/textos'
 import { isStaff } from '@/core/permissions'
 import { CatalogItem } from '@/payload-types'
 import Image from 'next/image'
@@ -18,6 +20,7 @@ interface Props {
 }
 
 export function CatalogItemClient({ item, children, contributions, wikiPath }: Props) {
+    const t = useTextos()
     const { user } = useUser()
     const isCatalogAdmin = isStaff(user)
     // Clave compartida: useReservationsRefresh() la invalida al reservar/devolver
@@ -53,20 +56,24 @@ export function CatalogItemClient({ item, children, contributions, wikiPath }: P
                                     className="underline underline-offset-2"
                                     href={wikiPath}
                                 >
-                                    ¿Quieres saber algo más de este material antes de reservarlo?
+                                    {t.catalogoSaberMasDetalle}
                                 </a>
                             </p>
                         )}
                         <div className="mb-4">
                             <p className="text-lg">
-                                <span className="font-semibold">Disponibles:</span> {availability?.available ?? 0} de {availability?.total ?? 0}
+                                <span className="font-semibold">{t.catalogoDisponibles}</span>{' '}
+                                {rellenar(t.catalogoDisponiblesDe, {
+                                    libres: String(availability?.available ?? 0),
+                                    total: String(availability?.total ?? 0),
+                                })}
                             </p>
                         </div>
                         <ReservationForm itemId={item.id} />
                         {contributions && (
                             <section className="mt-6">
                                 <h2 className="mb-2 text-lg font-semibold">
-                                    Aportaciones de las familias
+                                    {t.catalogoAportaciones}
                                 </h2>
                                 <div className="prose max-w-none">{contributions}</div>
                             </section>

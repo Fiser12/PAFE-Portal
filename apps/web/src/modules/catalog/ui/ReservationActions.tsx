@@ -13,7 +13,8 @@ import {
   reportLoss,
   returnBook,
 } from '../actions'
-import { ACTION_LABELS } from './reservationLabels'
+import { useTextos } from '@/components/IdiomaProvider'
+import { actionLabels } from './reservationLabels'
 
 const RUNNERS: Record<ReservationAction, (id: number) => Promise<void>> = {
   cancelar: cancelReservation,
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export function ReservationActions({ reservation, isStaff, isOwner, penalized, onDone }: Props) {
+  const t = useTextos()
   const [isPending, startTransition] = useTransition()
 
   const actions = allowedActions({
@@ -80,7 +82,7 @@ export function ReservationActions({ reservation, isStaff, isOwner, penalized, o
               : undefined
           }
         >
-          {ACTION_LABELS[action]}
+          {actionLabels(t)[action]}
         </Button>
       ))}
     </div>

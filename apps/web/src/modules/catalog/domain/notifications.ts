@@ -1,4 +1,14 @@
-import { LATE_RETURN_MESSAGE, LOSS_MESSAGE, reminderEmail, toSpanishDate } from './messages'
+import {
+  LATE_RETURN_MESSAGE,
+  LATE_RETURN_MESSAGE_EU,
+  LOSS_MESSAGE,
+  LOSS_MESSAGE_EU,
+  reminderEmail,
+  toSpanishDate,
+} from './messages'
+
+/** El aviso queda guardado tal cual, así que se escribe en los dos idiomas */
+const bilingue = (eu: string, es: string) => `${eu}\n\n${es}`
 
 export const NOTIFICATION_TYPES = [
   'recordatorio',
@@ -29,17 +39,29 @@ export const notificationFor = ({
         return `${eu}\n\n${es}`
       }
       case 'devolucion-tardia':
-        return `Has devuelto ${title} fuera de plazo. ${LATE_RETURN_MESSAGE}`
+        return bilingue(
+          `${title} epez kanpo itzuli duzu. ${LATE_RETURN_MESSAGE_EU}`,
+          `Has devuelto ${title} fuera de plazo. ${LATE_RETURN_MESSAGE}`,
+        )
       case 'perdida':
-        return `Has comunicado la pérdida o rotura de ${title}. ${LOSS_MESSAGE}`
+        return bilingue(
+          `${title} galdu edo hautsi dela jakinarazi duzu. ${LOSS_MESSAGE_EU}`,
+          `Has comunicado la pérdida o rotura de ${title}. ${LOSS_MESSAGE}`,
+        )
       case 'recogida':
-        return `Te has llevado ${title}. Debes devolverlo el ${toSpanishDate(dueISO ?? '')}.`
+        return bilingue(
+          `${title} eraman duzu. ${toSpanishDate(dueISO ?? '')}(e)an itzuli behar duzu.`,
+          `Te has llevado ${title}. Debes devolverlo el ${toSpanishDate(dueISO ?? '')}.`,
+        )
       case 'prorroga':
-        return `Has prorrogado ${title}. La nueva fecha de devolución es el ${toSpanishDate(
-          dueISO ?? '',
-        )}.`
+        return bilingue(
+          `${title} luzatu duzu. Itzultzeko data berria ${toSpanishDate(dueISO ?? '')} da.`,
+          `Has prorrogado ${title}. La nueva fecha de devolución es el ${toSpanishDate(
+            dueISO ?? '',
+          )}.`,
+        )
       case 'devolucion':
-        return `Has devuelto ${title}. ¡Gracias!`
+        return bilingue(`${title} itzuli duzu. Eskerrik asko!`, `Has devuelto ${title}. ¡Gracias!`)
     }
   })()
 

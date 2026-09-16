@@ -1,5 +1,6 @@
 import type { Payload, PayloadRequest } from 'payload'
 import type { Noticia, Respuesta, User } from '@/payload-types'
+import type { CodigoIdioma } from '@/core/localization'
 import { ROLE_FAMILIA, isActiveUser, isStaff } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
 import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_RESPUESTA } from '@/core/collections-slugs'
@@ -211,11 +212,13 @@ export const noticiaDelTablon = async ({
   user,
   id,
   now,
+  locale,
 }: {
   payload: Payload
   user: Actor
   id: number | string
   now: Date
+  locale?: CodigoIdioma
 }): Promise<Noticia | null> => {
   if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
 
@@ -226,6 +229,7 @@ export const noticiaDelTablon = async ({
       collection: COLLECTION_SLUG_NOTICIA,
       id,
       depth: 1,
+      locale,
       populate: SIN_DATOS_DEL_AUTOR,
       overrideAccess: true,
     })
@@ -248,11 +252,13 @@ export const noticiasDelTablon = async ({
   now,
   archivadas = false,
   limit = 50,
+  locale,
 }: {
   payload: Payload
   user: Actor
   area?: string
   now: Date
+  locale?: CodigoIdioma
   /** Lo archivado no sale salvo que se pida: es lo viejo que ya no toca mirar */
   archivadas?: boolean
   limit?: number
@@ -275,6 +281,7 @@ export const noticiasDelTablon = async ({
       ],
     },
     depth: 1,
+    locale,
     populate: SIN_DATOS_DEL_AUTOR,
     limit,
     overrideAccess: true,

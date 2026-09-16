@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react'
 import { createReservation } from '../../actions'
+import { useTextos } from '@/components/IdiomaProvider'
 
 interface Props {
     itemId: number
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function UserButton({ itemId, userId, onReservationSuccess }: Props) {
+  const t = useTextos()
     const [isPending, startTransition] = useTransition()
 
     const handleReservation = () => {
@@ -18,7 +20,7 @@ export function UserButton({ itemId, userId, onReservationSuccess }: Props) {
                 await createReservation(itemId, userId)
                 onReservationSuccess?.()
             } catch (error) {
-                console.error('Error al crear la reserva:', error)
+                console.error(t.reservaErrorCrear, error)
             }
         })
     }
@@ -29,7 +31,7 @@ export function UserButton({ itemId, userId, onReservationSuccess }: Props) {
             disabled={isPending}
             className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-            {isPending ? 'Reservando...' : 'Reservar libro'}
+            {isPending ? t.reservaReservando : t.reservaReservarLibro}
         </button>
     )
 } 

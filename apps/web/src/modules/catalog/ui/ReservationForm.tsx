@@ -4,12 +4,14 @@ import { useUser } from '@/lib/auth/useUser'
 import { useUserReservation } from '../hooks/useUserReservation'
 import { useReservationsRefresh } from '../hooks/useReservationsRefresh'
 import { ReservationButton } from './ReservationButton'
+import { useTextos } from '@/components/IdiomaProvider'
 
 interface Props {
     itemId: number
 }
 
 export function ReservationForm({ itemId }: Props) {
+  const t = useTextos()
     const { user } = useUser()
     
     const { hasReservation, reservationDate, isLoading } = useUserReservation(
@@ -23,7 +25,7 @@ export function ReservationForm({ itemId }: Props) {
         return (
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <p className="text-yellow-800">
-                    Debes iniciar sesión para poder reservar este libro
+                    {t.reservaEntraParaReservar}
                 </p>
             </div>
         )
@@ -32,7 +34,7 @@ export function ReservationForm({ itemId }: Props) {
     if (isLoading) {
         return (
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <p className="text-gray-600">Cargando...</p>
+                <p className="text-gray-600">{t.cargando}</p>
             </div>
         )
     }

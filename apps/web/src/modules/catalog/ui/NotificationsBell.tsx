@@ -5,9 +5,11 @@ import useSWR from 'swr'
 import { Bell } from 'lucide-react'
 import { useUser } from '@/lib/auth/useUser'
 import { getMyNotifications, markMyNotificationsRead } from '../actions'
+import { useIdioma } from '@/components/IdiomaProvider'
 import { formatDay } from './reservationLabels'
 
 export function NotificationsBell() {
+  const { idioma, t } = useIdioma()
   const { user } = useUser()
   const [open, setOpen] = useState(false)
 
@@ -53,12 +55,12 @@ export function NotificationsBell() {
               {notifications.map((n) => (
                 <li key={n.id} className="rounded p-2 text-sm hover:bg-muted">
                   <p className="whitespace-pre-line">{n.message}</p>
-                  <span className="text-xs text-muted-foreground">{formatDay(n.createdAt)}</span>
+                  <span className="text-xs text-muted-foreground">{formatDay(n.createdAt, idioma)}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="p-4 text-center text-sm text-muted-foreground">No tienes avisos</p>
+            <p className="p-4 text-center text-sm text-muted-foreground">{t.avisosSinAvisos}</p>
           )}
         </div>
       )}

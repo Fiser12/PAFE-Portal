@@ -16,6 +16,7 @@ import { Loader2 } from 'lucide-react'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { QuestionnaireRichText } from './QuestionnaireRichText'
+import { useTextos } from '@/components/IdiomaProvider'
 
 type PageContent = FlowGraphLexicalPageContent & {
   pageID: string
@@ -65,6 +66,7 @@ export function QuestionnaireRunner({
   schema,
   pageContents,
 }: QuestionnaireRunnerProps) {
+  const t = useTextos()
   const storageKey = useMemo(
     () => `pafe:flowgraph:${userId}:${questionnaireId}:${hashSchema(schema)}`,
     [questionnaireId, schema, userId],
@@ -147,11 +149,11 @@ export function QuestionnaireRunner({
   if (controller.state.status === 'not-started') {
     return (
       <section className="mx-auto max-w-2xl rounded-xl border bg-card p-6 shadow-sm sm:p-8">
-        <p className="mb-2 text-sm font-medium text-primary">Cuestionario guiado</p>
+        <p className="mb-2 text-sm font-medium text-primary">{t.cuestionarioGuiado}</p>
         <h1 className="text-2xl font-semibold sm:text-3xl">{title}</h1>
         {description && <p className="mt-3 text-muted-foreground">{description}</p>}
         <Button className="mt-6" onClick={start}>
-          Comenzar
+          {t.cuestionarioComenzar}
         </Button>
       </section>
     )
@@ -160,27 +162,27 @@ export function QuestionnaireRunner({
   if (controller.state.status === 'finished') {
     return (
       <section className="mx-auto max-w-2xl rounded-xl border bg-card p-6 text-center shadow-sm sm:p-8">
-        <p className="text-sm font-medium text-primary">Cuestionario completado</p>
+        <p className="text-sm font-medium text-primary">{t.cuestionarioCompletado}</p>
         <h1 className="mt-2 text-2xl font-semibold">{title}</h1>
         <p className="mt-3 text-muted-foreground">
-          Resultado: <strong>{controller.state.outcome}</strong>
+          {t.cuestionarioResultado} <strong>{controller.state.outcome}</strong>
         </p>
         {(submitState.phase === 'idle' || submitState.phase === 'sending') && (
           <p className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Guardando tu respuesta…
+            {t.cuestionarioGuardando}
           </p>
         )}
         {submitState.phase === 'done' && (
           <p className="mt-4 text-sm font-medium text-primary">
-            Tu respuesta se ha guardado correctamente.
+            {t.cuestionarioGuardado}
           </p>
         )}
         {submitState.phase === 'error' && (
           <div className="mt-4 space-y-3">
             <p className="text-sm text-destructive">{submitState.message}</p>
             <Button variant="outline" onClick={() => void submit()}>
-              Reintentar envío
+              {t.cuestionarioReintentar}
             </Button>
           </div>
         )}
@@ -193,7 +195,7 @@ export function QuestionnaireRunner({
       <p className="mb-1 text-sm font-medium text-primary">{title}</p>
       {resumed && (
         <p className="mb-3 rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
-          Hemos recuperado tu sesión anterior; puedes continuar donde lo dejaste.
+          {t.cuestionarioRecuperado}
         </p>
       )}
       <FlowPage

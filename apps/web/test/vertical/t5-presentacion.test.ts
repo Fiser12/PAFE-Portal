@@ -70,3 +70,52 @@ describe('presentación del catálogo', () => {
     ).rejects.toThrow()
   })
 })
+
+describe('la presentación en dos idiomas', () => {
+  it('guarda un texto distinto en cada idioma', async () => {
+    const user = await createUser(payload, ['admin-catalogo'], 'Catálogo Test')
+
+    await payload.updateGlobal({
+      slug: 'presentacion-catalogo',
+      data: { texto: escribir('Bienvenida en castellano') },
+      locale: 'es',
+      user,
+      overrideAccess: false,
+    })
+    await payload.updateGlobal({
+      slug: 'presentacion-catalogo',
+      data: { texto: escribir('Ongietorria euskaraz') },
+      locale: 'eu',
+      user,
+      overrideAccess: false,
+    })
+
+    expect(JSON.stringify(await textoDePresentacion(payload, 'es'))).toContain(
+      'Bienvenida en castellano',
+    )
+    expect(JSON.stringify(await textoDePresentacion(payload, 'eu'))).toContain(
+      'Ongietorria euskaraz',
+    )
+  })
+
+  it('si el euskera está sin escribir, se lee el castellano', async () => {
+    const user = await createUser(payload, ['admin-catalogo'], 'Catálogo Test')
+
+    await payload.updateGlobal({
+      slug: 'presentacion-catalogo',
+      data: { texto: escribir('Solo en castellano') },
+      locale: 'es',
+      user,
+      overrideAccess: false,
+    })
+    await payload.updateGlobal({
+      slug: 'presentacion-catalogo',
+      data: { texto: null },
+      locale: 'eu',
+      user,
+      overrideAccess: false,
+    })
+
+    expect(JSON.stringify(await textoDePresentacion(payload, 'eu'))).toContain('Solo en castellano')
+  })
+})

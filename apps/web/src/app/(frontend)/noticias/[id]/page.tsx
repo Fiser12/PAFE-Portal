@@ -6,6 +6,7 @@ import { isActiveUser } from '@/core/permissions'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { noticiaDelTablon } from '@/modules/tablon/services'
 import { Respuestas } from '@/modules/tablon/ui/Respuestas'
+import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
@@ -26,6 +27,7 @@ export default async function NoticiaPage({ params }: Props) {
     user,
     id: (await params).id,
     now: new Date(),
+    locale: await getIdioma(),
   })
 
   if (!noticia) return notFound()

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { isActiveUser } from '@/core/permissions'
 import { CatalogSearch } from '@/modules/catalog/ui/CatalogSearch'
 import { CatalogIntro } from '@/modules/catalog/ui/CatalogIntro'
+import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
@@ -13,8 +14,10 @@ export default async function CatalogPage({ searchParams }: Props) {
   const { payload, user } = await getSessionUser()
   if (!user || !isActiveUser(user)) redirect('/login')
 
+  const locale = await getIdioma()
   const categories = await payload.find({
     collection: 'taxonomy',
+    locale,
     pagination: false,
     // Orden de inserción del seed: mantiene los tramos de edad ordenados
     sort: 'id',

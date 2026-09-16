@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { catalogoAccess, hiddenUnlessCatalogo } from '@/core/permissions'
-import { TEXTO_INICIAL } from './textoInicial'
+import { TEXTO_INICIAL, TEXTO_INICIAL_EU } from './textoInicial'
 
 export const GLOBAL_SLUG_PRESENTACION = 'presentacion-catalogo'
 
@@ -24,7 +24,9 @@ export const PresentacionCatalogo: GlobalConfig = {
       label: 'Texto',
       name: 'texto',
       type: 'richText',
-      defaultValue: TEXTO_INICIAL,
+      localized: true,
+      defaultValue: ({ locale }: { locale?: string }) =>
+        locale === 'eu' ? TEXTO_INICIAL_EU : TEXTO_INICIAL,
       admin: {
         description: 'Lo que lee quien entra al catálogo, encima de la búsqueda',
       },

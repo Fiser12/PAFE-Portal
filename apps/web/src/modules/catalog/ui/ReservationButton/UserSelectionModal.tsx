@@ -3,6 +3,7 @@
 import type { User } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { getUsersBySearchTerm } from '../../actions'
+import { useTextos } from '@/components/IdiomaProvider'
 
 interface Props {
     isOpen: boolean
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
+  const t = useTextos()
     const [users, setUsers] = useState<User[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
@@ -22,7 +24,7 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
                 const usersList = await getUsersBySearchTerm({ searchTerm })
                 setUsers(usersList)
             } catch (error) {
-                console.error('Error al cargar usuarios:', error)
+                console.error(t.reservaErrorUsuarios, error)
             } finally {
                 setIsLoading(false)
             }
@@ -43,7 +45,7 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Seleccionar Usuario</h2>
+                    <h2 className="text-xl font-bold">{t.reservaSeleccionarUsuario}</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-500 hover:text-gray-700"
@@ -54,14 +56,14 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
 
                 <input
                     type="text"
-                    placeholder="Buscar por nombre o email..."
+                    placeholder={t.reservaBuscarUsuario}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full p-2 border rounded-lg mb-4"
                 />
 
                 {isLoading ? (
-                    <div className="text-center py-4">Cargando usuarios...</div>
+                    <div className="text-center py-4">{t.reservaCargandoUsuarios}</div>
                 ) : (
                     <div className="max-h-96 overflow-y-auto">
                         {users.map((user) => (
@@ -78,7 +80,7 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
                         ))}
                         {users.length === 0 && (
                             <div className="text-center py-4 text-gray-500">
-                                No se encontraron usuarios
+                                {t.reservaSinUsuarios}
                             </div>
                         )}
                     </div>

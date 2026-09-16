@@ -1,5 +1,6 @@
 'use client'
 
+import { useTextos } from '@/components/IdiomaProvider'
 import { useState } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
@@ -26,6 +27,7 @@ const resumen = (noticia: Noticia): string => {
 }
 
 export function Tablon() {
+  const t = useTextos()
   const [area, setArea] = useState<string | undefined>()
   const [archivadas, setArchivadas] = useState(false)
   const { data, error, isLoading } = useSWR(['tablon', area, archivadas], () =>
@@ -40,11 +42,11 @@ export function Tablon() {
   return (
     <section>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold sm:text-3xl">Tablón</h2>
+        <h2 className="text-2xl font-semibold sm:text-3xl">{t.tablon}</h2>
         {areas.length > 0 && (
           <div className="flex flex-wrap gap-2">
             <Button size="sm" variant={area ? 'outline' : 'default'} onClick={() => setArea(undefined)}>
-              Todas
+              {t.tablonTodas}
             </Button>
             {areas.map((opcion) => (
               <Button
@@ -61,27 +63,27 @@ export function Tablon() {
               variant={archivadas ? 'secondary' : 'ghost'}
               onClick={() => setArchivadas((v) => !v)}
             >
-              {archivadas ? 'Ver el tablón' : 'Archivadas'}
+              {archivadas ? t.tablonVer : t.tablonArchivadas}
             </Button>
           </div>
         )}
       </div>
 
       {isLoading ? (
-        <p className="py-6 text-sm text-muted-foreground">Cargando el tablón…</p>
+        <p className="py-6 text-sm text-muted-foreground">{t.tablonCargando}</p>
       ) : error ? (
         <p className="py-6 text-sm text-muted-foreground">
-          No se pudo cargar el tablón. Recarga la página para volver a intentarlo.
+          {t.tablonErrorCargar}
         </p>
       ) : noticias.length === 0 ? (
-        <p className="py-6 text-sm text-muted-foreground">Todavía no hay nada publicado aquí.</p>
+        <p className="py-6 text-sm text-muted-foreground">{t.tablonVacio}</p>
       ) : (
         <div className="flex flex-col gap-3">
           {noticias.map((noticia) => (
             <Card key={noticia.id}>
               <CardContent className="p-4">
                 <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  {noticia.pinned && <Pin className="h-3 w-3" aria-label="Fijada" />}
+                  {noticia.pinned && <Pin className="h-3 w-3" aria-label={t.tablonFijada} />}
                   <Badge variant="outline">{nombreDelArea(noticia.area)}</Badge>
                   <span>{fecha(noticia.publishedAt)}</span>
                 </div>

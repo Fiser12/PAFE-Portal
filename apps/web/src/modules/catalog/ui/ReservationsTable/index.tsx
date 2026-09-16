@@ -14,7 +14,9 @@ import { useReservationsRefresh } from '../../hooks/useReservationsRefresh'
 import { isPenalized } from '../../domain/penalties'
 import { madridDateOf } from '../../domain/loan-terms'
 import { ReservationActions } from '../ReservationActions'
-import { STATUS_LABELS, STATUS_VARIANTS, formatDay } from '../reservationLabels'
+import { useIdioma } from '@/components/IdiomaProvider'
+import { rellenar } from '@/core/textos'
+import { statusLabels, STATUS_VARIANTS, formatDay } from '../reservationLabels'
 
 interface Props {
   itemId?: number
@@ -33,6 +35,7 @@ const fetcher = async (key: [string, number | string]) => {
 }
 
 export function ReservationsTable({ itemId }: Props) {
+  const { idioma, t } = useIdioma()
   const { user } = useUser()
   const staff = isStaff(user)
   const router = useRouter()
@@ -50,7 +53,7 @@ export function ReservationsTable({ itemId }: Props) {
   // Refresca también la disponibilidad y el estado "ya reservado" del detalle
   const refreshReservations = useReservationsRefresh()
 
-  const title = itemId ? 'Reservas y préstamos' : 'Mis préstamos'
+  const title = itemId ? t.reservaTabla : t.reservaMisPrestamos
 
   if (isLoading) {
     return (
@@ -59,7 +62,7 @@ export function ReservationsTable({ itemId }: Props) {
         <Card>
           <CardContent className="flex items-center gap-3 p-4">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            <p>Cargando reservas...</p>
+            <p>{t.reservaCargandoReservas}</p>
           </CardContent>
         </Card>
       </section>
@@ -73,7 +76,7 @@ export function ReservationsTable({ itemId }: Props) {
         <Card>
           <CardContent className="p-6 text-center">
             <p className="text-muted-foreground">
-              No hay reservas {itemId ? 'para este libro' : 'activas'}
+              {itemId ? t.reservaSinReservasLibro : t.reservaSinReservasActivas}
             </p>
           </CardContent>
         </Card>
@@ -134,24 +137,28 @@ export function ReservationsTable({ itemId }: Props) {
                       >
                         {typeof reservation.item === 'object'
                           ? reservation.item.title
-                          : 'Cargando...'}
+                          : t.cargando}
                       </Link>
                     )}
                   </h4>
                   <Badge variant={STATUS_VARIANTS[reservation.status]}>
-                    {STATUS_LABELS[reservation.status]}
+                    {statusLabels(t)[reservation.status]}
                   </Badge>
                 </div>
                 <span className="self-start rounded border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground sm:self-auto">
                   {reservation.status === 'activa'
-                    ? `Devolver el ${formatDay(reservation.dueDate)}`
-                    : formatDay(reservation.reservationDate)}
+                    ? rellenar(t.reservaDevolverEl, {
+                        fecha: formatDay(reservation.dueDate, idioma),
+                      })
+                    : formatDay(reservation.reservationDate, idioma)}
                 </span>
               </div>
 
               {reservation.loss?.replacementDeadline && !reservation.loss.replacedAt && (
                 <p className="text-sm text-destructive">
-                  Reposición pendiente antes del {formatDay(reservation.loss.replacementDeadline)}
+                  {rellenar(t.reservaReposicionAntes, {
+                    fecha: formatDay(reservation.loss.replacementDeadline, idioma),
+                  })}
                 </p>
               )}
 

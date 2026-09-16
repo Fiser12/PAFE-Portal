@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react'
 import { returnBook } from '../actions'
+import { useTextos } from '@/components/IdiomaProvider'
 
 interface Props {
     reservationId: number
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function ReturnButton({ reservationId, onReturnSuccess }: Props) {
+  const t = useTextos()
     const [isPending, startTransition] = useTransition()
 
     const handleReturn = () => {
@@ -17,7 +19,7 @@ export function ReturnButton({ reservationId, onReturnSuccess }: Props) {
                 await returnBook(reservationId)
                 onReturnSuccess?.()
             } catch (error) {
-                console.error('Error al devolver el libro:', error)
+                console.error(t.reservaErrorDevolver, error)
             }
         })
     }

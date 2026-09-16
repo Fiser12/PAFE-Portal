@@ -7,8 +7,10 @@ import { useUser } from '@/lib/auth/useUser';
 import Link from 'next/link';
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { useTextos } from '@/components/IdiomaProvider'
 
 export default function Home() {
+  const t = useTextos()
   const { user } = useUser()
 
   return (
@@ -16,16 +18,16 @@ export default function Home() {
       {user ? (<React.Fragment>
         <Tablon />
         <section>
-          <h2 className="mb-4 text-2xl font-semibold sm:text-3xl">Calendario</h2>
+          <h2 className="mb-4 text-2xl font-semibold sm:text-3xl">{t.inicioCalendario}</h2>
           <CalendarView />
         </section>
         <ReservationsTable />
       </React.Fragment>
       ) : (
         <React.Fragment>
-          <h1 className="text-2xl font-bold">Bienvenido a PAFE</h1>
+          <h1 className="text-2xl font-bold">{t.inicioBienvenida}</h1>
           <Button className='max-w-xs' asChild>
-            <Link href="/login">Entrar</Link>
+            <Link href="/login">{t.entrar}</Link>
           </Button>
         </React.Fragment>
       )}

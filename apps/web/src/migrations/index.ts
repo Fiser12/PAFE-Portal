@@ -11,6 +11,7 @@ import * as migration_20260827_131010 from './20260827_131010';
 import * as migration_20260827_154722 from './20260827_154722';
 import * as migration_20260827_155517_aviso_dia_vencimiento from './20260827_155517_aviso_dia_vencimiento';
 import * as migration_20260916_202139_tablon_completo from './20260916_202139_tablon_completo';
+import * as migration_20260916_231546_presentacion_localizada from './20260916_231546_presentacion_localizada';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20260916_202139_tablon_completo.up,
     down: migration_20260916_202139_tablon_completo.down,
-    name: '20260916_202139_tablon_completo'
+    name: '20260916_202139_tablon_completo',
+  },
+  {
+    up: migration_20260916_231546_presentacion_localizada.up,
+    down: migration_20260916_231546_presentacion_localizada.down,
+    name: '20260916_231546_presentacion_localizada'
   },
 ];
