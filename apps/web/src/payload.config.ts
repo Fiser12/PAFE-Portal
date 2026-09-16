@@ -9,6 +9,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 import { collections } from './payload/collections'
 import { globals } from './payload/globals'
+import { localization } from './core/localization'
 import { Users } from './payload/collections/Users'
 import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
@@ -29,6 +30,7 @@ export default buildConfig({
     supportedLanguages: { es },
     fallbackLanguage: 'es',
   },
+  localization,
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.

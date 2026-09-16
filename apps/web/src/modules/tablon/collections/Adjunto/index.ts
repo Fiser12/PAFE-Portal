@@ -51,6 +51,7 @@ export const Adjunto: CollectionConfig = {
       label: 'Texto alternativo',
       name: 'alt',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Para quien no puede ver la imagen. En documentos y vídeos no hace falta',
       },

@@ -74,7 +74,8 @@ El día del cambio se retira el acceso al foro antiguo.
 - **R10** — `LANTALDE TEKNIKOA` exige pertenecer a un grupo con ese nombre: sin él no se ve en el tablón, no se abre por su URL y no llega nada de ella. El staff la ve, que es quien publica.
 - **R11** — Se responde solo a lo que se puede ver, y un mensaje vacío no vale.
 - **R12** — Las imágenes, documentos y vídeos van dentro del texto de la noticia, en el punto donde toquen, y se guardan en el S3 del portal, aparte del catálogo.
-- **R13** — Una noticia archivada sale del tablón pero no se borra: se puede pedir a propósito y se sigue abriendo por su enlace. Solo el staff archiva, y archivar no vuelve a avisar.
+- **R13** — El contenido se escribe en castellano y en euskera: títulos y cuerpos del catálogo y del tablón, y los nombres de las categorías. Lo que falte en euskera se ve en castellano. Lo que responde la gente no se traduce: va como lo escribió.
+- **R14** — Una noticia archivada sale del tablón pero no se borra: se puede pedir a propósito y se sigue abriendo por su enlace. Solo el staff archiva, y archivar no vuelve a avisar.
 
 ## 7. Data Concepts
 

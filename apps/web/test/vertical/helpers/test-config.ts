@@ -4,6 +4,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { collections } from '@/payload/collections'
 import { globals } from '@/payload/globals'
+import { localization } from '@/core/localization'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { betterAuthPluginInstance } from '@/payload/plugins/better-auth'
 import { plugin as searchPlugin } from '@/payload/plugins/search/plugin'
@@ -21,6 +22,7 @@ export const buildTestConfig = () =>
     secret: process.env.PAYLOAD_SECRET as string,
     collections,
     globals,
+    localization,
     editor: defaultLexical,
     email: testEmailAdapter,
     plugins: [betterAuthPluginInstance, searchPlugin],

@@ -44,6 +44,7 @@ export const CatalogItem: CollectionConfig = {
       label: 'Título',
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -86,12 +87,14 @@ export const CatalogItem: CollectionConfig = {
       label: 'Contenido',
       name: 'content',
       type: 'richText',
+      localized: true,
       required: false,
     },
     {
       label: 'Aportaciones de las familias',
       name: 'contributions',
       type: 'richText',
+      localized: true,
       required: false,
       admin: {
         description:

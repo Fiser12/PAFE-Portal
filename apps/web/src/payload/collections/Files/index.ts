@@ -63,6 +63,7 @@ export const Files: CollectionConfig = {
       label: 'Título',
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     buildTaxonomyRelationship({

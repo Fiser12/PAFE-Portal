@@ -37,12 +37,14 @@ export const ExternalResources: CollectionConfig = {
       label: 'Título',
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
       label: 'Descripción',
       name: 'description',
       type: 'textarea',
+      localized: true,
     },
     {
       label: 'Tipo de Recurso',

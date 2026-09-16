@@ -45,6 +45,7 @@ export const Noticia: CollectionConfig = {
       label: 'Título',
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -59,6 +60,7 @@ export const Noticia: CollectionConfig = {
       label: 'Contenido',
       name: 'body',
       type: 'richText',
+      localized: true,
       // Editor propio: el del resto del portal no deja incrustar adjuntos
       editor: lexicalDelTablon,
     },

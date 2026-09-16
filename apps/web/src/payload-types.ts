@@ -150,7 +150,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'eu') | ('es' | 'eu')[];
   globals: {
     header: Header;
     footer: Footer;
@@ -163,7 +163,7 @@ export interface Config {
     'presentacion-catalogo': PresentacionCatalogoSelect<false> | PresentacionCatalogoSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
-  locale: null;
+  locale: 'es' | 'eu';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -1267,6 +1267,7 @@ export interface Export {
   page?: number | null;
   sort?: string | null;
   sortOrder?: ('asc' | 'desc') | null;
+  locale?: ('all' | 'es' | 'eu') | null;
   drafts?: ('yes' | 'no') | null;
   selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
   fields?: string[] | null;
@@ -2242,6 +2243,7 @@ export interface ExportsSelect<T extends boolean = true> {
   page?: T;
   sort?: T;
   sortOrder?: T;
+  locale?: T;
   drafts?: T;
   selectionToUse?: T;
   fields?: T;
