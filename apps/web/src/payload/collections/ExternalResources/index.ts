@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo, isActiveUserAccess, catalogoAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
 
@@ -14,15 +14,15 @@ export const ExternalResources: CollectionConfig = {
     plural: 'Recursos Externos',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: catalogoAccess,
+    delete: catalogoAccess,
     // Contenido del catálogo digital: solo usuarios con rol
     read: isActiveUserAccess,
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     defaultColumns: ['title', 'type', 'url'],
     useAsTitle: 'title',
   },

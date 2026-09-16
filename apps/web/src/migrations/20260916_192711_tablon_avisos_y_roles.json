@@ -11590,8 +11590,11 @@
       "schema": "public",
       "values": [
         "admin",
-        "profesional",
-        "familia"
+        "admin-catalogo",
+        "admin-users",
+        "admin-news",
+        "familia",
+        "profesional"
       ]
     },
     "public.enum_admin_invitations_role": {
@@ -11599,6 +11602,9 @@
       "schema": "public",
       "values": [
         "admin",
+        "admin-catalogo",
+        "admin-users",
+        "admin-news",
         "profesional",
         "familia"
       ]
@@ -11970,6 +11976,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "3d32537e-8b0b-496e-9820-576729699340",
+  "id": "e1c4a8ae-d52f-458b-9825-5975af810db7",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

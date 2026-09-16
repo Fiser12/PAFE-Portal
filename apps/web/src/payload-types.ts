@@ -241,7 +241,7 @@ export interface User {
   /**
    * The role/ roles of the user
    */
-  role?: ('admin' | 'profesional' | 'familia')[] | null;
+  role?: ('admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional')[] | null;
   account?: {
     docs?: (number | Account)[];
     hasNextPage?: boolean;
@@ -797,7 +797,7 @@ export interface Verification {
  */
 export interface AdminInvitation {
   id: number;
-  role: 'admin' | 'profesional' | 'familia';
+  role: 'admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'profesional' | 'familia';
   token: string;
   url?: string | null;
   updatedAt: string;

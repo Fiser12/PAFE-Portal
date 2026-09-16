@@ -1,4 +1,4 @@
-import { hiddenUnlessStaff } from '@/core/permissions'
+import { hiddenUnlessCatalogo } from '@/core/permissions'
 import { taxonomiesCollection } from '@zetesis/payload-taxonomies'
 
 export const Categories = taxonomiesCollection({
@@ -7,7 +7,7 @@ export const Categories = taxonomiesCollection({
     plural: 'Categorías',
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
   },
   payloadTypescriptSchema: [
     () => ({

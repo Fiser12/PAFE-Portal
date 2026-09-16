@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_FORMACIONES } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isActiveUserAccess, isAdminAccess } from '@/core/permissions'
 import {
   FixedToolbarFeature,
   HeadingFeature,
@@ -22,13 +22,13 @@ export const Formaciones: CollectionConfig = {
     plural: 'Formaciones',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     read: isActiveUserAccess,
-    update: isStaffAccess,
+    update: isAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessAdmin,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     useAsTitle: 'title',
   },

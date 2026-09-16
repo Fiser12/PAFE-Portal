@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isAdminAccess, isStaffAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo, isAdminAccess, catalogoAccess, staffOrOwnerAccess } from '@/core/permissions'
 import { TABLON_NOTIFICATION_TYPES } from '@/modules/tablon/domain/avisos'
 import { TAREA_NOTIFICATION_TYPES } from '@/modules/tareas/domain/avisos'
 import { NOTIFICATION_TYPES } from '../../domain/notifications'
@@ -16,14 +16,14 @@ export const Notification: CollectionConfig = {
   },
   access: {
     // Las crean los servicios del préstamo, nunca quien las recibe
-    create: isStaffAccess,
+    create: catalogoAccess,
     delete: isAdminAccess,
     read: staffOrOwnerAccess('user'),
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     defaultColumns: ['user', 'type', 'createdAt', 'readAt'],
     useAsTitle: 'type',
   },

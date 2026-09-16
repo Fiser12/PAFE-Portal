@@ -13,7 +13,7 @@ import { anyone } from '../../access/anyone'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { handleSvgUpload } from '@/payload/hooks/handleSvgUploadHook'
 import { updateCacheControl } from '@/payload/hooks/updateCacheControl'
-import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo, catalogoAccess } from '@/core/permissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,13 +21,13 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: COLLECTION_SLUG_MEDIA,
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: catalogoAccess,
+    delete: catalogoAccess,
     read: anyone,
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
   },
   hooks: {
     beforeOperation: [addContentHashToFile],

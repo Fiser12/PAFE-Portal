@@ -4,11 +4,11 @@ import {
   COLLECTION_SLUG_GROUPS,
 } from '@/core/collections-slugs'
 import {
-  hiddenUnlessStaff,
+  hiddenUnlessUsuarios,
   isAdminAccess,
   isStaff,
-  isStaffAccess,
-  staffOrSelfAccess,
+    usuariosAccess,
+  usuariosOrSelfAccess,
 } from '@/core/permissions'
 import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
@@ -26,18 +26,18 @@ export const Users: CollectionConfig = {
     // Alta gestionada: el staff crea usuarios desde el panel.
     // El registro con Google usa la Local API (no pasa por aquí) y entra
     // con rol `pendiente` sin acceso a nada.
-    create: isStaffAccess,
+    create: usuariosAccess,
     delete: isAdminAccess,
-    read: staffOrSelfAccess,
+    read: usuariosOrSelfAccess,
     // Staff puede editar usuarios (el hook impide tocar admins o escalar
     // roles); el resto solo su propio perfil
-    update: staffOrSelfAccess,
+    update: usuariosOrSelfAccess,
   },
   hooks: {
     beforeChange: [preventPrivilegeEscalation],
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessUsuarios,
     defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',
   },

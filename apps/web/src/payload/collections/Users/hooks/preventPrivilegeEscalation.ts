@@ -1,5 +1,5 @@
 import { Forbidden, type CollectionBeforeChangeHook } from 'payload'
-import { ROLE_ADMIN, STAFF_MANAGEABLE_ROLES, isAdmin, isStaff } from '@/core/permissions'
+import { ROLE_ADMIN, STAFF_MANAGEABLE_ROLES, administraUsuarios, isAdmin } from '@/core/permissions'
 
 const normalizeRoles = (role: unknown): string[] => {
   if (Array.isArray(role)) return role.filter((r): r is string => typeof r === 'string')
@@ -13,8 +13,9 @@ const sameRoles = (a: string[], b: string[]) =>
 /**
  * Impide la escalada de privilegios vía REST/GraphQL:
  * - Nadie que no sea admin puede cambiar roles (ni los suyos).
- * - Un profesional solo asigna/quita el rol familia (o deja al usuario sin
- *   rol): no puede tocar admins ni promover a profesional o admin.
+ * - Quien da de altas solo asigna/quita el rol familia (o deja al usuario sin
+ *   rol): no puede tocar admins ni repartir roles de administración. Si
+ *   pudiera, el reparto por áreas se desharía solo.
  * - Un usuario normal no puede reasignarse grupos ni casos.
  *
  * La Local API (better-auth, seeds, plumbing interno) queda exenta, igual que
@@ -32,8 +33,8 @@ export const preventPrivilegeEscalation: CollectionBeforeChangeHook = async ({
   const incomingRoles = data?.role === undefined ? undefined : normalizeRoles(data.role)
   const originalRoles = normalizeRoles(originalDoc?.role)
 
-  if (isStaff(req.user)) {
-    // Un profesional no puede modificar a un admin
+  if (administraUsuarios(req.user)) {
+    // Quien da de altas no puede modificar a un admin
     if (operation === 'update' && originalRoles.includes(ROLE_ADMIN)) {
       throw new Forbidden(req.t)
     }

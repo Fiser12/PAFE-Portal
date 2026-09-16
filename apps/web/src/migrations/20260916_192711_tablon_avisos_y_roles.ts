@@ -4,6 +4,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_users_areas_suscritas" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
   CREATE TYPE "public"."enum_noticia_area" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
+  ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-catalogo' BEFORE 'profesional';
+  ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-users' BEFORE 'profesional';
+  ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-news' BEFORE 'profesional';
   ALTER TYPE "public"."enum_notification_type" ADD VALUE 'noticia';
   ALTER TYPE "public"."enum_notification_type" ADD VALUE 'tarea-asignada';
   ALTER TYPE "public"."enum_notification_type" ADD VALUE 'tarea-toca';
@@ -31,6 +34,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
+  ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE text;
+  DROP TYPE "public"."enum_users_role";
+  CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'admin-catalogo', 'admin-users', 'admin-news', 'familia', 'profesional');
+  ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_role" USING "value"::"public"."enum_users_role";
   ALTER TABLE "notification" ADD COLUMN "noticia_id" integer;
   ALTER TABLE "notification" ADD COLUMN "tarea_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "noticia_id" integer;
@@ -63,6 +70,16 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_noticia_fk";
   
+  ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE text;
+  DROP TYPE "public"."enum_users_role";
+  CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'profesional', 'familia');
+  ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_role" USING "value"::"public"."enum_users_role";
+  ALTER TABLE "admin_invitations" ALTER COLUMN "role" SET DATA TYPE text;
+  ALTER TABLE "admin_invitations" ALTER COLUMN "role" SET DEFAULT 'admin'::text;
+  DROP TYPE "public"."enum_admin_invitations_role";
+  CREATE TYPE "public"."enum_admin_invitations_role" AS ENUM('admin', 'profesional', 'familia');
+  ALTER TABLE "admin_invitations" ALTER COLUMN "role" SET DEFAULT 'admin'::"public"."enum_admin_invitations_role";
+  ALTER TABLE "admin_invitations" ALTER COLUMN "role" SET DATA TYPE "public"."enum_admin_invitations_role" USING "role"::"public"."enum_admin_invitations_role";
   ALTER TABLE "notification" ALTER COLUMN "type" SET DATA TYPE text;
   DROP TYPE "public"."enum_notification_type";
   CREATE TYPE "public"."enum_notification_type" AS ENUM('recordatorio', 'vencimiento', 'devolucion-tardia', 'perdida', 'recogida', 'prorroga', 'devolucion');

@@ -25,16 +25,16 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
-import { hiddenUnlessAdmin, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
 import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     read: authenticatedOrPublished,
-    update: isStaffAccess,
+    update: isAdminAccess,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

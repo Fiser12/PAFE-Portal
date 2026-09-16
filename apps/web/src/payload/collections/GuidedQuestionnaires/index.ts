@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_GUIDED_QUESTIONNAIRES } from '@/core/collections-slugs'
-import { hiddenUnlessAdmin, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isActiveUserAccess, isAdminAccess } from '@/core/permissions'
 import { createDefaultFlowSchema } from '@/lib/flowgraph/defaultSchema'
 import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
 import { questionnaireLexical } from '@/payload/fields/questionnaireLexical'
@@ -59,10 +59,10 @@ export const GuidedQuestionnaires: CollectionConfig = {
     plural: 'Cuestionarios guiados',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     read: isActiveUserAccess,
-    update: isStaffAccess,
+    update: isAdminAccess,
   },
   admin: {
     hidden: hiddenUnlessAdmin,

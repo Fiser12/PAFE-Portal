@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo, isActiveUserAccess, catalogoAccess } from '@/core/permissions'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
@@ -15,15 +15,15 @@ export const Files: CollectionConfig = {
     plural: 'Materiales descargables',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: catalogoAccess,
+    delete: catalogoAccess,
     // Contenido del catálogo digital: solo usuarios con rol
     read: isActiveUserAccess,
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     useAsTitle: 'title',
     components: {
       views: {

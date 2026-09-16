@@ -1,11 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
-  hiddenUnlessStaff,
+  hiddenUnlessTablon,
+  tablonAccess,
   isActiveUserAccess,
   isAdminAccess,
-  isStaffAccess,
-} from '@/core/permissions'
+  } from '@/core/permissions'
 import { AREAS_DEL_TABLON } from '../../domain/areas'
 import { avisarAlPublicar } from './hooks/avisarAlPublicar'
 
@@ -20,11 +20,11 @@ export const Noticia: CollectionConfig = {
     plural: 'Tablón de noticias',
   },
   access: {
-    create: isStaffAccess,
+    create: tablonAccess,
     delete: isAdminAccess,
     // Mismo criterio que el catálogo: sin rol no se ve nada
     read: isActiveUserAccess,
-    update: isStaffAccess,
+    update: tablonAccess,
   },
   hooks: {
     // El aviso se dispara aquí y no en el servicio: el staff publica desde el
@@ -33,7 +33,7 @@ export const Noticia: CollectionConfig = {
   },
   admin: {
     group: 'Tablón',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessTablon,
     defaultColumns: ['title', 'area', 'publishedAt', 'pinned'],
     useAsTitle: 'title',
   },

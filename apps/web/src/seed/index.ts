@@ -1,6 +1,6 @@
 import { hashPassword } from 'better-auth/crypto'
 import type { Payload } from 'payload'
-import { ROLE_ADMIN, ROLE_PROFESIONAL, ROLE_FAMILIA } from '@/core/permissions'
+import { ROLE_ADMIN, ROLE_CATALOGO, ROLE_FAMILIA, ROLE_TABLON, ROLE_USUARIOS } from '@/core/permissions'
 // Imports estáticos: el bundler los incluye en el build, así el seed funciona
 // también en serverless (fs.readFileSync no encuentra los archivos en Vercel)
 import librosJson from './data/libros.json'
@@ -167,7 +167,9 @@ export async function seedMockData(payload: Payload): Promise<void> {
   }
 
   await createUser('admin@test.local', 'Admin Prueba', [ROLE_ADMIN])
-  await createUser('prof@test.local', 'Profesional Prueba', [ROLE_PROFESIONAL])
+  await createUser('catalogo@test.local', 'Catálogo Prueba', [ROLE_CATALOGO])
+  await createUser('altas@test.local', 'Altas Prueba', [ROLE_USUARIOS])
+  await createUser('tablon@test.local', 'Tablón Prueba', [ROLE_TABLON])
   const familiaId = await createUser('familia@test.local', 'Familia Prueba', [ROLE_FAMILIA])
   await createUser('sinrol@test.local', 'Sin Rol Prueba', [])
   payload.logger.info(`[seed] usuarios de prueba listos (contraseña: ${PASSWORD})`)
