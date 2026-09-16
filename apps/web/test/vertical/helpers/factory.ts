@@ -44,5 +44,3 @@ export const createItem = async (
     },
     overrideAccess: true,
   })
-
-/** Área del tablón: taxonomía con la faceta `area`, como las del foro */
