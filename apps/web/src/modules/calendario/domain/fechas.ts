@@ -62,3 +62,30 @@ export const hora = (fecha: Date): string =>
 /** «17/9/2026» en los dos idiomas: el orden del día es el mismo */
 export const fechaCorta = (fecha: Date): string =>
   intl({ day: 'numeric', month: 'numeric', year: 'numeric' }, fecha, ZONA)
+
+/** «2026ko irailak 17» / «17 de septiembre de 2026» */
+export const fechaLarga = (fecha: Date, idioma: CodigoIdioma): string => {
+  if (idioma !== 'eu') {
+    return intl({ day: 'numeric', month: 'long', year: 'numeric' }, fecha, ZONA)
+  }
+  const partes = new Intl.DateTimeFormat('es-ES', {
+    timeZone: ZONA,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(fecha)
+  const valor = (tipo: string) => Number(partes.find((p) => p.type === tipo)?.value ?? 0)
+  return `${valor('year')}ko ${MESES_EU[valor('month') - 1]}k ${valor('day')}`
+}
+
+/** «irailak 17» / «17 de septiembre» */
+export const diaYMes = (fecha: Date, idioma: CodigoIdioma): string => {
+  if (idioma !== 'eu') return intl({ day: 'numeric', month: 'long' }, fecha, ZONA)
+  const partes = new Intl.DateTimeFormat('es-ES', {
+    timeZone: ZONA,
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(fecha)
+  const valor = (tipo: string) => Number(partes.find((p) => p.type === tipo)?.value ?? 0)
+  return `${MESES_EU[valor('month') - 1]}k ${valor('day')}`
+}

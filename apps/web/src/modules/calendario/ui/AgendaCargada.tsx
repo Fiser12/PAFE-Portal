@@ -2,18 +2,19 @@
 
 import useSWR from 'swr'
 import { useTextos } from '@/components/IdiomaProvider'
-import { cargarCalendario } from '../actions'
-import { Calendario } from './Calendario'
+import { cargarAgendaCompleta } from '../actions'
+import { Agenda } from './Agenda'
 
-export function CalendarioCargado() {
+export function AgendaCargada() {
   const t = useTextos()
-  const { data } = useSWR('calendario', cargarCalendario, { revalidateOnFocus: false })
+  const { data } = useSWR('agenda', cargarAgendaCompleta, { revalidateOnFocus: false })
 
   if (!data) return <p className="py-6 text-sm text-muted-foreground">{t.cargando}</p>
 
   return (
-    <Calendario
+    <Agenda
       ocurrencias={data.ocurrencias}
+      noticias={data.noticias}
       nombres={data.nombres}
       fallidos={data.fallidos}
     />

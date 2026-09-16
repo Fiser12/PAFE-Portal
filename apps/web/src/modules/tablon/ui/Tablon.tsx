@@ -1,6 +1,8 @@
 'use client'
 
-import { useTextos } from '@/components/IdiomaProvider'
+import { useIdioma } from '@/components/IdiomaProvider'
+import type { CodigoIdioma } from '@/core/localization'
+import { fechaLarga } from '@/modules/calendario/domain/fechas'
 import { useState } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
@@ -12,10 +14,8 @@ import type { Noticia } from '@/payload-types'
 import { nombreDelArea } from '../domain/areas'
 import { cargarTablon } from '../actions'
 
-const fecha = (iso?: string | null) =>
-  iso
-    ? new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-    : ''
+const fecha = (iso: string | null | undefined, idioma: CodigoIdioma) =>
+  iso ? fechaLarga(new Date(iso), idioma) : ''
 
 const resumen = (noticia: Noticia): string => {
   const root = (noticia.body as { root?: { children?: unknown[] } } | null)?.root
@@ -27,7 +27,7 @@ const resumen = (noticia: Noticia): string => {
 }
 
 export function Tablon() {
-  const t = useTextos()
+  const { idioma, t } = useIdioma()
   const [area, setArea] = useState<string | undefined>()
   const [archivadas, setArchivadas] = useState(false)
   const { data, error, isLoading } = useSWR(['tablon', area, archivadas], () =>
@@ -42,7 +42,7 @@ export function Tablon() {
   return (
     <section>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold sm:text-3xl">{t.tablon}</h2>
+        <h2 className="text-xl font-semibold sm:text-2xl">{t.tablon}</h2>
         {areas.length > 0 && (
           <div className="flex flex-wrap gap-2">
             <Button size="sm" variant={area ? 'outline' : 'default'} onClick={() => setArea(undefined)}>
@@ -78,27 +78,31 @@ export function Tablon() {
       ) : noticias.length === 0 ? (
         <p className="py-6 text-sm text-muted-foreground">{t.tablonVacio}</p>
       ) : (
-        <div className="flex flex-col gap-3">
-          {noticias.map((noticia) => (
-            <Card key={noticia.id}>
-              <CardContent className="p-4">
-                <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  {noticia.pinned && <Pin className="h-3 w-3" aria-label={t.tablonFijada} />}
-                  <Badge variant="outline">{nombreDelArea(noticia.area)}</Badge>
-                  <span>{fecha(noticia.publishedAt)}</span>
+        <Card>
+          <CardContent className="max-h-80 divide-y overflow-y-auto p-0">
+            {noticias.map((noticia) => (
+              <Link
+                key={noticia.id}
+                href={`/noticias/${noticia.id}`}
+                className="block px-4 py-2.5 transition-colors hover:bg-accent/50"
+              >
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  {noticia.pinned && (
+                    <Pin className="h-3 w-3 shrink-0 self-center" aria-label={t.tablonFijada} />
+                  )}
+                  <h3 className="min-w-0 flex-1 truncate text-sm font-medium">{noticia.title}</h3>
+                  <Badge variant="outline" className="shrink-0 text-[10px]">
+                    {nombreDelArea(noticia.area)}
+                  </Badge>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {fecha(noticia.publishedAt, idioma)}
+                  </span>
                 </div>
-                <h3 className="font-semibold leading-snug">
-                  <Link className="hover:underline" href={`/noticias/${noticia.id}`}>
-                    {noticia.title}
-                  </Link>
-                </h3>
-                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                  {resumen(noticia)}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <p className="mt-0.5 truncate text-xs text-muted-foreground">{resumen(noticia)}</p>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
       )}
 
     </section>
