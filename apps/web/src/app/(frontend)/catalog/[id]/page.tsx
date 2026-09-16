@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { CatalogItemClient } from '@/modules/catalog/ui/DetailPage'
+import { fichaDeLaWiki } from '@/modules/catalog/domain/wikiFichas'
 
 interface Props {
     params: Promise<{ id: string }>
@@ -22,6 +23,7 @@ export default async function CatalogItemPage({ params }: Props) {
 
     return <CatalogItemClient
         item={catalogItem}
+        wikiPath={fichaDeLaWiki(catalogItem.title)}
         contributions={
             catalogItem.contributions ? <RichText data={catalogItem.contributions} /> : null
         }
