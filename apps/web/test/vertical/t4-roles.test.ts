@@ -104,7 +104,7 @@ describe('lo que cada rol puede hacer de verdad', () => {
     await expect(
       payload.create({
         collection: 'noticia',
-        data: { title: 'No debería', area: 'avisos', publishedAt: new Date().toISOString() },
+        data: { title: 'No debería', area: 'berriak-pafe', publishedAt: new Date().toISOString() },
         user,
         overrideAccess: false,
       }),
@@ -132,7 +132,7 @@ describe('lo que cada rol puede hacer de verdad', () => {
     const user = await createUser(payload, ['admin-news'], 'Tablón Test')
     const noticia = await payload.create({
       collection: 'noticia',
-      data: { title: 'Sí puedo', area: 'avisos', publishedAt: new Date().toISOString() },
+      data: { title: 'Sí puedo', area: 'berriak-pafe', publishedAt: new Date().toISOString() },
       user,
       overrideAccess: false,
     })

@@ -1,12 +1,14 @@
 /**
- * Las áreas del tablón, que replican las secciones del foro. Aquí se añaden o
- * se renombran: no hay nada que crear en base de datos.
+ * Las áreas del tablón son las categorías del foro, con su nombre tal cual.
+ * Aquí se añaden o se renombran: no hay nada que crear en base de datos.
  */
 export const AREAS_DEL_TABLON = [
-  { value: 'avisos', label: 'Avisos generales' },
-  { value: 'formacion', label: 'Formación' },
-  { value: 'actividades', label: 'Actividades' },
-  { value: 'recursos', label: 'Recursos' },
+  { value: 'berriak-pafe', label: 'Berriak PAFE' },
+  { value: 'partekatutako-berriak', label: 'Partekatutako Berriak' },
+  { value: 'ia', label: 'IA' },
+  { value: 'elkarrizketa-irekiak', label: 'Elkarrizketa Irekiak' },
+  { value: 'pafe-ren-elkarrizketak', label: 'PAFE-ren Elkarrizketak' },
+  { value: 'lantalde-teknikoa', label: 'LANTALDE TEKNIKOA' },
 ] as const
 
 export type AreaDelTablon = (typeof AREAS_DEL_TABLON)[number]['value']

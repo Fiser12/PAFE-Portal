@@ -2,8 +2,8 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."enum_users_areas_suscritas" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
-  CREATE TYPE "public"."enum_noticia_area" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
+   CREATE TYPE "public"."enum_users_areas_suscritas" AS ENUM('berriak-pafe', 'partekatutako-berriak', 'ia', 'elkarrizketa-irekiak', 'pafe-ren-elkarrizketak', 'lantalde-teknikoa');
+  CREATE TYPE "public"."enum_noticia_area" AS ENUM('berriak-pafe', 'partekatutako-berriak', 'ia', 'elkarrizketa-irekiak', 'pafe-ren-elkarrizketak', 'lantalde-teknikoa');
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-catalogo' BEFORE 'profesional';
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-users' BEFORE 'profesional';
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-news' BEFORE 'profesional';
@@ -34,6 +34,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
+  CREATE TABLE "presentacion_catalogo" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"texto" jsonb DEFAULT '{"root":{"type":"root","direction":"ltr","format":"","indent":0,"version":1,"children":[{"type":"paragraph","version":1,"direction":"ltr","format":"","indent":0,"children":[{"type":"text","version":1,"detail":0,"format":0,"mode":"normal","style":"","text":"Hola, os presentamos el nuevo programa de préstamos de material de PAFE. Mediante esta herramienta tendréis acceso a vídeos, juegos y libros. El préstamo durará un mes, siendo de martes de reunión a martes de reunión (aunque podréis hacer la reserva antes para que tengáis listo el material en la reunión). Se podrá realizar una prórroga de 2 semanas avisando una semana antes de que termine el plazo del préstamo. En caso de devolución tardía, tened en cuenta que esto puede afectar a otras personas del equipo que deseen hacer uso del mismo. Por otro lado, en caso de ruptura o pérdida, el usuario responsable deberá comprar uno similar y entregarlo (en caso de tener cualquier duda, podéis contactar con nosotros para que os asesoremos)."}]},{"type":"paragraph","version":1,"direction":"ltr","format":"","indent":0,"children":[{"type":"text","version":1,"detail":0,"format":0,"mode":"normal","style":"","text":"El catálogo es un material vivo que lo construimos entre todos y todas. Si usáis un material y queréis aportar sugerencias sobre cómo usarlo, para qué perfiles de casos y familias o con qué objetivos, contádnoslo. Y si queréis añadir algún documento descargable, referencia de vídeo o libro en formato electrónico, envíadlo a "},{"type":"link","version":3,"direction":"ltr","format":"","indent":0,"fields":{"linkType":"custom","newTab":false,"url":"mailto:pafe@agintzari.eus"},"children":[{"type":"text","version":1,"detail":0,"format":0,"mode":"normal","style":"","text":"pafe@agintzari.eus"}]},{"type":"text","version":1,"detail":0,"format":0,"mode":"normal","style":"","text":"."}]}]}}'::jsonb,
+  	"updated_at" timestamp(3) with time zone,
+  	"created_at" timestamp(3) with time zone
+  );
+  
   ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_role";
   CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'admin-catalogo', 'admin-users', 'admin-news', 'familia', 'profesional');
@@ -62,8 +69,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.execute(sql`
    ALTER TABLE "users_areas_suscritas" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "noticia" DISABLE ROW LEVEL SECURITY;
+  ALTER TABLE "presentacion_catalogo" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "users_areas_suscritas" CASCADE;
   DROP TABLE "noticia" CASCADE;
+  DROP TABLE "presentacion_catalogo" CASCADE;
   ALTER TABLE "notification" DROP CONSTRAINT "notification_noticia_id_noticia_id_fk";
   
   ALTER TABLE "notification" DROP CONSTRAINT "notification_tarea_id_tasks_id_fk";

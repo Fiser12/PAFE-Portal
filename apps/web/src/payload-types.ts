@@ -150,11 +150,13 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'presentacion-catalogo': PresentacionCatalogo;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'presentacion-catalogo': PresentacionCatalogoSelect<false> | PresentacionCatalogoSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: null;
@@ -215,7 +217,16 @@ export interface User {
   /**
    * Áreas de las que esta persona recibe aviso cuando se publica algo
    */
-  areasSuscritas?: ('avisos' | 'formacion' | 'actividades' | 'recursos')[] | null;
+  areasSuscritas?:
+    | (
+        | 'berriak-pafe'
+        | 'partekatutako-berriak'
+        | 'ia'
+        | 'elkarrizketa-irekiak'
+        | 'pafe-ren-elkarrizketak'
+        | 'lantalde-teknikoa'
+      )[]
+    | null;
   /**
    * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
    */
@@ -836,7 +847,13 @@ export interface Notification {
 export interface Noticia {
   id: number;
   title: string;
-  area: 'avisos' | 'formacion' | 'actividades' | 'recursos';
+  area:
+    | 'berriak-pafe'
+    | 'partekatutako-berriak'
+    | 'ia'
+    | 'elkarrizketa-irekiak'
+    | 'pafe-ren-elkarrizketak'
+    | 'lantalde-teknikoa';
   body?: {
     root: {
       type: string;
@@ -2338,6 +2355,33 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presentacion-catalogo".
+ */
+export interface PresentacionCatalogo {
+  id: number;
+  /**
+   * Lo que lee quien entra al catálogo, encima de la búsqueda
+   */
+  texto?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
 export interface PayloadJobsStat {
@@ -2396,6 +2440,16 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presentacion-catalogo_select".
+ */
+export interface PresentacionCatalogoSelect<T extends boolean = true> {
+  texto?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

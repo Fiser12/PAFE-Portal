@@ -13,8 +13,8 @@ import {
   publicarNoticia,
 } from '@/modules/tablon/services'
 
-const AREA = 'avisos'
-const OTRA = 'formacion'
+const AREA = 'berriak-pafe'
+const OTRA = 'partekatutako-berriak'
 
 let payload: Payload
 

@@ -6,8 +6,8 @@ import { createFamilia, createPendiente, createStaff } from './helpers/factory'
 import { at } from './helpers/dates'
 import { noticiaDelTablon, noticiasDelTablon, publicarNoticia } from '@/modules/tablon/services'
 
-const AREA = 'avisos'
-const OTRA = 'formacion'
+const AREA = 'berriak-pafe'
+const OTRA = 'partekatutako-berriak'
 
 let payload: Payload
 
