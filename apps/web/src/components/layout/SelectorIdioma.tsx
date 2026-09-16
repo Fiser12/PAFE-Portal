@@ -1,11 +1,10 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
-import { COOKIE_IDIOMA, IDIOMAS, type CodigoIdioma } from '@/core/localization'
+import { useTransition } from 'react'
+import { IDIOMAS, type CodigoIdioma } from '@/core/localization'
 import { cn } from '@/utilities/ui'
-
-const UN_ANO = 60 * 60 * 24 * 365
+import { elegirIdioma } from './elegirIdioma'
 
 interface Props {
   idioma: CodigoIdioma
@@ -13,16 +12,14 @@ interface Props {
 
 export function SelectorIdioma({ idioma }: Props) {
   const router = useRouter()
-  const [elegido, setElegido] = useState(idioma)
-  const [, startTransition] = useTransition()
+  const [pendiente, startTransition] = useTransition()
 
   const cambiar = (code: CodigoIdioma) => {
-    if (code === elegido) return
-    // La cookie no es httpOnly a propósito: la escribe el navegador y la lee el
-    // servidor en el siguiente render. No guarda nada sensible.
-    document.cookie = `${COOKIE_IDIOMA}=${code}; path=/; max-age=${UN_ANO}; samesite=lax`
-    setElegido(code)
-    startTransition(() => router.refresh())
+    if (code === idioma) return
+    startTransition(async () => {
+      await elegirIdioma(code)
+      router.refresh()
+    })
   }
 
   return (
@@ -32,11 +29,12 @@ export function SelectorIdioma({ idioma }: Props) {
           key={code}
           type="button"
           onClick={() => cambiar(code)}
+          disabled={pendiente}
           aria-label={label}
-          aria-pressed={elegido === code}
+          aria-pressed={idioma === code}
           className={cn(
-            'rounded px-2 py-1 text-xs font-medium transition-colors',
-            elegido === code
+            'rounded px-2 py-1 text-xs font-medium transition-colors disabled:opacity-60',
+            idioma === code
               ? 'bg-accent text-foreground'
               : 'text-muted-foreground hover:text-foreground',
           )}
