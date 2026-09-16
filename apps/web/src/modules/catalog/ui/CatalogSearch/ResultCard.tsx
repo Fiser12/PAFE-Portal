@@ -15,6 +15,8 @@ export interface CatalogResult {
   cover?: number | Media | null
   url?: string | null
   doc?: { relationTo?: string; value?: unknown } | null
+  /** Ficha del libro en la wiki, si ese material tiene una */
+  wikiPath?: string | null
 }
 
 const COLLECTION_LABEL: Record<string, string> = {
@@ -96,9 +98,19 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
         </h3>
 
         <div className="mt-auto pt-2">
+          {result.wikiPath && (
+            <a
+              href={result.wikiPath}
+              className="mb-2 block text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            >
+              {isReservable
+                ? '¿Quieres saber algo más antes de reservarlo?'
+                : '¿Quieres saber algo más antes de descargarlo?'}
+            </a>
+          )}
           {isReservable ? (
             <Button className="w-full" onClick={handleOpen}>
-              Ver ficha
+              Ir a reservar
             </Button>
           ) : (
             <Button className="w-full" onClick={handleOpen} disabled={!url}>

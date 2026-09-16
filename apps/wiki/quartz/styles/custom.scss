@@ -1,0 +1,31 @@
+@use "./variables.scss" as *;
+
+// put your custom CSS here!
+
+
+// El panel derecho es una columna flex de 100vh: cada panel que se añade le roba alto a
+// los demás, y la tabla de contenidos acababa colapsada con scroll propio. Un solo scroll,
+// el de la columna, y cada panel con su alto natural.
+// Acotado a escritorio: por debajo de 1200px Quartz pone el panel en fila y limita sus
+// hijos a 24rem, y ahí el comportamiento por defecto es el correcto.
+@media (min-width: 1200px) {
+  .sidebar.right {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+
+    // Sin esto los hijos se encogen para caber en 100vh, que es justo lo que colapsa
+    // el índice cuando hay varios paneles apilados.
+    > * {
+      flex: 0 0 auto;
+    }
+
+    // Quartz marca con .overflow los bloques que llevan scroll propio —el índice y los
+    // retroenlaces—. Dentro de una columna que ya desplaza, eso son scrolls dentro de
+    // scrolls: se anulan todos, presentes y futuros.
+    .overflow {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+}

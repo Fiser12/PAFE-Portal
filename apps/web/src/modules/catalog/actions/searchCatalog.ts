@@ -2,6 +2,7 @@
 
 import type { Where } from 'payload'
 import { getSessionUser } from '@/utilities/getSessionUser'
+import { fichaDeLaWiki } from '../domain/wikiFichas'
 
 export interface SearchCatalogParams {
   query?: string
@@ -78,7 +79,10 @@ export async function searchCatalog({
   })
 
   return {
-    docs: results.docs,
+    docs: results.docs.map((doc) => ({
+      ...doc,
+      wikiPath: fichaDeLaWiki((doc as { title?: string | null }).title),
+    })),
     totalDocs: results.totalDocs,
     page: results.page ?? page,
     hasNextPage: results.hasNextPage,

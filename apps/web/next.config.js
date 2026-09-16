@@ -28,6 +28,15 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
+  // La wiki se publica como HTML plano en public/wiki. Cloudflare Pages resolvía
+  // /x -> /x.html por su cuenta; Next no, así que se reescribe aquí. Los ficheros
+  // con extensión (css, js, imágenes) no entran en la regla.
+  async rewrites() {
+    return [
+      { source: '/wiki', destination: '/wiki/index.html' },
+      { source: '/wiki/:path((?:[^./]+/)*[^./]+)', destination: '/wiki/:path.html' },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

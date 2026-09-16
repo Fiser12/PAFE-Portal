@@ -13,9 +13,11 @@ interface Props {
     item: CatalogItem
     children: React.ReactNode
     contributions?: React.ReactNode
+    /** Ficha del libro en la wiki, si ese material tiene una */
+    wikiPath?: string | null
 }
 
-export function CatalogItemClient({ item, children, contributions }: Props) {
+export function CatalogItemClient({ item, children, contributions, wikiPath }: Props) {
     const { user } = useUser()
     const isCatalogAdmin = isStaff(user)
     // Clave compartida: useReservationsRefresh() la invalida al reservar/devolver
@@ -45,6 +47,16 @@ export function CatalogItemClient({ item, children, contributions }: Props) {
                         <div className="prose max-w-none mb-6">
                             {children}
                         </div>
+                        {wikiPath && (
+                            <p className="mb-4 text-sm">
+                                <a
+                                    className="underline underline-offset-2"
+                                    href={wikiPath}
+                                >
+                                    ¿Quieres saber algo más de este material antes de reservarlo?
+                                </a>
+                            </p>
+                        )}
                         <div className="mb-4">
                             <p className="text-lg">
                                 <span className="font-semibold">Disponibles:</span> {availability?.available ?? 0} de {availability?.total ?? 0}

@@ -5,6 +5,8 @@ export interface NavItem {
   label: string
   href: string
   external?: boolean
+  /** Sirve fuera del router de Next (la wiki es estática): enlace normal, misma pestaña */
+  plainLink?: boolean
 }
 
 /**
@@ -20,6 +22,9 @@ export function getNavItems(user: User | null): NavItem[] {
     items.push({ label: 'Casos', href: '/cases' })
   }
   items.push({ label: 'Foro', href: 'https://foro.pafe-formakuntza.com/', external: true })
+  if (user) {
+    items.push({ label: 'Wiki', href: '/wiki', plainLink: true })
+  }
   if (isStaff(user)) {
     items.push({ label: 'Administración', href: '/admin' })
   }
