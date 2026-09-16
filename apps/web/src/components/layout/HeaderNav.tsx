@@ -34,6 +34,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           >
             {item.label}
           </a>
+        ) : item.plainLink ? (
+          <a
+            key={item.href}
+            href={item.href}
+            className={cn(linkClasses, isNavItemActive(item, pathname) && 'bg-accent text-foreground')}
+          >
+            {item.label}
+          </a>
         ) : (
           <Link
             key={item.href}

@@ -20,6 +20,8 @@ const PAGE_SIZE = 24
 
 interface Props {
   categories: Taxonomy[]
+  /** Búsqueda inicial: la wiki enlaza de vuelta al catálogo con ?q=<título> */
+  initialQuery?: string
 }
 
 const COLLECTION_OPTIONS = [
@@ -65,8 +67,8 @@ const FACETS: { key: string; label: string; allLabel: string }[] = [
 
 const facetOf = (cat: Taxonomy): string => cat.payload?.types?.[0] ?? 'tematica'
 
-export function CatalogSearch({ categories }: Props) {
-  const [query, setQuery] = useState('')
+export function CatalogSearch({ categories, initialQuery = '' }: Props) {
+  const [query, setQuery] = useState(initialQuery)
   const [facetSelection, setFacetSelection] = useState<Record<string, string>>({})
   const [collectionType, setCollectionType] = useState('all')
   const [itemType, setItemType] = useState('all')
