@@ -29,13 +29,31 @@ const COLLECTION_OPTIONS = [
   { value: 'external-resources', label: 'Recursos externos' },
 ]
 
-const EXTERNAL_TYPE_OPTIONS = [
-  { value: 'all', label: 'Todos los formatos' },
-  { value: 'video', label: 'Vídeo' },
-  { value: 'web_link', label: 'Enlace web' },
-  { value: 'google-form', label: 'Google Form' },
-  { value: 'google-doc', label: 'Google Doc' },
-]
+// Cada colección filtra por su propio campo de tipo; los descargables no tienen.
+const ITEM_TYPE_FILTERS: Record<
+  string,
+  { label: string; options: { value: string; label: string }[] }
+> = {
+  'catalog-item': {
+    label: 'Material',
+    options: [
+      { value: 'all', label: 'Todos los materiales' },
+      { value: 'libro', label: 'Libros' },
+      { value: 'juego', label: 'Juegos' },
+      { value: 'programa', label: 'Programas técnicos' },
+    ],
+  },
+  'external-resources': {
+    label: 'Formato',
+    options: [
+      { value: 'all', label: 'Todos los formatos' },
+      { value: 'video', label: 'Vídeo' },
+      { value: 'web_link', label: 'Enlace web' },
+      { value: 'google-form', label: 'Google Form' },
+      { value: 'google-doc', label: 'Google Doc' },
+    ],
+  },
+}
 
 // Facetas de la taxonomía (vienen en `payload.types` de cada término).
 // Un selector por faceta; entre facetas el filtro se combina con AND.
@@ -52,6 +70,7 @@ export function CatalogSearch({ categories }: Props) {
   const [facetSelection, setFacetSelection] = useState<Record<string, string>>({})
   const [collectionType, setCollectionType] = useState('all')
   const [itemType, setItemType] = useState('all')
+  const itemTypeFilter = ITEM_TYPE_FILTERS[collectionType]
 
   const debouncedQuery = useDebounce(query, 300)
 
@@ -91,8 +110,7 @@ export function CatalogSearch({ categories }: Props) {
         query: debouncedQuery,
         categoryGroups,
         collectionType: collectionType === 'all' ? undefined : collectionType,
-        itemType:
-          collectionType === 'external-resources' && itemType !== 'all' ? itemType : undefined,
+        itemType: itemType === 'all' ? undefined : itemType,
         page,
         limit: PAGE_SIZE,
       }),
@@ -163,13 +181,13 @@ export function CatalogSearch({ categories }: Props) {
             </SelectContent>
           </Select>
 
-          {collectionType === 'external-resources' && (
+          {itemTypeFilter && (
             <Select value={itemType} onValueChange={setItemType}>
-              <SelectTrigger className="w-full sm:w-48" aria-label="Formato">
-                <SelectValue placeholder="Formato" />
+              <SelectTrigger className="w-full sm:w-48" aria-label={itemTypeFilter.label}>
+                <SelectValue placeholder={itemTypeFilter.label} />
               </SelectTrigger>
               <SelectContent>
-                {EXTERNAL_TYPE_OPTIONS.map((opt) => (
+                {itemTypeFilter.options.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
                     {opt.label}
                   </SelectItem>

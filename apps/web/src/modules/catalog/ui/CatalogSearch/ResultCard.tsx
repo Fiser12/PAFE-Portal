@@ -97,9 +97,14 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
 
         <div className="mt-auto pt-2">
           {isReservable ? (
-            <Button className="w-full" onClick={handleOpen}>
-              Ver ficha
-            </Button>
+            <>
+              <p className="mb-2 text-xs text-muted-foreground">
+                ¿Quieres saber algo más antes de reservarlo?
+              </p>
+              <Button className="w-full" onClick={handleOpen}>
+                Ver ficha
+              </Button>
+            </>
           ) : (
             <Button className="w-full" onClick={handleOpen} disabled={!url}>
               {collectionType === 'files' ? (
