@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { mezclar, porDias, type NoticiaDeAgenda } from '@/modules/calendario/domain/entradas'
+import {
+  mezclar,
+  porDias,
+  sieteDias,
+  type NoticiaDeAgenda,
+} from '@/modules/calendario/domain/entradas'
 import type { Ocurrencia } from '@/modules/calendario/domain/ocurrencias'
 
 const evento = (inicio: string, titulo: string): Ocurrencia => ({
@@ -46,17 +51,19 @@ describe('la agenda mezcla tablón y calendario', () => {
     expect(cronologia[0]).toMatchObject({ tipo: 'noticia', enlace: '/noticias/aviso' })
   })
 
-  it('saca aparte las fijadas, que no deben perderse entre fechas', () => {
+  it('lo fijado sale aparte y no se mezcla con las fechas', () => {
     const { fijadas, cronologia } = mezclar(
       [evento('2026-09-22T08:00:00Z', 'reunión')],
-      [
-        noticia('2026-09-20T10:00:00Z', 'importante', true),
-        noticia('2026-09-24T10:00:00Z', 'normal'),
-      ],
+      [noticia('2026-09-24T10:00:00Z', 'fijada', true), noticia('2026-09-23T10:00:00Z', 'normal')],
       AHORA,
     )
-    expect(fijadas.map((e) => e.titulo)).toEqual(['importante'])
+    expect(fijadas.map((e) => e.titulo)).toEqual(['fijada'])
     expect(cronologia.map((e) => e.titulo)).toEqual(['reunión', 'normal'])
+  })
+
+  it('lo fijado se ve aunque sea viejo', () => {
+    const { fijadas } = mezclar([], [noticia('2020-01-01T10:00:00Z', 'de hace años', true)], AHORA)
+    expect(fijadas.map((e) => e.titulo)).toEqual(['de hace años'])
   })
 
   it('cada entrada tiene clave propia aunque se repita el título', () => {
@@ -69,14 +76,21 @@ describe('la agenda mezcla tablón y calendario', () => {
   })
 })
 
-describe('la agenda no mira hacia atrás', () => {
-  it('deja fuera los eventos que ya pasaron', () => {
+describe('la agenda mira una semana atrás, no más', () => {
+  it('deja fuera lo de hace más de una semana', () => {
     const { cronologia } = mezclar(
-      [evento('2026-09-15T08:00:00Z', 'la semana pasada'), evento('2026-09-25T08:00:00Z', 'el viernes')],
+      [evento('2026-09-01T08:00:00Z', 'hace dos semanas'), evento('2026-09-25T08:00:00Z', 'el viernes')],
       [],
       AHORA,
     )
     expect(cronologia.map((e) => e.titulo)).toEqual(['el viernes'])
+  })
+
+  it('mantiene lo de estos días, que es donde vive lo del tablón', () => {
+    // Una noticia se publica con la fecha del día: cortando en hoy solo se
+    // vería la jornada en que se escribió.
+    const { cronologia } = mezclar([], [noticia('2026-09-18T10:00:00Z', 'de hace unos días')], AHORA)
+    expect(cronologia.map((e) => e.titulo)).toEqual(['de hace unos días'])
   })
 
   it('mantiene lo que queda de hoy, aunque la hora ya haya pasado', () => {
@@ -85,23 +99,13 @@ describe('la agenda no mira hacia atrás', () => {
     expect(cronologia.map((e) => e.titulo)).toEqual(['esta mañana'])
   })
 
-  it('las noticias ya publicadas no se tiran: suben como novedades', () => {
-    const { recientes, cronologia } = mezclar(
+  it('tampoco enseña noticias muy viejas', () => {
+    const { cronologia } = mezclar(
       [],
-      [noticia('2026-09-18T10:00:00Z', 'de la semana pasada')],
+      [noticia('2026-08-01T10:00:00Z', 'de hace un mes'), noticia('2026-09-22T09:00:00Z', 'de hoy')],
       AHORA,
     )
-    expect(recientes.map((e) => e.titulo)).toEqual(['de la semana pasada'])
-    expect(cronologia).toHaveLength(0)
-  })
-
-  it('las novedades van de la más nueva a la más vieja', () => {
-    const { recientes } = mezclar(
-      [],
-      [noticia('2026-09-18T10:00:00Z', 'vieja'), noticia('2026-09-21T10:00:00Z', 'nueva')],
-      AHORA,
-    )
-    expect(recientes.map((e) => e.titulo)).toEqual(['nueva', 'vieja'])
+    expect(cronologia.map((e) => e.titulo)).toEqual(['de hoy'])
   })
 })
 
@@ -139,5 +143,33 @@ describe('el día de hoy en la agenda', () => {
     const { dias } = porDias(cronologia, ahora)
     const conEntrada = dias.find((d) => d.entradas.length > 0)
     expect(conEntrada?.dia.toISOString().slice(0, 10)).toBe('2026-09-23')
+  })
+})
+
+describe('la semana', () => {
+  const AHORA_SEMANA = new Date('2026-09-24T12:00:00Z')
+  const lunes = new Date('2026-09-21T00:00:00Z')
+
+  it('reparte eventos y noticias en sus días', () => {
+    const { cronologia } = mezclar(
+      [evento('2026-09-22T08:00:00Z', 'reunión')],
+      [noticia('2026-09-24T10:00:00Z', 'aviso')],
+      AHORA_SEMANA,
+    )
+    const dias = sieteDias(cronologia, lunes, AHORA_SEMANA)
+    expect(dias).toHaveLength(7)
+    expect(dias[1]?.entradas.map((e) => e.titulo)).toEqual(['reunión'])
+    expect(dias[3]?.entradas.map((e) => e.titulo)).toEqual(['aviso'])
+  })
+
+  it('marca cuál de los siete es hoy', () => {
+    const dias = sieteDias([], lunes, AHORA_SEMANA)
+    expect(dias.findIndex((d) => d.hoy)).toBe(3)
+  })
+
+  it('una semana sin nada sigue teniendo siete días', () => {
+    const dias = sieteDias([], new Date('2030-01-07T00:00:00Z'), AHORA_SEMANA)
+    expect(dias).toHaveLength(7)
+    expect(dias.every((d) => d.entradas.length === 0)).toBe(true)
   })
 })

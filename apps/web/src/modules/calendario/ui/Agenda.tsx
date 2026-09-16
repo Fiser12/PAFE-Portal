@@ -2,7 +2,16 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CalendarDays, ChevronLeft, ChevronRight, List, Newspaper, Pin } from 'lucide-react'
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  CornerDownLeft,
+  ExternalLink,
+  List,
+  Newspaper,
+  Pin,
+} from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -10,9 +19,15 @@ import { useIdioma } from '@/components/IdiomaProvider'
 import type { CodigoIdioma } from '@/core/localization'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { cn } from '@/utilities/ui'
-import { semanaCompleta, semanaDe, type Dia } from '../domain/agrupar'
+import { semanaDe } from '../domain/agrupar'
 import { colorDe } from '../domain/calendarios'
-import { mezclar, porDias, type Entrada, type NoticiaDeAgenda } from '../domain/entradas'
+import {
+  mezclar,
+  porDias,
+  sieteDias,
+  type Entrada,
+  type NoticiaDeAgenda,
+} from '../domain/entradas'
 import { diaCorto, diaLargo, hora } from '../domain/fechas'
 import type { Ocurrencia } from '../domain/ocurrencias'
 
@@ -38,40 +53,41 @@ const rehidratar = (plana: OcurrenciaPlana): Ocurrencia => ({
   fin: new Date(plana.fin),
 })
 
-function Fila({
+const inicioDelDia = (fecha: Date) =>
+  new Date(`${new Intl.DateTimeFormat('sv-SE', { timeZone: ZONA }).format(fecha)}T00:00:00Z`)
+
+/** Una noticia del tablón: se distingue del calendario y se puede abrir */
+function Noticia({
   entrada,
-  nombres,
-  todoElDia,
-  compacta = false,
-  conPin = false,
+  compacta,
   etiquetaPin,
 }: {
-  entrada: Entrada
-  nombres: Record<string, string>
-  todoElDia: string
+  entrada: Extract<Entrada, { tipo: 'noticia' }>
   compacta?: boolean
-  conPin?: boolean
-  etiquetaPin?: string
+  etiquetaPin: string
 }) {
-  const contenido =
-    entrada.tipo === 'evento' ? (
-      <>
-        <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
-          {entrada.diaCompleto ? todoElDia : hora(entrada.fecha)}
-        </span>
-        <span className={cn('min-w-0 flex-1', compacta ? 'break-words' : 'truncate')}>
-          {entrada.titulo}
-        </span>
-      </>
-    ) : (
-      <>
-        {conPin ? (
-          <Pin className="mt-0.5 h-3 w-3 shrink-0" aria-label={etiquetaPin} />
+  return (
+    <li>
+      <Link
+        href={entrada.enlace}
+        className={cn(
+          'group flex gap-2 rounded border-l-4 border-primary bg-primary/5 px-2 transition-colors hover:bg-primary/15',
+          compacta ? 'py-1' : 'py-1.5',
+        )}
+      >
+        {entrada.fijada ? (
+          <Pin className="mt-0.5 h-3 w-3 shrink-0 text-primary" aria-label={etiquetaPin} />
         ) : (
-          <Newspaper className="mt-0.5 h-3 w-3 shrink-0 text-muted-foreground" />
+          <Newspaper className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
         )}
         <span className="min-w-0 flex-1">
-          <span className={cn('block font-medium', compacta ? 'break-words' : 'truncate')}>
+          <span
+            className={cn(
+              'block font-medium underline-offset-2 group-hover:underline',
+              compacta ? 'line-clamp-3 text-xs leading-tight' : 'truncate text-sm',
+            )}
+            title={entrada.titulo}
+          >
             {entrada.titulo}
           </span>
           {!compacta && entrada.resumen && (
@@ -79,108 +95,102 @@ function Fila({
           )}
         </span>
         {!compacta && (
-          <Badge variant="outline" className="shrink-0 text-[10px]">
+          <Badge variant="secondary" className="shrink-0 self-start text-[10px]">
             {nombreDelArea(entrada.area)}
           </Badge>
         )}
-      </>
-    )
-
-  const clases = cn(
-    'flex items-baseline gap-2 border-l-2 pl-2',
-    compacta ? 'py-0.5 text-xs' : 'py-1 text-sm',
+      </Link>
+    </li>
   )
-  const color =
-    entrada.tipo === 'evento' ? colorDe(entrada.calendario) : 'hsl(var(--primary))'
+}
 
-  if (entrada.tipo === 'noticia') {
+/** Un evento del calendario. Si trae enlaces en su descripción, se ofrecen */
+function Evento({
+  entrada,
+  nombres,
+  todoElDia,
+  compacta,
+}: {
+  entrada: Extract<Entrada, { tipo: 'evento' }>
+  nombres: Record<string, string>
+  todoElDia: string
+  compacta?: boolean
+}) {
+  if (compacta) {
     return (
-      <li>
-        <Link
-          href={entrada.enlace}
-          className={cn(clases, 'rounded-r transition-colors hover:bg-accent/50')}
-          style={{ borderLeftColor: color }}
-        >
-          {contenido}
-        </Link>
+      <li
+        className="rounded border-l-2 bg-background/60 px-1.5 py-1"
+        style={{ borderLeftColor: colorDe(entrada.calendario) }}
+        title={`${entrada.titulo}${entrada.descripcion ? ` — ${entrada.descripcion}` : ''}`}
+      >
+        <span className="block font-mono text-[10px] leading-none text-muted-foreground">
+          {entrada.diaCompleto ? todoElDia : hora(entrada.fecha)}
+        </span>
+        <span className="mt-0.5 line-clamp-3 block text-xs leading-tight">{entrada.titulo}</span>
+        {entrada.enlaces[0] && (
+          <a
+            href={entrada.enlaces[0]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-0.5 inline-flex items-center gap-0.5 text-[10px] text-primary hover:underline"
+          >
+            <ExternalLink className="h-2.5 w-2.5" />
+            {new URL(entrada.enlaces[0]).hostname.replace(/^www\./, '')}
+          </a>
+        )}
       </li>
     )
   }
 
   return (
     <li
-      className={clases}
-      style={{ borderLeftColor: color }}
+      className="flex gap-2 border-l-2 py-1 pl-2"
+      style={{ borderLeftColor: colorDe(entrada.calendario) }}
       title={nombres[entrada.calendario] ?? undefined}
     >
-      {contenido}
+      <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+        {entrada.diaCompleto ? todoElDia : hora(entrada.fecha)}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm">{entrada.titulo}</span>
+        {entrada.enlaces.length > 0 && (
+          <span className="flex flex-wrap gap-2">
+            {entrada.enlaces.slice(0, 2).map((url) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 text-xs text-primary hover:underline"
+              >
+                <ExternalLink className="h-3 w-3" />
+                <span className="max-w-40 truncate">{new URL(url).hostname}</span>
+              </a>
+            ))}
+          </span>
+        )}
+      </span>
     </li>
   )
 }
 
-/** Título de la sección con sus controles al lado, fuera de la tarjeta */
-function Controles({
-  vista,
-  setVista,
-  semana,
-  setSemana,
-  titulo,
-  t,
-}: {
-  vista: 'agenda' | 'semana'
-  setVista: (v: 'agenda' | 'semana') => void
-  semana: Date
-  setSemana: (d: Date) => void
-  titulo: string
-  t: Record<string, string>
+function Fila(props: {
+  entrada: Entrada
+  nombres: Record<string, string>
+  todoElDia: string
+  etiquetaPin: string
+  compacta?: boolean
 }) {
-  return (
-    <div className="mb-3 flex flex-wrap items-center gap-3">
-      <h2 className="text-xl font-semibold sm:text-2xl">{titulo}</h2>
-
-      <div className="flex gap-0.5 rounded-md border p-0.5">
-        <Button
-          variant={vista === 'agenda' ? 'secondary' : 'ghost'}
-          size="sm"
-          onClick={() => setVista('agenda')}
-        >
-          <List className="mr-1 h-4 w-4" />
-          {t.calAgenda}
-        </Button>
-        <Button
-          variant={vista === 'semana' ? 'secondary' : 'ghost'}
-          size="sm"
-          onClick={() => setVista('semana')}
-        >
-          <CalendarDays className="mr-1 h-4 w-4" />
-          {t.calSemana}
-        </Button>
-      </div>
-
-      {vista === 'semana' && (
-        <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label={t.calSemanaAnterior}
-            onClick={() => setSemana(new Date(semana.getTime() - UNA_SEMANA))}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => setSemana(semanaDe(new Date(), ZONA).desde)}>
-            {t.calVolverAHoy}
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label={t.calSemanaSiguiente}
-            onClick={() => setSemana(new Date(semana.getTime() + UNA_SEMANA))}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-    </div>
+  const { entrada, ...resto } = props
+  return entrada.tipo === 'noticia' ? (
+    <Noticia entrada={entrada} compacta={resto.compacta} etiquetaPin={resto.etiquetaPin} />
+  ) : (
+    <Evento
+      entrada={entrada}
+      nombres={resto.nombres}
+      todoElDia={resto.todoElDia}
+      compacta={resto.compacta}
+    />
   )
 }
 
@@ -189,66 +199,138 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
   const [vista, setVista] = useState<'agenda' | 'semana'>('agenda')
   const [semana, setSemana] = useState(() => semanaDe(new Date(), ZONA).desde)
   const hoyRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const todas = useMemo(() => ocurrencias.map(rehidratar), [ocurrencias])
-  const { fijadas, recientes, cronologia } = useMemo(
+  const { fijadas, cronologia } = useMemo(
     () => mezclar(todas, noticias, new Date(), ZONA),
     [todas, noticias],
   )
-  const destacadas = [...fijadas, ...recientes]
   const { dias } = useMemo(() => porDias(cronologia, new Date(), ZONA), [cronologia])
+  const semanal = useMemo(
+    () => sieteDias(cronologia, semana, new Date(), ZONA),
+    [cronologia, semana],
+  )
+  const hoy = useMemo(() => inicioDelDia(new Date()), [])
+  const [hoyALaVista, setHoyALaVista] = useState(true)
 
-  const semanal: Dia[] = useMemo(() => semanaCompleta(todas, semana, ZONA), [todas, semana])
+  const irAHoy = () => hoyRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' })
 
-  // Al abrir, la vista arranca en el día de hoy y no en lo más antiguo
+  // La vista arranca en el día de hoy y no en lo más antiguo
   useEffect(() => {
     if (vista === 'agenda') hoyRef.current?.scrollIntoView({ block: 'start' })
   }, [vista, dias.length])
 
+  // El botón de volver solo aparece cuando hoy se ha ido de la pantalla
+  useEffect(() => {
+    const marca = hoyRef.current
+    const caja = scrollRef.current
+    if (vista !== 'agenda' || !marca || !caja) return
+
+    const vigilante = new IntersectionObserver(
+      ([entrada]) => setHoyALaVista(Boolean(entrada?.isIntersecting)),
+      { root: caja, threshold: 0.1 },
+    )
+    vigilante.observe(marca)
+    return () => vigilante.disconnect()
+  }, [vista, dias.length])
+
+  const mover = (semanas: number) => setSemana(new Date(semana.getTime() + semanas * UNA_SEMANA))
+
   return (
-    <section>
-      <Controles
-        vista={vista}
-        setVista={setVista}
-        semana={semana}
-        setSemana={setSemana}
-        titulo={t.inicioCalendario}
-        t={t as unknown as Record<string, string>}
-      />
+    <div className="space-y-6">
+      {fijadas.length > 0 && (
+        <section className="space-y-2">
+          <ul className="space-y-1">
+            {fijadas.map((entrada) => (
+              <Fila
+                key={entrada.id}
+                entrada={entrada}
+                nombres={nombres}
+                todoElDia={t.calTodoElDia}
+                etiquetaPin={t.tablonFijada}
+              />
+            ))}
+          </ul>
+        </section>
+      )}
 
-      <Card>
-        <CardContent className="space-y-3 p-3 sm:p-4">
-          {fallidos.length > 0 && <p className="text-xs text-muted-foreground">{t.calFallidos}</p>}
+      <section>
+        <div className="mb-3 flex flex-wrap items-center gap-3">
+          <h2 className="text-xl font-semibold sm:text-2xl">{t.inicioCalendario}</h2>
 
-          {vista === 'agenda' ? (
-            <>
-              {destacadas.length > 0 && (
-                <div className="rounded-md bg-muted/50 p-2">
-                  <p className="mb-1 px-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                    {t.calNovedades}
-                  </p>
-                  <ul className="max-h-28 overflow-y-auto">
-                    {destacadas.map((entrada) => (
-                      <Fila
-                        key={entrada.id}
-                        entrada={entrada}
-                        nombres={nombres}
-                        todoElDia={t.calTodoElDia}
-                        conPin={entrada.tipo === 'noticia' && entrada.fijada}
-                        etiquetaPin={t.tablonFijada}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              )}
+          <div className="flex gap-0.5 rounded-md border p-0.5">
+            <Button
+              variant={vista === 'agenda' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => setVista('agenda')}
+            >
+              <List className="mr-1 h-4 w-4" />
+              {t.calAgenda}
+            </Button>
+            <Button
+              variant={vista === 'semana' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => setVista('semana')}
+            >
+              <CalendarDays className="mr-1 h-4 w-4" />
+              {t.calSemana}
+            </Button>
+          </div>
 
-              <div className="max-h-80 space-y-3 overflow-y-auto pr-1">
+          {vista === 'semana' && (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={t.calSemanaAnterior}
+                onClick={() => mover(-1)}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSemana(semanaDe(new Date(), ZONA).desde)}
+              >
+                {t.calVolverAHoy}
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={t.calSemanaSiguiente}
+                onClick={() => mover(1)}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <Card>
+          <CardContent className="space-y-3 p-3 sm:p-4">
+            {fallidos.length > 0 && <p className="text-xs text-muted-foreground">{t.calFallidos}</p>}
+
+            {vista === 'agenda' ? (
+              <div className="relative">
+                {!hoyALaVista && (
+                  <Button
+                    size="sm"
+                    onClick={irAHoy}
+                    className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 shadow-lg"
+                  >
+                    <CornerDownLeft className="mr-1 h-3.5 w-3.5" />
+                    {t.calVolverAHoy}
+                  </Button>
+                )}
+                <div ref={scrollRef} className="max-h-80 space-y-3 overflow-y-auto pr-1">
                 {dias.map((dia) => (
                   <div
                     key={dia.dia.toISOString()}
                     ref={dia.hoy ? hoyRef : undefined}
                     className={cn(
                       dia.hoy && 'rounded-lg border-2 border-primary bg-primary/5 p-2 shadow-sm',
+                      dia.dia < hoy && 'opacity-60',
                     )}
                   >
                     <h3
@@ -269,68 +351,76 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
                     {dia.entradas.length === 0 ? (
                       <p className="py-1 pl-2 text-xs text-muted-foreground">{t.calSinNada}</p>
                     ) : (
-                      <ul>
+                      <ul className="space-y-0.5">
                         {dia.entradas.map((entrada) => (
                           <Fila
                             key={entrada.id}
                             entrada={entrada}
                             nombres={nombres}
                             todoElDia={t.calTodoElDia}
+                            etiquetaPin={t.tablonFijada}
                           />
                         ))}
                       </ul>
                     )}
                   </div>
                 ))}
+                </div>
               </div>
-            </>
-          ) : (
-            <div className="grid gap-2 sm:grid-cols-7">
-              {semanal.map(({ dia, ocurrencias: delDia }) => {
-                const esHoy =
-                  new Intl.DateTimeFormat('sv-SE', { timeZone: ZONA }).format(new Date()) ===
-                  dia.toISOString().slice(0, 10)
-                return (
+            ) : (
+              <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 lg:grid lg:grid-cols-7 lg:overflow-visible">
+                {semanal.map((dia) => (
                   <div
-                    key={dia.toISOString()}
+                    key={dia.dia.toISOString()}
                     className={cn(
-                      'flex max-h-44 min-h-20 flex-col rounded-md border p-1.5',
-                      esHoy && 'border-2 border-primary bg-primary/5',
+                      'flex min-w-40 flex-col rounded-lg border lg:min-w-0',
+                      dia.hoy ? 'border-2 border-primary bg-primary/5' : 'bg-muted/20',
                     )}
                   >
-                    <p
+                    <div
                       className={cn(
-                        'mb-1 shrink-0 text-xs font-semibold first-letter:uppercase',
-                        esHoy ? 'text-primary' : 'text-muted-foreground',
+                        'flex items-center justify-between gap-1 rounded-t-lg px-2 py-1.5',
+                        dia.hoy ? 'bg-primary text-primary-foreground' : 'bg-muted/60',
                       )}
                     >
-                      {diaCorto(dia, idioma as CodigoIdioma)}
-                    </p>
-                    <ul className="min-h-0 flex-1 overflow-y-auto">
-                      {delDia.map((ocurrencia, i) => (
-                        <Fila
-                          key={`${ocurrencia.uid}-${i}`}
-                          entrada={{
-                            tipo: 'evento',
-                            id: `${ocurrencia.uid}-${i}`,
-                            fecha: ocurrencia.inicio,
-                            titulo: ocurrencia.titulo,
-                            diaCompleto: ocurrencia.diaCompleto,
-                            calendario: ocurrencia.calendario,
-                          }}
-                          nombres={nombres}
-                          todoElDia={t.calTodoElDia}
-                          compacta
-                        />
-                      ))}
+                      <span className="text-xs font-semibold first-letter:uppercase">
+                        {diaCorto(dia.dia, idioma as CodigoIdioma)}
+                      </span>
+                      {dia.entradas.length > 0 && (
+                        <span
+                          className={cn(
+                            'rounded-full px-1.5 text-[10px] font-medium',
+                            dia.hoy ? 'bg-primary-foreground/20' : 'bg-background',
+                          )}
+                        >
+                          {dia.entradas.length}
+                        </span>
+                      )}
+                    </div>
+
+                    <ul className="min-h-28 flex-1 space-y-1 overflow-y-auto p-1 lg:max-h-64">
+                      {dia.entradas.length === 0 ? (
+                        <li className="pt-2 text-center text-[10px] text-muted-foreground">·</li>
+                      ) : (
+                        dia.entradas.map((entrada) => (
+                          <Fila
+                            key={entrada.id}
+                            entrada={entrada}
+                            nombres={nombres}
+                            todoElDia={t.calTodoElDia}
+                            etiquetaPin={t.tablonFijada}
+                            compacta
+                          />
+                        ))
+                      )}
                     </ul>
                   </div>
-                )
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </section>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </section>
+    </div>
   )
 }

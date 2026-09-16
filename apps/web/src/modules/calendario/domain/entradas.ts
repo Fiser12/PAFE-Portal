@@ -1,3 +1,4 @@
+import { enlacesDe, textoLlano } from './enlaces'
 import type { Ocurrencia } from './ocurrencias'
 
 /**
@@ -13,6 +14,8 @@ export type Entrada =
       titulo: string
       diaCompleto: boolean
       calendario: string
+      descripcion: string
+      enlaces: string[]
     }
   | {
       tipo: 'noticia'
@@ -41,6 +44,8 @@ const deOcurrencia = (ocurrencia: Ocurrencia, indice: number): Entrada => ({
   titulo: ocurrencia.titulo,
   diaCompleto: ocurrencia.diaCompleto,
   calendario: ocurrencia.calendario,
+  descripcion: textoLlano(ocurrencia.descripcion),
+  enlaces: enlacesDe(ocurrencia.descripcion),
 })
 
 const deNoticia = (noticia: NoticiaDeAgenda): Entrada => ({
@@ -57,31 +62,38 @@ const deNoticia = (noticia: NoticiaDeAgenda): Entrada => ({
 const inicioDelDia = (fecha: Date, zona: string): Date =>
   new Date(`${new Intl.DateTimeFormat('sv-SE', { timeZone: zona }).format(fecha)}T00:00:00Z`)
 
+const UN_DIA = 24 * 60 * 60 * 1000
+
 /**
- * Reparte lo que hay en dos sitios.
+ * Días que la agenda mira hacia atrás. No es capricho: una noticia se publica
+ * con la fecha del día en que se escribe, nunca con una futura, así que
+ * cortando en hoy solo se vería la jornada en que se publicó. Con la semana
+ * detrás, lo del tablón sigue ahí unos días y lo viejo no estorba.
+ */
+export const DIAS_ATRAS = 7
+
+/**
+ * Una sola línea de tiempo: lo del tablón y lo del calendario caen en su día.
  *
- * La cronología es una agenda: va de hoy en adelante, porque un evento que ya
- * pasó no le sirve a nadie. Lo del tablón que se publicó antes de hoy no se
- * tira, se sube arriba como novedades: son noticias, y su valor es que se vean,
- * no la fecha en que cayeron.
+ * Lo fijado sale aparte y sin filtro de fecha: está fijado justamente para que
+ * se vea siempre, así que va por encima de todo y no dentro de la agenda.
  */
 export const mezclar = (
   ocurrencias: Ocurrencia[],
   noticias: NoticiaDeAgenda[],
   ahora: Date = new Date(),
   zona = 'Europe/Madrid',
-): { fijadas: Entrada[]; recientes: Entrada[]; cronologia: Entrada[] } => {
-  const corte = inicioDelDia(ahora, zona)
-  const porFechaDesc = (a: Entrada, b: Entrada) => b.fecha.getTime() - a.fecha.getTime()
-
-  const noFijadas = noticias.filter((n) => !n.fijada).map(deNoticia)
+): { fijadas: Entrada[]; cronologia: Entrada[] } => {
+  const corte = new Date(inicioDelDia(ahora, zona).getTime() - DIAS_ATRAS * UN_DIA)
+  const deTablon = noticias.map(deNoticia)
 
   return {
-    fijadas: noticias.filter((n) => n.fijada).map(deNoticia).sort(porFechaDesc),
-    recientes: noFijadas.filter((n) => n.fecha < corte).sort(porFechaDesc),
+    fijadas: deTablon
+      .filter((n) => n.tipo === 'noticia' && n.fijada)
+      .sort((a, b) => b.fecha.getTime() - a.fecha.getTime()),
     cronologia: [
       ...ocurrencias.filter((o) => o.inicio >= corte).map(deOcurrencia),
-      ...noFijadas.filter((n) => n.fecha >= corte),
+      ...deTablon.filter((n) => n.tipo === 'noticia' && !n.fijada && n.fecha >= corte),
     ].sort((a, b) => a.fecha.getTime() - b.fecha.getTime()),
   }
 }
@@ -126,4 +138,26 @@ export const porDias = (
     }))
 
   return { dias, indiceDeHoy: dias.findIndex((d) => d.hoy) }
+}
+
+/** Los siete días de una semana con lo que cae en cada uno, vacíos incluidos */
+export const sieteDias = (
+  entradas: Entrada[],
+  desde: Date,
+  ahora: Date = new Date(),
+  zona = 'Europe/Madrid',
+): DiaDeAgenda[] => {
+  const claveDeHoy = diaEn(ahora, zona)
+
+  return Array.from({ length: 7 }, (_, indice) => {
+    const dia = new Date(desde.getTime() + indice * UN_DIA)
+    const clave = dia.toISOString().slice(0, 10)
+    return {
+      dia,
+      hoy: clave === claveDeHoy,
+      entradas: entradas
+        .filter((entrada) => diaEn(entrada.fecha, zona) === clave)
+        .sort((a, b) => a.fecha.getTime() - b.fecha.getTime()),
+    }
+  })
 }

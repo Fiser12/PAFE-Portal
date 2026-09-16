@@ -18,11 +18,8 @@ export interface AgendaData {
 
 const VACIO: AgendaData = { ocurrencias: [], noticias: [], nombres: {}, fallidos: [] }
 
-/**
- * Los eventos se piden desde hoy: una agenda no enseña lo que ya pasó. Las
- * noticias sí se traen de atrás, que es de donde salen las novedades.
- */
-const SEMANAS_ATRAS = 4
+/** Lo que se pide a cada fuente; quien recorta a la semana es el dominio */
+const SEMANAS_ATRAS = 2
 const SEMANAS_ADELANTE = 26
 const UNA_SEMANA = 7 * 24 * 60 * 60 * 1000
 
@@ -40,13 +37,11 @@ export async function cargarAgendaCompleta(): Promise<AgendaData> {
   if (!user || !isActiveUser(user)) return VACIO
 
   const ahora = Date.now()
-  const desdeNoticias = new Date(ahora - SEMANAS_ATRAS * UNA_SEMANA)
+  const desde = new Date(ahora - SEMANAS_ATRAS * UNA_SEMANA)
   const hasta = new Date(ahora + SEMANAS_ADELANTE * UNA_SEMANA)
-  // Un poco antes de hoy para no perder lo que empezó esta madrugada
-  const desdeEventos = new Date(ahora - 36 * 60 * 60 * 1000)
 
   const [calendario, noticias] = await Promise.all([
-    cargarAgenda(desdeEventos, hasta),
+    cargarAgenda(desde, hasta),
     noticiasDelTablon({
       payload,
       user,
@@ -64,7 +59,7 @@ export async function cargarAgendaCompleta(): Promise<AgendaData> {
       fin: o.fin.toISOString(),
     })),
     noticias: noticias
-      .filter((noticia) => new Date(noticia.publishedAt) >= desdeNoticias)
+      .filter((noticia) => new Date(noticia.publishedAt) >= desde)
       .map((noticia) => ({
         id: noticia.id,
         titulo: noticia.title,
