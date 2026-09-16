@@ -20,6 +20,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"body" jsonb,
   	"published_at" timestamp(3) with time zone NOT NULL,
   	"pinned" boolean DEFAULT false,
+  	"archivada" boolean DEFAULT false,
   	"author_id" integer,
   	"notified_at" timestamp(3) with time zone,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -33,6 +34,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"author_id" integer NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE "adjunto" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"alt" varchar,
+  	"prefix" varchar DEFAULT 'tablon',
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"url" varchar,
+  	"thumbnail_u_r_l" varchar,
+  	"filename" varchar,
+  	"mime_type" varchar,
+  	"filesize" numeric,
+  	"width" numeric,
+  	"height" numeric,
+  	"focal_x" numeric,
+  	"focal_y" numeric
   );
   
   CREATE TABLE "presentacion_catalogo" (
@@ -50,11 +68,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "notification" ADD COLUMN "tarea_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "noticia_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "respuesta_id" integer;
+  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "adjunto_id" integer;
   ALTER TABLE "noticia" ADD CONSTRAINT "noticia_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "respuesta" ADD CONSTRAINT "respuesta_noticia_id_noticia_id_fk" FOREIGN KEY ("noticia_id") REFERENCES "public"."noticia"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "respuesta" ADD CONSTRAINT "respuesta_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
   CREATE INDEX "noticia_area_idx" ON "noticia" USING btree ("area");
   CREATE INDEX "noticia_published_at_idx" ON "noticia" USING btree ("published_at");
+  CREATE INDEX "noticia_archivada_idx" ON "noticia" USING btree ("archivada");
   CREATE INDEX "noticia_author_idx" ON "noticia" USING btree ("author_id");
   CREATE INDEX "noticia_updated_at_idx" ON "noticia" USING btree ("updated_at");
   CREATE INDEX "noticia_created_at_idx" ON "noticia" USING btree ("created_at");
@@ -62,23 +82,30 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "respuesta_author_idx" ON "respuesta" USING btree ("author_id");
   CREATE INDEX "respuesta_updated_at_idx" ON "respuesta" USING btree ("updated_at");
   CREATE INDEX "respuesta_created_at_idx" ON "respuesta" USING btree ("created_at");
+  CREATE INDEX "adjunto_updated_at_idx" ON "adjunto" USING btree ("updated_at");
+  CREATE INDEX "adjunto_created_at_idx" ON "adjunto" USING btree ("created_at");
+  CREATE UNIQUE INDEX "adjunto_filename_idx" ON "adjunto" USING btree ("filename");
   ALTER TABLE "notification" ADD CONSTRAINT "notification_noticia_id_noticia_id_fk" FOREIGN KEY ("noticia_id") REFERENCES "public"."noticia"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "notification" ADD CONSTRAINT "notification_tarea_id_tasks_id_fk" FOREIGN KEY ("tarea_id") REFERENCES "public"."tasks"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_noticia_fk" FOREIGN KEY ("noticia_id") REFERENCES "public"."noticia"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_respuesta_fk" FOREIGN KEY ("respuesta_id") REFERENCES "public"."respuesta"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_adjunto_fk" FOREIGN KEY ("adjunto_id") REFERENCES "public"."adjunto"("id") ON DELETE cascade ON UPDATE no action;
   CREATE INDEX "notification_noticia_idx" ON "notification" USING btree ("noticia_id");
   CREATE INDEX "notification_tarea_idx" ON "notification" USING btree ("tarea_id");
   CREATE INDEX "payload_locked_documents_rels_noticia_id_idx" ON "payload_locked_documents_rels" USING btree ("noticia_id");
-  CREATE INDEX "payload_locked_documents_rels_respuesta_id_idx" ON "payload_locked_documents_rels" USING btree ("respuesta_id");`)
+  CREATE INDEX "payload_locked_documents_rels_respuesta_id_idx" ON "payload_locked_documents_rels" USING btree ("respuesta_id");
+  CREATE INDEX "payload_locked_documents_rels_adjunto_id_idx" ON "payload_locked_documents_rels" USING btree ("adjunto_id");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "noticia" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "respuesta" DISABLE ROW LEVEL SECURITY;
+  ALTER TABLE "adjunto" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "presentacion_catalogo" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "noticia" CASCADE;
   DROP TABLE "respuesta" CASCADE;
+  DROP TABLE "adjunto" CASCADE;
   DROP TABLE "presentacion_catalogo" CASCADE;
   ALTER TABLE "notification" DROP CONSTRAINT "notification_noticia_id_noticia_id_fk";
   
@@ -87,6 +114,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_noticia_fk";
   
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_respuesta_fk";
+  
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_adjunto_fk";
   
   ALTER TABLE "users_role" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_role";
@@ -114,9 +143,11 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP INDEX "notification_tarea_idx";
   DROP INDEX "payload_locked_documents_rels_noticia_id_idx";
   DROP INDEX "payload_locked_documents_rels_respuesta_id_idx";
+  DROP INDEX "payload_locked_documents_rels_adjunto_id_idx";
   ALTER TABLE "notification" DROP COLUMN "noticia_id";
   ALTER TABLE "notification" DROP COLUMN "tarea_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "noticia_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "respuesta_id";
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "adjunto_id";
   DROP TYPE "public"."enum_noticia_area";`)
 }

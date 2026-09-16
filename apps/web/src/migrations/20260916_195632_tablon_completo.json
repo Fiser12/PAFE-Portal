@@ -1373,6 +1373,13 @@
           "notNull": false,
           "default": false
         },
+        "archivada": {
+          "name": "archivada",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
         "author_id": {
           "name": "author_id",
           "type": "integer",
@@ -1421,6 +1428,21 @@
           "columns": [
             {
               "expression": "published_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "noticia_archivada_idx": {
+          "name": "noticia_archivada_idx",
+          "columns": [
+            {
+              "expression": "archivada",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1631,6 +1653,152 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.adjunto": {
+      "name": "adjunto",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prefix": {
+          "name": "prefix",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'tablon'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "focal_x": {
+          "name": "focal_x",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "focal_y": {
+          "name": "focal_y",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "adjunto_updated_at_idx": {
+          "name": "adjunto_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "adjunto_created_at_idx": {
+          "name": "adjunto_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "adjunto_filename_idx": {
+          "name": "adjunto_filename_idx",
+          "columns": [
+            {
+              "expression": "filename",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -9901,6 +10069,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "adjunto_id": {
+          "name": "adjunto_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "catalog_item_id": {
           "name": "catalog_item_id",
           "type": "integer",
@@ -10163,6 +10337,21 @@
           "columns": [
             {
               "expression": "respuesta_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_adjunto_id_idx": {
+          "name": "payload_locked_documents_rels_adjunto_id_idx",
+          "columns": [
+            {
+              "expression": "adjunto_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -10523,6 +10712,19 @@
           "tableTo": "respuesta",
           "columnsFrom": [
             "respuesta_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_adjunto_fk": {
+          "name": "payload_locked_documents_rels_adjunto_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "adjunto",
+          "columnsFrom": [
+            "adjunto_id"
           ],
           "columnsTo": [
             "id"
@@ -12096,6 +12298,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "96b0dd63-4532-4be6-913e-ff4d4040fb5d",
+  "id": "1dfef8f6-4c74-43a4-8a29-09b1c69b8b39",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

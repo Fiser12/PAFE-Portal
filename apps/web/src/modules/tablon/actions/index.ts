@@ -31,11 +31,14 @@ const nombresDeSusGrupos = (user: { groups?: unknown }): string[] =>
     : []
 
 /** Todo lo que necesita el tablón: lo publicado, las áreas y a cuáles sigo */
-export const cargarTablon = async (area?: string): Promise<TablonData> => {
+export const cargarTablon = async (
+  area?: string,
+  archivadas = false,
+): Promise<TablonData> => {
   const { payload, user } = await getSessionUser()
   if (!user || !isActiveUser(user)) return SIN_PERMISO
 
-  const noticias = await noticiasDelTablon({ payload, user, area, now: new Date() })
+  const noticias = await noticiasDelTablon({ payload, user, area, archivadas, now: new Date() })
   const areas = areasVisiblesPara({
     grupos: nombresDeSusGrupos(user),
     esStaff: isStaff(user),

@@ -84,6 +84,17 @@ export const Noticia: CollectionConfig = {
       },
     },
     {
+      label: 'Archivada',
+      name: 'archivada',
+      type: 'checkbox',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Sale del tablón pero no se borra: sigue abriéndose por su enlace',
+      },
+    },
+    {
       label: 'Autoría',
       name: 'author',
       type: 'relationship',

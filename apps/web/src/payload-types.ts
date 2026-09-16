@@ -76,6 +76,7 @@ export interface Config {
     notification: Notification;
     noticia: Noticia;
     respuesta: Respuesta;
+    adjunto: Adjunto;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -122,6 +123,7 @@ export interface Config {
     notification: NotificationSelect<false> | NotificationSelect<true>;
     noticia: NoticiaSelect<false> | NoticiaSelect<true>;
     respuesta: RespuestaSelect<false> | RespuestaSelect<true>;
+    adjunto: AdjuntoSelect<false> | AdjuntoSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -866,6 +868,10 @@ export interface Noticia {
    * Las fijadas salen arriba del tablón
    */
   pinned?: boolean | null;
+  /**
+   * Sale del tablón pero no se borra: sigue abriéndose por su enlace
+   */
+  archivada?: boolean | null;
   author?: (number | null) | User;
   /**
    * Se avisa una sola vez; editar la noticia no vuelve a avisar
@@ -885,6 +891,29 @@ export interface Respuesta {
   author: number | User;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adjunto".
+ */
+export interface Adjunto {
+  id: number;
+  /**
+   * Para quien no puede ver la imagen. En documentos y vídeos no hace falta
+   */
+  alt?: string | null;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1481,6 +1510,10 @@ export interface PayloadLockedDocument {
         value: number | Respuesta;
       } | null)
     | ({
+        relationTo: 'adjunto';
+        value: number | Adjunto;
+      } | null)
+    | ({
         relationTo: 'catalog-item';
         value: number | CatalogItem;
       } | null)
@@ -1711,6 +1744,7 @@ export interface NoticiaSelect<T extends boolean = true> {
   body?: T;
   publishedAt?: T;
   pinned?: T;
+  archivada?: T;
   author?: T;
   notifiedAt?: T;
   updatedAt?: T;
@@ -1726,6 +1760,25 @@ export interface RespuestaSelect<T extends boolean = true> {
   author?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adjunto_select".
+ */
+export interface AdjuntoSelect<T extends boolean = true> {
+  alt?: T;
+  prefix?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2533,6 +2586,7 @@ export interface TaskCreateCollectionExport {
       | 'notification'
       | 'noticia'
       | 'respuesta'
+      | 'adjunto'
       | 'catalog-item'
       | 'cases'
       | 'tasks'

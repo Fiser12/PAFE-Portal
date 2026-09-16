@@ -27,7 +27,10 @@ const resumen = (noticia: Noticia): string => {
 
 export function Tablon() {
   const [area, setArea] = useState<string | undefined>()
-  const { data, error, isLoading } = useSWR(['tablon', area], () => cargarTablon(area))
+  const [archivadas, setArchivadas] = useState(false)
+  const { data, error, isLoading } = useSWR(['tablon', area, archivadas], () =>
+    cargarTablon(area, archivadas),
+  )
 
   const noticias = data?.noticias ?? []
   const areas = data?.areas ?? []
@@ -53,6 +56,13 @@ export function Tablon() {
                 {opcion.label}
               </Button>
             ))}
+            <Button
+              size="sm"
+              variant={archivadas ? 'secondary' : 'ghost'}
+              onClick={() => setArchivadas((v) => !v)}
+            >
+              {archivadas ? 'Ver el tablón' : 'Archivadas'}
+            </Button>
           </div>
         )}
       </div>

@@ -10,13 +10,13 @@ import {
   UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_ADJUNTO } from '@/core/collections-slugs'
 
 /**
  * El editor del tablón. Añade al del portal la posibilidad de incrustar
  * imágenes y documentos en el punto del texto donde van, en lugar de dejarlos
  * en una lista aparte. Lo subido acaba en el S3 del portal, como el resto:
- * `media` y `files` ya están enganchadas ahí.
+ * `adjunto` está enganchada ahí, y va aparte del catálogo.
  */
 export const lexicalDelTablon = lexicalEditor({
   features: [
@@ -30,8 +30,7 @@ export const lexicalDelTablon = lexicalEditor({
     LinkFeature({}),
     UploadFeature({
       collections: {
-        [COLLECTION_SLUG_MEDIA]: { fields: [] },
-        [COLLECTION_SLUG_FILES]: { fields: [] },
+        [COLLECTION_SLUG_ADJUNTO]: { fields: [] },
       },
     }),
   ],

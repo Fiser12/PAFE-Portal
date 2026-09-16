@@ -246,12 +246,15 @@ export const noticiasDelTablon = async ({
   user,
   area,
   now,
+  archivadas = false,
   limit = 50,
 }: {
   payload: Payload
   user: Actor
   area?: string
   now: Date
+  /** Lo archivado no sale salvo que se pida: es lo viejo que ya no toca mirar */
+  archivadas?: boolean
   limit?: number
 }): Promise<Noticia[]> => {
   if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
@@ -268,6 +271,7 @@ export const noticiasDelTablon = async ({
       and: [
         { publishedAt: { less_than_equal: now.toISOString() } },
         { area: { in: area ? [area] : visibles } },
+        { archivada: { equals: archivadas } },
       ],
     },
     depth: 1,
@@ -428,3 +432,33 @@ export const borrarRespuesta = async ({
     overrideAccess: true,
   })
 }
+
+const cambiarArchivado = async ({
+  payload,
+  user,
+  noticiaId,
+  archivada,
+}: {
+  payload: Payload
+  user: Actor
+  noticiaId: number
+  archivada: boolean
+}): Promise<Noticia> => {
+  if (!isStaff(user as User)) throw new TablonRuleError('sin-permiso')
+
+  return (await payload.update({
+    collection: COLLECTION_SLUG_NOTICIA,
+    id: noticiaId,
+    data: { archivada },
+    overrideAccess: true,
+    // Archivar no es publicar: nadie tiene que enterarse otra vez
+    context: { [SALTAR_AVISO]: true },
+  })) as Noticia
+}
+
+/** Saca la noticia del tablón sin borrarla, como las «Archivadas» del foro */
+export const archivarNoticia = (args: { payload: Payload; user: Actor; noticiaId: number }) =>
+  cambiarArchivado({ ...args, archivada: true })
+
+export const desarchivarNoticia = (args: { payload: Payload; user: Actor; noticiaId: number }) =>
+  cambiarArchivado({ ...args, archivada: false })
