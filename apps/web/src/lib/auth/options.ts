@@ -6,6 +6,7 @@ import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
   ADMIN_PANEL_ROLES,
   ALL_ROLES,
+  ROLE_LABELS,
   ROLE_ADMIN,
   hiddenUnlessAdmin,
 } from '@/core/permissions'
@@ -59,6 +60,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
               // valor con permisos.
               defaultValue: [],
               required: false,
+              options: ALL_ROLES.map((value) => ({ value, label: ROLE_LABELS[value] ?? value })),
               hooks: {
                 beforeValidate: [normalizeRoleValue],
               },

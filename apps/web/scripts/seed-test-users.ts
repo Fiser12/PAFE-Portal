@@ -12,7 +12,9 @@ const PASSWORD = 'test1234!'
 
 const TEST_USERS = [
   { email: 'admin@test.local', name: 'Admin Test', role: ['admin'] },
-  { email: 'prof@test.local', name: 'Profesional Test', role: ['profesional'] },
+  { email: 'catalogo@test.local', name: 'Catálogo Test', role: ['admin-catalogo'] },
+  { email: 'altas@test.local', name: 'Altas Test', role: ['admin-users'] },
+  { email: 'tablon@test.local', name: 'Tablón Test', role: ['admin-news'] },
   { email: 'familia@test.local', name: 'Familia Test', role: ['familia'] },
   // Sin rol = recién registrado con Google, pendiente de validar por el staff
   { email: 'sinrol@test.local', name: 'Sin Rol Test', role: [] },

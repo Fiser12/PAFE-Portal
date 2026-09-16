@@ -8,9 +8,9 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 import { collections } from './payload/collections'
+import { globals } from './payload/globals'
+import { localization } from './core/localization'
 import { Users } from './payload/collections/Users'
-import { Footer } from './payload/admin_components/Footer/config'
-import { Header } from './payload/admin_components/Header/config'
 import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -19,6 +19,8 @@ import {
   DUE_REMINDERS_QUEUE,
   dueRemindersTask,
 } from '@/modules/catalog/jobs/dueRemindersTask'
+import { avisosTablonTask } from '@/modules/tablon/jobs/avisosTablonTask'
+import { avisosTareasTask } from '@/modules/tareas/jobs/avisosTareasTask'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -28,6 +30,7 @@ export default buildConfig({
     supportedLanguages: { es },
     fallbackLanguage: 'es',
   },
+  localization,
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -95,7 +98,7 @@ export default buildConfig({
     },
   },
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals,
   plugins: plugins,
   secret: process.env.PAYLOAD_SECRET,
   // Carga datos de prueba al arrancar solo si SEED_MOCK_DATA=true (dev).
@@ -129,7 +132,7 @@ export default buildConfig({
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
-    tasks: [dueRemindersTask],
+    tasks: [dueRemindersTask, avisosTablonTask, avisosTareasTask],
     autoRun: [
       {
         cron: '15 6 * * *',

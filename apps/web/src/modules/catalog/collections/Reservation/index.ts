@@ -2,10 +2,10 @@ import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '../CatalogItem'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
-  hiddenUnlessStaff,
+  hiddenUnlessCatalogo,
   isActiveUserAccess,
   isAdminAccess,
-  isStaffAccess,
+  catalogoAccess,
   staffOrOwnerAccess,
 } from '@/core/permissions'
 
@@ -23,11 +23,11 @@ export const Reservation: CollectionConfig = {
     // El ciclo de vida se cierra con estados, no borrando: borrar es limpieza
     delete: isAdminAccess,
     read: staffOrOwnerAccess('user'),
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     defaultColumns: ['item', 'user', 'status', 'dueDate'],
     components: {
       views: {

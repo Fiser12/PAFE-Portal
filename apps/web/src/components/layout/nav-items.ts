@@ -1,5 +1,5 @@
 import type { User } from '@/payload-types'
-import { isAdmin, isStaff } from '@/core/permissions'
+import { isStaff } from '@/core/permissions'
 
 export interface NavItem {
   label: string
@@ -10,20 +10,25 @@ export interface NavItem {
 }
 
 /**
- * Navegación principal del portal. Los items dependen del rol:
- * Casos solo para admin, Administración para staff (admin/profesional).
+ * Navegación principal del portal. Los items dependen del rol.
+ *
+ * Casos no sale: la sección no está en uso. Quien la necesite llega por el
+ * panel o por su dirección.
  */
 export function getNavItems(user: User | null): NavItem[] {
   const items: NavItem[] = [
     { label: 'Inicio', href: '/' },
     { label: 'Catálogo', href: '/catalog' },
   ]
-  if (isAdmin(user)) {
-    items.push({ label: 'Casos', href: '/cases' })
-  }
   items.push({ label: 'Foro', href: 'https://foro.pafe-formakuntza.com/', external: true })
   if (user) {
     items.push({ label: 'Wiki', href: '/wiki', plainLink: true })
+    // Moodle conserva su propio inicio de sesión: se abre aparte
+    items.push({
+      label: 'Moodle',
+      href: 'https://moodle.pafe-formakuntza.com/',
+      external: true,
+    })
   }
   if (isStaff(user)) {
     items.push({ label: 'Administración', href: '/admin' })

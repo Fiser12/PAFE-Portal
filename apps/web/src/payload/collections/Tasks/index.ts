@@ -1,10 +1,11 @@
 import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_FILES, COLLECTION_SLUG_GUIDED_QUESTIONNAIRES, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
 import {
   hiddenUnlessAdmin,
-  isStaffAccess,
+  isAdminAccess,
   staffOrOwnCaseTasksAccess,
 } from '@/core/permissions'
 import type { CollectionConfig } from 'payload'
+import { avisarAlAsignar } from '@/modules/tareas/hooks/avisarAlAsignar'
 
 export const Tasks: CollectionConfig = {
   slug: COLLECTION_SLUG_TASKS,
@@ -13,11 +14,14 @@ export const Tasks: CollectionConfig = {
     plural: 'Tareas',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     // El staff ve todas las tareas; una familia solo las de sus casos
     read: staffOrOwnCaseTasksAccess,
-    update: isStaffAccess,
+    update: isAdminAccess,
+  },
+  hooks: {
+    afterChange: [avisarAlAsignar],
   },
   admin: {
     hidden: hiddenUnlessAdmin,

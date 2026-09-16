@@ -4,7 +4,7 @@ import {
   COLLECTION_SLUG_TASKS,
   COLLECTION_SLUG_USER,
 } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isAdminAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isAdminAccess, staffOrOwnerAccess } from '@/core/permissions'
 import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
 import { parseEvents } from 'flowgraph-core'
 import { APIError, type CollectionBeforeChangeHook, type CollectionConfig } from 'payload'
@@ -88,7 +88,7 @@ export const QuestionnaireExecutions: CollectionConfig = {
     update: isAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessAdmin,
     defaultColumns: ['questionnaire', 'user', 'outcome', 'finishedAt'],
     useAsTitle: 'id',
   },

@@ -1,7 +1,7 @@
 import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS } from '@/core/collections-slugs'
 import {
   hiddenUnlessAdmin,
-  isStaffAccess,
+  isAdminAccess,
   staffOrOwnCasesAccess,
 } from '@/core/permissions'
 import type { CollectionConfig } from 'payload'
@@ -13,11 +13,11 @@ export const Cases: CollectionConfig = {
     plural: 'Casos',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     // El staff ve todos los casos; una familia solo los suyos
     read: staffOrOwnCasesAccess,
-    update: isStaffAccess,
+    update: isAdminAccess,
   },
   admin: {
     hidden: hiddenUnlessAdmin,

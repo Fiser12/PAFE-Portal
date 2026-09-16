@@ -74,6 +74,9 @@ export interface Config {
     'admin-invitations': AdminInvitation;
     reservation: Reservation;
     notification: Notification;
+    noticia: Noticia;
+    respuesta: Respuesta;
+    adjunto: Adjunto;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -118,6 +121,9 @@ export interface Config {
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     notification: NotificationSelect<false> | NotificationSelect<true>;
+    noticia: NoticiaSelect<false> | NoticiaSelect<true>;
+    respuesta: RespuestaSelect<false> | RespuestaSelect<true>;
+    adjunto: AdjuntoSelect<false> | AdjuntoSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -144,18 +150,20 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'eu') | ('es' | 'eu')[];
   globals: {
     header: Header;
     footer: Footer;
+    'presentacion-catalogo': PresentacionCatalogo;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'presentacion-catalogo': PresentacionCatalogoSelect<false> | PresentacionCatalogoSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
-  locale: null;
+  locale: 'es' | 'eu';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -163,6 +171,8 @@ export interface Config {
   jobs: {
     tasks: {
       dueReminders: TaskDueReminders;
+      avisosTablon: TaskAvisosTablon;
+      avisosTareas: TaskAvisosTareas;
       createCollectionExport: TaskCreateCollectionExport;
       createCollectionImport: TaskCreateCollectionImport;
       schedulePublish: TaskSchedulePublish;
@@ -233,7 +243,7 @@ export interface User {
   /**
    * The role/ roles of the user
    */
-  role?: ('admin' | 'profesional' | 'familia')[] | null;
+  role?: ('admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional')[] | null;
   account?: {
     docs?: (number | Account)[];
     hasNextPage?: boolean;
@@ -789,7 +799,7 @@ export interface Verification {
  */
 export interface AdminInvitation {
   id: number;
-  role: 'admin' | 'profesional' | 'familia';
+  role: 'admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'profesional' | 'familia';
   token: string;
   url?: string | null;
   updatedAt: string;
@@ -802,12 +812,108 @@ export interface AdminInvitation {
 export interface Notification {
   id: number;
   user: number | User;
-  type: 'recordatorio' | 'vencimiento' | 'devolucion-tardia' | 'perdida' | 'recogida' | 'prorroga' | 'devolucion';
+  type:
+    | 'recordatorio'
+    | 'vencimiento'
+    | 'devolucion-tardia'
+    | 'perdida'
+    | 'recogida'
+    | 'prorroga'
+    | 'devolucion'
+    | 'noticia'
+    | 'tarea-asignada'
+    | 'tarea-toca';
   message: string;
   reservation?: (number | null) | Reservation;
+  noticia?: (number | null) | Noticia;
+  tarea?: (number | null) | Task;
   readAt?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticia".
+ */
+export interface Noticia {
+  id: number;
+  title: string;
+  area:
+    | 'berriak-pafe'
+    | 'partekatutako-berriak'
+    | 'ia'
+    | 'elkarrizketa-irekiak'
+    | 'pafe-ren-elkarrizketak'
+    | 'lantalde-teknikoa';
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Con una fecha futura, la noticia no se muestra ni avisa hasta que llega
+   */
+  publishedAt: string;
+  /**
+   * Las fijadas salen arriba del tablón
+   */
+  pinned?: boolean | null;
+  /**
+   * Sale del tablón pero no se borra: sigue abriéndose por su enlace
+   */
+  archivada?: boolean | null;
+  author?: (number | null) | User;
+  /**
+   * Se avisa una sola vez; editar la noticia no vuelve a avisar
+   */
+  notifiedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "respuesta".
+ */
+export interface Respuesta {
+  id: number;
+  mensaje: string;
+  noticia: number | Noticia;
+  author: number | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adjunto".
+ */
+export interface Adjunto {
+  id: number;
+  /**
+   * Para quien no puede ver la imagen. En documentos y vídeos no hace falta
+   */
+  alt?: string | null;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1161,6 +1267,7 @@ export interface Export {
   page?: number | null;
   sort?: string | null;
   sortOrder?: ('asc' | 'desc') | null;
+  locale?: ('all' | 'es' | 'eu') | null;
   drafts?: ('yes' | 'no') | null;
   selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
   fields?: string[] | null;
@@ -1294,7 +1401,14 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
+        taskSlug:
+          | 'inline'
+          | 'dueReminders'
+          | 'avisosTablon'
+          | 'avisosTareas'
+          | 'createCollectionExport'
+          | 'createCollectionImport'
+          | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1328,7 +1442,16 @@ export interface PayloadJob {
       }[]
     | null;
   taskSlug?:
-    ('inline' | 'dueReminders' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
+    | (
+        | 'inline'
+        | 'dueReminders'
+        | 'avisosTablon'
+        | 'avisosTareas'
+        | 'createCollectionExport'
+        | 'createCollectionImport'
+        | 'schedulePublish'
+      )
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1378,6 +1501,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notification';
         value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'noticia';
+        value: number | Noticia;
+      } | null)
+    | ({
+        relationTo: 'respuesta';
+        value: number | Respuesta;
+      } | null)
+    | ({
+        relationTo: 'adjunto';
+        value: number | Adjunto;
       } | null)
     | ({
         relationTo: 'catalog-item';
@@ -1594,9 +1729,57 @@ export interface NotificationSelect<T extends boolean = true> {
   type?: T;
   message?: T;
   reservation?: T;
+  noticia?: T;
+  tarea?: T;
   readAt?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticia_select".
+ */
+export interface NoticiaSelect<T extends boolean = true> {
+  title?: T;
+  area?: T;
+  body?: T;
+  publishedAt?: T;
+  pinned?: T;
+  archivada?: T;
+  author?: T;
+  notifiedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "respuesta_select".
+ */
+export interface RespuestaSelect<T extends boolean = true> {
+  mensaje?: T;
+  noticia?: T;
+  author?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adjunto_select".
+ */
+export interface AdjuntoSelect<T extends boolean = true> {
+  alt?: T;
+  prefix?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2060,6 +2243,7 @@ export interface ExportsSelect<T extends boolean = true> {
   page?: T;
   sort?: T;
   sortOrder?: T;
+  locale?: T;
   drafts?: T;
   selectionToUse?: T;
   fields?: T;
@@ -2241,6 +2425,33 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presentacion-catalogo".
+ */
+export interface PresentacionCatalogo {
+  id: number;
+  /**
+   * Lo que lee quien entra al catálogo, encima de la búsqueda
+   */
+  texto?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
 export interface PayloadJobsStat {
@@ -2305,6 +2516,16 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presentacion-catalogo_select".
+ */
+export interface PresentacionCatalogoSelect<T extends boolean = true> {
+  texto?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats_select".
  */
 export interface PayloadJobsStatsSelect<T extends boolean = true> {
@@ -2335,6 +2556,26 @@ export interface TaskDueReminders {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskAvisosTablon".
+ */
+export interface TaskAvisosTablon {
+  input?: unknown;
+  output: {
+    avisadas: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskAvisosTareas".
+ */
+export interface TaskAvisosTareas {
+  input?: unknown;
+  output: {
+    avisadas: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskCreateCollectionExport".
  */
 export interface TaskCreateCollectionExport {
@@ -2345,6 +2586,9 @@ export interface TaskCreateCollectionExport {
     collectionSlug:
       | 'reservation'
       | 'notification'
+      | 'noticia'
+      | 'respuesta'
+      | 'adjunto'
       | 'catalog-item'
       | 'cases'
       | 'tasks'

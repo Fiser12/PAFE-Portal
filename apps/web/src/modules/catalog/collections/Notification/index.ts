@@ -1,6 +1,8 @@
 import { CollectionConfig } from 'payload'
-import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isAdminAccess, isStaffAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { hiddenUnlessCatalogo, isAdminAccess, catalogoAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { TABLON_NOTIFICATION_TYPES } from '@/modules/tablon/domain/avisos'
+import { TAREA_NOTIFICATION_TYPES } from '@/modules/tareas/domain/avisos'
 import { NOTIFICATION_TYPES } from '../../domain/notifications'
 import { COLLECTION_SLUG_RESERVATION } from '../Reservation'
 
@@ -14,14 +16,14 @@ export const Notification: CollectionConfig = {
   },
   access: {
     // Las crean los servicios del préstamo, nunca quien las recibe
-    create: isStaffAccess,
+    create: catalogoAccess,
     delete: isAdminAccess,
     read: staffOrOwnerAccess('user'),
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     defaultColumns: ['user', 'type', 'createdAt', 'readAt'],
     useAsTitle: 'type',
   },
@@ -40,7 +42,10 @@ export const Notification: CollectionConfig = {
       name: 'type',
       type: 'select',
       required: true,
-      options: NOTIFICATION_TYPES.map((value) => ({ label: value, value })),
+      options: [...NOTIFICATION_TYPES, ...TABLON_NOTIFICATION_TYPES, ...TAREA_NOTIFICATION_TYPES].map((value) => ({
+        label: value,
+        value,
+      })),
     },
     {
       label: 'Mensaje',
@@ -53,6 +58,20 @@ export const Notification: CollectionConfig = {
       name: 'reservation',
       type: 'relationship',
       relationTo: COLLECTION_SLUG_RESERVATION,
+      hasMany: false,
+    },
+    {
+      label: 'Noticia',
+      name: 'noticia',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_NOTICIA,
+      hasMany: false,
+    },
+    {
+      label: 'Tarea',
+      name: 'tarea',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_TASKS,
       hasMany: false,
     },
     {

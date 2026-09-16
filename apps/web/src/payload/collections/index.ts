@@ -1,6 +1,9 @@
 import { CatalogItem } from '@/modules/catalog/collections/CatalogItem'
 import { Notification } from '@/modules/catalog/collections/Notification'
 import { Reservation } from '@/modules/catalog/collections/Reservation'
+import { Noticia } from '@/modules/tablon/collections/Noticia'
+import { Adjunto } from '@/modules/tablon/collections/Adjunto'
+import { Respuesta } from '@/modules/tablon/collections/Respuesta'
 import { Categories } from './Categories'
 import { Cases } from './Cases'
 import { Media } from './Media'
@@ -16,4 +19,4 @@ import { QuestionnaireExecutions } from './QuestionnaireExecutions'
 import { Formaciones } from './Formaciones'
 import { Users } from './Users'
 
-export const collections = [Reservation, Notification, CatalogItem, Cases, Tasks, TasksCompleted, GuidedQuestionnaires, QuestionnaireExecutions, Formaciones, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Files]
+export const collections = [Reservation, Notification, Noticia, Respuesta, Adjunto, CatalogItem, Cases, Tasks, TasksCompleted, GuidedQuestionnaires, QuestionnaireExecutions, Formaciones, ExternalResources, Categories, Groups, Media, Users, Pages, Posts, Files]

@@ -1,4 +1,4 @@
-import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo, catalogoAccess } from '@/core/permissions'
 import { anyone } from '@/payload/access/anyone'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
@@ -13,14 +13,14 @@ export const CatalogItem: CollectionConfig = {
   },
   access: {
     // El catálogo es visible públicamente; solo el staff lo gestiona
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: catalogoAccess,
+    delete: catalogoAccess,
     read: anyone,
-    update: isStaffAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessCatalogo,
     useAsTitle: 'title',
     components: {
       views: {
@@ -44,6 +44,7 @@ export const CatalogItem: CollectionConfig = {
       label: 'Título',
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -86,12 +87,14 @@ export const CatalogItem: CollectionConfig = {
       label: 'Contenido',
       name: 'content',
       type: 'richText',
+      localized: true,
       required: false,
     },
     {
       label: 'Aportaciones de las familias',
       name: 'contributions',
       type: 'richText',
+      localized: true,
       required: false,
       admin: {
         description:

@@ -44,3 +44,61 @@ export const createItem = async (
     },
     overrideAccess: true,
   })
+
+export const createCase = (payload: Payload, title = 'Caso Test') =>
+  payload.create({
+    collection: 'cases',
+    data: { title: `${title} ${uniq()}` },
+    overrideAccess: true,
+  })
+
+/** El vínculo vive en el usuario: `cases.assignedUser` es un join sobre esto */
+export const asignarCaso = (payload: Payload, userId: number | string, caseId: number | string) =>
+  payload.update({
+    collection: 'users',
+    id: userId,
+    data: { assignedCases: [Number(caseId)] },
+    overrideAccess: true,
+  })
+
+export const createTask = (
+  payload: Payload,
+  caseIds: (number | string)[],
+  opts: { title?: string; rrule?: string } = {},
+) =>
+  payload.create({
+    collection: 'tasks',
+    data: {
+      title: opts.title ?? `Tarea ${uniq()}`,
+      case: caseIds.map(Number),
+      ...(opts.rrule ? { rrule: { rrule: opts.rrule } } : {}),
+    },
+    overrideAccess: true,
+  })
+
+export const completarTarea = (
+  payload: Payload,
+  taskId: number | string,
+  userId: number | string,
+  completedOn: string,
+) =>
+  payload.create({
+    collection: 'tasks-completed',
+    data: { task: Number(taskId), user: Number(userId), completedOn },
+    overrideAccess: true,
+  })
+
+export const createGroup = (payload: Payload, name: string) =>
+  payload.create({
+    collection: 'groups',
+    data: { name: `${name} ${uniq()}` },
+    overrideAccess: true,
+  })
+
+export const meterEnGrupo = (payload: Payload, userId: number | string, groupId: number | string) =>
+  payload.update({
+    collection: 'users',
+    id: userId,
+    data: { groups: [Number(groupId)] },
+    overrideAccess: true,
+  })

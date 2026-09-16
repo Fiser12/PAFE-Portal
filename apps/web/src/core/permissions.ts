@@ -2,20 +2,51 @@ import type { Access, ClientUser, PayloadRequest } from 'payload'
 import type { User } from '@/payload-types'
 
 /**
- * Roles fijos del sistema (campo `role` inyectado por payload-auth).
+ * Roles del sistema (campo `role` inyectado por payload-auth). Son
+ * acumulables: una misma persona puede llevar el catálogo y el tablón.
+ *
  * Un usuario recién registrado no tiene NINGÚN rol (role: []) y por tanto
- * ningún permiso, hasta que el staff le asigna uno a mano.
+ * ningún permiso, hasta que alguien se lo asigna a mano.
  * Los "grupos" dinámicos viven en la colección `groups` y NO otorgan permisos:
  * la seguridad se decide únicamente con estos roles.
  */
+/** Administra todo */
 export const ROLE_ADMIN = 'admin'
-export const ROLE_PROFESIONAL = 'profesional'
+/** Administra materiales, taxonomía y el día a día del préstamo */
+export const ROLE_CATALOGO = 'admin-catalogo'
+/** Administra las altas y el rol familia */
+export const ROLE_USUARIOS = 'admin-users'
+/** Administra el tablón de noticias */
+export const ROLE_TABLON = 'admin-news'
+/** El único rol de consumo: ve el catálogo, reserva y lee el tablón */
 export const ROLE_FAMILIA = 'familia'
+/** Rol anterior al reparto por áreas: vale como `catalogo` hasta terminar de migrar */
+export const ROLE_PROFESIONAL = 'profesional'
 
-export const ALL_ROLES = [ROLE_ADMIN, ROLE_PROFESIONAL, ROLE_FAMILIA]
-export const ADMIN_PANEL_ROLES = [ROLE_ADMIN, ROLE_PROFESIONAL]
-/** Roles que un profesional puede asignar/quitar (no puede tocar admins ni crear profesionales) */
+export const ADMIN_AREA_ROLES = [ROLE_CATALOGO, ROLE_USUARIOS, ROLE_TABLON]
+
+export const ALL_ROLES = [ROLE_ADMIN, ...ADMIN_AREA_ROLES, ROLE_FAMILIA, ROLE_PROFESIONAL]
+export const ADMIN_PANEL_ROLES = [ROLE_ADMIN, ...ADMIN_AREA_ROLES, ROLE_PROFESIONAL]
+/**
+ * Lo único que puede repartir quien no es admin. Los roles de gestión se
+ * quedan fuera a propósito: si quien da de altas pudiera concederlos, el
+ * reparto se desharía solo.
+ */
 export const STAFF_MANAGEABLE_ROLES = [ROLE_FAMILIA]
+
+/**
+ * Lo que se lee en el panel. El valor guardado dice «admin» para que el código
+ * distinga administrar de consumir; la etiqueta no, porque de administrador
+ * solo figura quien lo es de todo.
+ */
+export const ROLE_LABELS: Record<string, string> = {
+  [ROLE_ADMIN]: 'Administración',
+  [ROLE_CATALOGO]: 'Catálogo y préstamos',
+  [ROLE_USUARIOS]: 'Altas de personas',
+  [ROLE_TABLON]: 'Tablón de noticias',
+  [ROLE_FAMILIA]: 'Familia',
+  [ROLE_PROFESIONAL]: 'Profesional (rol anterior)',
+}
 
 export type RoleSlug = (typeof ALL_ROLES)[number]
 
@@ -48,9 +79,24 @@ export const hasRole = (user: MaybeUser, ...slugs: string[]): boolean => {
 export const isAdmin = (user: MaybeUser): boolean =>
   hasRole(user, ROLE_ADMIN) || isSuperAdmin(user)
 
-/** Staff = admin o profesional: gestionan materiales, solicitudes, casos y usuarios */
+/** Catálogo, materiales, taxonomía y el préstamo del día a día */
+export const administraCatalogo = (user: MaybeUser): boolean =>
+  isAdmin(user) || hasRole(user, ROLE_CATALOGO, ROLE_PROFESIONAL)
+
+/** Dar de alta personas y asignarles el rol familia */
+export const administraUsuarios = (user: MaybeUser): boolean =>
+  isAdmin(user) || hasRole(user, ROLE_USUARIOS)
+
+/** Publicar y editar en el tablón de noticias */
+export const administraTablon = (user: MaybeUser): boolean =>
+  isAdmin(user) || hasRole(user, ROLE_TABLON)
+
+/**
+ * Equipo = cualquiera con un rol de gestión. Sirve para entrar al panel y para
+ * lo transversal; lo que se puede tocar dentro lo decide cada área.
+ */
 export const isStaff = (user: MaybeUser): boolean =>
-  isAdmin(user) || hasRole(user, ROLE_PROFESIONAL)
+  isAdmin(user) || hasRole(user, ...ADMIN_AREA_ROLES, ROLE_PROFESIONAL)
 
 /**
  * Usuario activo = con algún rol asignado (familia o staff).
@@ -68,12 +114,18 @@ export const isAdminAccess: Access = ({ req }) => isAdmin(req.user)
 
 export const isStaffAccess: Access = ({ req }) => isStaff(req.user)
 
+export const catalogoAccess: Access = ({ req }) => administraCatalogo(req.user)
+
+export const usuariosAccess: Access = ({ req }) => administraUsuarios(req.user)
+
+export const tablonAccess: Access = ({ req }) => administraTablon(req.user)
+
 export const isActiveUserAccess: Access = ({ req }) => isActiveUser(req.user)
 
-/** Staff ve todo; el resto solo su propio documento de usuario */
-export const staffOrSelfAccess: Access = ({ req }) => {
+/** Quien da de altas ve a todo el mundo; el resto solo su propio documento */
+export const usuariosOrSelfAccess: Access = ({ req }) => {
   if (!req.user) return false
-  if (isStaff(req.user)) return true
+  if (administraUsuarios(req.user)) return true
   return { id: { equals: req.user.id } }
 }
 
@@ -88,7 +140,7 @@ export const staffOrOwnerAccess =
   (ownerField = 'user'): Access =>
   ({ req }) => {
     if (!req.user) return false
-    if (isStaff(req.user)) return true
+    if (administraCatalogo(req.user)) return true
     if (!isActiveUser(req.user)) return false
     return { [ownerField]: { equals: req.user.id } }
   }
@@ -133,3 +185,11 @@ export type HiddenFieldProps = (args: { user: PayloadRequest['user'] | ClientUse
 export const hiddenUnlessAdmin: HiddenFieldProps = ({ user }) => !isAdmin(user as MaybeUser)
 
 export const hiddenUnlessStaff: HiddenFieldProps = ({ user }) => !isStaff(user as MaybeUser)
+
+export const hiddenUnlessCatalogo: HiddenFieldProps = ({ user }) =>
+  !administraCatalogo(user as MaybeUser)
+
+export const hiddenUnlessUsuarios: HiddenFieldProps = ({ user }) =>
+  !administraUsuarios(user as MaybeUser)
+
+export const hiddenUnlessTablon: HiddenFieldProps = ({ user }) => !administraTablon(user as MaybeUser)

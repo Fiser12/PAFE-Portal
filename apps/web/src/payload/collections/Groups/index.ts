@@ -1,5 +1,5 @@
 import { COLLECTION_SLUG_GROUPS } from '@/core/collections-slugs'
-import { hiddenUnlessStaff, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
 import { authenticated } from '@/payload/access/authenticated'
 import type { CollectionConfig } from 'payload'
 
@@ -16,14 +16,14 @@ export const Groups: CollectionConfig = {
     plural: 'Grupos de usuarios',
   },
   access: {
-    create: isStaffAccess,
-    delete: isStaffAccess,
+    create: isAdminAccess,
+    delete: isAdminAccess,
     read: authenticated,
-    update: isStaffAccess,
+    update: isAdminAccess,
   },
   admin: {
     group: 'Auth',
-    hidden: hiddenUnlessStaff,
+    hidden: hiddenUnlessAdmin,
     useAsTitle: 'name',
     defaultColumns: ['name', 'description'],
   },
