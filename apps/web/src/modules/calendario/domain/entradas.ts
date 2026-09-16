@@ -12,6 +12,7 @@ export type Entrada =
       id: string
       fecha: Date
       titulo: string
+      fin: Date
       diaCompleto: boolean
       calendario: string
       descripcion: string
@@ -41,6 +42,7 @@ const deOcurrencia = (ocurrencia: Ocurrencia, indice: number): Entrada => ({
   tipo: 'evento',
   id: `evento-${ocurrencia.uid}-${indice}`,
   fecha: ocurrencia.inicio,
+  fin: ocurrencia.fin,
   titulo: ocurrencia.titulo,
   diaCompleto: ocurrencia.diaCompleto,
   calendario: ocurrencia.calendario,

@@ -30,6 +30,7 @@ import {
 } from '../domain/entradas'
 import { diaCorto, diaLargo, hora } from '../domain/fechas'
 import type { Ocurrencia } from '../domain/ocurrencias'
+import { VistaSemanal } from './VistaSemanal'
 
 const ZONA = 'Europe/Madrid'
 const UNA_SEMANA = 7 * 24 * 60 * 60 * 1000
@@ -368,55 +369,12 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
                 </div>
               </div>
             ) : (
-              <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 lg:grid lg:grid-cols-7 lg:overflow-visible">
-                {semanal.map((dia) => (
-                  <div
-                    key={dia.dia.toISOString()}
-                    className={cn(
-                      'flex min-w-40 flex-col rounded-lg border lg:min-w-0',
-                      dia.hoy ? 'border-2 border-primary bg-primary/5' : 'bg-muted/20',
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        'flex items-center justify-between gap-1 rounded-t-lg px-2 py-1.5',
-                        dia.hoy ? 'bg-primary text-primary-foreground' : 'bg-muted/60',
-                      )}
-                    >
-                      <span className="text-xs font-semibold first-letter:uppercase">
-                        {diaCorto(dia.dia, idioma as CodigoIdioma)}
-                      </span>
-                      {dia.entradas.length > 0 && (
-                        <span
-                          className={cn(
-                            'rounded-full px-1.5 text-[10px] font-medium',
-                            dia.hoy ? 'bg-primary-foreground/20' : 'bg-background',
-                          )}
-                        >
-                          {dia.entradas.length}
-                        </span>
-                      )}
-                    </div>
-
-                    <ul className="min-h-28 flex-1 space-y-1 overflow-y-auto p-1 lg:max-h-64">
-                      {dia.entradas.length === 0 ? (
-                        <li className="pt-2 text-center text-[10px] text-muted-foreground">·</li>
-                      ) : (
-                        dia.entradas.map((entrada) => (
-                          <Fila
-                            key={entrada.id}
-                            entrada={entrada}
-                            nombres={nombres}
-                            todoElDia={t.calTodoElDia}
-                            etiquetaPin={t.tablonFijada}
-                            compacta
-                          />
-                        ))
-                      )}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+              <VistaSemanal
+                dias={semanal}
+                nombres={nombres}
+                idioma={idioma as CodigoIdioma}
+                etiquetaPin={t.tablonFijada}
+              />
             )}
           </CardContent>
         </Card>
