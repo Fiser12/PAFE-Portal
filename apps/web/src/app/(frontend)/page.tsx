@@ -2,7 +2,7 @@
 
 import { ReservationsTable } from '@/modules/catalog/ui/ReservationsTable'
 import { Tablon } from '@/modules/tablon/ui/Tablon'
-import CalendarView from '@/components/legacy/CalendarView'
+import { CalendarioCargado } from '@/modules/calendario/ui/CalendarioCargado'
 import { useUser } from '@/lib/auth/useUser';
 import Link from 'next/link';
 import React from 'react';
@@ -19,7 +19,7 @@ export default function Home() {
         <Tablon />
         <section>
           <h2 className="mb-4 text-2xl font-semibold sm:text-3xl">{t.inicioCalendario}</h2>
-          <CalendarView />
+          <CalendarioCargado />
         </section>
         <ReservationsTable />
       </React.Fragment>

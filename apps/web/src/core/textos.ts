@@ -15,6 +15,15 @@ const es = {
 
   inicioBienvenida: 'Bienvenido a PAFE',
   inicioCalendario: 'Calendario',
+  calAgenda: 'Agenda',
+  calSemana: 'Semana',
+  calHoy: 'Hoy',
+  calTodoElDia: 'Todo el día',
+  calSinNada: 'No hay nada previsto',
+  calSemanaAnterior: 'Semana anterior',
+  calSemanaSiguiente: 'Semana siguiente',
+  calVolverAHoy: 'Volver a hoy',
+  calFallidos: 'Algunos calendarios no responden ahora mismo.',
 
   navInicio: 'Inicio',
   navForo: 'Foro',
@@ -171,6 +180,15 @@ const eu: Textos = {
 
   inicioBienvenida: 'Ongi etorri PAFEra',
   inicioCalendario: 'Egutegia',
+  calAgenda: 'Agenda',
+  calSemana: 'Astea',
+  calHoy: 'Gaur',
+  calTodoElDia: 'Egun osoa',
+  calSinNada: 'Ez dago ezer aurreikusita',
+  calSemanaAnterior: 'Aurreko astea',
+  calSemanaSiguiente: 'Hurrengo astea',
+  calVolverAHoy: 'Gaurkora itzuli',
+  calFallidos: 'Egutegi batzuek ez dute erantzuten une honetan.',
 
   navInicio: 'Hasiera',
   navForo: 'Foroa',
