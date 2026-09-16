@@ -15,6 +15,7 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import React, { useEffect, useState } from 'react'
+import { useTextos } from '@/components/IdiomaProvider'
 
 type QuestionnaireResourceBlock = {
   blockType: 'questionnaireResource'
@@ -24,6 +25,7 @@ type QuestionnaireResourceBlock = {
 type NodeTypes = DefaultNodeTypes | SerializedBlockNode<QuestionnaireResourceBlock>
 
 function ResourceCard({ resource }: { resource: QuestionnaireResourceBlock['resource'] }) {
+  const t = useTextos()
   const [result, setResult] = useState<CatalogResult | null>(
     typeof resource === 'object' ? resource : null,
   )
@@ -44,7 +46,7 @@ function ResourceCard({ resource }: { resource: QuestionnaireResourceBlock['reso
   }, [resource])
 
   if (!result) {
-    return <p className="rounded-lg border bg-muted p-4 text-sm">Cargando recurso…</p>
+    return <p className="rounded-lg border bg-muted p-4 text-sm">{t.cuestionarioCargandoRecurso}</p>
   }
 
   return (

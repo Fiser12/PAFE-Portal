@@ -12,6 +12,7 @@ import {
   isStaff,
 } from '@/core/permissions'
 import { getNavItems } from '@/components/layout/nav-items'
+import { textosDe } from '@/core/textos'
 
 let payload: Payload
 
@@ -202,7 +203,7 @@ describe('el catálogo es material interno', () => {
 
   it('el menú solo ofrece el catálogo a quien tiene rol', () => {
     const enlaces = (user: Parameters<typeof getNavItems>[0]) =>
-      getNavItems(user).map((i) => i.href)
+      getNavItems(user, textosDe('es')).map((i) => i.href)
     expect(enlaces(null)).not.toContain('/catalog')
     expect(enlaces({ role: [] } as never)).not.toContain('/catalog')
     expect(enlaces({ role: ['familia'] } as never)).toContain('/catalog')

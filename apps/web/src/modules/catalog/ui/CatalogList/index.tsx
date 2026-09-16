@@ -1,5 +1,6 @@
 'use client'
 
+import { useTextos } from '@/components/IdiomaProvider'
 import type { CatalogItem, Taxonomy } from '@/payload-types'
 import { useMemo, useState } from 'react'
 import { CatalogItemCard } from './CatalogItemCard'
@@ -19,6 +20,7 @@ interface CatalogListClientProps {
 const getCategoryId = (cat: number | Taxonomy) => (typeof cat === 'number' ? cat : cat.id)
 
 export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps) => {
+  const t = useTextos()
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
 
   const filteredItems = useMemo(() => {
@@ -32,17 +34,17 @@ export const CatalogList = ({ catalogItems, categories }: CatalogListClientProps
     <div className="container">
       {/* Cabecera con filtro */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-2xl font-semibold sm:text-3xl">Catálogo</h2>
+        <h2 className="text-2xl font-semibold sm:text-3xl">{t.catalogo}</h2>
 
         <Select
           value={selectedCategory ? String(selectedCategory) : 'all'}
           onValueChange={(value) => setSelectedCategory(value === 'all' ? null : Number(value))}
         >
-          <SelectTrigger className="w-full sm:w-52" aria-label="Categoría">
-            <SelectValue placeholder="Categoría" />
+          <SelectTrigger className="w-full sm:w-52" aria-label={t.catalogoCategoria}>
+            <SelectValue placeholder={t.catalogoCategoria} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todas las categorías</SelectItem>
+            <SelectItem value="all">{t.catalogoTodasCategorias}</SelectItem>
             {categories.map((cat) => (
               <SelectItem key={cat.id} value={String(cat.id)}>
                 {cat.name}

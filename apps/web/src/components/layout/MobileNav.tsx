@@ -21,6 +21,7 @@ import { SelectorIdioma } from './SelectorIdioma'
 
 import type { Header as HeaderType } from '@/payload-types'
 import type { CodigoIdioma } from '@/core/localization'
+import { useTextos } from '@/components/IdiomaProvider'
 
 const linkClasses =
   'block rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
@@ -29,17 +30,18 @@ export const MobileNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
   data,
   idioma,
 }) => {
+  const t = useTextos()
   const [open, setOpen] = useState(false)
   const { user } = useUser()
   const pathname = usePathname()
-  const items = getNavItems(user)
+  const items = getNavItems(user, t)
   const cmsItems = data?.navItems || []
   const close = () => setOpen(false)
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden" aria-label="Abrir menú">
+        <Button variant="ghost" size="icon" className="md:hidden" aria-label={t.navAbrirMenu}>
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
@@ -49,7 +51,7 @@ export const MobileNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
             <SheetTitle className="font-bubblegum text-2xl font-black text-primary">PAFE</SheetTitle>
             <SelectorIdioma idioma={idioma} />
           </div>
-          <SheetDescription className="sr-only">Menú de navegación</SheetDescription>
+          <SheetDescription className="sr-only">{t.navMenu}</SheetDescription>
         </SheetHeader>
         <nav className="flex flex-col gap-1 overflow-y-auto p-4">
           {items.map((item) =>

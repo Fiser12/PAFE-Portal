@@ -13,6 +13,7 @@ import { SelectorIdioma } from './SelectorIdioma'
 
 import type { Header as HeaderType } from '@/payload-types'
 import type { CodigoIdioma } from '@/core/localization'
+import { useTextos } from '@/components/IdiomaProvider'
 
 const linkClasses =
   'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
@@ -21,9 +22,10 @@ export const HeaderNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
   data,
   idioma,
 }) => {
+  const t = useTextos()
   const { user } = useUser()
   const pathname = usePathname()
-  const items = getNavItems(user)
+  const items = getNavItems(user, t)
   const cmsItems = data?.navItems || []
 
   return (
@@ -57,7 +59,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
         <NotificationsBell />
       ) : (
         <Button asChild size="sm" className="ml-2">
-          <Link href="/login">Entrar</Link>
+          <Link href="/login">{t.entrar}</Link>
         </Button>
       )}
     </nav>

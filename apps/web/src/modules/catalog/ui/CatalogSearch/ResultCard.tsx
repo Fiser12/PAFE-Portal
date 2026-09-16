@@ -6,6 +6,8 @@ import { Download, ExternalLink, BookMarked } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { useTextos } from '@/components/IdiomaProvider'
+import type { Textos } from '@/core/textos'
 
 export interface CatalogResult {
   id: number | string
@@ -19,21 +21,21 @@ export interface CatalogResult {
   wikiPath?: string | null
 }
 
-const COLLECTION_LABEL: Record<string, string> = {
-  'catalog-item': 'Reservable',
-  files: 'Descargable',
-  'external-resources': 'Recurso externo',
-}
+const collectionLabel = (t: Textos): Record<string, string> => ({
+  'catalog-item': t.tipoReservable,
+  files: t.tipoDescargable,
+  'external-resources': t.catalogoRecursoExterno,
+})
 
-const ITEM_TYPE_LABEL: Record<string, string> = {
-  libro: 'Libro',
-  juego: 'Juego',
-  programa: 'Programa',
-  video: 'Vídeo',
-  web_link: 'Enlace web',
+const itemTypeLabel = (t: Textos): Record<string, string> => ({
+  libro: t.tipoLibro,
+  juego: t.tipoJuego,
+  programa: t.tipoPrograma,
+  video: t.catalogoVideo,
+  web_link: t.catalogoEnlaceWeb,
   'google-form': 'Google Form',
   'google-doc': 'Google Doc',
-}
+})
 
 const getDocUrl = (result: CatalogResult): string | null => {
   const value = result.doc?.value as { url?: string | null } | undefined
@@ -41,14 +43,15 @@ const getDocUrl = (result: CatalogResult): string | null => {
 }
 
 export function CatalogResultCard({ result }: { result: CatalogResult }) {
+  const t = useTextos()
   const router = useRouter()
   const cover =
     typeof result.cover === 'object' && result.cover ? (result.cover as Media) : undefined
   const collectionType = result.collectionType ?? result.doc?.relationTo ?? ''
   const typeLabel =
-    (result.itemType && ITEM_TYPE_LABEL[result.itemType]) ||
-    COLLECTION_LABEL[collectionType] ||
-    'Material'
+    (result.itemType && itemTypeLabel(t)[result.itemType]) ||
+    collectionLabel(t)[collectionType] ||
+    t.catalogoMaterial
 
   // La url viene copiada en el índice search; el fallback vía doc.value solo
   // funciona si el doc llegara poblado (el campo del plugin tiene maxDepth 0)
@@ -104,13 +107,13 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
               className="mb-2 block text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
               {isReservable
-                ? '¿Quieres saber algo más antes de reservarlo?'
-                : '¿Quieres saber algo más antes de descargarlo?'}
+                ? t.catalogoSaberMasReservar
+                : t.catalogoSaberMasDescargar}
             </a>
           )}
           {isReservable ? (
             <Button className="w-full" onClick={handleOpen}>
-              Ir a reservar
+              {t.catalogoIrAReservar}
             </Button>
           ) : (
             <Button className="w-full" onClick={handleOpen} disabled={!url}>
@@ -119,7 +122,7 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
               ) : (
                 <ExternalLink className="mr-2 h-4 w-4" />
               )}
-              {collectionType === 'files' ? 'Descargar' : 'Ver'}
+              {collectionType === 'files' ? t.catalogoDescargar : t.catalogoVer}
             </Button>
           )}
         </div>

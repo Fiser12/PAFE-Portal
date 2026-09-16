@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useTextos } from '@/components/IdiomaProvider'
 
 function ResetPasswordForm() {
   const router = useRouter()
@@ -16,6 +17,7 @@ function ResetPasswordForm() {
   // better-auth redirige aquí con ?error=INVALID_TOKEN si el enlace no vale
   const linkInvalid = !token || Boolean(searchParams.get('error'))
 
+  const t = useTextos()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -26,7 +28,7 @@ function ResetPasswordForm() {
     e.preventDefault()
     setError(null)
     if (password !== confirm) {
-      setError('Las contraseñas no coinciden')
+      setError(t.claveNoCoinciden)
       return
     }
     setLoading(true)
@@ -36,7 +38,7 @@ function ResetPasswordForm() {
     })
     setLoading(false)
     if (resetError) {
-      setError('El enlace no es válido o ha caducado. Solicita uno nuevo desde la pantalla de inicio de sesión.')
+      setError(t.claveEnlaceCaducadoLargo)
       return
     }
     setDone(true)
@@ -47,7 +49,7 @@ function ResetPasswordForm() {
     <div className="container flex justify-center py-10 sm:py-16">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-center text-xl">Establecer contraseña</CardTitle>
+          <CardTitle className="text-center text-xl">{t.claveEstablecer}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {linkInvalid ? (
@@ -57,10 +59,10 @@ function ResetPasswordForm() {
                 className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
               >
                 <AlertCircle className="h-4 w-4 shrink-0" />
-                El enlace no es válido o ha caducado.
+                {t.claveEnlaceCaducado}
               </div>
               <Button variant="outline" onClick={() => router.push('/login')}>
-                Volver a iniciar sesión
+                {t.claveVolver}
               </Button>
             </>
           ) : done ? (
@@ -69,12 +71,12 @@ function ResetPasswordForm() {
               className="flex items-center gap-2 rounded-md border border-emerald-500/50 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-400"
             >
               <CheckCircle className="h-4 w-4 shrink-0" />
-              Contraseña guardada. Redirigiendo al inicio de sesión…
+              {t.claveGuardada}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="password">Nueva contraseña</Label>
+                <Label htmlFor="password">{t.claveNueva}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -86,7 +88,7 @@ function ResetPasswordForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="confirm">Repite la contraseña</Label>
+                <Label htmlFor="confirm">{t.claveRepite}</Label>
                 <Input
                   id="confirm"
                   type="password"
@@ -108,7 +110,7 @@ function ResetPasswordForm() {
               )}
               <Button type="submit" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? 'Guardando…' : 'Guardar contraseña'}
+                {loading ? t.claveGuardando : t.claveGuardar}
               </Button>
             </form>
           )}

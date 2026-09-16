@@ -1,5 +1,6 @@
 'use client'
 
+import { useTextos } from '@/components/IdiomaProvider'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { Trash2 } from 'lucide-react'
@@ -15,6 +16,7 @@ const quien = (autor: Respuesta['author']): string =>
   typeof autor === 'object' && autor !== null ? ((autor as User).name ?? 'Alguien') : 'Alguien'
 
 export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuarioId: number }) {
+  const t = useTextos()
   const { data, isLoading, mutate } = useSWR(['respuestas', noticiaId], () =>
     cargarRespuestas(noticiaId),
   )
@@ -31,7 +33,7 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
     setEnviando(false)
 
     if (!resultado.ok) {
-      setError(resultado.error ?? 'No se pudo enviar.')
+      setError(resultado.error ?? t.respuestasErrorEnviar)
       return
     }
     setMensaje('')
@@ -41,7 +43,7 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
   const retirar = async (id: number) => {
     const resultado = await retirarRespuesta(id)
     if (resultado.ok) void mutate()
-    else setError(resultado.error ?? 'No se pudo retirar.')
+    else setError(resultado.error ?? t.respuestasErrorRetirar)
   }
 
   return (
@@ -51,9 +53,9 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
       </h2>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Cargando…</p>
+        <p className="text-sm text-muted-foreground">{t.cargando}</p>
       ) : respuestas.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Todavía no ha respondido nadie.</p>
+        <p className="text-sm text-muted-foreground">{t.respuestasVacio}</p>
       ) : (
         <ul className="flex flex-col gap-4">
           {respuestas.map((respuesta) => (
@@ -71,10 +73,10 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
                     size="sm"
                     variant="ghost"
                     onClick={() => retirar(Number(respuesta.id))}
-                    title="Retirar mi respuesta"
+                    title={t.respuestasRetirarMia}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
-                    <span className="sr-only">Retirar</span>
+                    <span className="sr-only">{t.respuestasRetirar}</span>
                   </Button>
                 )}
               </div>
@@ -88,7 +90,7 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
         <Textarea
           value={mensaje}
           onChange={(e) => setMensaje(e.target.value)}
-          placeholder="Escribe tu respuesta…"
+          placeholder={t.respuestasEscribe}
           rows={3}
         />
         {error && <p className="text-sm text-destructive">{error}</p>}

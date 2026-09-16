@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useTextos } from '@/components/IdiomaProvider'
 
 export default function LoginPage() {
+  const t = useTextos()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +21,7 @@ export default function LoginPage() {
 
   const handleForgotPassword = async () => {
     if (!email) {
-      setError('Escribe tu email arriba para enviarte el enlace')
+      setError(t.loginEscribeEmail)
       return
     }
     setError(null)
@@ -29,7 +31,7 @@ export default function LoginPage() {
       redirectTo: '/reset-password',
     })
     if (resetError) {
-      setError('No se pudo enviar el correo. Inténtalo de nuevo en unos minutos.')
+      setError(t.loginCorreoFallo)
       return
     }
     setInfo('Si la cuenta existe, te hemos enviado un enlace para establecer la contraseña.')
@@ -47,7 +49,7 @@ export default function LoginPage() {
     })
     setLoading(false)
     if (signInError) {
-      setError('Email o contraseña incorrectos')
+      setError(t.loginCredencialesMal)
       return
     }
     router.push('/')
@@ -57,14 +59,14 @@ export default function LoginPage() {
     <div className="container flex justify-center py-10 sm:py-16">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-center text-xl">Iniciar sesión</CardTitle>
+          <CardTitle className="text-center text-xl">{t.loginTitulo}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Button
             variant="outline"
             onClick={async () => await signIn.social({ provider: 'google', callbackURL: '/' })}
           >
-            Entrar con Google
+            {t.loginConGoogle}
           </Button>
 
           <div className="flex items-center gap-3 text-xs uppercase text-muted-foreground">
@@ -75,7 +77,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t.loginEmail}</Label>
               <Input
                 id="email"
                 type="email"
@@ -86,7 +88,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password">Contraseña</Label>
+              <Label htmlFor="password">{t.loginContrasena}</Label>
               <Input
                 id="password"
                 type="password"
@@ -123,7 +125,7 @@ export default function LoginPage() {
               onClick={handleForgotPassword}
               className="text-center text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
             >
-              ¿Has olvidado tu contraseña?
+              {t.loginOlvidada}
             </button>
           </form>
 

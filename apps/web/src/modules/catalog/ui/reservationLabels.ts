@@ -1,13 +1,15 @@
 import type { ReservationStatus } from '../domain/lifecycle'
 import type { ReservationAction } from '../domain/actions'
+import type { CodigoIdioma } from '@/core/localization'
+import type { Textos } from '@/core/textos'
 
-export const STATUS_LABELS: Record<ReservationStatus, string> = {
-  reservada: 'Pendiente de recoger',
-  activa: 'En préstamo',
-  devuelta: 'Devuelta',
-  perdida: 'Perdida o rota',
-  cancelada: 'Cancelada',
-}
+export const statusLabels = (t: Textos): Record<ReservationStatus, string> => ({
+  reservada: t.estadoReservada,
+  activa: t.estadoActiva,
+  devuelta: t.estadoDevuelta,
+  perdida: t.estadoPerdida,
+  cancelada: t.estadoCancelada,
+})
 
 export const STATUS_VARIANTS: Record<ReservationStatus, 'success' | 'secondary' | 'destructive'> = {
   reservada: 'secondary',
@@ -17,14 +19,15 @@ export const STATUS_VARIANTS: Record<ReservationStatus, 'success' | 'secondary' 
   cancelada: 'secondary',
 }
 
-export const ACTION_LABELS: Record<ReservationAction, string> = {
-  cancelar: 'Cancelar',
-  recoger: 'Registrar recogida',
-  devolver: 'Devolver',
-  perdida: 'Marcar pérdida',
-  prorrogar: 'Prorrogar 2 semanas',
-  reponer: 'Registrar reposición',
-}
+export const actionLabels = (t: Textos): Record<ReservationAction, string> => ({
+  cancelar: t.accionCancelar,
+  recoger: t.accionRecogida,
+  devolver: t.accionDevolver,
+  perdida: t.accionMarcarPerdida,
+  prorrogar: t.accionProrrogar,
+  reponer: t.accionReposicion,
+})
 
-export const formatDay = (value: string | null | undefined): string =>
-  value ? new Date(value).toLocaleDateString('es-ES') : '—'
+/** Las fechas se escriben con las convenciones del idioma elegido */
+export const formatDay = (value: string | null | undefined, idioma: CodigoIdioma = 'es'): string =>
+  value ? new Date(value).toLocaleDateString(idioma === 'eu' ? 'eu-ES' : 'es-ES') : '—'

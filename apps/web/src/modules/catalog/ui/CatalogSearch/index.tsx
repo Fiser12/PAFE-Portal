@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useTextos } from '@/components/IdiomaProvider'
+import type { Textos } from '@/core/textos'
 import { useDebounce } from '@/utilities/useDebounce'
 import { searchCatalog, type SearchCatalogResult } from '../../actions/searchCatalog'
 import { CatalogResultCard, type CatalogResult } from './ResultCard'
@@ -24,55 +26,55 @@ interface Props {
   initialQuery?: string
 }
 
-const COLLECTION_OPTIONS = [
-  { value: 'all', label: 'Todo el catálogo' },
-  { value: 'catalog-item', label: 'Reservables' },
-  { value: 'files', label: 'Descargables' },
-  { value: 'external-resources', label: 'Recursos externos' },
+const collectionOptions = (t: Textos) => [
+  { value: 'all', label: t.catalogoTodo },
+  { value: 'catalog-item', label: t.catalogoReservables },
+  { value: 'files', label: t.catalogoDescargables },
+  { value: 'external-resources', label: t.catalogoRecursosExternos },
 ]
 
 // Cada colección filtra por su propio campo de tipo; los descargables no tienen.
-const ITEM_TYPE_FILTERS: Record<
-  string,
-  { label: string; options: { value: string; label: string }[] }
-> = {
+const itemTypeFilters = (
+  t: Textos,
+): Record<string, { label: string; options: { value: string; label: string }[] }> => ({
   'catalog-item': {
-    label: 'Material',
+    label: t.catalogoMaterial,
     options: [
-      { value: 'all', label: 'Todos los materiales' },
-      { value: 'libro', label: 'Libros' },
-      { value: 'juego', label: 'Juegos' },
-      { value: 'programa', label: 'Programas técnicos' },
+      { value: 'all', label: t.catalogoTodosMateriales },
+      { value: 'libro', label: t.catalogoLibros },
+      { value: 'juego', label: t.catalogoJuegos },
+      { value: 'programa', label: t.catalogoProgramasTecnicos },
     ],
   },
   'external-resources': {
-    label: 'Formato',
+    label: t.catalogoFormato,
     options: [
-      { value: 'all', label: 'Todos los formatos' },
-      { value: 'video', label: 'Vídeo' },
-      { value: 'web_link', label: 'Enlace web' },
+      { value: 'all', label: t.catalogoTodosFormatos },
+      { value: 'video', label: t.catalogoVideo },
+      { value: 'web_link', label: t.catalogoEnlaceWeb },
       { value: 'google-form', label: 'Google Form' },
       { value: 'google-doc', label: 'Google Doc' },
     ],
   },
-}
+})
 
 // Facetas de la taxonomía (vienen en `payload.types` de cada término).
 // Un selector por faceta; entre facetas el filtro se combina con AND.
-const FACETS: { key: string; label: string; allLabel: string }[] = [
-  { key: 'tematica', label: 'Temática', allLabel: 'Todas las temáticas' },
-  { key: 'edad', label: 'Edad', allLabel: 'Todas las edades' },
-  { key: 'destinatario', label: 'Destinatario', allLabel: 'Todos los destinatarios' },
+const facets = (t: Textos): { key: string; label: string; allLabel: string }[] => [
+  { key: 'tematica', label: t.catalogoTematica, allLabel: t.catalogoTodasTematicas },
+  { key: 'edad', label: t.catalogoEdad, allLabel: t.catalogoTodasEdades },
+  { key: 'destinatario', label: t.catalogoDestinatario, allLabel: t.catalogoTodosDestinatarios },
 ]
 
 const facetOf = (cat: Taxonomy): string => cat.payload?.types?.[0] ?? 'tematica'
 
 export function CatalogSearch({ categories, initialQuery = '' }: Props) {
+  const t = useTextos()
   const [query, setQuery] = useState(initialQuery)
   const [facetSelection, setFacetSelection] = useState<Record<string, string>>({})
   const [collectionType, setCollectionType] = useState('all')
   const [itemType, setItemType] = useState('all')
-  const itemTypeFilter = ITEM_TYPE_FILTERS[collectionType]
+  const itemTypeFilter = itemTypeFilters(t)[collectionType]
 
   const debouncedQuery = useDebounce(query, 300)
 
@@ -148,7 +150,7 @@ export function CatalogSearch({ categories, initialQuery = '' }: Props) {
 
   return (
     <div className="container py-6 sm:py-8">
-      <h1 className="mb-4 text-2xl font-semibold sm:mb-6 sm:text-3xl">Catálogo</h1>
+      <h1 className="mb-4 text-2xl font-semibold sm:mb-6 sm:text-3xl">{t.catalogo}</h1>
 
       {/* Filtros */}
       <div className="mb-6 space-y-3">
@@ -157,7 +159,7 @@ export function CatalogSearch({ categories, initialQuery = '' }: Props) {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por título…"
+            placeholder={t.catalogoBuscarPorTitulo}
             className="pl-9"
             aria-label="Buscar"
           />
@@ -171,11 +173,11 @@ export function CatalogSearch({ categories, initialQuery = '' }: Props) {
               setItemType('all')
             }}
           >
-            <SelectTrigger className="w-full sm:w-52" aria-label="Tipo">
-              <SelectValue placeholder="Tipo" />
+            <SelectTrigger className="w-full sm:w-52" aria-label={t.catalogoTipo}>
+              <SelectValue placeholder={t.catalogoTipo} />
             </SelectTrigger>
             <SelectContent>
-              {COLLECTION_OPTIONS.map((opt) => (
+              {collectionOptions(t).map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>
@@ -198,7 +200,9 @@ export function CatalogSearch({ categories, initialQuery = '' }: Props) {
             </Select>
           )}
 
-          {FACETS.filter((facet) => (grouped[facet.key] ?? []).length > 0).map((facet) => (
+          {facets(t)
+            .filter((facet) => (grouped[facet.key] ?? []).length > 0)
+            .map((facet) => (
             <Select
               key={facet.key}
               value={facetSelection[facet.key] ?? 'all'}
@@ -229,12 +233,12 @@ export function CatalogSearch({ categories, initialQuery = '' }: Props) {
         </div>
       ) : results.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">
-          No se han encontrado materiales con estos filtros.
+          {t.catalogoSinResultados}
         </p>
       ) : (
         <>
           <p className="mb-3 text-sm text-muted-foreground">
-            {totalDocs} {totalDocs === 1 ? 'material' : 'materiales'}
+            {totalDocs} {totalDocs === 1 ? t.catalogoMaterialUno : t.catalogoMaterialVarios}
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {results.map((result) => (

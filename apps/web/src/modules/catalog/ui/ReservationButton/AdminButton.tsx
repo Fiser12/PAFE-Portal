@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { createReservation } from '../../actions'
 import { UserSelectionModal } from './UserSelectionModal'
+import { useTextos } from '@/components/IdiomaProvider'
 
 interface Props {
     itemId: number
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function AdminButton({ itemId, onReservationSuccess }: Props) {
+  const t = useTextos()
     const [isPending, startTransition] = useTransition()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -20,7 +22,7 @@ export function AdminButton({ itemId, onReservationSuccess }: Props) {
                 setIsModalOpen(false)
                 onReservationSuccess?.()
             } catch (error) {
-                console.error('Error al crear la reserva:', error)
+                console.error(t.reservaErrorCrear, error)
             }
         })
     }
@@ -32,7 +34,7 @@ export function AdminButton({ itemId, onReservationSuccess }: Props) {
                 disabled={isPending}
                 className="bg-secondary text-secondary-foreground px-6 py-2 rounded-lg hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                {isPending ? 'Reservando...' : 'Reservar para usuario'}
+                {isPending ? t.reservaReservando : t.reservaReservarParaUsuario}
             </button>
 
             <UserSelectionModal

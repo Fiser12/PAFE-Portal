@@ -1,5 +1,6 @@
 'use client'
 
+import { useTextos } from '@/components/IdiomaProvider'
 import { cn } from '@/utilities/ui'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { type VariantProps, cva } from 'class-variance-authority'
@@ -49,18 +50,27 @@ interface SheetContentProps
   extends React.ComponentPropsWithRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
-const SheetContent: React.FC<SheetContentProps> = ({ side = 'right', className, children, ...props }) => (
+const SheetContent: React.FC<SheetContentProps> = ({
+  side = 'right',
+  className,
+  children,
+  ...props
+}) => {
+  const t = useTextos()
+
+  return (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content className={cn(sheetVariants({ side }), className)} {...props}>
       {children}
       <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
         <X className="h-5 w-5" />
-        <span className="sr-only">Cerrar</span>
+        <span className="sr-only">{t.cerrar}</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>
-)
+  )
+}
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
