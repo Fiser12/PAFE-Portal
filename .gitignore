@@ -1,0 +1,6 @@
+
+# Caché de transpilación de Quartz: artefacto de build.
+quartz/.quartz-cache/
+
+# Sitio construido: se genera en cada despliegue, nunca se commitea (ver DEPLOY.md).
+public/
