@@ -53,7 +53,8 @@ export const idDe = (valor: number | { id: number } | null | undefined): number 
 /**
  * Deja el aviso en la campana y manda el correo, uno a uno. Un destinatario que
  * falle no se lleva a los demás: queda sin aviso, y por eso el reintento lo
- * vuelve a encontrar.
+ * vuelve a encontrar. Dentro de un hook, eso sí, la transacción ya está
+ * abortada y fallarán todos: la noticia se guarda y avisa el cron.
  */
 export const avisarA = async ({
   payload,
@@ -69,16 +70,27 @@ export const avisarA = async ({
   /** Dentro de un hook hay transacción abierta: sin `req` nada de esto se ve */
   req?: PayloadRequest
 }): Promise<number> => {
+  let avisados = 0
   for (const destinatario of destinatarios) {
-    await payload.create({
-      collection: 'notification',
-      data: aviso(destinatario.id) as never,
-      overrideAccess: true,
-      req,
-    })
+    try {
+      await payload.create({
+        collection: 'notification',
+        data: aviso(destinatario.id) as never,
+        overrideAccess: true,
+        req,
+      })
+      avisados++
+    } catch (error) {
+      payload.logger.error(
+        `[avisos] no se pudo avisar a ${destinatario.id}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      )
+      continue
+    }
     if (destinatario.email) {
       await enviarCorreoSinRomper(payload, { to: destinatario.email, ...correo })
     }
   }
-  return destinatarios.length
+  return avisados
 }

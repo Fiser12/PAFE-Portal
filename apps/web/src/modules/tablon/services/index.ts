@@ -376,11 +376,10 @@ export const respuestasDe = async ({
   return result.docs as Respuesta[]
 }
 
-const respuestaPropia = async (
+const respuestaDe = async (
   payload: Payload,
-  user: Actor,
   respuestaId: number,
-): Promise<Respuesta> => {
+): Promise<{ respuesta: Respuesta; suya: (user: Actor) => boolean }> => {
   const respuesta = (await payload.findByID({
     collection: COLLECTION_SLUG_RESPUESTA,
     id: respuestaId,
@@ -388,9 +387,10 @@ const respuestaPropia = async (
     overrideAccess: true,
   })) as Respuesta
 
-  const suya = idDe(respuesta.author as number | { id: number }) === Number(user.id)
-  if (!suya && !isStaff(user as User)) throw new TablonRuleError('sin-permiso')
-  return respuesta
+  return {
+    respuesta,
+    suya: (user) => idDe(respuesta.author as number | { id: number }) === Number(user.id),
+  }
 }
 
 export const editarRespuesta = async ({
@@ -404,7 +404,10 @@ export const editarRespuesta = async ({
   respuestaId: number
   mensaje: string
 }): Promise<Respuesta> => {
-  await respuestaPropia(payload, user, respuestaId)
+  // Corregir es solo de quien escribió: el staff retira, no reescribe lo que
+  // dijo otra persona
+  const { suya } = await respuestaDe(payload, respuestaId)
+  if (!suya(user)) throw new TablonRuleError('sin-permiso')
   if (!mensaje.trim()) throw new TablonRuleError('mensaje-vacio')
 
   return (await payload.update({
@@ -424,7 +427,8 @@ export const borrarRespuesta = async ({
   user: Actor
   respuestaId: number
 }): Promise<void> => {
-  await respuestaPropia(payload, user, respuestaId)
+  const { suya } = await respuestaDe(payload, respuestaId)
+  if (!suya(user) && !isStaff(user as User)) throw new TablonRuleError('sin-permiso')
 
   await payload.delete({
     collection: COLLECTION_SLUG_RESPUESTA,

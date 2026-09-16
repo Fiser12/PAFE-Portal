@@ -27,6 +27,9 @@ const TRASVASE: { tabla: string; columnas: string[] }[] = [
   { tabla: 'taxonomy', columnas: ['name'] },
   { tabla: 'pages', columnas: ['meta_title', 'meta_description', 'meta_image_id'] },
   { tabla: 'posts', columnas: ['meta_title', 'meta_description', 'meta_image_id'] },
+  // Todavía no existen en producción, pero el día que existan también cuentan
+  { tabla: 'noticia', columnas: ['title', 'body'] },
+  { tabla: 'adjunto', columnas: ['alt'] },
 ]
 
 const LOCALE = 'es'

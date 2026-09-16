@@ -6,7 +6,12 @@ import { createFamilia, createStaff } from './helpers/factory'
 import { at } from './helpers/dates'
 import { emailFailures, emailsTo, resetEmails } from './helpers/email'
 import { userNotifications } from '@/modules/catalog/services'
-import { avisarDeNoticia, editarNoticia, publicarNoticia } from '@/modules/tablon/services'
+import {
+  avisarDeNoticia,
+  avisarDeNoticiasPendientes,
+  editarNoticia,
+  publicarNoticia,
+} from '@/modules/tablon/services'
 
 /** La única área que avisa, como en el foro */
 const AVISA = 'berriak-pafe'
@@ -180,5 +185,49 @@ describe('reintentos: avisar dos veces no molesta dos veces', () => {
     await avisarDeNoticia({ payload, noticia })
 
     expect(await avisos(Number(familia.id))).toHaveLength(1)
+  })
+})
+
+describe('el repaso diario de lo programado', () => {
+  it('avisa de una noticia cuya fecha ya llegó', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+
+    await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Programada para el 20',
+      body: '.',
+      area: AVISA,
+      publishedAt: at('2026-09-20').toISOString(),
+      now: at('2026-09-16'),
+    })
+    expect(await avisos(Number(familia.id))).toHaveLength(0)
+
+    // Lo que hace el cron cuando amanece el día 20
+    await avisarDeNoticiasPendientes({ payload, now: at('2026-09-21') })
+
+    const recibidos = await avisos(Number(familia.id))
+    expect(recibidos.some((a) => a.message.includes('Programada para el 20'))).toBe(true)
+  })
+
+  it('no toca lo que aún no ha llegado', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+
+    await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Para octubre',
+      body: '.',
+      area: AVISA,
+      publishedAt: at('2026-10-30').toISOString(),
+      now: at('2026-09-16'),
+    })
+
+    await avisarDeNoticiasPendientes({ payload, now: at('2026-09-21') })
+
+    const recibidos = await avisos(Number(familia.id))
+    expect(recibidos.some((a) => a.message.includes('Para octubre'))).toBe(false)
   })
 })

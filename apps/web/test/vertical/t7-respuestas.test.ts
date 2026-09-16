@@ -189,6 +189,27 @@ describe('corregir o retirar una respuesta', () => {
     expect(await respuestasDe({ payload, user: familia, noticiaId: Number(noticia.id) })).toHaveLength(0)
   })
 
+  it('el staff no puede reescribir el mensaje de otra persona', async () => {
+    const noticia = await unaNoticia()
+    const familia = await createFamilia(payload)
+    const staff = await createStaff(payload)
+    const respuesta = await responder({
+      payload,
+      user: familia,
+      noticiaId: Number(noticia.id),
+      mensaje: 'Lo que dije yo',
+    })
+
+    await expect(
+      editarRespuesta({
+        payload,
+        user: staff,
+        respuestaId: Number(respuesta.id),
+        mensaje: 'Lo que dice el staff que dije',
+      }),
+    ).rejects.toMatchObject({ code: 'sin-permiso' })
+  })
+
   it('el staff puede retirar la de cualquiera', async () => {
     const noticia = await unaNoticia()
     const familia = await createFamilia(payload)
