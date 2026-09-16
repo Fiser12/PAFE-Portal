@@ -53,8 +53,10 @@ plugins:
         - git
         - filesystem
     order: 10
+  # Desactivado: no compila en el runner de Vercel y tumba el build entero.
+  # Solo lo necesitaba okf-convention.md, que es documentación del toolkit.
   - source: "github:quartz-community/syntax-highlighting"
-    enabled: true
+    enabled: false
     options:
       theme:
         light: github-light
