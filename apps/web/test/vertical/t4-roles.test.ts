@@ -11,6 +11,7 @@ import {
   isAdmin,
   isStaff,
 } from '@/core/permissions'
+import { getNavItems } from '@/components/layout/nav-items'
 
 let payload: Payload
 
@@ -174,5 +175,36 @@ describe('lo que cada rol puede hacer de verdad', () => {
       const user = await createUser(payload, [rol], `${rol} Test`)
       await expect(creaCaso(user)).rejects.toThrow()
     }
+  })
+})
+
+describe('el catálogo es material interno', () => {
+  const busca = (user?: Awaited<ReturnType<typeof createUser>>) =>
+    payload.find({ collection: 'catalog-item', user, overrideAccess: false })
+
+  it('quien no ha entrado no ve ningún material', async () => {
+    await createItem(payload)
+    await expect(busca()).rejects.toThrow()
+  })
+
+  it('quien entró pero aún no tiene rol tampoco lo ve', async () => {
+    await createItem(payload)
+    const sinRol = await createUser(payload, [], 'Sin Rol')
+    await expect(busca(sinRol)).rejects.toThrow()
+  })
+
+  it('una familia sí lo ve', async () => {
+    await createItem(payload)
+    const familia = await createUser(payload, ['familia'], 'Familia Test')
+    const { totalDocs } = await busca(familia)
+    expect(totalDocs).toBeGreaterThan(0)
+  })
+
+  it('el menú solo ofrece el catálogo a quien tiene rol', () => {
+    const enlaces = (user: Parameters<typeof getNavItems>[0]) =>
+      getNavItems(user).map((i) => i.href)
+    expect(enlaces(null)).not.toContain('/catalog')
+    expect(enlaces({ role: [] } as never)).not.toContain('/catalog')
+    expect(enlaces({ role: ['familia'] } as never)).toContain('/catalog')
   })
 })

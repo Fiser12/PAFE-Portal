@@ -1,7 +1,8 @@
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
+import { redirect } from 'next/navigation'
+import { isActiveUser } from '@/core/permissions'
 import { CatalogSearch } from '@/modules/catalog/ui/CatalogSearch'
 import { CatalogIntro } from '@/modules/catalog/ui/CatalogIntro'
+import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
   searchParams: Promise<{ q?: string }>
@@ -9,7 +10,9 @@ interface Props {
 
 export default async function CatalogPage({ searchParams }: Props) {
   const { q } = await searchParams
-  const payload = await getPayload({ config: configPromise })
+  const { payload, user } = await getSessionUser()
+  if (!user || !isActiveUser(user)) redirect('/login')
+
   const categories = await payload.find({
     collection: 'taxonomy',
     pagination: false,
