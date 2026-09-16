@@ -2,8 +2,7 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."enum_users_areas_suscritas" AS ENUM('berriak-pafe', 'partekatutako-berriak', 'ia', 'elkarrizketa-irekiak', 'pafe-ren-elkarrizketak', 'lantalde-teknikoa');
-  CREATE TYPE "public"."enum_noticia_area" AS ENUM('berriak-pafe', 'partekatutako-berriak', 'ia', 'elkarrizketa-irekiak', 'pafe-ren-elkarrizketak', 'lantalde-teknikoa');
+   CREATE TYPE "public"."enum_noticia_area" AS ENUM('berriak-pafe', 'partekatutako-berriak', 'ia', 'elkarrizketa-irekiak', 'pafe-ren-elkarrizketak', 'lantalde-teknikoa');
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-catalogo' BEFORE 'profesional';
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-users' BEFORE 'profesional';
   ALTER TYPE "public"."enum_admin_invitations_role" ADD VALUE 'admin-news' BEFORE 'profesional';
@@ -14,13 +13,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TYPE "public"."enum_payload_jobs_log_task_slug" ADD VALUE 'avisosTareas' BEFORE 'createCollectionExport';
   ALTER TYPE "public"."enum_payload_jobs_task_slug" ADD VALUE 'avisosTablon' BEFORE 'createCollectionExport';
   ALTER TYPE "public"."enum_payload_jobs_task_slug" ADD VALUE 'avisosTareas' BEFORE 'createCollectionExport';
-  CREATE TABLE "users_areas_suscritas" (
-  	"order" integer NOT NULL,
-  	"parent_id" integer NOT NULL,
-  	"value" "enum_users_areas_suscritas",
-  	"id" serial PRIMARY KEY NOT NULL
-  );
-  
   CREATE TABLE "noticia" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
@@ -48,10 +40,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "notification" ADD COLUMN "noticia_id" integer;
   ALTER TABLE "notification" ADD COLUMN "tarea_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "noticia_id" integer;
-  ALTER TABLE "users_areas_suscritas" ADD CONSTRAINT "users_areas_suscritas_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "noticia" ADD CONSTRAINT "noticia_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
-  CREATE INDEX "users_areas_suscritas_order_idx" ON "users_areas_suscritas" USING btree ("order");
-  CREATE INDEX "users_areas_suscritas_parent_idx" ON "users_areas_suscritas" USING btree ("parent_id");
   CREATE INDEX "noticia_area_idx" ON "noticia" USING btree ("area");
   CREATE INDEX "noticia_published_at_idx" ON "noticia" USING btree ("published_at");
   CREATE INDEX "noticia_author_idx" ON "noticia" USING btree ("author_id");
@@ -67,10 +56,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
-   ALTER TABLE "users_areas_suscritas" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "noticia" DISABLE ROW LEVEL SECURITY;
+   ALTER TABLE "noticia" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "presentacion_catalogo" DISABLE ROW LEVEL SECURITY;
-  DROP TABLE "users_areas_suscritas" CASCADE;
   DROP TABLE "noticia" CASCADE;
   DROP TABLE "presentacion_catalogo" CASCADE;
   ALTER TABLE "notification" DROP CONSTRAINT "notification_noticia_id_noticia_id_fk";
@@ -107,6 +94,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "notification" DROP COLUMN "noticia_id";
   ALTER TABLE "notification" DROP COLUMN "tarea_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "noticia_id";
-  DROP TYPE "public"."enum_users_areas_suscritas";
   DROP TYPE "public"."enum_noticia_area";`)
 }

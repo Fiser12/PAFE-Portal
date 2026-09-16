@@ -1,16 +1,45 @@
 import type { Payload, PayloadRequest } from 'payload'
 import type { Noticia, User } from '@/payload-types'
-import { isActiveUser, isStaff } from '@/core/permissions'
+import { ROLE_FAMILIA, isActiveUser, isStaff } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
 import { COLLECTION_SLUG_NOTICIA } from '@/core/collections-slugs'
 import { avisarA, idDe } from '@/modules/avisos'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
 import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso } from '../domain/avisos'
-import { type AreaDelTablon, nombreDelArea, soloAreas } from '../domain/areas'
+import {
+  type AreaDelTablon,
+  areasVisiblesPara,
+  destinatarioDelArea,
+  nombreDelArea,
+  puedeVerArea,
+} from '../domain/areas'
 import { cuerpoRichText, estaPublicada, ordenarNoticias } from '../domain/noticias'
 
-export type Actor = Pick<User, 'id' | 'email'> & { role?: unknown }
+export type Actor = Pick<User, 'id' | 'email'> & { role?: unknown; groups?: unknown }
+
+/** Nombres de los grupos a los que pertenece, vengan poblados o como id */
+const gruposDe = async (payload: Payload, user: Actor, req?: PayloadRequest): Promise<string[]> => {
+  const grupos = (user.groups ?? []) as (number | { name?: string })[]
+  if (!Array.isArray(grupos) || grupos.length === 0) return []
+
+  const nombres = grupos
+    .filter((g): g is { name?: string } => typeof g === 'object' && g !== null)
+    .map((g) => g.name)
+    .filter((n): n is string => typeof n === 'string')
+  if (nombres.length === grupos.length) return nombres
+
+  const ids = grupos.map((g) => idDe(g as number | { id: number }))
+  const result = await payload.find({
+    collection: 'groups',
+    where: { id: { in: ids } },
+    depth: 0,
+    limit: 0,
+    overrideAccess: true,
+    req,
+  })
+  return result.docs.map((g) => g.name)
+}
 
 const yaAvisadosDe = async (
   payload: Payload,
@@ -28,14 +57,20 @@ const yaAvisadosDe = async (
   return result.docs.map((aviso) => idDe(aviso.user as number | { id: number }))
 }
 
-const suscriptoresDelArea = async (
+/**
+ * A quién le llega lo que se publica en un área. Lo decide el área, no cada
+ * persona: en el foro solo Berriak PAFE avisaba, y avisaba a las familias.
+ */
+const destinatariosDelArea = async (
   payload: Payload,
   area: string,
   req?: PayloadRequest,
 ): Promise<User[]> => {
+  if (destinatarioDelArea(area) !== 'familias') return []
+
   const result = await payload.find({
     collection: 'users',
-    where: { areasSuscritas: { contains: area } },
+    where: { role: { contains: ROLE_FAMILIA } },
     depth: 0,
     limit: 0,
     overrideAccess: true,
@@ -55,12 +90,12 @@ export const avisarDeNoticia = async ({
   /** Dentro de un hook hay transacción abierta: sin `req` nada de esto se ve */
   req?: PayloadRequest
 }): Promise<number> => {
-  const [suscriptores, yaAvisados] = await Promise.all([
-    suscriptoresDelArea(payload, noticia.area, req),
+  const [familias, yaAvisados] = await Promise.all([
+    destinatariosDelArea(payload, noticia.area, req),
     yaAvisadosDe(payload, noticia.id, req),
   ])
   const destinatarios = destinatariosDelAviso({
-    suscriptores: suscriptores.map((u) => Number(u.id)),
+    suscriptores: familias.map((u) => Number(u.id)),
     autorId: noticia.author ? idDe(noticia.author) : null,
     yaAvisados,
   })
@@ -77,7 +112,7 @@ export const avisarDeNoticia = async ({
     payload,
     destinatarios: destinatarios.map((userId) => ({
       id: userId,
-      email: suscriptores.find((u) => Number(u.id) === userId)?.email,
+      email: familias.find((u) => Number(u.id) === userId)?.email,
     })),
     aviso: (userId) => ({ user: userId, type, message, noticia: Number(noticia.id) }),
     correo,
@@ -184,6 +219,8 @@ export const noticiaDelTablon = async ({
 }): Promise<Noticia | null> => {
   if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
 
+  const grupos = await gruposDe(payload, user)
+
   const noticia = await payload
     .findByID({
       collection: COLLECTION_SLUG_NOTICIA,
@@ -198,6 +235,7 @@ export const noticiaDelTablon = async ({
     })
 
   if (!noticia) return null
+  if (!puedeVerArea({ area: noticia.area, grupos, esStaff: isStaff(user as User) })) return null
   if (estaPublicada({ publishedAt: noticia.publishedAt, now })) return noticia as Noticia
 
   return isStaff(user as User) ? (noticia as Noticia) : null
@@ -218,12 +256,18 @@ export const noticiasDelTablon = async ({
 }): Promise<Noticia[]> => {
   if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
 
+  const visibles = areasVisiblesPara({
+    grupos: await gruposDe(payload, user),
+    esStaff: isStaff(user as User),
+  })
+  if (area && !visibles.includes(area as AreaDelTablon)) return []
+
   const result = await payload.find({
     collection: COLLECTION_SLUG_NOTICIA,
     where: {
       and: [
         { publishedAt: { less_than_equal: now.toISOString() } },
-        ...(area ? [{ area: { equals: area } }] : []),
+        { area: { in: area ? [area] : visibles } },
       ],
     },
     depth: 1,
@@ -233,26 +277,6 @@ export const noticiasDelTablon = async ({
   })
 
   return ordenarNoticias(result.docs as Noticia[])
-}
-
-/** Las áreas de las que esta persona quiere recibir aviso */
-export const elegirAreas = async ({
-  payload,
-  user,
-  areas,
-}: {
-  payload: Payload
-  user: Actor
-  areas: string[]
-}): Promise<void> => {
-  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
-
-  await payload.update({
-    collection: 'users',
-    id: user.id,
-    data: { areasSuscritas: soloAreas(areas) },
-    overrideAccess: true,
-  })
 }
 
 /** Noticias programadas cuya fecha ya llegó y que todavía no han avisado */

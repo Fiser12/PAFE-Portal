@@ -215,19 +215,6 @@ export interface User {
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
   /**
-   * Áreas de las que esta persona recibe aviso cuando se publica algo
-   */
-  areasSuscritas?:
-    | (
-        | 'berriak-pafe'
-        | 'partekatutako-berriak'
-        | 'ia'
-        | 'elkarrizketa-irekiak'
-        | 'pafe-ren-elkarrizketak'
-        | 'lantalde-teknikoa'
-      )[]
-    | null;
-  /**
    * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
    */
   groups?: (number | Group)[] | null;
@@ -1586,7 +1573,6 @@ export interface UsersSelect<T extends boolean = true> {
   penalizedUntil?: T;
   reservations?: T;
   assignedCases?: T;
-  areasSuscritas?: T;
   groups?: T;
   name?: T;
   email?: T;

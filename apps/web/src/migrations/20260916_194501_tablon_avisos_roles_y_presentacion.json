@@ -2,89 +2,6 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.users_areas_suscritas": {
-      "name": "users_areas_suscritas",
-      "schema": "",
-      "columns": {
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "value": {
-          "name": "value",
-          "type": "enum_users_areas_suscritas",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "users_areas_suscritas_order_idx": {
-          "name": "users_areas_suscritas_order_idx",
-          "columns": [
-            {
-              "expression": "order",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "users_areas_suscritas_parent_idx": {
-          "name": "users_areas_suscritas_parent_idx",
-          "columns": [
-            {
-              "expression": "parent_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "users_areas_suscritas_parent_fk": {
-          "name": "users_areas_suscritas_parent_fk",
-          "tableFrom": "users_areas_suscritas",
-          "tableTo": "users",
-          "columnsFrom": [
-            "parent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.users_role": {
       "name": "users_role",
       "schema": "",
@@ -11613,18 +11530,6 @@
     }
   },
   "enums": {
-    "public.enum_users_areas_suscritas": {
-      "name": "enum_users_areas_suscritas",
-      "schema": "public",
-      "values": [
-        "berriak-pafe",
-        "partekatutako-berriak",
-        "ia",
-        "elkarrizketa-irekiak",
-        "pafe-ren-elkarrizketak",
-        "lantalde-teknikoa"
-      ]
-    },
     "public.enum_users_role": {
       "name": "enum_users_role",
       "schema": "public",
@@ -12018,6 +11923,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "892da015-80a7-4eb4-b658-13ede46b1135",
+  "id": "3456097f-e6f3-48d9-a74a-3a8cdc03b7df",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

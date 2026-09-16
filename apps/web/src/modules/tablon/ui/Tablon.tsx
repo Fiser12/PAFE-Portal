@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { Pin } from 'lucide-react'
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import type { Noticia } from '@/payload-types'
 import { nombreDelArea } from '../domain/areas'
-import { cargarTablon, guardarAreasSuscritas } from '../actions'
+import { cargarTablon } from '../actions'
 
 const fecha = (iso?: string | null) =>
   iso
@@ -27,27 +27,7 @@ const resumen = (noticia: Noticia): string => {
 
 export function Tablon() {
   const [area, setArea] = useState<string | undefined>()
-  const { data, error, isLoading, mutate } = useSWR(['tablon', area], () => cargarTablon(area))
-  const [suscritas, setSuscritas] = useState<string[]>([])
-
-  useEffect(() => {
-    if (data?.suscritas) setSuscritas(data.suscritas)
-  }, [data?.suscritas])
-
-  const alternarArea = async (value: string) => {
-    const anterior = suscritas
-    const siguiente = suscritas.includes(value)
-      ? suscritas.filter((a) => a !== value)
-      : [...suscritas, value]
-    setSuscritas(siguiente)
-
-    const guardado = await guardarAreasSuscritas(siguiente).catch(() => false)
-    if (!guardado) {
-      setSuscritas(anterior)
-      return
-    }
-    void mutate()
-  }
+  const { data, error, isLoading } = useSWR(['tablon', area], () => cargarTablon(area))
 
   const noticias = data?.noticias ?? []
   const areas = data?.areas ?? []
@@ -109,26 +89,6 @@ export function Tablon() {
         </div>
       )}
 
-      {areas.length > 0 && !error && (
-        <div className="mt-4 rounded-md border p-4">
-          <p className="mb-2 text-sm font-medium">Avísame de estas áreas</p>
-          <div className="flex flex-wrap gap-2">
-            {areas.map((opcion) => (
-              <Button
-                key={opcion.value}
-                size="sm"
-                variant={suscritas.includes(opcion.value) ? 'default' : 'outline'}
-                onClick={() => alternarArea(opcion.value)}
-              >
-                {opcion.label}
-              </Button>
-            ))}
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Recibirás un correo y un aviso en la campana cuando se publique algo nuevo.
-          </p>
-        </div>
-      )}
     </section>
   )
 }

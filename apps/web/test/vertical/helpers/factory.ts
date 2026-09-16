@@ -87,3 +87,18 @@ export const completarTarea = (
     data: { task: Number(taskId), user: Number(userId), completedOn },
     overrideAccess: true,
   })
+
+export const createGroup = (payload: Payload, name: string) =>
+  payload.create({
+    collection: 'groups',
+    data: { name: `${name} ${uniq()}` },
+    overrideAccess: true,
+  })
+
+export const meterEnGrupo = (payload: Payload, userId: number | string, groupId: number | string) =>
+  payload.update({
+    collection: 'users',
+    id: userId,
+    data: { groups: [Number(groupId)] },
+    overrideAccess: true,
+  })
