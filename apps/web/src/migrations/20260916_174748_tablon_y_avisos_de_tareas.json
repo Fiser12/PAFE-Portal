@@ -1235,6 +1235,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "tarea_id": {
+          "name": "tarea_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "read_at": {
           "name": "read_at",
           "type": "timestamp(3) with time zone",
@@ -1292,6 +1298,21 @@
           "columns": [
             {
               "expression": "noticia_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "notification_tarea_idx": {
+          "name": "notification_tarea_idx",
+          "columns": [
+            {
+              "expression": "tarea_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1366,6 +1387,19 @@
           "tableTo": "noticia",
           "columnsFrom": [
             "noticia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "notification_tarea_id_tasks_id_fk": {
+          "name": "notification_tarea_id_tasks_id_fk",
+          "tableFrom": "notification",
+          "tableTo": "tasks",
+          "columnsFrom": [
+            "tarea_id"
           ],
           "columnsTo": [
             "id"
@@ -11591,7 +11625,9 @@
         "recogida",
         "prorroga",
         "devolucion",
-        "noticia"
+        "noticia",
+        "tarea-asignada",
+        "tarea-toca"
       ]
     },
     "public.enum_noticia_area": {
@@ -11880,6 +11916,7 @@
         "inline",
         "dueReminders",
         "avisosTablon",
+        "avisosTareas",
         "createCollectionExport",
         "createCollectionImport",
         "schedulePublish"
@@ -11900,6 +11937,7 @@
         "inline",
         "dueReminders",
         "avisosTablon",
+        "avisosTareas",
         "createCollectionExport",
         "createCollectionImport",
         "schedulePublish"
@@ -11932,6 +11970,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "d42d9d68-fa52-4b8f-936a-2c859391c150",
+  "id": "3d32537e-8b0b-496e-9820-576729699340",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

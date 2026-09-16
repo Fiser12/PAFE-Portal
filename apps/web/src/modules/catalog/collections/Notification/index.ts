@@ -1,7 +1,8 @@
 import { CollectionConfig } from 'payload'
-import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import { hiddenUnlessStaff, isAdminAccess, isStaffAccess, staffOrOwnerAccess } from '@/core/permissions'
 import { TABLON_NOTIFICATION_TYPES } from '@/modules/tablon/domain/avisos'
+import { TAREA_NOTIFICATION_TYPES } from '@/modules/tareas/domain/avisos'
 import { NOTIFICATION_TYPES } from '../../domain/notifications'
 import { COLLECTION_SLUG_RESERVATION } from '../Reservation'
 
@@ -41,7 +42,7 @@ export const Notification: CollectionConfig = {
       name: 'type',
       type: 'select',
       required: true,
-      options: [...NOTIFICATION_TYPES, ...TABLON_NOTIFICATION_TYPES].map((value) => ({
+      options: [...NOTIFICATION_TYPES, ...TABLON_NOTIFICATION_TYPES, ...TAREA_NOTIFICATION_TYPES].map((value) => ({
         label: value,
         value,
       })),
@@ -64,6 +65,13 @@ export const Notification: CollectionConfig = {
       name: 'noticia',
       type: 'relationship',
       relationTo: COLLECTION_SLUG_NOTICIA,
+      hasMany: false,
+    },
+    {
+      label: 'Tarea',
+      name: 'tarea',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_TASKS,
       hasMany: false,
     },
     {

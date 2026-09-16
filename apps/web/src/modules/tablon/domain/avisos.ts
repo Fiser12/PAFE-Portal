@@ -1,3 +1,5 @@
+import { correoBilingue, type Correo } from '@/modules/avisos'
+
 export const TABLON_NOTIFICATION_TYPES = ['noticia'] as const
 
 export type TablonNotificationType = (typeof TABLON_NOTIFICATION_TYPES)[number]
@@ -28,13 +30,6 @@ export const avisoDeNoticia = ({
   message: `Novedad en ${area}: ${title}`,
 })
 
-const escaparHtml = (texto: string): string =>
-  texto
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-
 export const correoDeNoticia = ({
   title,
   area,
@@ -43,12 +38,9 @@ export const correoDeNoticia = ({
   title: string
   area: string
   url: string
-}): { subject: string; text: string; html: string } => {
-  const eu = `${area} atalean berri bat dago: ${title}. Ikusi hemen: ${url}`
-  const es = `Hay una novedad en ${area}: ${title}. Puedes verla en ${url}`
-  return {
+}): Correo =>
+  correoBilingue({
     subject: `${area}: ${title}`,
-    text: `${eu}\n\n${es}`,
-    html: `<p>${escaparHtml(eu)}</p><p>${escaparHtml(es)}</p>`,
-  }
-}
+    eu: `${area} atalean berri bat dago: ${title}. Ikusi hemen: ${url}`,
+    es: `Hay una novedad en ${area}: ${title}. Puedes verla en ${url}`,
+  })

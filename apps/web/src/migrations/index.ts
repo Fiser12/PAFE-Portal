@@ -10,7 +10,7 @@ import * as migration_20260723_231517_formaciones from './20260723_231517_formac
 import * as migration_20260827_131010 from './20260827_131010';
 import * as migration_20260827_154722 from './20260827_154722';
 import * as migration_20260827_155517_aviso_dia_vencimiento from './20260827_155517_aviso_dia_vencimiento';
-import * as migration_20260916_173118_tablon_de_noticias from './20260916_173118_tablon_de_noticias';
+import * as migration_20260916_174748_tablon_y_avisos_de_tareas from './20260916_174748_tablon_y_avisos_de_tareas';
 
 export const migrations = [
   {
@@ -74,8 +74,8 @@ export const migrations = [
     name: '20260827_155517_aviso_dia_vencimiento',
   },
   {
-    up: migration_20260916_173118_tablon_de_noticias.up,
-    down: migration_20260916_173118_tablon_de_noticias.down,
-    name: '20260916_173118_tablon_de_noticias'
+    up: migration_20260916_174748_tablon_y_avisos_de_tareas.up,
+    down: migration_20260916_174748_tablon_y_avisos_de_tareas.down,
+    name: '20260916_174748_tablon_y_avisos_de_tareas'
   },
 ];

@@ -3,6 +3,7 @@ import type { Noticia, User } from '@/payload-types'
 import { isActiveUser, isStaff } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
 import { COLLECTION_SLUG_NOTICIA } from '@/core/collections-slugs'
+import { avisarA, idDe } from '@/modules/avisos'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
 import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso } from '../domain/avisos'
@@ -10,28 +11,6 @@ import { type AreaDelTablon, nombreDelArea, soloAreas } from '../domain/areas'
 import { cuerpoRichText, estaPublicada, ordenarNoticias } from '../domain/noticias'
 
 export type Actor = Pick<User, 'id' | 'email'> & { role?: unknown }
-
-const idDe = (valor: number | { id: number } | null | undefined): number =>
-  typeof valor === 'object' && valor !== null ? valor.id : (valor as number)
-
-/**
- * El aviso ya está guardado cuando se manda el correo: que falle el envío no
- * puede tumbar la publicación ni borrar lo que la persona ve en la campana.
- */
-const enviarCorreoSinRomper = async (
-  payload: Payload,
-  message: { to: string; subject: string; text: string; html: string },
-): Promise<void> => {
-  try {
-    await payload.sendEmail(message)
-  } catch (error) {
-    payload.logger.error(
-      `[tablon] fallo enviando "${message.subject}" a ${message.to}: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-    )
-  }
-}
 
 const yaAvisadosDe = async (
   payload: Payload,
@@ -94,18 +73,16 @@ export const avisarDeNoticia = async ({
     url: `${getServerSideURL()}/noticias/${noticia.id}`,
   })
 
-  for (const userId of destinatarios) {
-    await payload.create({
-      collection: 'notification',
-      data: { user: userId, type, message, noticia: Number(noticia.id) },
-      overrideAccess: true,
-      req,
-    })
-    const destinatario = suscriptores.find((u) => Number(u.id) === userId)
-    if (destinatario?.email) {
-      await enviarCorreoSinRomper(payload, { to: destinatario.email, ...correo })
-    }
-  }
+  await avisarA({
+    payload,
+    destinatarios: destinatarios.map((userId) => ({
+      id: userId,
+      email: suscriptores.find((u) => Number(u.id) === userId)?.email,
+    })),
+    aviso: (userId) => ({ user: userId, type, message, noticia: Number(noticia.id) }),
+    correo,
+    req,
+  })
 
   await payload.update({
     collection: COLLECTION_SLUG_NOTICIA,

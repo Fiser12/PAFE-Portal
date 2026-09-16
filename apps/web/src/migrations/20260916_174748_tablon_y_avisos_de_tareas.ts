@@ -5,8 +5,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    CREATE TYPE "public"."enum_users_areas_suscritas" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
   CREATE TYPE "public"."enum_noticia_area" AS ENUM('avisos', 'formacion', 'actividades', 'recursos');
   ALTER TYPE "public"."enum_notification_type" ADD VALUE 'noticia';
+  ALTER TYPE "public"."enum_notification_type" ADD VALUE 'tarea-asignada';
+  ALTER TYPE "public"."enum_notification_type" ADD VALUE 'tarea-toca';
   ALTER TYPE "public"."enum_payload_jobs_log_task_slug" ADD VALUE 'avisosTablon' BEFORE 'createCollectionExport';
+  ALTER TYPE "public"."enum_payload_jobs_log_task_slug" ADD VALUE 'avisosTareas' BEFORE 'createCollectionExport';
   ALTER TYPE "public"."enum_payload_jobs_task_slug" ADD VALUE 'avisosTablon' BEFORE 'createCollectionExport';
+  ALTER TYPE "public"."enum_payload_jobs_task_slug" ADD VALUE 'avisosTareas' BEFORE 'createCollectionExport';
   CREATE TABLE "users_areas_suscritas" (
   	"order" integer NOT NULL,
   	"parent_id" integer NOT NULL,
@@ -28,6 +32,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   );
   
   ALTER TABLE "notification" ADD COLUMN "noticia_id" integer;
+  ALTER TABLE "notification" ADD COLUMN "tarea_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "noticia_id" integer;
   ALTER TABLE "users_areas_suscritas" ADD CONSTRAINT "users_areas_suscritas_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "noticia" ADD CONSTRAINT "noticia_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
@@ -39,8 +44,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "noticia_updated_at_idx" ON "noticia" USING btree ("updated_at");
   CREATE INDEX "noticia_created_at_idx" ON "noticia" USING btree ("created_at");
   ALTER TABLE "notification" ADD CONSTRAINT "notification_noticia_id_noticia_id_fk" FOREIGN KEY ("noticia_id") REFERENCES "public"."noticia"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "notification" ADD CONSTRAINT "notification_tarea_id_tasks_id_fk" FOREIGN KEY ("tarea_id") REFERENCES "public"."tasks"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_noticia_fk" FOREIGN KEY ("noticia_id") REFERENCES "public"."noticia"("id") ON DELETE cascade ON UPDATE no action;
   CREATE INDEX "notification_noticia_idx" ON "notification" USING btree ("noticia_id");
+  CREATE INDEX "notification_tarea_idx" ON "notification" USING btree ("tarea_id");
   CREATE INDEX "payload_locked_documents_rels_noticia_id_idx" ON "payload_locked_documents_rels" USING btree ("noticia_id");`)
 }
 
@@ -51,6 +58,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "users_areas_suscritas" CASCADE;
   DROP TABLE "noticia" CASCADE;
   ALTER TABLE "notification" DROP CONSTRAINT "notification_noticia_id_noticia_id_fk";
+  
+  ALTER TABLE "notification" DROP CONSTRAINT "notification_tarea_id_tasks_id_fk";
   
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_noticia_fk";
   
@@ -67,8 +76,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'dueReminders', 'createCollectionExport', 'createCollectionImport', 'schedulePublish');
   ALTER TABLE "payload_jobs" ALTER COLUMN "task_slug" SET DATA TYPE "public"."enum_payload_jobs_task_slug" USING "task_slug"::"public"."enum_payload_jobs_task_slug";
   DROP INDEX "notification_noticia_idx";
+  DROP INDEX "notification_tarea_idx";
   DROP INDEX "payload_locked_documents_rels_noticia_id_idx";
   ALTER TABLE "notification" DROP COLUMN "noticia_id";
+  ALTER TABLE "notification" DROP COLUMN "tarea_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "noticia_id";
   DROP TYPE "public"."enum_users_areas_suscritas";
   DROP TYPE "public"."enum_noticia_area";`)

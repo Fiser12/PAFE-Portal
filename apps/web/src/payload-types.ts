@@ -166,6 +166,7 @@ export interface Config {
     tasks: {
       dueReminders: TaskDueReminders;
       avisosTablon: TaskAvisosTablon;
+      avisosTareas: TaskAvisosTareas;
       createCollectionExport: TaskCreateCollectionExport;
       createCollectionImport: TaskCreateCollectionImport;
       schedulePublish: TaskSchedulePublish;
@@ -817,10 +818,13 @@ export interface Notification {
     | 'recogida'
     | 'prorroga'
     | 'devolucion'
-    | 'noticia';
+    | 'noticia'
+    | 'tarea-asignada'
+    | 'tarea-toca';
   message: string;
   reservation?: (number | null) | Reservation;
   noticia?: (number | null) | Noticia;
+  tarea?: (number | null) | Task;
   readAt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -1353,6 +1357,7 @@ export interface PayloadJob {
           | 'inline'
           | 'dueReminders'
           | 'avisosTablon'
+          | 'avisosTareas'
           | 'createCollectionExport'
           | 'createCollectionImport'
           | 'schedulePublish';
@@ -1393,6 +1398,7 @@ export interface PayloadJob {
         | 'inline'
         | 'dueReminders'
         | 'avisosTablon'
+        | 'avisosTareas'
         | 'createCollectionExport'
         | 'createCollectionImport'
         | 'schedulePublish'
@@ -1669,6 +1675,7 @@ export interface NotificationSelect<T extends boolean = true> {
   message?: T;
   reservation?: T;
   noticia?: T;
+  tarea?: T;
   readAt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2428,6 +2435,16 @@ export interface TaskDueReminders {
  * via the `definition` "TaskAvisosTablon".
  */
 export interface TaskAvisosTablon {
+  input?: unknown;
+  output: {
+    avisadas: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskAvisosTareas".
+ */
+export interface TaskAvisosTareas {
   input?: unknown;
   output: {
     avisadas: number;

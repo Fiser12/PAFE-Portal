@@ -5,6 +5,7 @@ import {
   staffOrOwnCaseTasksAccess,
 } from '@/core/permissions'
 import type { CollectionConfig } from 'payload'
+import { avisarAlAsignar } from '@/modules/tareas/hooks/avisarAlAsignar'
 
 export const Tasks: CollectionConfig = {
   slug: COLLECTION_SLUG_TASKS,
@@ -18,6 +19,9 @@ export const Tasks: CollectionConfig = {
     // El staff ve todas las tareas; una familia solo las de sus casos
     read: staffOrOwnCaseTasksAccess,
     update: isStaffAccess,
+  },
+  hooks: {
+    afterChange: [avisarAlAsignar],
   },
   admin: {
     hidden: hiddenUnlessAdmin,
