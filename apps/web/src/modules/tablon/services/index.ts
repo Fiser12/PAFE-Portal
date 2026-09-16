@@ -1,8 +1,8 @@
 import type { Payload, PayloadRequest } from 'payload'
-import type { Noticia, User } from '@/payload-types'
+import type { Noticia, Respuesta, User } from '@/payload-types'
 import { ROLE_FAMILIA, isActiveUser, isStaff } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
-import { COLLECTION_SLUG_NOTICIA } from '@/core/collections-slugs'
+import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_RESPUESTA } from '@/core/collections-slugs'
 import { avisarA, idDe } from '@/modules/avisos'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
@@ -315,4 +315,116 @@ export const avisarDeNoticiasPendientes = async ({
   }
 
   return { avisadas }
+}
+
+// ---------------------------------------------------------------------------
+// Respuestas
+// ---------------------------------------------------------------------------
+
+/** Responder exige poder ver la noticia: un área restringida tampoco se contesta */
+export const responder = async ({
+  payload,
+  user,
+  noticiaId,
+  mensaje,
+}: {
+  payload: Payload
+  user: Actor
+  noticiaId: number
+  mensaje: string
+}): Promise<Respuesta> => {
+  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
+  if (!mensaje.trim()) throw new TablonRuleError('mensaje-vacio')
+
+  const noticia = await noticiaDelTablon({ payload, user, id: noticiaId, now: new Date() })
+  if (!noticia) throw new TablonRuleError('noticia-no-encontrada')
+
+  return (await payload.create({
+    collection: COLLECTION_SLUG_RESPUESTA,
+    data: { mensaje: mensaje.trim(), noticia: noticiaId, author: Number(user.id) },
+    overrideAccess: true,
+  })) as Respuesta
+}
+
+export const respuestasDe = async ({
+  payload,
+  user,
+  noticiaId,
+}: {
+  payload: Payload
+  user: Actor
+  noticiaId: number
+}): Promise<Respuesta[]> => {
+  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
+
+  const noticia = await noticiaDelTablon({ payload, user, id: noticiaId, now: new Date() })
+  if (!noticia) return []
+
+  const result = await payload.find({
+    collection: COLLECTION_SLUG_RESPUESTA,
+    where: { noticia: { equals: noticiaId } },
+    sort: 'createdAt',
+    depth: 1,
+    limit: 0,
+    overrideAccess: true,
+    populate: { users: { name: true } },
+  })
+  return result.docs as Respuesta[]
+}
+
+const respuestaPropia = async (
+  payload: Payload,
+  user: Actor,
+  respuestaId: number,
+): Promise<Respuesta> => {
+  const respuesta = (await payload.findByID({
+    collection: COLLECTION_SLUG_RESPUESTA,
+    id: respuestaId,
+    depth: 0,
+    overrideAccess: true,
+  })) as Respuesta
+
+  const suya = idDe(respuesta.author as number | { id: number }) === Number(user.id)
+  if (!suya && !isStaff(user as User)) throw new TablonRuleError('sin-permiso')
+  return respuesta
+}
+
+export const editarRespuesta = async ({
+  payload,
+  user,
+  respuestaId,
+  mensaje,
+}: {
+  payload: Payload
+  user: Actor
+  respuestaId: number
+  mensaje: string
+}): Promise<Respuesta> => {
+  await respuestaPropia(payload, user, respuestaId)
+  if (!mensaje.trim()) throw new TablonRuleError('mensaje-vacio')
+
+  return (await payload.update({
+    collection: COLLECTION_SLUG_RESPUESTA,
+    id: respuestaId,
+    data: { mensaje: mensaje.trim() },
+    overrideAccess: true,
+  })) as Respuesta
+}
+
+export const borrarRespuesta = async ({
+  payload,
+  user,
+  respuestaId,
+}: {
+  payload: Payload
+  user: Actor
+  respuestaId: number
+}): Promise<void> => {
+  await respuestaPropia(payload, user, respuestaId)
+
+  await payload.delete({
+    collection: COLLECTION_SLUG_RESPUESTA,
+    id: respuestaId,
+    overrideAccess: true,
+  })
 }

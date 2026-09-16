@@ -1498,6 +1498,145 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.respuesta": {
+      "name": "respuesta",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "mensaje": {
+          "name": "mensaje",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "noticia_id": {
+          "name": "noticia_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "respuesta_noticia_idx": {
+          "name": "respuesta_noticia_idx",
+          "columns": [
+            {
+              "expression": "noticia_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "respuesta_author_idx": {
+          "name": "respuesta_author_idx",
+          "columns": [
+            {
+              "expression": "author_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "respuesta_updated_at_idx": {
+          "name": "respuesta_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "respuesta_created_at_idx": {
+          "name": "respuesta_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "respuesta_noticia_id_noticia_id_fk": {
+          "name": "respuesta_noticia_id_noticia_id_fk",
+          "tableFrom": "respuesta",
+          "tableTo": "noticia",
+          "columnsFrom": [
+            "noticia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "respuesta_author_id_users_id_fk": {
+          "name": "respuesta_author_id_users_id_fk",
+          "tableFrom": "respuesta",
+          "tableTo": "users",
+          "columnsFrom": [
+            "author_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.catalog_item": {
       "name": "catalog_item",
       "schema": "",
@@ -9756,6 +9895,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "respuesta_id": {
+          "name": "respuesta_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "catalog_item_id": {
           "name": "catalog_item_id",
           "type": "integer",
@@ -10003,6 +10148,21 @@
           "columns": [
             {
               "expression": "noticia_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_respuesta_id_idx": {
+          "name": "payload_locked_documents_rels_respuesta_id_idx",
+          "columns": [
+            {
+              "expression": "respuesta_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -10350,6 +10510,19 @@
           "tableTo": "noticia",
           "columnsFrom": [
             "noticia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_respuesta_fk": {
+          "name": "payload_locked_documents_rels_respuesta_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "respuesta",
+          "columnsFrom": [
+            "respuesta_id"
           ],
           "columnsTo": [
             "id"
@@ -11923,6 +12096,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "3456097f-e6f3-48d9-a74a-3a8cdc03b7df",
+  "id": "96b0dd63-4532-4be6-913e-ff4d4040fb5d",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

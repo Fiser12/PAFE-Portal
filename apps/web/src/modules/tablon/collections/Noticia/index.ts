@@ -6,8 +6,10 @@ import {
   isActiveUserAccess,
   isAdminAccess,
   } from '@/core/permissions'
+import { lexicalDelTablon } from '../../ui/lexicalDelTablon'
 import { AREAS_DEL_TABLON } from '../../domain/areas'
 import { avisarAlPublicar } from './hooks/avisarAlPublicar'
+import { borrarSusRespuestas } from './hooks/borrarSusRespuestas'
 
 /**
  * Entradas del tablón, que sustituye al foro. Se mantiene la estructura de
@@ -30,6 +32,7 @@ export const Noticia: CollectionConfig = {
     // El aviso se dispara aquí y no en el servicio: el staff publica desde el
     // panel, y por ahí no pasa ninguna función nuestra
     afterChange: [avisarAlPublicar],
+    beforeDelete: [borrarSusRespuestas],
   },
   admin: {
     group: 'Tablón',
@@ -56,6 +59,8 @@ export const Noticia: CollectionConfig = {
       label: 'Contenido',
       name: 'body',
       type: 'richText',
+      // Editor propio: el del resto del portal no deja incrustar adjuntos
+      editor: lexicalDelTablon,
     },
     {
       label: 'Publicada el',

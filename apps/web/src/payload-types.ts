@@ -75,6 +75,7 @@ export interface Config {
     reservation: Reservation;
     notification: Notification;
     noticia: Noticia;
+    respuesta: Respuesta;
     'catalog-item': CatalogItem;
     cases: Case;
     tasks: Task;
@@ -120,6 +121,7 @@ export interface Config {
     reservation: ReservationSelect<false> | ReservationSelect<true>;
     notification: NotificationSelect<false> | NotificationSelect<true>;
     noticia: NoticiaSelect<false> | NoticiaSelect<true>;
+    respuesta: RespuestaSelect<false> | RespuestaSelect<true>;
     'catalog-item': CatalogItemSelect<false> | CatalogItemSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
@@ -874,6 +876,18 @@ export interface Noticia {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "respuesta".
+ */
+export interface Respuesta {
+  id: number;
+  mensaje: string;
+  noticia: number | Noticia;
+  author: number | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tasks-completed".
  */
 export interface TasksCompleted {
@@ -1463,6 +1477,10 @@ export interface PayloadLockedDocument {
         value: number | Noticia;
       } | null)
     | ({
+        relationTo: 'respuesta';
+        value: number | Respuesta;
+      } | null)
+    | ({
         relationTo: 'catalog-item';
         value: number | CatalogItem;
       } | null)
@@ -1695,6 +1713,17 @@ export interface NoticiaSelect<T extends boolean = true> {
   pinned?: T;
   author?: T;
   notifiedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "respuesta_select".
+ */
+export interface RespuestaSelect<T extends boolean = true> {
+  mensaje?: T;
+  noticia?: T;
+  author?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2503,6 +2532,7 @@ export interface TaskCreateCollectionExport {
       | 'reservation'
       | 'notification'
       | 'noticia'
+      | 'respuesta'
       | 'catalog-item'
       | 'cases'
       | 'tasks'

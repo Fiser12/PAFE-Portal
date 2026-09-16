@@ -6,6 +6,7 @@ export const COLLECTION_SLUG_EXPORTS = 'exports' as const
 export const COLLECTION_SLUG_IMPORTS = 'imports' as const
 export const COLLECTION_SLUG_USER = 'users' as const
 export const COLLECTION_SLUG_NOTICIA = 'noticia' as const
+export const COLLECTION_SLUG_RESPUESTA = 'respuesta' as const
 export const COLLECTION_SLUG_CATEGORIES = COLLECTION_SLUG_TAXONOMY
 export const COLLECTION_SLUG_POSTS = 'posts' as const
 export const COLLECTION_SLUG_PAGES = 'pages' as const

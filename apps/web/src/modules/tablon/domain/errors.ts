@@ -1,4 +1,8 @@
-export type TablonRuleCode = 'sin-permiso' | 'area-requerida' | 'noticia-no-encontrada'
+export type TablonRuleCode =
+  | 'sin-permiso'
+  | 'area-requerida'
+  | 'noticia-no-encontrada'
+  | 'mensaje-vacio'
 
 export class TablonRuleError extends Error {
   readonly code: TablonRuleCode

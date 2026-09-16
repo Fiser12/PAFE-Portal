@@ -70,7 +70,10 @@ El día del cambio se retira el acceso al foro antiguo.
 - **R6** — Solo se avisa de noticias **publicadas**: una noticia con fecha futura no avisa hasta que llega.
 - **R7** — Nadie recibe aviso de su propia noticia.
 - **R8** — Un fallo de correo no debe impedir que la noticia se publique ni que el aviso quede en la campana.
-- **R9** — La suscripción es por área y por persona. Sin áreas marcadas, no llegan correos.
+- **R9** — A quién avisa lo decide el área, no cada persona: `Berriak PAFE` avisa a las familias y las demás no avisan a nadie, como en el foro.
+- **R10** — `LANTALDE TEKNIKOA` exige pertenecer a un grupo con ese nombre: sin él no se ve en el tablón, no se abre por su URL y no llega nada de ella. El staff la ve, que es quien publica.
+- **R11** — Se responde solo a lo que se puede ver, y un mensaje vacío no vale.
+- **R12** — Las imágenes y documentos van dentro del texto de la noticia, en el punto donde toquen, y se guardan en el S3 del portal.
 
 ## 7. Data Concepts
 
@@ -83,7 +86,12 @@ El día del cambio se retira el acceso al foro antiguo.
 
 ## 8. Fuera de alcance
 
-Respuestas y conversación, menciones, reacciones, encuestas, notificaciones push
-y búsqueda dentro del tablón: no se usan hoy en el foro. La traducción al
+Menciones, reacciones, encuestas, notificaciones push y búsqueda dentro del
+tablón: no se usan hoy en el foro.
+
+**Las respuestas entran en alcance por decisión del 16 de septiembre**, después
+de haberlas dejado fuera: quien lee una noticia puede contestarla, corregir su
+mensaje y retirarlo, y el staff puede retirar el de cualquiera. Retirar una
+noticia se lleva sus respuestas. La traducción al
 euskera queda aplazada por decisión del 16 de septiembre, con la consecuencia
 conocida de que el foro sí estaba traducido y el portal todavía no.

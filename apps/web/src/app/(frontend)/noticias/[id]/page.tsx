@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { isActiveUser } from '@/core/permissions'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { noticiaDelTablon } from '@/modules/tablon/services'
+import { Respuestas } from '@/modules/tablon/ui/Respuestas'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
@@ -46,6 +47,7 @@ export default async function NoticiaPage({ params }: Props) {
           <RichText data={noticia.body} />
         </div>
       )}
+      <Respuestas noticiaId={Number(noticia.id)} usuarioId={Number(user.id)} />
     </article>
   )
 }
