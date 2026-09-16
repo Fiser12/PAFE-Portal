@@ -4,7 +4,7 @@ import type { Payload } from 'payload'
 import { getTestPayload } from './helpers/payload'
 import { createArea, createFamilia, createPendiente, createStaff } from './helpers/factory'
 import { at } from './helpers/dates'
-import { noticiasDelTablon, publicarNoticia } from '@/modules/tablon/services'
+import { noticiaDelTablon, noticiasDelTablon, publicarNoticia } from '@/modules/tablon/services'
 
 let payload: Payload
 
@@ -119,5 +119,96 @@ describe('publicar y leer el tablón', () => {
       noticiasDelTablon({ payload, user: pendiente, now: at('2026-09-20') }),
       'sin-permiso',
     )
+  })
+})
+
+describe('abrir una noticia por su URL', () => {
+  it('una noticia publicada se abre', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    const noticia = await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Ya publicada',
+      body: '.',
+      areaId: Number(area.id),
+      now: at('2026-09-16'),
+    })
+
+    const abierta = await noticiaDelTablon({
+      payload,
+      user: familia,
+      id: noticia.id,
+      now: at('2026-09-20'),
+    })
+    expect(abierta?.title).toBe('Ya publicada')
+  })
+
+  it('una noticia programada no se abre antes de tiempo, ni sabiendo su id', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    const noticia = await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Secreto hasta octubre',
+      body: 'Lo que no debe verse todavía.',
+      areaId: Number(area.id),
+      publishedAt: at('2026-10-30').toISOString(),
+      now: at('2026-09-16'),
+    })
+
+    const abierta = await noticiaDelTablon({
+      payload,
+      user: familia,
+      id: noticia.id,
+      now: at('2026-09-20'),
+    })
+    expect(abierta).toBeNull()
+  })
+
+  it('el staff sí puede abrir lo que tiene programado', async () => {
+    const staff = await createStaff(payload)
+    const area = await createArea(payload)
+    const noticia = await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Borrador programado',
+      body: '.',
+      areaId: Number(area.id),
+      publishedAt: at('2026-10-30').toISOString(),
+      now: at('2026-09-16'),
+    })
+
+    const abierta = await noticiaDelTablon({
+      payload,
+      user: staff,
+      id: noticia.id,
+      now: at('2026-09-20'),
+    })
+    expect(abierta?.title).toBe('Borrador programado')
+  })
+
+  it('el tablón no lleva al navegador los datos de quien publica', async () => {
+    const staff = await createStaff(payload)
+    const familia = await createFamilia(payload)
+    const area = await createArea(payload)
+    await publicarNoticia({
+      payload,
+      user: staff,
+      title: 'Con autoría',
+      body: '.',
+      areaId: Number(area.id),
+      now: at('2026-09-16'),
+    })
+
+    const noticias = await noticiasDelTablon({
+      payload,
+      user: familia,
+      areaId: Number(area.id),
+      now: at('2026-09-20'),
+    })
+    expect(JSON.stringify(noticias)).not.toContain(staff.email)
   })
 })

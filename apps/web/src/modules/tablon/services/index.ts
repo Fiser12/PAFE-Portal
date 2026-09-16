@@ -6,7 +6,7 @@ import { COLLECTION_SLUG_NOTICIA } from '@/core/collections-slugs'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
 import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso, soloAreas } from '../domain/avisos'
-import { cuerpoRichText, ordenarNoticias } from '../domain/noticias'
+import { cuerpoRichText, estaPublicada, ordenarNoticias } from '../domain/noticias'
 
 export type Actor = Pick<User, 'id' | 'email'> & { role?: unknown }
 
@@ -110,9 +110,6 @@ export const avisarDeNoticia = async ({
       overrideAccess: true,
       req,
     })
-  }
-
-  for (const userId of destinatarios) {
     const destinatario = suscriptores.find((u) => Number(u.id) === userId)
     if (destinatario?.email) {
       await enviarCorreoSinRomper(payload, { to: destinatario.email, ...correo })
@@ -199,6 +196,45 @@ export const editarNoticia = async ({
   })) as Noticia
 }
 
+/**
+ * El autor solo se guarda para no avisarle de lo suyo: poblarlo entero mandaría
+ * su correo y su rol al navegador de cualquiera que mire el tablón.
+ */
+const SIN_DATOS_DEL_AUTOR = { users: {} }
+
+/** Una noticia concreta, o null si quien mira no debería llegar a ella todavía */
+export const noticiaDelTablon = async ({
+  payload,
+  user,
+  id,
+  now,
+}: {
+  payload: Payload
+  user: Actor
+  id: number | string
+  now: Date
+}): Promise<Noticia | null> => {
+  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
+
+  const noticia = await payload
+    .findByID({
+      collection: COLLECTION_SLUG_NOTICIA,
+      id,
+      depth: 1,
+      populate: SIN_DATOS_DEL_AUTOR,
+      overrideAccess: true,
+    })
+    .catch((error) => {
+      payload.logger.error(`[tablon] no se pudo leer la noticia ${id}: ${error}`)
+      return null
+    })
+
+  if (!noticia) return null
+  if (estaPublicada({ publishedAt: noticia.publishedAt, now })) return noticia as Noticia
+
+  return isStaff(user as User) ? (noticia as Noticia) : null
+}
+
 export const noticiasDelTablon = async ({
   payload,
   user,
@@ -223,6 +259,7 @@ export const noticiasDelTablon = async ({
       ],
     },
     depth: 1,
+    populate: SIN_DATOS_DEL_AUTOR,
     limit,
     overrideAccess: true,
   })
@@ -254,6 +291,8 @@ export const elegirAreas = async ({
   user: Actor
   areaIds: number[]
 }): Promise<void> => {
+  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
+
   const areas = await areasDelTablon(payload)
 
   await payload.update({

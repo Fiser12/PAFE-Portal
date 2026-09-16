@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { isActiveUser } from '@/core/permissions'
 import type { Taxonomy } from '@/payload-types'
+import { noticiaDelTablon } from '@/modules/tablon/services'
 import { getSessionUser } from '@/utilities/getSessionUser'
 
 interface Props {
@@ -17,15 +18,14 @@ const fecha = (iso?: string | null) =>
 
 export default async function NoticiaPage({ params }: Props) {
   const { payload, user } = await getSessionUser()
-  if (!isActiveUser(user)) redirect('/login')
+  if (!user || !isActiveUser(user)) redirect('/login')
 
-  const id = (await params).id
-  const noticia = await payload
-    .findByID({ collection: 'noticia', id, depth: 1, overrideAccess: true })
-    .catch((error) => {
-      payload.logger.error(`[tablon] no se pudo leer la noticia ${id}: ${error}`)
-      return null
-    })
+  const noticia = await noticiaDelTablon({
+    payload,
+    user,
+    id: (await params).id,
+    now: new Date(),
+  })
 
   if (!noticia) return notFound()
 
