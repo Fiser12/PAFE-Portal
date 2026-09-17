@@ -13,6 +13,28 @@ export const s3Client = new S3Client({
   region: process.env.AWS_REGION,
 })
 
+/**
+ * Dominio público del bucket. Sin él, las imágenes salen por la ruta de Payload:
+ * una función que baja el objeto de R2 y lo reenvía, sin caché en ninguna capa.
+ */
+const dominioPublico = process.env.S3_PUBLIC_URL?.replace(/\/+$/, '')
+
+const urlPublica = (filename: string, prefix?: string): string =>
+  [dominioPublico, prefix, encodeURIComponent(filename)].filter(Boolean).join('/')
+
+/**
+ * Solo las portadas salen del CDN: son públicas (`read: anyone`) y su nombre
+ * lleva el hash del contenido. El resto conserva el control de acceso de
+ * Payload, que se perdería al servirlas desde el bucket.
+ */
+const desdeElCdn = dominioPublico
+  ? {
+      disablePayloadAccessControl: true as const,
+      generateFileURL: ({ filename, prefix }: { filename: string; prefix?: string }) =>
+        urlPublica(filename, prefix),
+    }
+  : {}
+
 export const S3_PLUGIN_CONFIG: S3StoragePlugin = {
   collections: {},
   bucket: process.env.S3_BUCKET!,
@@ -33,6 +55,7 @@ const config = s3StoragePlugin({
     [COLLECTION_SLUG_MEDIA]: {
       disableLocalStorage: true,
       prefix: 'media',
+      ...desdeElCdn,
     },
     [COLLECTION_SLUG_FILES]: {
       disableLocalStorage: true,

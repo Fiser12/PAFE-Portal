@@ -4,6 +4,7 @@ import type { CatalogItem, Media } from '@/payload-types'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { portada } from '../../domain/portada'
 
 interface Props {
   item: CatalogItem
@@ -11,6 +12,7 @@ interface Props {
 
 export function CatalogItemCard({ item }: Props) {
   const cover = typeof item.cover === 'object' && item.cover ? (item.cover as Media) : undefined
+  const imagen = portada(cover, 500)
   const reserved = item.reservations?.docs?.length ?? 0
   const total = item.quantity ?? 0
   const available = Math.max(total - reserved, 0)
@@ -18,13 +20,13 @@ export function CatalogItemCard({ item }: Props) {
   return (
     <Link href={`/catalog/${item.id}`} className="block h-full">
       <Card className="flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg active:translate-y-0">
-        {cover?.url && (
+        {imagen && (
           <div className="flex justify-center bg-muted p-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={cover.url}
-              alt={cover.alt ?? item.title}
-              title={cover.alt ?? item.title}
+              src={imagen}
+              alt={cover?.alt ?? item.title}
+              title={cover?.alt ?? item.title}
               loading="lazy"
               className="h-56 w-auto max-w-full rounded-md object-contain sm:h-64"
             />
