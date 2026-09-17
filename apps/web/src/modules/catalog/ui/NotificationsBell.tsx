@@ -38,7 +38,7 @@ export function NotificationsBell() {
         type="button"
         onClick={toggle}
         aria-label={`Avisos${unread.length ? `: ${unread.length} sin leer` : ''}`}
-        className="relative rounded p-2 hover:bg-muted"
+        className="relative rounded-md p-2 hover:bg-muted"
       >
         <Bell className="h-5 w-5" />
         {unread.length > 0 && (
@@ -53,7 +53,7 @@ export function NotificationsBell() {
           {notifications && notifications.length > 0 ? (
             <ul className="max-h-96 space-y-1 overflow-y-auto">
               {notifications.map((n) => (
-                <li key={n.id} className="rounded p-2 text-sm hover:bg-muted">
+                <li key={n.id} className="rounded-md p-2 text-sm hover:bg-muted">
                   <p className="whitespace-pre-line">{n.message}</p>
                   <span className="text-xs text-muted-foreground">{formatDay(n.createdAt, idioma)}</span>
                 </li>

@@ -58,7 +58,7 @@ function TaskCard({ task, variant, showCaseInfo, onCaseClick, onTaskComplete }: 
 
         {/* Fechas */}
         {variant === 'pending' && task.lastCompletion && (
-          <p className="inline-block rounded border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
+          <p className="inline-block rounded-md border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
             Completada: {new Date(task.lastCompletion.completedOn).toLocaleDateString('es-ES')}
           </p>
         )}

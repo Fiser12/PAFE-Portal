@@ -46,7 +46,7 @@ export function CatalogItemClient({ item, children, contributions, wikiPath }: P
                         )}
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold mb-4">{item.title}</h1>
+                        <h1 className="mb-4 text-3xl font-semibold">{item.title}</h1>
                         <div className="prose max-w-none mb-6">
                             {children}
                         </div>

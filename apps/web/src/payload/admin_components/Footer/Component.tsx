@@ -11,15 +11,20 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-primary/20 bg-primary text-primary-foreground">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
-          <nav className="flex flex-col md:flex-row gap-4">
-            {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-primary-foreground hover:text-primary-foreground/80" key={i} {...link} />
-            })}
-          </nav>
-        </div>
+    <footer className="mt-auto border-t bg-muted/40">
+      <div className="container flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
+        <nav className="flex flex-col gap-4 md:flex-row">
+          {navItems.map(({ link }, i) => {
+            return (
+              <CMSLink
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                key={i}
+                {...link}
+              />
+            )
+          })}
+        </nav>
+        <p className="text-xs text-muted-foreground">PAFE</p>
       </div>
     </footer>
   )

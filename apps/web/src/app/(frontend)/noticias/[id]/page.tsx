@@ -45,7 +45,7 @@ export default async function NoticiaPage({ params }: Props) {
         {area && <Badge variant="outline">{area}</Badge>}
         <span>{fecha(noticia.publishedAt, idioma)}</span>
       </div>
-      <h1 className="mb-6 text-3xl font-bold">{noticia.title}</h1>
+      <h1 className="mb-6 text-3xl font-semibold">{noticia.title}</h1>
       {noticia.body && (
         <div className="prose max-w-none">
           <RichText data={noticia.body} />

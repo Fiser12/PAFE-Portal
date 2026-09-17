@@ -1,6 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
+import { Button } from '@/components/ui/button'
 import { returnBook } from '../actions'
 import { useTextos } from '@/components/IdiomaProvider'
 
@@ -25,12 +26,8 @@ export function ReturnButton({ reservationId, onReturnSuccess }: Props) {
     }
 
     return (
-        <button
-            onClick={handleReturn}
-            disabled={isPending}
-            className="bg-destructive text-destructive-foreground px-4 py-1 rounded hover:bg-destructive/90 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button variant="destructive" size="sm" onClick={handleReturn} disabled={isPending}>
             {isPending ? 'Devolviendo...' : 'Devolver'}
-        </button>
+        </Button>
     )
 } 

@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Logo } from '@/components/legacy/Logo/LogoImage'
+import { LogoTitle } from '@/components/legacy/Logo/LogoTitle'
 import { useTextos } from '@/components/IdiomaProvider'
 
 export default function LoginPage() {
@@ -56,8 +58,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="container flex justify-center py-10 sm:py-16">
-      <Card className="w-full max-w-sm">
+    <div className="container flex flex-col items-center gap-6 py-12 sm:py-20">
+      <div className="flex items-center gap-2">
+        <Logo className="h-12 w-auto" loading="eager" priority="high" />
+        <LogoTitle className="text-3xl" />
+      </div>
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center text-xl">{t.loginTitulo}</CardTitle>
         </CardHeader>

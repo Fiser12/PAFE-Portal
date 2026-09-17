@@ -20,7 +20,7 @@ export default function Home() {
       </React.Fragment>
       ) : (
         <React.Fragment>
-          <h1 className="text-2xl font-bold">{t.inicioBienvenida}</h1>
+          <h1 className="text-2xl font-semibold">{t.inicioBienvenida}</h1>
           <Button className='max-w-xs' asChild>
             <Link href="/login">{t.entrar}</Link>
           </Button>

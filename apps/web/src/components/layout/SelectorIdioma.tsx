@@ -23,7 +23,7 @@ export function SelectorIdioma({ idioma }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-0.5 rounded-md border p-0.5" role="group">
+    <div className="flex items-center rounded-full border bg-card/80 p-0.5 shadow-sm" role="group">
       {IDIOMAS.map(({ code, label, corto }) => (
         <button
           key={code}
@@ -33,9 +33,9 @@ export function SelectorIdioma({ idioma }: Props) {
           aria-label={label}
           aria-pressed={idioma === code}
           className={cn(
-            'rounded px-2 py-1 text-xs font-medium transition-colors disabled:opacity-60',
+            'rounded-full px-3 py-1 text-xs font-semibold outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-60',
             idioma === code
-              ? 'bg-accent text-foreground'
+              ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground hover:text-foreground',
           )}
         >
