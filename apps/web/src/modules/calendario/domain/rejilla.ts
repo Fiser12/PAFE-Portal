@@ -29,6 +29,10 @@ const minutosEn = (fecha: Date, zona: string): number => {
   return valor('hour') * 60 + valor('minute')
 }
 
+/** Minutos transcurridos del día en esa zona: sitúa la línea de la hora actual */
+export const minutosDelDia = (fecha: Date, zona = 'Europe/Madrid'): number =>
+  minutosEn(fecha, zona)
+
 /**
  * Las horas que hay que dibujar. Se ajusta a lo que hay, con un mínimo
  * razonable: una semana vacía no debe enseñar la madrugada entera.

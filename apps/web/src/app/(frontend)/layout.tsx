@@ -7,7 +7,6 @@ import React from 'react'
 
 import { AdminBar } from '@/components/legacy/AdminBar'
 import { IdiomaProvider } from '@/components/IdiomaProvider'
-import { Footer } from '@/payload/admin_components/Footer/Component'
 import { Header } from '@/payload/admin_components/Header/Component'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -37,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className="bg-app-surface">
         <IdiomaProvider idioma={idioma}>
           <AdminBar
             adminBarProps={{
@@ -45,8 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
           <Header />
-          <main className="bg-app-surface flex-1">{children}</main>
-          <Footer />
+          <main className="flex-1">{children}</main>
         </IdiomaProvider>
       </body>
     </html>

@@ -18,14 +18,16 @@ interface HeaderClientProps {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, idioma }) => {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="container flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2">
-          <Logo className="h-10 w-auto" loading="eager" priority="high" />
-          <LogoTitle className="text-2xl" />
-        </Link>
-        <HeaderNav data={data} idioma={idioma} />
-        <MobileNav data={data} idioma={idioma} />
+    <header className="sticky top-0 z-40 w-full pt-3">
+      <div className="container">
+        <div className="flex h-14 items-center justify-between gap-4 rounded-xl border bg-background/80 px-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/65">
+          <Link href="/" className="flex items-center gap-2">
+            <Logo className="h-9 w-auto" loading="eager" priority="high" />
+            <LogoTitle className="text-2xl" />
+          </Link>
+          <HeaderNav data={data} idioma={idioma} />
+          <MobileNav data={data} idioma={idioma} />
+        </div>
       </div>
     </header>
   )

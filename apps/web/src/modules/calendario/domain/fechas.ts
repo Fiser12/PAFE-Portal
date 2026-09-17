@@ -55,6 +55,15 @@ export const diaCorto = (fecha: Date, idioma: CodigoIdioma): string => {
   return `${DIAS_CORTOS_EU[fecha.getUTCDay()]} ${fecha.getUTCDate()}`
 }
 
+/** «og.» / «jue»: el nombre del día, sin el número */
+export const nombreDelDia = (fecha: Date, idioma: CodigoIdioma): string => {
+  if (idioma !== 'eu') return intl({ weekday: 'short' }, fecha, 'UTC').replace('.', '')
+  return DIAS_CORTOS_EU[fecha.getUTCDay()] ?? ''
+}
+
+/** El número del día dentro del mes */
+export const numeroDelDia = (fecha: Date): string => String(fecha.getUTCDate())
+
 /** La hora del día. El reloj de 24 horas se escribe igual en los dos idiomas */
 export const hora = (fecha: Date): string =>
   intl({ hour: '2-digit', minute: '2-digit' }, fecha, ZONA)
