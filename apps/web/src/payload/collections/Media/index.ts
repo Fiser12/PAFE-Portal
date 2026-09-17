@@ -18,6 +18,8 @@ import { hiddenUnlessCatalogo, catalogoAccess } from '@/core/permissions'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const WEBP = { format: 'webp' as const, options: { quality: 82 } }
+
 export const Media: CollectionConfig = {
   slug: COLLECTION_SLUG_MEDIA,
   access: {
@@ -56,37 +58,46 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Las carátulas llegan en PNG con canal alfa: al reescalarlas sin recomprimir,
+    // una miniatura de 300 px pesaba 173 KB de media frente a los 18 KB de las JPG.
     imageSizes: [
       {
         name: 'thumbnail',
         width: 300,
+        formatOptions: WEBP,
       },
       {
         name: 'square',
         width: 500,
         height: 500,
+        formatOptions: WEBP,
       },
       {
         name: 'small',
         width: 600,
+        formatOptions: WEBP,
       },
       {
         name: 'medium',
         width: 900,
+        formatOptions: WEBP,
       },
       {
         name: 'large',
         width: 1400,
+        formatOptions: WEBP,
       },
       {
         name: 'xlarge',
         width: 1920,
+        formatOptions: WEBP,
       },
       {
         name: 'og',
         width: 1200,
         height: 630,
         crop: 'center',
+        formatOptions: WEBP,
       },
     ],
   },
