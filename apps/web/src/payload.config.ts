@@ -9,6 +9,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 import { collections } from './payload/collections'
 import { globals } from './payload/globals'
+import { baseDeDatosLocal } from './core/entorno'
 import { localization } from './core/localization'
 import { Users } from './payload/collections/Users'
 import { plugins } from './payload/plugins'
@@ -104,6 +105,12 @@ export default buildConfig({
   // Carga datos de prueba al arrancar solo si SEED_MOCK_DATA=true (dev).
   // Es idempotente: no re-siembra si ya existe el admin de prueba.
   onInit: async (payload) => {
+    if (process.env.SEED_MOCK_DATA === 'true' && !baseDeDatosLocal(process.env.DATABASE_URL)) {
+      payload.logger.warn(
+        '[seed] SEED_MOCK_DATA=true contra una base que no es local: no se siembra nada',
+      )
+      return
+    }
     if (process.env.SEED_MOCK_DATA === 'true') {
       const { seedMockData } = await import('./seed')
       // Sin await: el seed puebla en segundo plano y no bloquea el arranque
