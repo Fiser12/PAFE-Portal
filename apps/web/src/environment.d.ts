@@ -14,6 +14,8 @@ declare global {
       AWS_REGION: string
       S3_BUCKET: string
       S3_ENDPOINT: string
+      /** Dominio público del bucket; sin él las portadas van por la ruta de Payload */
+      S3_PUBLIC_URL?: string
       S3_REGION: string
       S3_ACCESS_KEY_ID: string
       S3_SECRET_ACCESS_KEY: string

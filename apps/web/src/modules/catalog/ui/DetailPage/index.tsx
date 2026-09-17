@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useUser } from '@/lib/auth/useUser'
 import useSWR from 'swr'
 import { getItemAvailability } from '../../actions'
+import { portada } from '../../domain/portada'
 import { ReservationForm } from '../ReservationForm'
 import { ReservationsTable } from '../ReservationsTable'
 
@@ -41,7 +42,7 @@ export function CatalogItemClient({ item, children, contributions, wikiPath }: P
                                 width={400}
                                 height={700}
                                 loading='lazy'
-                                src={item.cover.url ?? ''}
+                                src={portada(item.cover, 400) ?? ''}
                             />
                         )}
                     </div>

@@ -17,7 +17,7 @@ const nextConfig = {
   outputFileTracingRoot: repoRoot,
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+      ...[NEXT_PUBLIC_SERVER_URL, process.env.S3_PUBLIC_URL].filter(Boolean).map((item) => {
         const url = new URL(item)
 
         return {
@@ -28,6 +28,22 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
+  // Las portadas son públicas y su nombre lleva el hash del contenido: cambiarlas
+  // cambia la URL. Sin esto, Payload responde `max-age=0, must-revalidate` y cada
+  // carga del catálogo vuelve a pedir las 24 imágenes a la función.
+  async headers() {
+    return [
+      {
+        source: '/api/media/file/:ruta*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, s-maxage=31536000, immutable',
+          },
+        ],
+      },
+    ]
+  },
   // La wiki se publica como HTML plano en public/wiki. Cloudflare Pages resolvía
   // /x -> /x.html por su cuenta; Next no, así que se reescribe aquí. Los ficheros
   // con extensión (css, js, imágenes) no entran en la regla.

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useTextos } from '@/components/IdiomaProvider'
+import { portada } from '../../domain/portada'
 import type { Textos } from '@/core/textos'
 
 export interface CatalogResult {
@@ -47,6 +48,7 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
   const router = useRouter()
   const cover =
     typeof result.cover === 'object' && result.cover ? (result.cover as Media) : undefined
+  const imagen = portada(cover, 300)
   const collectionType = result.collectionType ?? result.doc?.relationTo ?? ''
   const typeLabel =
     (result.itemType && itemTypeLabel(t)[result.itemType]) ||
@@ -75,11 +77,11 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="flex h-48 items-center justify-center bg-muted p-3">
-        {cover?.url ? (
+        {imagen ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={cover.url}
-            alt={cover.alt ?? result.title ?? ''}
+            src={imagen}
+            alt={cover?.alt ?? result.title ?? ''}
             loading="lazy"
             className="max-h-40 w-auto max-w-full rounded-md object-contain"
           />
