@@ -118,9 +118,9 @@ const config = {
         },
       },
       fontFamily: {
-        mono: ['var(--font-geist-mono)'],
-        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-jakarta)', 'var(--font-inter)', 'ui-sans-serif', 'sans-serif'],
+        mono: ['var(--font-mono)'],
+        sans: ['var(--font-sans)'],
+        heading: ['var(--font-heading)'],
         bubblegum: ['Bubblegum Sans', 'serif'],
       },
       keyframes: {

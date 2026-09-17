@@ -4,9 +4,9 @@
 
 
 @theme {
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-jakarta);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
 
   --color-accent: var(--accent);
