@@ -33,8 +33,8 @@ export function ReservationForm({ itemId }: Props) {
 
     if (isLoading) {
         return (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <p className="text-gray-600">{t.cargando}</p>
+            <div className="rounded-lg border bg-muted/40 p-4">
+                <p className="text-muted-foreground">{t.cargando}</p>
             </div>
         )
     }

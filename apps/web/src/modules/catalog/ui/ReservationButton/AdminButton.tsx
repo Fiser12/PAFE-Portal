@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { Button } from '@/components/ui/button'
 import { createReservation } from '../../actions'
 import { UserSelectionModal } from './UserSelectionModal'
 import { useTextos } from '@/components/IdiomaProvider'
@@ -29,13 +30,14 @@ export function AdminButton({ itemId, onReservationSuccess }: Props) {
 
     return (
         <>
-            <button
+            <Button
+                variant="secondary"
+                size="lg"
                 onClick={() => setIsModalOpen(true)}
                 disabled={isPending}
-                className="bg-secondary text-secondary-foreground px-6 py-2 rounded-lg hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isPending ? t.reservaReservando : t.reservaReservarParaUsuario}
-            </button>
+            </Button>
 
             <UserSelectionModal
                 isOpen={isModalOpen}

@@ -75,14 +75,14 @@ function Noticia({
       <Link
         href={entrada.enlace}
         className={cn(
-          'group flex gap-2 rounded border-l-4 border-primary bg-primary/5 px-2 transition-colors hover:bg-primary/15',
+          'group flex gap-2 rounded-md border-l-4 border-pafe-orange-500 bg-pafe-orange-500/10 px-2 transition-colors hover:bg-pafe-orange-500/20',
           compacta ? 'py-1' : 'py-1.5',
         )}
       >
         {entrada.fijada ? (
-          <Pin className="mt-0.5 h-3 w-3 shrink-0 text-primary" aria-label={etiquetaPin} />
+          <Pin className="mt-0.5 h-3 w-3 shrink-0 text-pafe-orange-700" aria-label={etiquetaPin} />
         ) : (
-          <Newspaper className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+          <Newspaper className="mt-0.5 h-3 w-3 shrink-0 text-pafe-orange-700" />
         )}
         <span className="min-w-0 flex-1">
           <span
@@ -123,7 +123,7 @@ function Evento({
   if (compacta) {
     return (
       <li
-        className="rounded border-l-2 bg-background/60 px-1.5 py-1"
+        className="rounded-md border-l-2 bg-background/60 px-1.5 py-1"
         style={{ borderLeftColor: colorDe(entrada.calendario) }}
         title={`${entrada.titulo}${entrada.descripcion ? ` — ${entrada.descripcion}` : ''}`}
       >
@@ -261,7 +261,7 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
 
       <section>
         <div className="mb-3 flex flex-wrap items-center gap-3">
-          <h2 className="text-xl font-semibold sm:text-2xl">{t.inicioCalendario}</h2>
+          <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{t.inicioCalendario}</h2>
 
           <div className="flex gap-0.5 rounded-md border p-0.5">
             <Button
@@ -350,7 +350,7 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
                       )}
                     >
                       {dia.hoy && (
-                        <span className="rounded bg-primary px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
+                        <span className="rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
                           {t.calHoy}
                         </span>
                       )}

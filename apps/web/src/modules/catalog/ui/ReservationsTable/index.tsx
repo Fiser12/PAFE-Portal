@@ -145,7 +145,7 @@ export function ReservationsTable({ itemId }: Props) {
                     {statusLabels(t)[reservation.status]}
                   </Badge>
                 </div>
-                <span className="self-start rounded border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground sm:self-auto">
+                <span className="self-start rounded-md border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground sm:self-auto">
                   {reservation.status === 'activa'
                     ? rellenar(t.reservaDevolverEl, {
                         fecha: formatDay(reservation.dueDate, idioma),

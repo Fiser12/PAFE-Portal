@@ -81,7 +81,7 @@ export function CatalogResultCard({ result }: { result: CatalogResult }) {
             src={cover.url}
             alt={cover.alt ?? result.title ?? ''}
             loading="lazy"
-            className="max-h-40 w-auto max-w-full rounded object-contain"
+            className="max-h-40 w-auto max-w-full rounded-md object-contain"
           />
         ) : isReservable ? (
           <BookMarked className="h-12 w-12 text-muted-foreground/40" strokeWidth={1.5} />

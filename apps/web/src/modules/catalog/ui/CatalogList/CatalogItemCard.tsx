@@ -26,7 +26,7 @@ export function CatalogItemCard({ item }: Props) {
               alt={cover.alt ?? item.title}
               title={cover.alt ?? item.title}
               loading="lazy"
-              className="h-56 w-auto max-w-full rounded object-contain sm:h-64"
+              className="h-56 w-auto max-w-full rounded-md object-contain sm:h-64"
             />
           </div>
         )}

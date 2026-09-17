@@ -27,12 +27,12 @@ function SinHora({ entrada, etiquetaPin }: { entrada: Entrada; etiquetaPin: stri
       <Link
         href={entrada.enlace}
         title={entrada.titulo}
-        className="flex items-center gap-1 rounded border-l-2 border-primary bg-primary/10 px-1 py-0.5 text-[10px] leading-tight hover:bg-primary/20"
+        className="flex items-center gap-1 rounded-md border-l-2 border-pafe-orange-500 bg-pafe-orange-500/15 px-1 py-0.5 text-[10px] leading-tight hover:bg-pafe-orange-500/25"
       >
         {entrada.fijada ? (
-          <Pin className="h-2.5 w-2.5 shrink-0 text-primary" aria-label={etiquetaPin} />
+          <Pin className="h-2.5 w-2.5 shrink-0 text-pafe-orange-700" aria-label={etiquetaPin} />
         ) : (
-          <Newspaper className="h-2.5 w-2.5 shrink-0 text-primary" />
+          <Newspaper className="h-2.5 w-2.5 shrink-0 text-pafe-orange-700" />
         )}
         <span className="line-clamp-2">{entrada.titulo}</span>
       </Link>
@@ -42,7 +42,7 @@ function SinHora({ entrada, etiquetaPin }: { entrada: Entrada; etiquetaPin: stri
   return (
     <span
       title={entrada.titulo}
-      className="block rounded border-l-2 bg-background px-1 py-0.5 text-[10px] leading-tight"
+      className="block rounded-md border-l-2 bg-background px-1 py-0.5 text-[10px] leading-tight"
       style={{ borderLeftColor: colorDe(entrada.calendario) }}
     >
       <span className="line-clamp-2">{entrada.titulo}</span>
@@ -131,7 +131,7 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
                     title={`${hora(entrada.fecha)} · ${entrada.titulo}${
                       nombres[entrada.calendario] ? ` — ${nombres[entrada.calendario]}` : ''
                     }`}
-                    className="absolute overflow-hidden rounded border-l-2 bg-background/95 px-1 py-0.5 shadow-sm"
+                    className="absolute overflow-hidden rounded-md border-l-2 bg-background/95 px-1 py-0.5 shadow-sm"
                     style={{
                       top: (desde / 60) * ALTO_HORA,
                       height: Math.max(18, (alto / 60) * ALTO_HORA - 2),

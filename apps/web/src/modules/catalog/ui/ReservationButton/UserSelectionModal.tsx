@@ -2,6 +2,9 @@
 
 import type { User } from '@/payload-types'
 import { useEffect, useState } from 'react'
+import { X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { getUsersBySearchTerm } from '../../actions'
 import { useTextos } from '@/components/IdiomaProvider'
 
@@ -42,44 +45,43 @@ export function UserSelectionModal({ isOpen, onClose, onSelect }: Props) {
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">{t.reservaSeleccionarUsuario}</h2>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700"
-                    >
-                        ✕
-                    </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="w-full max-w-md rounded-xl border bg-card p-6 shadow-lg">
+                <div className="mb-4 flex items-center justify-between">
+                    <h2 className="text-xl font-semibold">{t.reservaSeleccionarUsuario}</h2>
+                    <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label={t.cerrar}>
+                        <X className="h-4 w-4" />
+                    </Button>
                 </div>
 
-                <input
+                <Input
                     type="text"
                     placeholder={t.reservaBuscarUsuario}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full p-2 border rounded-lg mb-4"
+                    className="mb-4"
                 />
 
                 {isLoading ? (
-                    <div className="text-center py-4">{t.reservaCargandoUsuarios}</div>
+                    <div className="py-4 text-center text-sm text-muted-foreground">
+                        {t.reservaCargandoUsuarios}
+                    </div>
                 ) : (
                     <div className="max-h-96 overflow-y-auto">
                         {users.map((user) => (
                             <button
                                 key={user.id}
                                 onClick={() => onSelect(String(user.id))}
-                                className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
+                                className="mb-1 w-full rounded-md p-2 text-left transition-colors hover:bg-accent"
                             >
                                 <div className="font-medium">{user.email}</div>
                                 {user.name && (
-                                    <div className="text-sm text-gray-600">{user.name}</div>
+                                    <div className="text-sm text-muted-foreground">{user.name}</div>
                                 )}
                             </button>
                         ))}
                         {users.length === 0 && (
-                            <div className="text-center py-4 text-gray-500">
+                            <div className="py-4 text-center text-sm text-muted-foreground">
                                 {t.reservaSinUsuarios}
                             </div>
                         )}

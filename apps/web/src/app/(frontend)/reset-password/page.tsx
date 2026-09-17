@@ -46,8 +46,8 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="container flex justify-center py-10 sm:py-16">
-      <Card className="w-full max-w-sm">
+    <div className="container flex justify-center py-12 sm:py-20">
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center text-xl">{t.claveEstablecer}</CardTitle>
         </CardHeader>
