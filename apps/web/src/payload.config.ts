@@ -82,11 +82,14 @@ export default buildConfig({
       }
     : {}),
   db: postgresAdapter({
-    prodMigrations: migrations,
-    // En dev el esquema se sincroniza con push, pero `next build` también
-    // instancia Payload: sin esto, drizzle abre un prompt interactivo por cada
-    // columna nueva y el build se queda colgado para siempre.
-    push: process.env.PAYLOAD_DISABLE_PUSH !== 'true',
+    // Las migraciones de producción se ejecutan de forma explícita. Ejecutarlas
+    // durante el arranque de una función serverless puede dejar cada petición
+    // bloqueada en un prompt interactivo si el esquema fue sincronizado con push.
+    prodMigrations: process.env.PAYLOAD_RUN_MIGRATIONS === 'true' ? migrations : undefined,
+    // Nunca sincronizar dinámicamente el esquema de una base de producción.
+    push:
+      process.env.NODE_ENV !== 'production' &&
+      process.env.PAYLOAD_DISABLE_PUSH !== 'true',
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
