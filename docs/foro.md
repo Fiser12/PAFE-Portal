@@ -15,3 +15,18 @@ de vuelta al área y al archivo correspondiente.
 
 Pruebas de permisos, búsqueda, idiomas y paginación:
 `apps/web/test/vertical/foro.test.ts`.
+
+## Despliegue en Vercel
+
+El despliegue de producción se dispara mediante commit y push a `main`.
+`PAYLOAD_RUN_MIGRATIONS=false` evita ejecutar migraciones durante el build
+y el arranque de las funciones. Las nuevas migraciones deben ejecutarse
+explícitamente antes de desplegar código que necesite sus cambios de esquema.
+En producción no debe usarse la sincronización de esquema de desarrollo;
+`PAYLOAD_DISABLE_PUSH=true` la desactiva explícitamente y `payload.config.ts`
+también la impide cuando `NODE_ENV=production`.
+
+El 23 de septiembre de 2026 se respaldó el historial de migraciones de Neon
+y se retiró únicamente la fila `name=dev, batch=-1`. Las 14 migraciones
+versionadas ya estaban registradas y se conservaron. Esta limpieza de
+metadatos no importa el histórico de NodeBB ni modifica su contenido.
