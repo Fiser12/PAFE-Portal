@@ -1,37 +1,80 @@
+x-build: &build
+  context: .
+  args:
+    NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+    S3_PUBLIC_URL: ${S3_PUBLIC_URL:-}
+
+x-environment: &environment
+  NODE_ENV: production
+  DATABASE_URL: ${DATABASE_URL:?Configura DATABASE_URL en .docker.env}
+  PAYLOAD_SECRET: ${PAYLOAD_SECRET:?Configura PAYLOAD_SECRET en .docker.env}
+  AUTH_SECRET: ${AUTH_SECRET:?Configura AUTH_SECRET en .docker.env}
+  NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+  PAYLOAD_RUN_MIGRATIONS: "false"
+  PAYLOAD_DISABLE_PUSH: "true"
+  SEED_MOCK_DATA: "false"
+
 services:
   pafe-portal:
-    container_name: pafe-portal
-    restart: always
+    image: ${PAFE_IMAGE:-pafe-portal:local}
+    restart: unless-stopped
     build:
-      context: .
+      <<: *build
+      target: runner
     ports:
-      - 3000:3000
-    env_file: .docker.env
-    volumes:
-      - pafe_node_modules_vol:/app/node_modules:delegated
-      - pafe_next_build_vol:/app/apps/web/.next:delegated
+      - "${PAFE_BIND_ADDRESS:-127.0.0.1}:${PAFE_PORT:-3000}:3000"
+    env_file: ${PAFE_ENV_FILE:-.docker.env}
+    environment: *environment
     depends_on:
-      - db
-    networks:
-      - outside
-    
-  db:
-    container_name: db
-    image: postgres:17-alpine
-    ports:
-      - 5432:5432
-    volumes:
-      - ./.docker/postgres:/var/lib/postgresql/data
+      db:
+        condition: service_healthy
+        required: false
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          'fetch("http://127.0.0.1:3000/api/users/me").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))',
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+
+  migrate:
+    image: ${PAFE_MIGRATOR_IMAGE:-pafe-portal-migrator:local}
+    profiles: [tools]
+    build:
+      <<: *build
+      target: migrator
+    env_file: ${PAFE_ENV_FILE:-.docker.env}
     environment:
-      - POSTGRES_PASSWORD=devsecret
-      - POSTGRES_USER=pafe_user
-      - POSTGRES_DB=db
-    networks:
-      - outside
+      <<: *environment
+      DISABLE_JOBS_AUTORUN: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+        required: false
+    restart: "no"
 
-volumes:
-  pafe_node_modules_vol:
-  pafe_next_build_vol:
-
-networks:
-  outside:
+  db:
+    image: postgres:17-alpine
+    profiles: [local-db]
+    restart: unless-stopped
+    volumes:
+      # Conserva la ubicación del Compose anterior; no inicializar otro volumen.
+      - ${PAFE_POSTGRES_DIR:-./.docker/postgres}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
+      POSTGRES_USER: ${POSTGRES_USER:-pafe_user}
+      POSTGRES_DB: ${POSTGRES_DB:-db}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'pg_isready -h 127.0.0.1 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 15
