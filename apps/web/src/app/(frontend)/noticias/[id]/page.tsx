@@ -40,12 +40,16 @@ export default async function NoticiaPage({ params }: Props) {
 
   return (
     <article className="container mx-auto max-w-3xl px-4 py-8">
-      <Link className="text-sm text-muted-foreground hover:underline" href={`/foro?area=${noticia.area}${noticia.archivada ? '&archivo=1' : ''}`}>
+      <Link
+        className="text-sm text-muted-foreground hover:underline"
+        href={`/foro?area=${noticia.area}${noticia.archivada ? '&archivo=1' : ''}`}
+      >
         ← {t.foroVolver}
       </Link>
       <div className="mt-4 mb-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
         {area && <Badge variant="outline">{area}</Badge>}
         <span>{fecha(noticia.publishedAt, idioma)}</span>
+        {noticia.sourceAuthor && <span>· {noticia.sourceAuthor}</span>}
       </div>
       <h1 className="mb-6 text-3xl font-semibold">{noticia.title}</h1>
       {noticia.body && (
@@ -53,7 +57,11 @@ export default async function NoticiaPage({ params }: Props) {
           <RichText data={noticia.body} />
         </div>
       )}
-      <Respuestas noticiaId={Number(noticia.id)} usuarioId={Number(user.id)} />
+      <Respuestas
+        noticiaId={Number(noticia.id)}
+        usuarioId={Number(user.id)}
+        cerrada={Boolean(noticia.cerrada)}
+      />
     </article>
   )
 }

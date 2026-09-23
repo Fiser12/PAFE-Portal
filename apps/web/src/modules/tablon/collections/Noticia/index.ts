@@ -1,15 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_USER } from '@/core/collections-slugs'
-import {
-  hiddenUnlessTablon,
-  tablonAccess,
-  isActiveUserAccess,
-  isAdminAccess,
-  } from '@/core/permissions'
+import { hiddenUnlessTablon, tablonAccess, isAdminAccess } from '@/core/permissions'
 import { lexicalDelTablon } from '../../ui/lexicalDelTablon'
 import { AREAS_DEL_TABLON } from '../../domain/areas'
 import { avisarAlPublicar } from './hooks/avisarAlPublicar'
 import { borrarSusRespuestas } from './hooks/borrarSusRespuestas'
+import { leerNoticia } from '../access'
+import { camposDeOrigen } from '../origen'
 
 /**
  * Entradas del tablón, que sustituye al foro. Se mantiene la estructura de
@@ -24,8 +21,7 @@ export const Noticia: CollectionConfig = {
   access: {
     create: tablonAccess,
     delete: isAdminAccess,
-    // Mismo criterio que el catálogo: sin rol no se ve nada
-    read: isActiveUserAccess,
+    read: leerNoticia,
     update: tablonAccess,
   },
   hooks: {
@@ -41,6 +37,8 @@ export const Noticia: CollectionConfig = {
     useAsTitle: 'title',
   },
   fields: [
+    ...camposDeOrigen('sourceTopicId'),
+    { name: 'cerrada', label: 'Conversación cerrada', type: 'checkbox', defaultValue: false },
     {
       label: 'Título',
       name: 'title',

@@ -4,8 +4,11 @@ import {
   COLLECTION_SLUG_RESPUESTA,
   COLLECTION_SLUG_USER,
 } from '@/core/collections-slugs'
-import { hiddenUnlessTablon, isActiveUserAccess, isStaffAccess } from '@/core/permissions'
+import { hiddenUnlessTablon, isStaffAccess } from '@/core/permissions'
 import { autoriaOStaffAccess } from './access'
+import { crearRespuesta, leerRespuesta } from '../access'
+import { camposDeOrigen } from '../origen'
+import { lexicalDelTablon } from '../../ui/lexicalDelTablon'
 
 /**
  * Lo que la gente contesta a una noticia. El foro no se usaba para conversar,
@@ -18,10 +21,10 @@ export const Respuesta: CollectionConfig = {
     plural: 'Respuestas del tablón',
   },
   access: {
-    create: isActiveUserAccess,
+    create: crearRespuesta,
     // Solo quien la escribió, o el staff cuando hay que retirar algo
     delete: autoriaOStaffAccess,
-    read: isActiveUserAccess,
+    read: leerRespuesta,
     update: autoriaOStaffAccess,
   },
   admin: {
@@ -31,6 +34,8 @@ export const Respuesta: CollectionConfig = {
     useAsTitle: 'mensaje',
   },
   fields: [
+    ...camposDeOrigen('sourcePostId'),
+    { name: 'body', label: 'Contenido original', type: 'richText', editor: lexicalDelTablon },
     {
       label: 'Mensaje',
       name: 'mensaje',
@@ -50,7 +55,6 @@ export const Respuesta: CollectionConfig = {
       name: 'author',
       type: 'relationship',
       relationTo: COLLECTION_SLUG_USER,
-      required: true,
       index: true,
       access: {
         // Que nadie pueda escribir a nombre de otro

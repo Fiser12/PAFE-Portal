@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_ADJUNTO } from '@/core/collections-slugs'
-import { hiddenUnlessTablon, isActiveUserAccess, tablonAccess } from '@/core/permissions'
+import { hiddenUnlessTablon, tablonAccess } from '@/core/permissions'
+import { leerAdjunto } from '../access'
+import { AREAS_DEL_TABLON } from '../../domain/areas'
 
 /**
  * Lo que se incrusta en una noticia. Va aparte de `files` a propósito: allí
@@ -16,7 +18,7 @@ export const Adjunto: CollectionConfig = {
   access: {
     create: tablonAccess,
     delete: tablonAccess,
-    read: isActiveUserAccess,
+    read: leerAdjunto,
     update: tablonAccess,
   },
   admin: {
@@ -30,6 +32,8 @@ export const Adjunto: CollectionConfig = {
     mimeTypes: [
       'application/pdf',
       'application/msword',
+      // Los .doc y .xls antiguos se detectan por su contenedor binario OLE.
+      'application/x-cfb',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -47,6 +51,14 @@ export const Adjunto: CollectionConfig = {
     ],
   },
   fields: [
+    {
+      name: 'sourceKey',
+      label: 'Origen de la importación',
+      type: 'text',
+      unique: true,
+      admin: { readOnly: true },
+    },
+    { name: 'area', label: 'Área', type: 'select', options: [...AREAS_DEL_TABLON], index: true },
     {
       label: 'Texto alternativo',
       name: 'alt',

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import type { Respuesta, User } from '@/payload-types'
 import { cargarRespuestas, enviarRespuesta, retirarRespuesta } from '../actions/respuestas'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
 const fecha = (iso: string | null | undefined, idioma: CodigoIdioma) =>
   iso ? diaYMes(new Date(iso), idioma) : ''
@@ -17,7 +18,15 @@ const fecha = (iso: string | null | undefined, idioma: CodigoIdioma) =>
 const quien = (autor: Respuesta['author']): string =>
   typeof autor === 'object' && autor !== null ? ((autor as User).name ?? 'Alguien') : 'Alguien'
 
-export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuarioId: number }) {
+export function Respuestas({
+  noticiaId,
+  usuarioId,
+  cerrada = false,
+}: {
+  noticiaId: number
+  usuarioId: number
+  cerrada?: boolean
+}) {
   const { idioma, t } = useIdioma()
   const { data, isLoading, mutate } = useSWR(['respuestas', noticiaId], () =>
     cargarRespuestas(noticiaId),
@@ -61,10 +70,15 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
       ) : (
         <ul className="flex flex-col gap-4">
           {respuestas.map((respuesta) => (
-            <li key={respuesta.id} className="rounded-md border p-4">
+            <li
+              key={respuesta.id}
+              id={`respuesta-${respuesta.id}`}
+              className="rounded-md border p-4"
+            >
               <div className="mb-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>
-                  {quien(respuesta.author)} · {fecha(respuesta.createdAt, idioma)}
+                  {respuesta.sourceAuthor || quien(respuesta.author)} ·{' '}
+                  {fecha(respuesta.createdAt, idioma)}
                 </span>
                 {Number(
                   typeof respuesta.author === 'object' && respuesta.author !== null
@@ -82,24 +96,32 @@ export function Respuestas({ noticiaId, usuarioId }: { noticiaId: number; usuari
                   </Button>
                 )}
               </div>
-              <p className="whitespace-pre-wrap text-sm">{respuesta.mensaje}</p>
+              {respuesta.body ? (
+                <div className="prose max-w-none text-sm">
+                  <RichText data={respuesta.body} />
+                </div>
+              ) : (
+                <p className="whitespace-pre-wrap text-sm">{respuesta.mensaje}</p>
+              )}
             </li>
           ))}
         </ul>
       )}
 
-      <div className="mt-6 flex flex-col gap-2">
-        <Textarea
-          value={mensaje}
-          onChange={(e) => setMensaje(e.target.value)}
-          placeholder={t.respuestasEscribe}
-          rows={3}
-        />
-        {error && <p className="text-sm text-destructive">{error}</p>}
-        <Button className="self-end" onClick={enviar} disabled={enviando || !mensaje.trim()}>
-          {enviando ? 'Enviando…' : 'Responder'}
-        </Button>
-      </div>
+      {!cerrada && (
+        <div className="mt-6 flex flex-col gap-2">
+          <Textarea
+            value={mensaje}
+            onChange={(e) => setMensaje(e.target.value)}
+            placeholder={t.respuestasEscribe}
+            rows={3}
+          />
+          {error && <p className="text-sm text-destructive">{error}</p>}
+          <Button className="self-end" onClick={enviar} disabled={enviando || !mensaje.trim()}>
+            {enviando ? 'Enviando…' : 'Responder'}
+          </Button>
+        </div>
+      )}
     </section>
   )
 }

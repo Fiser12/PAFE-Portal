@@ -1,5 +1,5 @@
 /** T3/T4: a quién avisa una noticia nueva. Reglas R5, R7, R8, R9 de la spec */
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Payload } from 'payload'
 import { getTestPayload } from './helpers/payload'
 import { createFamilia, createStaff } from './helpers/factory'
@@ -24,7 +24,12 @@ beforeAll(async () => {
   payload = await getTestPayload()
 })
 
-beforeEach(resetEmails)
+beforeEach(() => {
+  resetEmails()
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(at('2026-09-16'))
+})
+afterEach(() => vi.useRealTimers())
 
 const avisos = async (userId: number) =>
   (await userNotifications({ payload, userId })).filter((n) => n.type === 'noticia')

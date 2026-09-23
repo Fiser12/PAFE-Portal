@@ -407,6 +407,7 @@ export const responder = async ({
 
   const noticia = await noticiaDelTablon({ payload, user, id: noticiaId, now: new Date() })
   if (!noticia) throw new TablonRuleError('noticia-no-encontrada')
+  if (noticia.cerrada) throw new TablonRuleError('sin-permiso')
 
   return (await payload.create({
     collection: COLLECTION_SLUG_RESPUESTA,
@@ -454,7 +455,7 @@ const respuestaDe = async (
 
   return {
     respuesta,
-    suya: (user) => idDe(respuesta.author as number | { id: number }) === Number(user.id),
+    suya: (user) => Boolean(respuesta.author) && idDe(respuesta.author as number | { id: number }) === Number(user.id),
   }
 }
 

@@ -837,6 +837,10 @@ export interface Notification {
  */
 export interface Noticia {
   id: number;
+  sourceTopicId?: number | null;
+  sourceAuthor?: string | null;
+  sourceAuthorId?: number | null;
+  cerrada?: boolean | null;
   title: string;
   area:
     | 'berriak-pafe'
@@ -886,9 +890,27 @@ export interface Noticia {
  */
 export interface Respuesta {
   id: number;
+  sourcePostId?: number | null;
+  sourceAuthor?: string | null;
+  sourceAuthorId?: number | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   mensaje: string;
   noticia: number | Noticia;
-  author: number | User;
+  author?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -898,6 +920,17 @@ export interface Respuesta {
  */
 export interface Adjunto {
   id: number;
+  sourceKey?: string | null;
+  area?:
+    | (
+        | 'berriak-pafe'
+        | 'partekatutako-berriak'
+        | 'ia'
+        | 'elkarrizketa-irekiak'
+        | 'pafe-ren-elkarrizketak'
+        | 'lantalde-teknikoa'
+      )
+    | null;
   /**
    * Para quien no puede ver la imagen. En documentos y vídeos no hace falta
    */
@@ -1740,6 +1773,10 @@ export interface NotificationSelect<T extends boolean = true> {
  * via the `definition` "noticia_select".
  */
 export interface NoticiaSelect<T extends boolean = true> {
+  sourceTopicId?: T;
+  sourceAuthor?: T;
+  sourceAuthorId?: T;
+  cerrada?: T;
   title?: T;
   area?: T;
   body?: T;
@@ -1756,6 +1793,10 @@ export interface NoticiaSelect<T extends boolean = true> {
  * via the `definition` "respuesta_select".
  */
 export interface RespuestaSelect<T extends boolean = true> {
+  sourcePostId?: T;
+  sourceAuthor?: T;
+  sourceAuthorId?: T;
+  body?: T;
   mensaje?: T;
   noticia?: T;
   author?: T;
@@ -1767,6 +1808,8 @@ export interface RespuestaSelect<T extends boolean = true> {
  * via the `definition` "adjunto_select".
  */
 export interface AdjuntoSelect<T extends boolean = true> {
+  sourceKey?: T;
+  area?: T;
   alt?: T;
   prefix?: T;
   updatedAt?: T;
