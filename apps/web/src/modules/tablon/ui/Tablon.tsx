@@ -43,6 +43,9 @@ export function Tablon() {
     <section>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-semibold sm:text-2xl">{t.tablon}</h2>
+        <Button asChild size="sm" variant="outline">
+          <Link href="/foro">{t.foroVer} →</Link>
+        </Button>
         {areas.length > 0 && (
           <div className="flex flex-wrap gap-2">
             <Button size="sm" variant={area ? 'outline' : 'default'} onClick={() => setArea(undefined)}>

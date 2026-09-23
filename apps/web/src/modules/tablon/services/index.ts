@@ -1,4 +1,4 @@
-import type { Payload, PayloadRequest } from 'payload'
+import type { Payload, PayloadRequest, Where } from 'payload'
 import type { Noticia, Respuesta, User } from '@/payload-types'
 import type { CodigoIdioma } from '@/core/localization'
 import { ROLE_FAMILIA, isActiveUser, isStaff } from '@/core/permissions'
@@ -288,6 +288,64 @@ export const noticiasDelTablon = async ({
   })
 
   return ordenarNoticias(result.docs as Noticia[])
+}
+
+export const temasDelForo = async ({
+  payload,
+  user,
+  now,
+  locale,
+  area,
+  archivadas = false,
+  busqueda = '',
+  pagina = 1,
+}: {
+  payload: Payload
+  user: Actor
+  now: Date
+  locale?: CodigoIdioma
+  area?: string
+  archivadas?: boolean
+  busqueda?: string
+  pagina?: number
+}) => {
+  if (!isActiveUser(user as User)) throw new TablonRuleError('sin-permiso')
+
+  const areas = areasVisiblesPara({
+    grupos: await gruposDe(payload, user),
+    esStaff: isStaff(user as User),
+  })
+  const seleccionadas = area ? areas.filter((visible) => visible === area) : areas
+  const vacio = { docs: [], totalDocs: 0, totalPages: 1, page: 1, areas }
+  if (seleccionadas.length === 0) return vacio
+
+  const and: Where[] = [
+    { area: { in: seleccionadas } },
+    { publishedAt: { less_than_equal: now.toISOString() } },
+    { archivada: { equals: archivadas } },
+  ]
+  const titulo = busqueda.trim().slice(0, 200)
+  if (titulo) and.push({ title: { contains: titulo } })
+
+  const where: Where = { and }
+  const solicitada = Number.isSafeInteger(pagina) ? Math.max(1, Math.min(pagina, 100_000)) : 1
+  const consultar = (page: number) => payload.find({
+    collection: COLLECTION_SLUG_NOTICIA,
+    where,
+    locale,
+    sort: ['-pinned', '-publishedAt', '-id'],
+    limit: 20,
+    page,
+    depth: 0,
+    select: { title: true, area: true, publishedAt: true, pinned: true },
+    overrideAccess: true,
+  })
+  let result = await consultar(solicitada)
+  const totalPages = Math.max(1, result.totalPages)
+  const page = Math.min(solicitada, totalPages)
+  if (page !== solicitada) result = await consultar(page)
+
+  return { docs: result.docs, totalDocs: result.totalDocs, totalPages, page, areas }
 }
 
 /** Noticias programadas cuya fecha ya llegó y que todavía no han avisado */

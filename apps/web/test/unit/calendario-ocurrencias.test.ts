@@ -47,8 +47,8 @@ describe('desplegar las repeticiones', () => {
       (o) => o.uid === 'reunion-semanal@google.com',
     )
     expect(octubre).toHaveLength(1)
-    expect(octubre[0].titulo).toContain('cambiada de hora')
-    expect(octubre[0].inicio.toISOString()).toBe('2026-10-20T15:00:00.000Z')
+    expect(octubre[0]?.titulo).toContain('cambiada de hora')
+    expect(octubre[0]?.inicio.toISOString()).toBe('2026-10-20T15:00:00.000Z')
   })
 
   it('lo anulado no aparece', () => {

@@ -10,6 +10,7 @@ import type { CodigoIdioma } from '@/core/localization'
 import { fechaLarga } from '@/modules/calendario/domain/fechas'
 import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
+import { textosDe } from '@/core/textos'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -23,6 +24,7 @@ export default async function NoticiaPage({ params }: Props) {
   if (!user || !isActiveUser(user)) redirect('/login')
 
   const idioma = await getIdioma()
+  const t = textosDe(idioma)
 
   const noticia = await noticiaDelTablon({
     payload,
@@ -38,8 +40,8 @@ export default async function NoticiaPage({ params }: Props) {
 
   return (
     <article className="container mx-auto max-w-3xl px-4 py-8">
-      <Link className="text-sm text-muted-foreground hover:underline" href="/">
-        ← Volver al tablón
+      <Link className="text-sm text-muted-foreground hover:underline" href={`/foro?area=${noticia.area}${noticia.archivada ? '&archivo=1' : ''}`}>
+        ← {t.foroVolver}
       </Link>
       <div className="mt-4 mb-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
         {area && <Badge variant="outline">{area}</Badge>}

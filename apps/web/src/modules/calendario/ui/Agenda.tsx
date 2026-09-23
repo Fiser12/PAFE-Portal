@@ -9,6 +9,7 @@ import {
   CornerDownLeft,
   ExternalLink,
   List,
+  MessageSquare,
   Newspaper,
   Pin,
 } from 'lucide-react'
@@ -385,6 +386,16 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
             )}
           </CardContent>
         </Card>
+      </section>
+      <section className="flex flex-wrap items-center gap-4 rounded-xl border bg-card p-5">
+        <MessageSquare className="h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
+        <div className="min-w-0 flex-1 basis-56">
+          <h2 className="font-semibold">{t.tablon}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t.foroDescripcion}</p>
+        </div>
+        <Button asChild variant="outline">
+          <Link href="/foro">{t.foroVer} →</Link>
+        </Button>
       </section>
     </div>
   )

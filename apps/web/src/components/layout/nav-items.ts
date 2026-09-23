@@ -19,7 +19,7 @@ export function getNavItems(user: User | null, t: Textos): NavItem[] {
   const items: NavItem[] = [{ label: t.navInicio, href: '/' }]
   // El catálogo es material interno: solo se ofrece a quien ya tiene rol
   if (isActiveUser(user)) items.push({ label: t.catalogo, href: '/catalog' })
-  items.push({ label: t.navForo, href: 'https://foro.pafe-formakuntza.com/', external: true })
+  if (isActiveUser(user)) items.push({ label: t.navForo, href: '/foro' })
   if (user) {
     // La wiki es un sitio aparte servido fuera del router: se abre en otra pestaña
     items.push({ label: t.navWiki, href: '/wiki', external: true })
@@ -38,6 +38,7 @@ export function getNavItems(user: User | null, t: Textos): NavItem[] {
 
 export function isNavItemActive(item: NavItem, pathname: string): boolean {
   if (item.external) return false
+  if (item.href === '/foro' && pathname.startsWith('/noticias/')) return true
   if (item.href === '/') return pathname === '/'
   return pathname === item.href || pathname.startsWith(`${item.href}/`)
 }
