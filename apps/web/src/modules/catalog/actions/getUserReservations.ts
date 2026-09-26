@@ -18,6 +18,7 @@ export async function getUserReservations(userId: string) {
         },
       },
       depth: 2,
+      populate: { 'catalog-item': { title: true } },
     })
 
     return reservations

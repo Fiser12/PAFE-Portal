@@ -85,6 +85,7 @@ export const mezclar = (
   noticias: NoticiaDeAgenda[],
   ahora: Date = new Date(),
   zona = 'Europe/Madrid',
+  cortarPasado = true,
 ): { fijadas: Entrada[]; cronologia: Entrada[] } => {
   const corte = new Date(inicioDelDia(ahora, zona).getTime() - DIAS_ATRAS * UN_DIA)
   const deTablon = noticias.map(deNoticia)
@@ -94,7 +95,7 @@ export const mezclar = (
       .filter((n) => n.tipo === 'noticia' && n.fijada)
       .sort((a, b) => b.fecha.getTime() - a.fecha.getTime()),
     cronologia: [
-      ...ocurrencias.filter((o) => o.inicio >= corte).map(deOcurrencia),
+      ...ocurrencias.filter((o) => !cortarPasado || o.inicio >= corte).map(deOcurrencia),
       ...deTablon.filter((n) => n.tipo === 'noticia' && !n.fijada && n.fecha >= corte),
     ].sort((a, b) => a.fecha.getTime() - b.fecha.getTime()),
   }

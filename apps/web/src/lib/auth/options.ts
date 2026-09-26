@@ -44,7 +44,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
   users: {
     slug: COLLECTION_SLUG_USER,
     // Roles fijos del sistema. Los grupos dinámicos son la colección `groups`
-    // y no otorgan permisos.
+    // y complementan el acceso al contenido del equipo técnico.
     roles: ALL_ROLES,
     adminRoles: ADMIN_PANEL_ROLES,
     defaultAdminRole: ROLE_ADMIN,
@@ -79,7 +79,8 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     collectionOverrides: hideFromStaff,
     // Sin serverURL en payload.config, el default del plugin genera una ruta
     // relativa (/admin/signup?token=...) y el enlace llega roto en el correo
-    generateInviteUrl: ({ token }) => `${getServerSideURL()}/admin/signup?token=${token}`,
+    generateInviteUrl: ({ token }) =>
+      `${getServerSideURL()}/admin/signup?token=${token}&redirect=%2Fforo`,
     // Requerido por el botón "Invite" del panel de admin: sin esta función el
     // endpoint del plugin responde 500 ("Send invite email function not found")
     sendInviteEmail: async ({ payload, email, url }) => {

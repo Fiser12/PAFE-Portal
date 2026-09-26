@@ -14,6 +14,7 @@ const nextConfig = {
   // standalone output for the Docker runner image (traces workspace deps from the monorepo root).
   // Vercel ignores this and uses its own build output.
   output: 'standalone',
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   outputFileTracingRoot: repoRoot,
   images: {
     remotePatterns: [

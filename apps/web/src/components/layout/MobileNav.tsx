@@ -32,23 +32,25 @@ export const MobileNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
 }) => {
   const t = useTextos()
   const [open, setOpen] = useState(false)
-  const { user } = useUser()
+  const { user, tecnico } = useUser()
   const pathname = usePathname()
-  const items = getNavItems(user, t)
+  const items = getNavItems(user, t, tecnico)
   const cmsItems = data?.navItems || []
   const close = () => setOpen(false)
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden" aria-label={t.navAbrirMenu}>
+        <Button variant="ghost" size="icon" className="xl:hidden" aria-label={t.navAbrirMenu}>
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="flex w-4/5 flex-col gap-0 p-0 sm:max-w-xs">
         <SheetHeader className="border-b p-4 text-left">
           <div className="flex items-center justify-between gap-2">
-            <SheetTitle className="font-bubblegum text-2xl font-black text-primary">PAFE</SheetTitle>
+            <SheetTitle className="font-bubblegum text-2xl font-black text-primary">
+              PAFE
+            </SheetTitle>
             <SelectorIdioma idioma={idioma} />
           </div>
           <SheetDescription className="sr-only">{t.navMenu}</SheetDescription>

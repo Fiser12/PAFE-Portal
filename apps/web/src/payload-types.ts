@@ -219,7 +219,7 @@ export interface User {
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
   /**
-   * Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)
+   * lantalde-teknikoa permite acceder al equipo técnico, Catálogo y Wiki. Requiere además un rol activo.
    */
   groups?: (number | Group)[] | null;
   /**
@@ -678,6 +678,8 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * lantalde-teknikoa: psicólogos del equipo técnico. Las familias no pertenecen a este grupo. Se asigna desde la ficha de cada usuario.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "groups".
  */
@@ -799,7 +801,7 @@ export interface Verification {
  */
 export interface AdminInvitation {
   id: number;
-  role: 'admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'profesional' | 'familia';
+  role: 'admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional';
   token: string;
   url?: string | null;
   updatedAt: string;

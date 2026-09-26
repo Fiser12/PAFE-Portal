@@ -3,12 +3,7 @@ import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
 import { authenticated } from '@/payload/access/authenticated'
 import type { CollectionConfig } from 'payload'
 
-/**
- * Grupos dinámicos: los crea el staff y se asignan a usuarios (users.groups).
- * No otorgan permisos — la seguridad se decide con los roles fijos
- * (ver src/core/permissions.ts). Sirven para segmentar usuarios
- * (p. ej. asignar contenidos o tareas a un conjunto de familias).
- */
+/** Los grupos organizan personas; lantalde-teknikoa identifica a los psicólogos. */
 export const Groups: CollectionConfig = {
   slug: COLLECTION_SLUG_GROUPS,
   labels: {
@@ -25,6 +20,8 @@ export const Groups: CollectionConfig = {
     group: 'Auth',
     hidden: hiddenUnlessAdmin,
     useAsTitle: 'name',
+    description:
+      'lantalde-teknikoa: psicólogos del equipo técnico. Las familias no pertenecen a este grupo. Se asigna desde la ficha de cada usuario.',
     defaultColumns: ['name', 'description'],
   },
   fields: [

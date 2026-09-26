@@ -1,5 +1,5 @@
 import type { User } from '@/payload-types'
-import { isActiveUser, isStaff } from '@/core/permissions'
+import { isActiveUser, isAdmin } from '@/core/permissions'
 import type { Textos } from '@/core/textos'
 
 export interface NavItem {
@@ -15,24 +15,16 @@ export interface NavItem {
  * Casos no sale: la sección no está en uso. Quien la necesite llega por el
  * panel o por su dirección.
  */
-export function getNavItems(user: User | null, t: Textos): NavItem[] {
+export function getNavItems(user: User | null, t: Textos, tecnico = false): NavItem[] {
   const items: NavItem[] = [{ label: t.navInicio, href: '/' }]
-  // El catálogo es material interno: solo se ofrece a quien ya tiene rol
-  if (isActiveUser(user)) items.push({ label: t.catalogo, href: '/catalog' })
   if (isActiveUser(user)) items.push({ label: t.navForo, href: '/foro' })
+  if (tecnico) items.push({ label: t.catalogo, href: '/catalog' })
   if (user) {
-    // La wiki es un sitio aparte servido fuera del router: se abre en otra pestaña
-    items.push({ label: t.navWiki, href: '/wiki', external: true })
-    // Moodle conserva su propio inicio de sesión: se abre aparte
-    items.push({
-      label: t.navMoodle,
-      href: 'https://moodle.pafe-formakuntza.com/',
-      external: true,
-    })
+    items.push({ label: t.navMoodle, href: 'https://moodle.pafe-formakuntza.com/', external: true })
   }
-  if (isStaff(user)) {
-    items.push({ label: t.navAdministracion, href: '/admin' })
-  }
+  if (tecnico) items.push({ label: t.navWiki, href: '/wiki', external: true })
+  if (isActiveUser(user)) items.push({ label: t.navAreaPersonal, href: '/area-personal' })
+  if (isAdmin(user)) items.push({ label: t.navAdministracion, href: '/admin' })
   return items
 }
 

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { isActiveUser } from '@/core/permissions'
+import { esEquipoTecnico } from '@/core/technical-access'
 import { CatalogSearch } from '@/modules/catalog/ui/CatalogSearch'
 import { CatalogIntro } from '@/modules/catalog/ui/CatalogIntro'
 import { getIdioma } from '@/utilities/getIdioma'
@@ -12,7 +12,7 @@ interface Props {
 export default async function CatalogPage({ searchParams }: Props) {
   const { q } = await searchParams
   const { payload, user } = await getSessionUser()
-  if (!user || !isActiveUser(user)) redirect('/login')
+  if (!user || !(await esEquipoTecnico(payload, user))) redirect('/login')
 
   const locale = await getIdioma()
   const categories = await payload.find({

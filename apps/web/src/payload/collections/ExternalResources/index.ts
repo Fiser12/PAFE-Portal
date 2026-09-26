@@ -1,5 +1,6 @@
+import { equipoTecnicoAccess, gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
 import { COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
-import { hiddenUnlessCatalogo, isActiveUserAccess, catalogoAccess } from '@/core/permissions'
+import { hiddenUnlessCatalogo } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
 
@@ -14,11 +15,11 @@ export const ExternalResources: CollectionConfig = {
     plural: 'Recursos Externos',
   },
   access: {
-    create: catalogoAccess,
-    delete: catalogoAccess,
+    create: gestionarCatalogoTecnicoAccess,
+    delete: gestionarCatalogoTecnicoAccess,
     // Contenido del catálogo digital: solo usuarios con rol
-    read: isActiveUserAccess,
-    update: catalogoAccess,
+    read: equipoTecnicoAccess,
+    update: gestionarCatalogoTecnicoAccess,
   },
   admin: {
     group: 'Catálogo',
@@ -66,8 +67,8 @@ export const ExternalResources: CollectionConfig = {
         },
         {
           label: 'Google Doc',
-          value: 'google-doc'
-        }
+          value: 'google-doc',
+        },
       ],
     },
     {
@@ -76,8 +77,8 @@ export const ExternalResources: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'URL del recurso externo'
-      }
+        description: 'URL del recurso externo',
+      },
     },
     {
       label: 'Duración (minutos)',
@@ -85,8 +86,8 @@ export const ExternalResources: CollectionConfig = {
       type: 'number',
       required: false,
       admin: {
-        description: 'Duración aproximada en minutos (para vídeos)'
-      }
+        description: 'Duración aproximada en minutos (para vídeos)',
+      },
     },
     buildTaxonomyRelationship({
       name: 'categories',

@@ -194,18 +194,17 @@ describe('el catálogo es material interno', () => {
     await expect(busca(sinRol)).rejects.toThrow()
   })
 
-  it('una familia sí lo ve', async () => {
+  it('una familia no puede acceder al catálogo durante el lanzamiento', async () => {
     await createItem(payload)
     const familia = await createUser(payload, ['familia'], 'Familia Test')
-    const { totalDocs } = await busca(familia)
-    expect(totalDocs).toBeGreaterThan(0)
+    await expect(busca(familia)).rejects.toThrow()
   })
 
-  it('el menú solo ofrece el catálogo a quien tiene rol', () => {
+  it('el menú oculta el catálogo a las familias', () => {
     const enlaces = (user: Parameters<typeof getNavItems>[0]) =>
       getNavItems(user, textosDe('es')).map((i) => i.href)
     expect(enlaces(null)).not.toContain('/catalog')
     expect(enlaces({ role: [] } as never)).not.toContain('/catalog')
-    expect(enlaces({ role: ['familia'] } as never)).toContain('/catalog')
+    expect(enlaces({ role: ['familia'] } as never)).not.toContain('/catalog')
   })
 })
