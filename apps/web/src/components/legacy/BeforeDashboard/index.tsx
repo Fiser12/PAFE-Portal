@@ -1,74 +1,68 @@
-import { Banner } from '@payloadcms/ui/elements/Banner'
 import React from 'react'
-
-import { SeedButton } from './SeedButton'
+import Link from 'next/link'
 import './index.scss'
 
-const baseClass = 'before-dashboard'
-
-const BeforeDashboard: React.FC = () => {
+export default function BeforeDashboard() {
   return (
-    <div className={baseClass}>
-      <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
-      </Banner>
-      Here&apos;s what to do next:
-      <ul className={`${baseClass}__instructions`}>
+    <div className="before-dashboard">
+      <h2>Gestión de PAFE</h2>
+      <p>Administración está reservada a Alberto y Rubén. El equipo técnico son los psicólogos.</p>
+      <h3>Invitar a una persona</h3>
+      <ol>
         <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
+          Abre <Link href="/admin/collections/users">Usuarios</Link> y pulsa <strong>Invite User</strong>.
         </li>
         <li>
-          If you created this repo using Payload Cloud, head over to GitHub and clone it to your
-          local machine. It will be under the <i>GitHub Scope</i> that you selected when creating
-          this project.
+          Selecciona <strong>Familia</strong> para las familias o <strong>Profesional</strong> para
+          los psicólogos. El formulario de invitación muestra estos nombres; la ficha del usuario
+          muestra los nombres completos.
         </li>
         <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
+          Introduce su correo en <strong>Email Address</strong> y pulsa <strong>Send Email</strong>.
+          La persona recibe un enlace para crear su cuenta y contraseña, y entrar al Foro.
         </li>
         <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
+          Para la siguiente persona, vuelve al listado de Usuarios y abre una nueva invitación. Cada
+          enlace sirve para una sola alta.
+        </li>
+      </ol>
+      <p>
+        Si ya tiene cuenta, búscala por su correo y edita su rol. No hace falta crear otra. Entrar
+        con Google sin invitación deja la cuenta pendiente, sin rol: asígnalo desde Usuarios.
+      </p>
+      <h3>Permisos y grupos</h3>
+      <ul>
+        <li>
+          <strong>Familia:</strong> Calendario, Foro, Moodle y Área personal. Sin Catálogo, Wiki ni
+          Administración.
+        </li>
+        <li>
+          <strong>Psicólogo/a (equipo técnico):</strong> lo anterior más Catálogo, Wiki y el área
+          LANTALDE TEKNIKOA del foro. Sin acceso al panel de Administración.
+        </li>
+        <li>
+          <strong>Administración:</strong> gestión completa. Reservar este rol a Alberto y Rubén.
         </li>
       </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/admin/custom-components/overview#base-component-overrides"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+      <p>
+        Los psicólogos con rol profesional ya tienen acceso al equipo técnico. El grupo{' '}
+        <strong>lantalde-teknikoa</strong> conserva la pertenencia al equipo del foro anterior: se
+        puede crear en <Link href="/admin/collections/groups">Grupos de usuarios</Link> y asignar desde la
+        ficha de cada persona. No añadir familias a ese grupo. Un grupo por sí solo no activa una
+        cuenta sin rol.
+      </p>
+      <p>
+        La migración conservó publicaciones y autores históricos, pero no creó las cuentas ni
+        importó las contraseñas. Revisa cada alta con el listado del foro anterior; los nombres de
+        los autores no conceden permisos.
+      </p>
+      <h3>Crear una noticia</h3>
+      <p>
+        Entra en <Link href="/admin/collections/noticia/create">Crear noticia</Link>, elige el área,
+        escribe el título y contenido, revisa la fecha de publicación y guarda. Berriak PAFE envía
+        un aviso a las familias al publicarse. Las otras áreas no envían ese aviso. También puedes
+        empezar desde el botón Crear noticia del Foro.
+      </p>
     </div>
   )
 }
-
-export default BeforeDashboard

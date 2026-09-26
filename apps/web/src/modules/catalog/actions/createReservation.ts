@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { esEquipoTecnico } from '@/core/technical-access'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { LoanRuleError } from '../domain/errors'
 import { reserveItem } from '../services'
@@ -11,7 +12,7 @@ export async function createReservation(
   quotaOverrideReason?: string,
 ) {
   const { payload, user } = await getSessionUser()
-  if (!user) throw new LoanRuleError('sin-permiso')
+  if (!user || !(await esEquipoTecnico(payload, user))) throw new LoanRuleError('sin-permiso')
 
   await reserveItem({
     payload,

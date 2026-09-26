@@ -98,3 +98,8 @@ export const diaYMes = (fecha: Date, idioma: CodigoIdioma): string => {
   const valor = (tipo: string) => Number(partes.find((p) => p.type === tipo)?.value ?? 0)
   return `${MESES_EU[valor('month') - 1]}k ${valor('day')}`
 }
+
+export const mesYAnio = (fecha: Date, idioma: CodigoIdioma): string =>
+  idioma === 'eu'
+    ? `${fecha.getUTCFullYear()}ko ${MESES_EU[fecha.getUTCMonth()]}`
+    : intl({ month: 'long', year: 'numeric' }, fecha, 'UTC')

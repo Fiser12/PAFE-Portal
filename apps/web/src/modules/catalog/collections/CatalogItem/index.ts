@@ -1,4 +1,5 @@
-import { hiddenUnlessCatalogo, catalogoAccess, isActiveUserAccess } from '@/core/permissions'
+import { equipoTecnicoAccess, gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
+import { hiddenUnlessCatalogo } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -11,11 +12,11 @@ export const CatalogItem: CollectionConfig = {
     plural: 'Catálogo reservable',
   },
   access: {
-    // El catálogo solo lo ve quien tiene rol; solo el staff lo gestiona
-    create: catalogoAccess,
-    delete: catalogoAccess,
-    read: isActiveUserAccess,
-    update: catalogoAccess,
+    // Durante el lanzamiento, la lectura se limita a los psicólogos y Administración
+    create: gestionarCatalogoTecnicoAccess,
+    delete: gestionarCatalogoTecnicoAccess,
+    read: equipoTecnicoAccess,
+    update: gestionarCatalogoTecnicoAccess,
   },
   admin: {
     group: 'Catálogo',
@@ -117,7 +118,7 @@ export const CatalogItem: CollectionConfig = {
       name: 'categories',
       label: 'Categorías',
       required: true,
-      defaultValue: []
+      defaultValue: [],
     }),
   ],
 }

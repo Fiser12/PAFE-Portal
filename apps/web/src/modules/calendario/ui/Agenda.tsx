@@ -9,7 +9,6 @@ import {
   CornerDownLeft,
   ExternalLink,
   List,
-  MessageSquare,
   Newspaper,
   Pin,
 } from 'lucide-react'
@@ -20,16 +19,11 @@ import { useIdioma } from '@/components/IdiomaProvider'
 import type { CodigoIdioma } from '@/core/localization'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { cn } from '@/utilities/ui'
+import { diasDelMes } from '../domain/mes'
 import { semanaDe } from '../domain/agrupar'
 import { colorDe } from '../domain/calendarios'
-import {
-  mezclar,
-  porDias,
-  sieteDias,
-  type Entrada,
-  type NoticiaDeAgenda,
-} from '../domain/entradas'
-import { diaCorto, diaLargo, hora } from '../domain/fechas'
+import { mezclar, porDias, sieteDias, type Entrada, type NoticiaDeAgenda } from '../domain/entradas'
+import { diaLargo, hora, mesYAnio, nombreDelDia } from '../domain/fechas'
 import type { Ocurrencia } from '../domain/ocurrencias'
 import { VistaSemanal } from './VistaSemanal'
 
@@ -50,6 +44,7 @@ interface Props {
   noticias: NoticiaDeAgenda[]
   nombres: Record<string, string>
   fallidos: string[]
+  onPeriodoChange?: (periodo: string) => void
 }
 
 const rehidratar = (plana: OcurrenciaPlana): Ocurrencia => ({
@@ -199,23 +194,33 @@ function Fila(props: {
   )
 }
 
-export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
+export function Agenda({ ocurrencias, noticias, nombres, fallidos, onPeriodoChange }: Props) {
   const { idioma, t } = useIdioma()
-  const [vista, setVista] = useState<'agenda' | 'semana'>('agenda')
+  const [vista, setVista] = useState<'agenda' | 'semana' | 'mes'>('agenda')
   const [semana, setSemana] = useState(() => semanaDe(new Date(), ZONA).desde)
+  const [mes, setMes] = useState(() => inicioDelDia(new Date()))
   const hoyRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const todas = useMemo(() => ocurrencias.map(rehidratar), [ocurrencias])
   const { fijadas, cronologia } = useMemo(
-    () => mezclar(todas, noticias, new Date(), ZONA),
+    () => mezclar(todas, noticias, new Date(), ZONA, false),
     [todas, noticias],
   )
-  const { dias } = useMemo(() => porDias(cronologia, new Date(), ZONA), [cronologia])
+  const { dias } = useMemo(
+    () =>
+      porDias(
+        cronologia.filter((entrada) => entrada.fecha.getTime() >= Date.now() - UNA_SEMANA),
+        new Date(),
+        ZONA,
+      ),
+    [cronologia],
+  )
   const semanal = useMemo(
     () => sieteDias(cronologia, semana, new Date(), ZONA),
     [cronologia, semana],
   )
+  const mensual = useMemo(() => diasDelMes(cronologia, mes), [cronologia, mes])
   const hoy = useMemo(() => inicioDelDia(new Date()), [])
   const [hoyALaVista, setHoyALaVista] = useState(true)
 
@@ -240,7 +245,22 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
     return () => vigilante.disconnect()
   }, [vista, dias.length])
 
-  const mover = (semanas: number) => setSemana(new Date(semana.getTime() + semanas * UNA_SEMANA))
+  const mostrarPeriodo = (fecha: Date) => onPeriodoChange?.(`${fecha.toISOString().slice(0, 7)}-01`)
+  const mover = (pasos: number) => {
+    const fecha =
+      vista === 'mes'
+        ? new Date(Date.UTC(mes.getUTCFullYear(), mes.getUTCMonth() + pasos, 1))
+        : new Date(semana.getTime() + pasos * UNA_SEMANA)
+    if (vista === 'mes') setMes(fecha)
+    else setSemana(fecha)
+    mostrarPeriodo(fecha)
+  }
+  const volverAHoy = () => {
+    const fecha = inicioDelDia(new Date())
+    setMes(fecha)
+    setSemana(semanaDe(new Date(), ZONA).desde)
+    mostrarPeriodo(fecha)
+  }
 
   return (
     <div className="space-y-6">
@@ -268,7 +288,10 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
             <Button
               variant={vista === 'agenda' ? 'secondary' : 'ghost'}
               size="sm"
-              onClick={() => setVista('agenda')}
+              onClick={() => {
+                setVista('agenda')
+                mostrarPeriodo(inicioDelDia(new Date()))
+              }}
             >
               <List className="mr-1 h-4 w-4" />
               {t.calAgenda}
@@ -276,34 +299,44 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
             <Button
               variant={vista === 'semana' ? 'secondary' : 'ghost'}
               size="sm"
-              onClick={() => setVista('semana')}
+              onClick={() => {
+                setVista('semana')
+                mostrarPeriodo(semana)
+              }}
             >
               <CalendarDays className="mr-1 h-4 w-4" />
               {t.calSemana}
             </Button>
+            <Button
+              variant={vista === 'mes' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setVista('mes')
+                mostrarPeriodo(mes)
+              }}
+            >
+              <CalendarDays className="mr-1 h-4 w-4" />
+              {t.calMes}
+            </Button>
           </div>
 
-          {vista === 'semana' && (
+          {vista !== 'agenda' && (
             <div className="flex items-center gap-1">
               <Button
                 variant="outline"
                 size="icon"
-                aria-label={t.calSemanaAnterior}
+                aria-label={vista === 'mes' ? t.calMesAnterior : t.calSemanaAnterior}
                 onClick={() => mover(-1)}
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSemana(semanaDe(new Date(), ZONA).desde)}
-              >
+              <Button variant="ghost" size="sm" onClick={volverAHoy}>
                 {t.calVolverAHoy}
               </Button>
               <Button
                 variant="outline"
                 size="icon"
-                aria-label={t.calSemanaSiguiente}
+                aria-label={vista === 'mes' ? t.calMesSiguiente : t.calSemanaSiguiente}
                 onClick={() => mover(1)}
               >
                 <ChevronRight className="h-4 w-4" />
@@ -314,7 +347,9 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
 
         <Card>
           <CardContent className="space-y-3 p-3 sm:p-4">
-            {fallidos.length > 0 && <p className="text-xs text-muted-foreground">{t.calFallidos}</p>}
+            {fallidos.length > 0 && (
+              <p className="text-xs text-muted-foreground">{t.calFallidos}</p>
+            )}
 
             {vista === 'agenda' ? (
               <div className="relative">
@@ -333,47 +368,95 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
                   className="space-y-3 overflow-y-auto pr-1"
                   style={{ height: ALTO_VISTA }}
                 >
-                {dias.map((dia) => (
-                  <div
-                    key={dia.dia.toISOString()}
-                    ref={dia.hoy ? hoyRef : undefined}
-                    className={cn(
-                      dia.hoy && 'rounded-lg border-2 border-primary bg-primary/5 p-2 shadow-sm',
-                      dia.dia < hoy && 'opacity-60',
-                    )}
-                  >
-                    <h3
+                  {dias.map((dia) => (
+                    <div
+                      key={dia.dia.toISOString()}
+                      ref={dia.hoy ? hoyRef : undefined}
                       className={cn(
-                        'flex items-center gap-2 py-1 first-letter:uppercase',
-                        dia.hoy
-                          ? 'text-sm font-bold text-primary'
-                          : 'sticky top-0 z-10 bg-card text-xs font-semibold text-muted-foreground',
+                        dia.hoy && 'rounded-lg border-2 border-primary bg-primary/5 p-2 shadow-sm',
+                        dia.dia < hoy && 'opacity-60',
                       )}
                     >
-                      {dia.hoy && (
-                        <span className="rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
-                          {t.calHoy}
-                        </span>
+                      <h3
+                        className={cn(
+                          'flex items-center gap-2 py-1 first-letter:uppercase',
+                          dia.hoy
+                            ? 'text-sm font-bold text-primary'
+                            : 'sticky top-0 z-10 bg-card text-xs font-semibold text-muted-foreground',
+                        )}
+                      >
+                        {dia.hoy && (
+                          <span className="rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
+                            {t.calHoy}
+                          </span>
+                        )}
+                        {diaLargo(dia.dia, idioma as CodigoIdioma)}
+                      </h3>
+                      {dia.entradas.length === 0 ? (
+                        <p className="py-1 pl-2 text-xs text-muted-foreground">{t.calSinNada}</p>
+                      ) : (
+                        <ul className="space-y-0.5">
+                          {dia.entradas.map((entrada) => (
+                            <Fila
+                              key={entrada.id}
+                              entrada={entrada}
+                              nombres={nombres}
+                              todoElDia={t.calTodoElDia}
+                              etiquetaPin={t.tablonFijada}
+                            />
+                          ))}
+                        </ul>
                       )}
-                      {diaLargo(dia.dia, idioma as CodigoIdioma)}
-                    </h3>
-                    {dia.entradas.length === 0 ? (
-                      <p className="py-1 pl-2 text-xs text-muted-foreground">{t.calSinNada}</p>
-                    ) : (
-                      <ul className="space-y-0.5">
-                        {dia.entradas.map((entrada) => (
-                          <Fila
-                            key={entrada.id}
-                            entrada={entrada}
-                            nombres={nombres}
-                            todoElDia={t.calTodoElDia}
-                            etiquetaPin={t.tablonFijada}
-                          />
-                        ))}
-                      </ul>
-                    )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : vista === 'mes' ? (
+              <div className="space-y-3">
+                <h3 className="text-center font-semibold capitalize" aria-live="polite">
+                  {mesYAnio(mes, idioma)}
+                </h3>
+                <div className="overflow-x-auto">
+                  <div className="grid min-w-[700px] grid-cols-7 overflow-hidden rounded-lg border">
+                    {mensual.slice(0, 7).map(({ dia }) => (
+                      <div
+                        key={dia.toISOString()}
+                        className="bg-muted p-2 text-center text-xs font-semibold"
+                      >
+                        {nombreDelDia(dia, idioma)}
+                      </div>
+                    ))}
+                    {mensual.map(({ dia, hoy: esHoy, entradas }) => (
+                      <div
+                        key={dia.toISOString()}
+                        className={cn(
+                          'min-h-28 border-r border-t p-1.5',
+                          dia.getUTCMonth() !== mes.getUTCMonth() &&
+                            'bg-muted/40 text-muted-foreground',
+                          esHoy && 'bg-primary/10 ring-2 ring-inset ring-primary',
+                        )}
+                      >
+                        <time
+                          dateTime={dia.toISOString().slice(0, 10)}
+                          className="mb-2 block text-sm font-semibold"
+                        >
+                          {dia.getUTCDate()}
+                        </time>
+                        <ul className="space-y-1">
+                          {entradas.map((entrada) => (
+                            <Fila
+                              key={entrada.id}
+                              entrada={entrada}
+                              nombres={nombres}
+                              todoElDia={t.calTodoElDia}
+                              etiquetaPin={t.tablonFijada}
+                              compacta
+                            />
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
-                ))}
                 </div>
               </div>
             ) : (
@@ -386,16 +469,6 @@ export function Agenda({ ocurrencias, noticias, nombres, fallidos }: Props) {
             )}
           </CardContent>
         </Card>
-      </section>
-      <section className="flex flex-wrap items-center gap-4 rounded-xl border bg-card p-5">
-        <MessageSquare className="h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
-        <div className="min-w-0 flex-1 basis-56">
-          <h2 className="font-semibold">{t.tablon}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t.foroDescripcion}</p>
-        </div>
-        <Button asChild variant="outline">
-          <Link href="/foro">{t.foroVer} →</Link>
-        </Button>
       </section>
     </div>
   )

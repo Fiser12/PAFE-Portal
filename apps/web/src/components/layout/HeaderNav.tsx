@@ -23,13 +23,13 @@ export const HeaderNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
   idioma,
 }) => {
   const t = useTextos()
-  const { user } = useUser()
+  const { user, tecnico } = useUser()
   const pathname = usePathname()
-  const items = getNavItems(user, t)
+  const items = getNavItems(user, t, tecnico)
   const cmsItems = data?.navItems || []
 
   return (
-    <nav className="hidden items-center gap-1 md:flex">
+    <nav className="hidden items-center gap-1 xl:flex">
       {items.map((item) =>
         item.external ? (
           <a
@@ -45,7 +45,10 @@ export const HeaderNav: React.FC<{ data: HeaderType; idioma: CodigoIdioma }> = (
           <Link
             key={item.href}
             href={item.href}
-            className={cn(linkClasses, isNavItemActive(item, pathname) && 'bg-accent text-foreground')}
+            className={cn(
+              linkClasses,
+              isNavItemActive(item, pathname) && 'bg-accent text-foreground',
+            )}
           >
             {item.label}
           </Link>

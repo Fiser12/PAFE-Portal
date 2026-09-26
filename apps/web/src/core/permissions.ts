@@ -7,8 +7,8 @@ import type { User } from '@/payload-types'
  *
  * Un usuario recién registrado no tiene NINGÚN rol (role: []) y por tanto
  * ningún permiso, hasta que alguien se lo asigna a mano.
- * Los "grupos" dinámicos viven en la colección `groups` y NO otorgan permisos:
- * la seguridad se decide únicamente con estos roles.
+ * Los grupos viven en `groups`; `lantalde-teknikoa` da acceso al contenido
+ * del equipo técnico a personas con un rol activo.
  */
 /** Administra todo */
 export const ROLE_ADMIN = 'admin'
@@ -18,15 +18,15 @@ export const ROLE_CATALOGO = 'admin-catalogo'
 export const ROLE_USUARIOS = 'admin-users'
 /** Administra el tablón de noticias */
 export const ROLE_TABLON = 'admin-news'
-/** El único rol de consumo: ve el catálogo, reserva y lee el tablón */
+/** Familias: leen el foro y consultan su área personal */
 export const ROLE_FAMILIA = 'familia'
-/** Rol anterior al reparto por áreas: vale como `catalogo` hasta terminar de migrar */
+/** Psicólogos del equipo técnico; conserva la gestión de préstamos del rol profesional */
 export const ROLE_PROFESIONAL = 'profesional'
 
 export const ADMIN_AREA_ROLES = [ROLE_CATALOGO, ROLE_USUARIOS, ROLE_TABLON]
 
 export const ALL_ROLES = [ROLE_ADMIN, ...ADMIN_AREA_ROLES, ROLE_FAMILIA, ROLE_PROFESIONAL]
-export const ADMIN_PANEL_ROLES = [ROLE_ADMIN, ...ADMIN_AREA_ROLES, ROLE_PROFESIONAL]
+export const ADMIN_PANEL_ROLES = [ROLE_ADMIN]
 /**
  * Lo único que puede repartir quien no es admin. Los roles de gestión se
  * quedan fuera a propósito: si quien da de altas pudiera concederlos, el
@@ -45,17 +45,14 @@ export const ROLE_LABELS: Record<string, string> = {
   [ROLE_USUARIOS]: 'Altas de personas',
   [ROLE_TABLON]: 'Tablón de noticias',
   [ROLE_FAMILIA]: 'Familia',
-  [ROLE_PROFESIONAL]: 'Profesional (rol anterior)',
+  [ROLE_PROFESIONAL]: 'Psicólogo/a (equipo técnico)',
 }
 
 export type RoleSlug = (typeof ALL_ROLES)[number]
 
 /** El campo role es un select hasMany (array), pero toleramos string por robustez */
 type MaybeUser =
-  | (Partial<Pick<User, 'id' | 'email'>> & { role?: unknown })
-  | ClientUser
-  | null
-  | undefined
+  (Partial<Pick<User, 'id' | 'email'>> & { role?: unknown }) | ClientUser | null | undefined
 
 export const getUserRoles = (user: MaybeUser): string[] => {
   const role = (user as { role?: unknown } | null | undefined)?.role
@@ -76,8 +73,7 @@ export const hasRole = (user: MaybeUser, ...slugs: string[]): boolean => {
   return slugs.some((slug) => roles.includes(slug))
 }
 
-export const isAdmin = (user: MaybeUser): boolean =>
-  hasRole(user, ROLE_ADMIN) || isSuperAdmin(user)
+export const isAdmin = (user: MaybeUser): boolean => hasRole(user, ROLE_ADMIN) || isSuperAdmin(user)
 
 /** Catálogo, materiales, taxonomía y el préstamo del día a día */
 export const administraCatalogo = (user: MaybeUser): boolean =>
@@ -192,4 +188,5 @@ export const hiddenUnlessCatalogo: HiddenFieldProps = ({ user }) =>
 export const hiddenUnlessUsuarios: HiddenFieldProps = ({ user }) =>
   !administraUsuarios(user as MaybeUser)
 
-export const hiddenUnlessTablon: HiddenFieldProps = ({ user }) => !administraTablon(user as MaybeUser)
+export const hiddenUnlessTablon: HiddenFieldProps = ({ user }) =>
+  !administraTablon(user as MaybeUser)

@@ -1,9 +1,9 @@
+import { equipoTecnicoAccess } from '@/core/technical-access'
 import { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '../CatalogItem'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
   hiddenUnlessCatalogo,
-  isActiveUserAccess,
   isAdminAccess,
   catalogoAccess,
   staffOrOwnerAccess,
@@ -19,7 +19,7 @@ export const Reservation: CollectionConfig = {
   },
   access: {
     // Familias y staff solicitan; un usuario `pendiente` no puede reservar
-    create: isActiveUserAccess,
+    create: equipoTecnicoAccess,
     // El ciclo de vida se cierra con estados, no borrando: borrar es limpieza
     delete: isAdminAccess,
     read: staffOrOwnerAccess('user'),

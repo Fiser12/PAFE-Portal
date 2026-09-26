@@ -6,8 +6,9 @@ import {
 import {
   hiddenUnlessUsuarios,
   isAdminAccess,
+  isAdmin,
   isStaff,
-    usuariosAccess,
+  usuariosAccess,
   usuariosOrSelfAccess,
 } from '@/core/permissions'
 import type { FieldAccess } from 'payload'
@@ -20,8 +21,8 @@ const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
   access: {
-    // Panel /admin solo para staff (admin y profesional)
-    admin: ({ req }) => isStaff(req.user),
+    // Panel /admin reservado a Administración
+    admin: ({ req }) => isAdmin(req.user),
     // Alta gestionada: el staff crea usuarios desde el panel.
     // El registro con Google usa la Local API (no pasa por aquí) y entra
     // con rol `pendiente` sin acceso a nada.
@@ -87,7 +88,7 @@ export const Users: CollectionConfig = {
       hasMany: true,
       admin: {
         description:
-          'Grupos dinámicos a los que pertenece el usuario (no otorgan permisos)',
+          'lantalde-teknikoa permite acceder al equipo técnico, Catálogo y Wiki. Requiere además un rol activo.',
       },
     },
   ],

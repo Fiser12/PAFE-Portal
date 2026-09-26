@@ -26,11 +26,16 @@ const es = {
   calVolverAHoy: 'Volver a hoy',
   calFallidos: 'Algunos calendarios no responden ahora mismo.',
 
-  navInicio: 'Inicio',
+  navInicio: 'Calendario',
   navForo: 'Foro',
   navWiki: 'Wiki',
   navMoodle: 'Moodle',
   navAdministracion: 'Administración',
+  navAreaPersonal: 'Área personal',
+  foroNuevaNoticia: 'Crear noticia',
+  calMes: 'Mes',
+  calMesAnterior: 'Mes anterior',
+  calMesSiguiente: 'Mes siguiente',
   navAbrirMenu: 'Abrir menú',
   navMenu: 'Menú de navegación',
 
@@ -170,8 +175,7 @@ const es = {
   cuestionarioGuardado: 'Tu respuesta se ha guardado correctamente.',
   cuestionarioReintentar: 'Reintentar envío',
   cuestionarioResultado: 'Resultado:',
-  cuestionarioRecuperado:
-    'Hemos recuperado tu sesión anterior; puedes continuar donde lo dejaste.',
+  cuestionarioRecuperado: 'Hemos recuperado tu sesión anterior; puedes continuar donde lo dejaste.',
   cuestionarioCargandoRecurso: 'Cargando recurso…',
   cuestionarioMaterialDescargable: 'Material descargable',
 
@@ -203,11 +207,16 @@ const eu: Textos = {
   calVolverAHoy: 'Gaurkora itzuli',
   calFallidos: 'Egutegi batzuek ez dute erantzuten une honetan.',
 
-  navInicio: 'Hasiera',
+  navInicio: 'Egutegia',
   navForo: 'Foroa',
   navWiki: 'Wikia',
   navMoodle: 'Moodle',
   navAdministracion: 'Administrazioa',
+  navAreaPersonal: 'Eremu pertsonala',
+  foroNuevaNoticia: 'Berria sortu',
+  calMes: 'Hilabetea',
+  calMesAnterior: 'Aurreko hilabetea',
+  calMesSiguiente: 'Hurrengo hilabetea',
   navAbrirMenu: 'Menua ireki',
   navMenu: 'Nabigazio-menua',
 

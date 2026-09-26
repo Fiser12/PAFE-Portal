@@ -6,7 +6,8 @@ sí sola los datos de NodeBB.
 
 Permite filtrar por área, consultar el archivo y buscar por título en el idioma
 seleccionado. Cada página muestra 20 temas, con las noticias fijadas primero,
-seguidas de las más recientes. Los filtros se conservan en la URL.
+seguidas de las más recientes. Los filtros se conservan en la URL. La entrada abre Berriak PAFE y el selector
+no ofrece «Todas». Administración dispone de un botón Crear noticia.
 
 Solo acceden usuarios con rol activo. El listado, sus recuentos y las áreas
 disponibles respetan la pertenencia al equipo técnico; las fechas futuras no
@@ -85,3 +86,52 @@ Las exportaciones, binarios, credenciales e informes contienen datos privados:
 no se versionan. El respaldo de 2026-09-23 contiene 276 temas, 301 publicaciones
 y 354 archivos. El conjunto publicable es de 266 temas (231 archivados),
 23 respuestas y 341 adjuntos utilizados; incluye dos temas ya vacíos en origen.
+
+## Organización y altas
+
+El menú se ordena como Calendario, Foro, Catálogo, Moodle, Wiki, Área personal
+y Administración, mostrando solo los accesos permitidos. Catálogo y Wiki
+quedan reservados a los psicólogos y a Administración. El rol `profesional`
+identifica a los psicólogos; la pertenencia histórica al grupo
+`lantalde-teknikoa` también da acceso a una cuenta con rol activo. Las familias
+no deben pertenecer a ese grupo. El resto de roles de gestión no concede por
+sí solo acceso al Catálogo o Wiki.
+
+Administración requiere `admin`; debe asignarse únicamente a Alberto y Rubén.
+El código no modifica las cuentas existentes: antes de publicar hay que
+comprobar quién tiene ese rol y completar la pertenencia de los psicólogos.
+No ejecutar `scripts/migrar-roles.ts`: convertía `profesional` a gestión de
+catálogo, mientras que ahora se conserva para identificar a los psicólogos.
+
+El inicio contiene Calendario, con Agenda, Semana y Mes; al navegar se cargan
+los eventos del periodo elegido. Área personal contiene el acceso al Tablón y
+Mis préstamos. Moodle conserva su enlace y autenticación.
+
+Para las altas, abrir Administración → Usuarios → **Invite User**. Elegir
+**Familia** o **Profesional**, escribir el correo y pulsar **Send Email**.
+Cada invitación sirve para una sola alta: volver al listado antes de preparar
+la siguiente. El enlace abre el registro y después lleva al Foro. Para una
+cuenta existente, editar su rol en Usuarios. Quien entra por Google sin
+invitación queda sin rol hasta que Administración lo activa.
+
+Los grupos se gestionan en Grupos de usuarios y se asignan desde la ficha de
+cada usuario. No se importaron cuentas ni contraseñas de NodeBB: revisar las
+altas con el listado del foro antiguo. El propio panel incluye estas
+instrucciones y un enlace para crear noticias. Guardar una noticia en Berriak
+PAFE con fecha ya alcanzada envía el aviso configurado a las familias.
+
+La protección de Wiki verifica la sesión y el permiso también para sus HTML,
+JSON y archivos estáticos. El catálogo comprueba acceso en sus páginas,
+colecciones e índice de búsqueda. Las nuevas reservas y la consulta de
+existencias también requieren pertenecer al equipo técnico.
+
+Para validar con un servidor de desarrollo ya arrancado, usar
+`NEXT_DIST_DIR=.next-validation pnpm exec next build` dentro del devcontainer.
+Así el build no sobrescribe la carpeta `.next` que está usando `next dev`.
+
+Si se cambia el puerto local, reiniciar también el proceso Next con
+`NEXT_PUBLIC_SERVER_URL` igual a la URL del navegador. Cambiar únicamente
+el reenvío de Docker deja obsoleto el origen permitido y el callback de Google.
+Comprobar con `node scripts/check-local-auth.mjs` desde `apps/web` dentro del
+devcontainer; `TEST_BASE_URL` permite indicar otra URL local. Esta comprobación
+no inicia sesión ni valida el intercambio final de Google.

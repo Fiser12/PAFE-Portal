@@ -36,7 +36,7 @@ const fetcher = async (key: [string, number | string]) => {
 
 export function ReservationsTable({ itemId }: Props) {
   const { idioma, t } = useIdioma()
-  const { user } = useUser()
+  const { user, tecnico } = useUser()
   const staff = isStaff(user)
   const router = useRouter()
 
@@ -104,7 +104,7 @@ export function ReservationsTable({ itemId }: Props) {
 
   const handleCardClick = (reservation: Reservation) => {
     // Solo navegar al libro si no es una vista de itemId específico
-    if (!itemId && typeof reservation.item === 'object') {
+    if (!itemId && tecnico && typeof reservation.item === 'object') {
       router.push(`/catalog/${reservation.item.id}`)
     }
   }
@@ -118,9 +118,7 @@ export function ReservationsTable({ itemId }: Props) {
           <Card
             key={reservation.id}
             className={
-              !itemId
-                ? 'cursor-pointer transition-shadow hover:shadow-md'
-                : undefined
+              !itemId && tecnico ? 'cursor-pointer transition-shadow hover:shadow-md' : undefined
             }
             onClick={() => handleCardClick(reservation)}
           >
@@ -130,14 +128,18 @@ export function ReservationsTable({ itemId }: Props) {
                   <h4 className="font-semibold leading-snug">
                     {itemId ? (
                       getUserEmail(reservation.user)
+                    ) : !tecnico ? (
+                      typeof reservation.item === 'object' ? (
+                        reservation.item.title
+                      ) : (
+                        t.cargando
+                      )
                     ) : (
                       <Link
                         href={`/catalog/${typeof reservation.item === 'object' ? reservation.item.id : reservation.item}`}
                         className="hover:underline"
                       >
-                        {typeof reservation.item === 'object'
-                          ? reservation.item.title
-                          : t.cargando}
+                        {typeof reservation.item === 'object' ? reservation.item.title : t.cargando}
                       </Link>
                     )}
                   </h4>

@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, MessageSquare, Pin, Search } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { isActiveUser } from '@/core/permissions'
+import { isActiveUser, isAdmin } from '@/core/permissions'
 import { rellenar, textosDe } from '@/core/textos'
 import { fechaLarga } from '@/modules/calendario/domain/fechas'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
@@ -28,7 +28,7 @@ export default async function ForoPage({ searchParams }: Props) {
 
   const [params, idioma] = await Promise.all([searchParams, getIdioma()])
   const t = textosDe(idioma)
-  const area = texto(params.area)
+  const area = texto(params.area) || 'berriak-pafe'
   const archivadas = texto(params.archivo) === '1'
   const busqueda = texto(params.q).trim().slice(0, 200)
   const resultado = await temasDelForo({
@@ -60,6 +60,11 @@ export default async function ForoPage({ searchParams }: Props) {
         </Link>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{t.navForo}</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">{t.foroDescripcion}</p>
+        {isAdmin(user) && (
+          <Button asChild className="mt-4">
+            <Link href="/admin/collections/noticia/create">{t.foroNuevaNoticia}</Link>
+          </Button>
+        )}
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -68,22 +73,21 @@ export default async function ForoPage({ searchParams }: Props) {
             {t.foroAreas}
           </h2>
           <nav aria-label={t.foroAreas} className="flex flex-wrap gap-1 lg:flex-col">
-            {[
-              { value: '', label: t.tablonTodas },
-              ...resultado.areas.map((value) => ({ value, label: nombreDelArea(value) })),
-            ].map((opcion) => (
-              <Link
-                key={opcion.value}
-                href={enlace({ area: opcion.value })}
-                aria-current={area === opcion.value ? 'page' : undefined}
-                className={cn(
-                  'rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-accent',
-                  area === opcion.value && 'bg-primary/10 font-semibold text-primary',
-                )}
-              >
-                {opcion.label}
-              </Link>
-            ))}
+            {[...resultado.areas.map((value) => ({ value, label: nombreDelArea(value) }))].map(
+              (opcion) => (
+                <Link
+                  key={opcion.value}
+                  href={enlace({ area: opcion.value })}
+                  aria-current={area === opcion.value ? 'page' : undefined}
+                  className={cn(
+                    'rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-accent',
+                    area === opcion.value && 'bg-primary/10 font-semibold text-primary',
+                  )}
+                >
+                  {opcion.label}
+                </Link>
+              ),
+            )}
           </nav>
         </aside>
 
@@ -129,7 +133,7 @@ export default async function ForoPage({ searchParams }: Props) {
           </div>
 
           <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-xl font-semibold">{area ? nombreDelArea(area) : t.tablonTodas}</h2>
+            <h2 className="text-xl font-semibold">{nombreDelArea(area)}</h2>
             <span className="text-sm tabular-nums text-muted-foreground">
               {resultado.totalDocs} {resultado.totalDocs === 1 ? t.foroTema : t.foroTemas}
             </span>
