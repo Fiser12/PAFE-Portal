@@ -3,7 +3,6 @@ import type { Entrada } from '@/modules/calendario/domain/entradas'
 import { colocar, rangoDe, sinHora } from '@/modules/calendario/domain/rejilla'
 
 const evento = (desde: string, hasta: string, titulo = 'algo'): Entrada => ({
-  tipo: 'evento',
   id: titulo,
   fecha: new Date(desde),
   fin: new Date(hasta),
@@ -15,20 +14,11 @@ const evento = (desde: string, hasta: string, titulo = 'algo'): Entrada => ({
 })
 
 const todoElDia = (dia: string, titulo = 'jornada'): Entrada => ({
-  ...(evento(dia, dia, titulo) as Extract<Entrada, { tipo: 'evento' }>),
+  ...evento(dia, dia, titulo),
   diaCompleto: true,
 })
 
-const noticia: Entrada = {
-  tipo: 'noticia',
-  id: 'n',
-  fecha: new Date('2026-09-22T10:00:00Z'),
-  titulo: 'aviso',
-  resumen: '',
-  area: 'berriak-pafe',
-  fijada: false,
-  enlace: '/noticias/1',
-}
+const variosDias = evento('2026-09-22T08:00:00Z', '2026-09-24T18:00:00Z', 'congreso')
 
 describe('el rango de horas que se dibuja', () => {
   it('sin eventos usa un horario razonable', () => {
@@ -49,6 +39,13 @@ describe('el rango de horas que se dibuja', () => {
 
   it('no se estira por los de día completo, que no tienen hora', () => {
     expect(rangoDe([todoElDia('2026-09-22T00:00:00Z')])).toEqual({ primeraHora: 8, ultimaHora: 20 })
+  })
+
+  it('no se estira por lo que dura varios días', () => {
+    expect(rangoDe([evento('2026-09-22T04:00:00Z', '2026-09-24T21:00:00Z')])).toEqual({
+      primeraHora: 8,
+      ultimaHora: 20,
+    })
   })
 })
 
@@ -116,18 +113,18 @@ describe('colocar los eventos en la rejilla', () => {
   })
 
   it('deja fuera lo que no tiene franja horaria', () => {
-    const bloques = colocar([noticia, todoElDia('2026-09-22T00:00:00Z')], rango)
+    const bloques = colocar([variosDias, todoElDia('2026-09-22T00:00:00Z')], rango)
     expect(bloques).toHaveLength(0)
   })
 })
 
 describe('lo que va en la banda de arriba', () => {
-  it('recoge noticias y días completos', () => {
+  it('recoge días completos y lo que dura varios días', () => {
     const arriba = sinHora([
-      noticia,
+      variosDias,
       todoElDia('2026-09-22T00:00:00Z'),
       evento('2026-09-22T08:00:00Z', '2026-09-22T09:00:00Z'),
     ])
-    expect(arriba.map((e) => e.titulo)).toEqual(['aviso', 'jornada'])
+    expect(arriba.map((e) => e.titulo)).toEqual(['congreso', 'jornada'])
   })
 })

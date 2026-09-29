@@ -1,11 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { ExternalLink, Newspaper, Pin } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import type { CodigoIdioma } from '@/core/localization'
 import { cn } from '@/utilities/ui'
-import { colorDe } from '../domain/calendarios'
+import { colorDe, textoSobre } from '../domain/calendarios'
 import type { DiaDeAgenda, Entrada } from '../domain/entradas'
 import { hora, nombreDelDia, numeroDelDia } from '../domain/fechas'
 import { colocar, minutosDelDia, rangoDe, sinHora, type RangoHorario } from '../domain/rejilla'
@@ -28,33 +27,16 @@ interface Props {
   dias: DiaDeAgenda[]
   nombres: Record<string, string>
   idioma: CodigoIdioma
-  etiquetaPin: string
 }
 
-function SinHora({ entrada, etiquetaPin }: { entrada: Entrada; etiquetaPin: string }) {
-  if (entrada.tipo === 'noticia') {
-    return (
-      <Link
-        href={entrada.enlace}
-        title={entrada.titulo}
-        className="flex items-center gap-1 rounded-md border-l-2 border-pafe-orange-500 bg-pafe-orange-500/15 px-1 py-0.5 text-[10px] leading-tight text-pafe-orange-800 transition-colors hover:bg-pafe-orange-500/25"
-      >
-        {entrada.fijada ? (
-          <Pin className="h-2.5 w-2.5 shrink-0" aria-label={etiquetaPin} />
-        ) : (
-          <Newspaper className="h-2.5 w-2.5 shrink-0" />
-        )}
-        <span className="line-clamp-2">{entrada.titulo}</span>
-      </Link>
-    )
-  }
-
+/** Lo de todo el día o de varios días, relleno de su color como en Google */
+function SinHora({ entrada }: { entrada: Entrada }) {
   const color = colorDe(entrada.calendario)
   return (
     <span
       title={entrada.titulo}
-      className="block rounded-md border-l-2 px-1 py-0.5 text-[10px] font-medium leading-tight"
-      style={{ borderLeftColor: color, backgroundColor: `${color}1f`, color }}
+      className="block rounded-md px-1 py-0.5 text-[10px] font-semibold leading-tight"
+      style={{ backgroundColor: color, color: textoSobre(color) }}
     >
       <span className="line-clamp-2">{entrada.titulo}</span>
     </span>
@@ -101,7 +83,7 @@ function LineaDeAhora({ dias, rango }: { dias: DiaDeAgenda[]; rango: RangoHorari
   )
 }
 
-export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
+export function VistaSemanal({ dias, nombres, idioma }: Props) {
   const todas = dias.flatMap((dia) => dia.entradas)
   const rango = rangoDe(todas)
   const horas = Array.from(
@@ -148,7 +130,7 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
           ))}
         </div>
 
-        {/* Lo que no tiene hora: noticias y jornadas completas */}
+        {/* Lo que no tiene hora: jornadas completas y lo que dura varios días */}
         {bandaSuperior && (
           <div
             className="sticky z-20 grid border-b bg-muted/30"
@@ -164,7 +146,7 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
                 )}
               >
                 {sinHora(dia.entradas).map((entrada) => (
-                  <SinHora key={entrada.id} entrada={entrada} etiquetaPin={etiquetaPin} />
+                  <SinHora key={entrada.id} entrada={entrada} />
                 ))}
               </div>
             ))}
@@ -218,18 +200,15 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
                         height: altoEnPx,
                         left: `calc(${(columna / columnas) * 100}% + 2px)`,
                         width: `calc(${100 / columnas}% - 4px)`,
-                        backgroundColor: `${color}1f`,
-                        borderLeft: `3px solid ${color}`,
+                        backgroundColor: color,
+                        color: textoSobre(color),
                       }}
                     >
-                      <span
-                        className="line-clamp-2 text-[10px] font-semibold leading-tight"
-                        style={{ color }}
-                      >
+                      <span className="line-clamp-2 text-[10px] font-semibold leading-tight">
                         {entrada.titulo}
                       </span>
                       {altoEnPx > 32 && (
-                        <span className="block text-[9px] leading-none opacity-75" style={{ color }}>
+                        <span className="block text-[9px] leading-none opacity-85">
                           {hora(entrada.fecha)}
                         </span>
                       )}
@@ -239,7 +218,6 @@ export function VistaSemanal({ dias, nombres, idioma, etiquetaPin }: Props) {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="mt-0.5 inline-flex"
-                          style={{ color }}
                           aria-label={entrada.enlaces[0]}
                         >
                           <ExternalLink className="h-2.5 w-2.5" />

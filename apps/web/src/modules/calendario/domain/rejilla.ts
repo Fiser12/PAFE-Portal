@@ -1,7 +1,7 @@
-import type { Entrada } from './entradas'
+import { tieneFranja, type Entrada } from './entradas'
 
 export interface Bloque {
-  entrada: Extract<Entrada, { tipo: 'evento' }>
+  entrada: Entrada
   /** Minutos desde el comienzo del rango mostrado */
   desde: number
   /** Cuánto dura, en minutos, con un mínimo para que se pueda leer */
@@ -42,9 +42,7 @@ export const rangoDe = (
   zona = 'Europe/Madrid',
   minimo: RangoHorario = { primeraHora: 8, ultimaHora: 20 },
 ): RangoHorario => {
-  const conHora = entradas.filter((e): e is Extract<Entrada, { tipo: 'evento' }> =>
-    Boolean(e.tipo === 'evento' && !e.diaCompleto),
-  )
+  const conHora = entradas.filter((e) => tieneFranja(e, zona))
   if (conHora.length === 0) return minimo
 
   const inicios = conHora.map((e) => Math.floor(minutosEn(e.fecha, zona) / 60))
@@ -72,9 +70,7 @@ export const colocar = (
   const arranque = rango.primeraHora * 60
 
   const bloques: Bloque[] = entradas
-    .filter((e): e is Extract<Entrada, { tipo: 'evento' }> =>
-      Boolean(e.tipo === 'evento' && !e.diaCompleto),
-    )
+    .filter((e) => tieneFranja(e, zona))
     .map((entrada) => {
       const desde = minutosEn(entrada.fecha, zona) - arranque
       const hasta = minutosEn(entrada.fin, zona) - arranque
@@ -110,6 +106,6 @@ export const colocar = (
   return bloques
 }
 
-/** Lo que no ocupa una franja horaria: días completos y noticias */
-export const sinHora = (entradas: Entrada[]): Entrada[] =>
-  entradas.filter((e) => e.tipo === 'noticia' || e.diaCompleto)
+/** Lo que no ocupa una franja horaria: días completos y lo que dura varios días */
+export const sinHora = (entradas: Entrada[], zona = 'Europe/Madrid'): Entrada[] =>
+  entradas.filter((e) => !tieneFranja(e, zona))

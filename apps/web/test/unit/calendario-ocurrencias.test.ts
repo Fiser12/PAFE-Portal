@@ -22,6 +22,12 @@ describe('desplegar las repeticiones', () => {
     expect(entre('2026-01-01', '2026-02-01')).toHaveLength(0)
   })
 
+  it('lo que empezó antes del rango pero sigue en curso aparece', () => {
+    // La jornada del 24 dura hasta la medianoche: a mediodía sigue en curso
+    const enCurso = entre('2026-09-24T12:00:00Z', '2026-10-01')
+    expect(enCurso.map((o) => o.uid)).toContain('jornada-completa@google.com')
+  })
+
   it('una serie mensual sale una vez al mes', () => {
     // Tercer martes de cada mes hasta fin de 2026: octubre (20), noviembre (17)
     // y diciembre (15). Noviembre está marcado como excepción y octubre viene

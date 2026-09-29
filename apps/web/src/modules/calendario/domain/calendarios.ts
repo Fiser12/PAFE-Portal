@@ -21,3 +21,14 @@ export const colorDe = (id: string): string =>
 
 export const urlDelFeed = (fuente: string): string =>
   `https://calendar.google.com/calendar/ical/${encodeURIComponent(fuente)}/public/basic.ics`
+
+/**
+ * El texto que se lee encima de un color de calendario. Google pone blanco
+ * casi siempre, pero sobre el lima o el gris claro no se lee.
+ */
+export const textoSobre = (fondo: string): string => {
+  const [r = 0, g = 0, b = 0] = [1, 3, 5].map((i) => parseInt(fondo.slice(i, i + 2), 16) / 255)
+  const lineal = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+  const luminancia = 0.2126 * lineal(r) + 0.7152 * lineal(g) + 0.0722 * lineal(b)
+  return luminancia > 0.3 ? '#1f2937' : '#ffffff'
+}

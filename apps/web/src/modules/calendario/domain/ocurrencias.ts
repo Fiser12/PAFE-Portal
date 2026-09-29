@@ -42,14 +42,21 @@ const repeticionesPared = (evento: EventoIcs, desde: Date, hasta: Date): Date[] 
     const regla = rrulestr(
       `DTSTART:${comoCadenaUtc(evento.inicioPared)}\nRRULE:${evento.rrule}`,
     ) as RRule
+    // Se mira atrás lo que dura cada repetición: la que empezó antes puede seguir en curso
+    const duracion = evento.fin.getTime() - evento.inicio.getTime()
+    const antes = new Date(desde.getTime() - Math.max(0, duracion))
     return regla
-      .between(aHoraPared(desde, evento.zona), aHoraPared(hasta, evento.zona), true)
+      .between(aHoraPared(antes, evento.zona), aHoraPared(hasta, evento.zona), true)
       .slice(0, MAXIMO)
   } catch {
     // Una regla que no entendemos no debe tumbar el calendario entero
     return [evento.inicioPared]
   }
 }
+
+/** Lo que empezó antes pero sigue en curso también cuenta: una exposición de un mes */
+const seCruzaCon = (ocurrencia: Ocurrencia, desde: Date, hasta: Date) =>
+  ocurrencia.inicio <= hasta && (ocurrencia.fin > desde || ocurrencia.inicio >= desde)
 
 /**
  * Despliega los eventos en las veces que ocurren dentro del rango pedido.
@@ -77,16 +84,17 @@ export const ocurrenciasEntre = (
       if (evento.excepcionesPared.some((exc) => mismoInstante(exc, pared))) continue
       if (sustituidas.some((exc) => mismoInstante(exc, pared))) continue
 
-      const inicio = evento.diaCompleto ? pared : deHoraPared(pared, evento.zona)
-      if (inicio < desde || inicio > hasta) continue
-      salida.push(comoOcurrencia(evento, inicio))
+      const ocurrencia = comoOcurrencia(
+        evento,
+        evento.diaCompleto ? pared : deHoraPared(pared, evento.zona),
+      )
+      if (seCruzaCon(ocurrencia, desde, hasta)) salida.push(ocurrencia)
     }
   }
 
   for (const retocada of retocadas) {
-    if (retocada.inicio >= desde && retocada.inicio <= hasta) {
-      salida.push(comoOcurrencia(retocada, retocada.inicio))
-    }
+    const ocurrencia = comoOcurrencia(retocada, retocada.inicio)
+    if (seCruzaCon(ocurrencia, desde, hasta)) salida.push(ocurrencia)
   }
 
   return salida.sort((a, b) => a.inicio.getTime() - b.inicio.getTime())

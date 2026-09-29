@@ -23,9 +23,9 @@ export function AgendaCargada() {
     <Agenda
       onPeriodoChange={setPeriodo}
       ocurrencias={data.ocurrencias}
-      noticias={data.noticias}
       nombres={data.nombres}
       fallidos={data.fallidos}
+      puedeEditar={data.puedeEditar}
     />
   )
 }
