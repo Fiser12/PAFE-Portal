@@ -21,12 +21,9 @@ const idDe = (valor: unknown): string | null => {
 }
 
 /**
- * Entrar como otra persona para ver el portal como lo ve ella, y volver.
- *
- * Es el mecanismo del plugin admin de better-auth, sin ese plugin: con
- * payload-auth 1.9 sus comprobaciones de rol fallan (los roles llegan como
- * array) y además abre endpoints para cambiar roles saltándose el panel.
- * Aquí solo decide `puedeImpersonar`, y nunca se entra como un admin.
+ * El mecanismo del plugin admin de better-auth sin ese plugin: con payload-auth
+ * 1.9 sus comprobaciones fallan con roles en array y abre endpoints para
+ * cambiar roles saltándose el panel.
  */
 export const impersonar = (): BetterAuthPlugin => ({
   id: 'pafe-impersonar',
