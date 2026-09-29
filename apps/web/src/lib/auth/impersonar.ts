@@ -1,7 +1,7 @@
 import type { BetterAuthPlugin } from 'better-auth'
 import { APIError, createAuthEndpoint, sessionMiddleware } from 'better-auth/api'
 import { deleteSessionCookie, expireCookie, setSessionCookie } from 'better-auth/cookies'
-import { isAdmin, puedeImpersonar } from '@/core/permissions'
+import { puedeImpersonar, puedeImpersonarA } from '@/core/permissions'
 
 const UNA_HORA = 60 * 60 * 1000
 
@@ -52,8 +52,8 @@ export const impersonar = (): BetterAuthPlugin => ({
           String((ctx.body as { userId?: unknown } | undefined)?.userId ?? ''),
         )
         if (!objetivo) throw new APIError('NOT_FOUND', { message: 'No existe esa persona' })
-        if (isAdmin(paraPermisos(objetivo))) {
-          throw new APIError('FORBIDDEN', { message: 'No se puede impersonar a un admin' })
+        if (!puedeImpersonarA(paraPermisos(propia.user), paraPermisos(objetivo))) {
+          throw new APIError('FORBIDDEN', { message: 'No puedes entrar como esta persona' })
         }
 
         const sesion = await ctx.context.internalAdapter.createSession(

@@ -2,7 +2,13 @@
 import { webcrypto } from 'node:crypto'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { User } from '@/payload-types'
-import { ALL_ROLES, ROLE_LABELS, ROLE_IMPERSONAR, puedeImpersonar } from '@/core/permissions'
+import {
+  ALL_ROLES,
+  ROLE_LABELS,
+  ROLE_IMPERSONAR,
+  puedeImpersonar,
+  puedeImpersonarA,
+} from '@/core/permissions'
 import { getTestAuth } from './helpers/payload'
 import { createUser } from './helpers/factory'
 
@@ -104,6 +110,34 @@ describe('el rol de impersonar', () => {
   })
 })
 
+describe('a quién se puede impersonar', () => {
+  const yo = { email: 'a@pafe.test', role: ['profesional', 'impersonar'] }
+  const superadmin = { email: SUPERADMIN, role: ['admin', 'impersonar'] }
+  const familia = { email: 'f@pafe.test', role: ['familia'] }
+  const admin = { email: 'b@pafe.test', role: ['admin'] }
+
+  it('con el rol, a quien no es admin', () => {
+    expect(puedeImpersonarA(yo, familia)).toBe(true)
+  })
+
+  it('con el rol, a un admin no', () => {
+    expect(puedeImpersonarA(yo, admin)).toBe(false)
+  })
+
+  it('el superadmin sí a un admin', () => {
+    expect(puedeImpersonarA(superadmin, admin)).toBe(true)
+  })
+
+  it('al superadmin nadie', () => {
+    expect(puedeImpersonarA(yo, superadmin)).toBe(false)
+    expect(puedeImpersonarA(superadmin, superadmin)).toBe(false)
+  })
+
+  it('sin el rol nadie, ni el superadmin', () => {
+    expect(puedeImpersonarA({ email: SUPERADMIN, role: ['admin'] }, familia)).toBe(false)
+  })
+})
+
 describe('quién reparte el rol de impersonar', () => {
   it('un admin no se lo puede dar a nadie, ni a sí mismo', async () => {
     const admin = await createUser(payload, ['admin'], 'Alberto')
@@ -196,6 +230,20 @@ describe('impersonar a alguien', () => {
     const yo = await createUser(payload, ['profesional', 'impersonar'])
     const superadmin = await superadminDePrueba()
     expect((await impersonar(yo, superadmin)).status).toBe(403)
+  })
+
+  it('el superadmin sí entra como un admin', async () => {
+    const yo = await superadminDePrueba()
+    await payload.update({
+      collection: 'users',
+      id: yo.id,
+      data: { role: ['admin', 'impersonar'] },
+      overrideAccess: true,
+    })
+    const alberto = await createUser(payload, ['admin'], 'Alberto')
+    const dentro = await impersonar(yo, alberto)
+    expect(dentro.status).toBe(200)
+    expect(String(await quienEs(cookiesDe(dentro)))).toBe(String(alberto.id))
   })
 
   it('tampoco a un admin que además tiene otros roles', async () => {
