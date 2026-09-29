@@ -13,6 +13,7 @@ import * as migration_20260827_155517_aviso_dia_vencimiento from './20260827_155
 import * as migration_20260916_202139_tablon_completo from './20260916_202139_tablon_completo';
 import * as migration_20260916_231546_presentacion_localizada from './20260916_231546_presentacion_localizada';
 import * as migration_20260923_102004_nodebb_import from './20260923_102004_nodebb_import';
+import * as migration_20260929_124622_impersonar_usuarios from './20260929_124622_impersonar_usuarios';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20260923_102004_nodebb_import.up,
     down: migration_20260923_102004_nodebb_import.down,
-    name: '20260923_102004_nodebb_import'
+    name: '20260923_102004_nodebb_import',
+  },
+  {
+    up: migration_20260929_124622_impersonar_usuarios.up,
+    down: migration_20260929_124622_impersonar_usuarios.down,
+    name: '20260929_124622_impersonar_usuarios'
   },
 ];
