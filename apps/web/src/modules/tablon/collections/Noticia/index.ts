@@ -50,7 +50,7 @@ export const Noticia: CollectionConfig = {
       label: 'Área',
       name: 'area',
       type: 'select',
-      options: [...AREAS_DEL_TABLON],
+      options: AREAS_DEL_TABLON.map(({ value, label }) => ({ value, label })),
       required: true,
       index: true,
     },
