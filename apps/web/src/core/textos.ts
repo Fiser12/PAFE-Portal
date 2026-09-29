@@ -39,6 +39,8 @@ const es = {
   calTramo: 'Día {dia}/{de}',
   calAnadirEnGoogle: 'Añadir en Google Calendar',
   calLeyenda: 'Calendarios',
+  impersonandoA: 'Estás viendo el portal como {nombre}.',
+  impersonarVolver: 'Volver a mi cuenta',
   navAbrirMenu: 'Abrir menú',
   navMenu: 'Menú de navegación',
 
@@ -223,6 +225,8 @@ const eu: Textos = {
   calTramo: '{dia}/{de} eguna',
   calAnadirEnGoogle: 'Gehitu Google Calendar-en',
   calLeyenda: 'Egutegiak',
+  impersonandoA: 'Ataria {nombre} bezala ikusten ari zara.',
+  impersonarVolver: 'Nire kontura itzuli',
   navAbrirMenu: 'Menua ireki',
   navMenu: 'Nabigazio-menua',
 

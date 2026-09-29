@@ -243,7 +243,8 @@ export interface User {
   /**
    * The role/ roles of the user
    */
-  role?: ('admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional')[] | null;
+  role?:
+    ('admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional' | 'impersonar')[] | null;
   account?: {
     docs?: (number | Account)[];
     hasNextPage?: boolean;
@@ -771,6 +772,10 @@ export interface Session {
    * The user that the session belongs to
    */
   user: number | User;
+  /**
+   * The admin who is impersonating this session
+   */
+  impersonatedBy?: (number | null) | User;
 }
 /**
  * Verifications are used to verify authentication requests
@@ -1683,6 +1688,7 @@ export interface SessionsSelect<T extends boolean = true> {
   ipAddress?: T;
   userAgent?: T;
   user?: T;
+  impersonatedBy?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

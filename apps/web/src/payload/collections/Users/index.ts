@@ -44,6 +44,14 @@ export const Users: CollectionConfig = {
   auth: true,
   fields: [
     {
+      name: 'impersonar',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: '@/payload/admin_components/Impersonar/Component#ImpersonarField' },
+      },
+    },
+    {
       label: 'Devoluciones tardías',
       name: 'lateReturnsCount',
       type: 'number',

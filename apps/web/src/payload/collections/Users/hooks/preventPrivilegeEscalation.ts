@@ -1,5 +1,12 @@
 import { Forbidden, type CollectionBeforeChangeHook } from 'payload'
-import { ROLE_ADMIN, STAFF_MANAGEABLE_ROLES, administraUsuarios, isAdmin } from '@/core/permissions'
+import {
+  ROLE_ADMIN,
+  ROLE_IMPERSONAR,
+  STAFF_MANAGEABLE_ROLES,
+  administraUsuarios,
+  isAdmin,
+  isSuperAdmin,
+} from '@/core/permissions'
 
 const normalizeRoles = (role: unknown): string[] => {
   if (Array.isArray(role)) return role.filter((r): r is string => typeof r === 'string')
@@ -10,8 +17,13 @@ const normalizeRoles = (role: unknown): string[] => {
 const sameRoles = (a: string[], b: string[]) =>
   a.length === b.length && [...a].sort().every((v, i) => v === [...b].sort()[i])
 
+const cambiaImpersonar = (entrantes: string[] | undefined, originales: string[]) =>
+  entrantes !== undefined &&
+  entrantes.includes(ROLE_IMPERSONAR) !== originales.includes(ROLE_IMPERSONAR)
+
 /**
  * Impide la escalada de privilegios vía REST/GraphQL:
+ * - El rol de impersonar solo lo da y lo quita el superadmin, ni siquiera un admin.
  * - Nadie que no sea admin puede cambiar roles (ni los suyos).
  * - Quien da de altas solo asigna/quita el rol familia (o deja al usuario sin
  *   rol): no puede tocar admins ni repartir roles de administración. Si
@@ -28,10 +40,14 @@ export const preventPrivilegeEscalation: CollectionBeforeChangeHook = async ({
   operation,
 }) => {
   if (req.payloadAPI === 'local') return data
-  if (isAdmin(req.user)) return data
 
   const incomingRoles = data?.role === undefined ? undefined : normalizeRoles(data.role)
   const originalRoles = normalizeRoles(originalDoc?.role)
+
+  if (cambiaImpersonar(incomingRoles, originalRoles) && !isSuperAdmin(req.user)) {
+    throw new Forbidden(req.t)
+  }
+  if (isAdmin(req.user)) return data
 
   if (administraUsuarios(req.user)) {
     // Quien da de altas no puede modificar a un admin
