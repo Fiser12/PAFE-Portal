@@ -20,18 +20,22 @@ export function ImpersonarField() {
 
   const entrar = async () => {
     setEntrando(true)
-    const respuesta = await fetch('/api/auth/impersonar/iniciar', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: String(id) }),
-    })
-    if (respuesta.ok) {
-      window.location.href = '/'
-      return
+    try {
+      const respuesta = await fetch('/api/auth/impersonar/iniciar', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: String(id) }),
+      })
+      if (respuesta.ok) {
+        window.location.href = '/'
+        return
+      }
+      const { message } = await respuesta.json().catch(() => ({ message: undefined }))
+      toast.error(message ?? 'No se ha podido entrar como esta persona')
+    } catch {
+      toast.error('No se ha podido entrar como esta persona')
     }
-    const { message } = await respuesta.json().catch(() => ({ message: undefined }))
-    toast.error(message ?? 'No se ha podido entrar como esta persona')
     setEntrando(false)
   }
 

@@ -69,7 +69,6 @@ type MaybeUser =
 export const getUserRoles = (user: MaybeUser): string[] => {
   const role = (user as { role?: unknown } | null | undefined)?.role
   if (Array.isArray(role)) return role.filter((r): r is string => typeof r === 'string')
-  // better-auth los guarda juntos: «admin,impersonar»
   if (typeof role === 'string') return role.split(',').map((r) => r.trim()).filter(Boolean)
   return []
 }
