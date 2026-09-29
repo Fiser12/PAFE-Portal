@@ -22,7 +22,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, idioma }) => {
       <div className="container">
         <div className="flex h-14 items-center justify-between gap-4 rounded-xl border bg-background/80 px-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/65">
           <Link href="/" className="flex items-center gap-2">
-            <Logo className="h-9 w-auto" loading="eager" priority="high" />
+            <Logo className="h-11 w-auto" loading="eager" priority="high" />
             <LogoTitle className="text-2xl" />
           </Link>
           <HeaderNav data={data} idioma={idioma} />
