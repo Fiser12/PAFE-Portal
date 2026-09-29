@@ -41,6 +41,7 @@ const es = {
   calLeyenda: 'Calendarios',
   impersonandoA: 'Estás viendo el portal como {nombre}.',
   impersonarVolver: 'Volver a mi cuenta',
+  impersonarFallo: 'No se ha podido volver. Inténtalo otra vez.',
   navAbrirMenu: 'Abrir menú',
   navMenu: 'Menú de navegación',
 
@@ -227,6 +228,7 @@ const eu: Textos = {
   calLeyenda: 'Egutegiak',
   impersonandoA: 'Ataria {nombre} bezala ikusten ari zara.',
   impersonarVolver: 'Nire kontura itzuli',
+  impersonarFallo: 'Ezin izan da itzuli. Saiatu berriro.',
   navAbrirMenu: 'Menua ireki',
   navMenu: 'Nabigazio-menua',
 

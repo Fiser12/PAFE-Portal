@@ -15,19 +15,33 @@ export function AvisoImpersonacion() {
   const t = useTextos()
   const { data } = authClient.useSession()
   const [saliendo, setSaliendo] = useState(false)
+  const [fallo, setFallo] = useState(false)
 
   const impersonando = (data?.session as { impersonatedBy?: unknown } | undefined)?.impersonatedBy
   if (!impersonando || !data) return null
 
   const volver = async () => {
     setSaliendo(true)
-    const respuesta = await fetch('/api/auth/impersonar/terminar', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: '{}',
-    })
-    window.location.href = respuesta.ok ? '/admin/collections/users' : '/login'
+    setFallo(false)
+    try {
+      const respuesta = await fetch('/api/auth/impersonar/terminar', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      })
+      if (respuesta.ok) {
+        window.location.href = '/admin/collections/users'
+        return
+      }
+      // Sin la sesión propia no hay vuelta: se cierra esta para no seguir siendo la otra persona
+      const { error } = await authClient.signOut()
+      if (error) throw error
+      window.location.href = '/login'
+    } catch {
+      setFallo(true)
+      setSaliendo(false)
+    }
   }
 
   return (
@@ -37,9 +51,12 @@ export function AvisoImpersonacion() {
           <UserRoundCheck className="h-4 w-4" />
           {rellenar(t.impersonandoA, { nombre: data.user.name || data.user.email })}
         </span>
-        <Button size="sm" variant="secondary" onClick={volver} disabled={saliendo}>
-          {t.impersonarVolver}
-        </Button>
+        <span className="flex items-center gap-3">
+          {fallo && <span role="alert">{t.impersonarFallo}</span>}
+          <Button size="sm" variant="secondary" onClick={volver} disabled={saliendo}>
+            {t.impersonarVolver}
+          </Button>
+        </span>
       </div>
     </div>
   )

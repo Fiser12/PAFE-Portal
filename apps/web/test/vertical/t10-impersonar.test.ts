@@ -25,12 +25,15 @@ afterAll(() => {
   Object.assign(process.env, entornoPrevio)
 })
 
-const superadmin = () =>
-  payload.create({
+let superadminCreado: Promise<User> | undefined
+
+/** El superadmin lo es por su correo, no por sus roles: aquí ni siquiera es admin */
+const superadminDePrueba = () =>
+  (superadminCreado ??= payload.create({
     collection: 'users',
-    data: { email: SUPERADMIN, name: 'Superadmin', role: ['admin'], emailVerified: true },
+    data: { email: SUPERADMIN, name: 'Superadmin', role: ['profesional'], emailVerified: true },
     overrideAccess: true,
-  })
+  }))
 
 /** Como llega un cambio desde el panel: por REST, con la sesión de quien lo hace */
 const cambiarRoles = (quien: User, a: User, role: NonNullable<User['role']>) =>
@@ -123,7 +126,7 @@ describe('quién reparte el rol de impersonar', () => {
   })
 
   it('el superadmin sí lo da y lo quita', async () => {
-    const yo = await superadmin()
+    const yo = await superadminDePrueba()
     const alguien = await createUser(payload, ['admin'])
     expect((await cambiarRoles(yo, alguien, ['admin', 'impersonar'])).role).toContain('impersonar')
     expect((await cambiarRoles(yo, alguien, ['admin'])).role).not.toContain('impersonar')
@@ -180,10 +183,96 @@ describe('impersonar a alguien', () => {
     expect((await impersonar(yo, admin)).status).toBe(403)
   })
 
+  it('no se puede impersonar estando ya dentro como otra persona', async () => {
+    const yo = await createUser(payload, ['admin', 'impersonar'])
+    const otraConRol = await createUser(payload, ['profesional', 'impersonar'])
+    const familia = await createUser(payload, ['familia'])
+    const comoOtra = cookiesDe(await impersonar(yo, otraConRol))
+    const anidada = await peticion('/impersonar/iniciar', comoOtra, { userId: String(familia.id) })
+    expect(anidada.status).toBe(403)
+  })
+
+  it('tampoco al superadmin, aunque no lleve el rol de admin', async () => {
+    const yo = await createUser(payload, ['profesional', 'impersonar'])
+    const superadmin = await superadminDePrueba()
+    expect((await impersonar(yo, superadmin)).status).toBe(403)
+  })
+
   it('tampoco a un admin que además tiene otros roles', async () => {
     const yo = await createUser(payload, ['profesional', 'impersonar'])
     const admin = await createUser(payload, ['admin', 'admin-news'])
     expect((await impersonar(yo, admin)).status).toBe(403)
+  })
+})
+
+describe('lo que protege a quien tiene el rol de impersonar', () => {
+  const editar = (quien: User, a: User, data: Partial<User>) =>
+    payload.update({
+      collection: 'users',
+      id: a.id,
+      data,
+      user: quien,
+      overrideAccess: false,
+      req: { payloadAPI: 'REST' },
+    })
+
+  it('quien da de altas no puede tocar su ficha', async () => {
+    const altas = await createUser(payload, ['admin-users'])
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    await expect(editar(altas, conRol, { name: 'Otro nombre' })).rejects.toMatchObject(PROHIBIDO)
+  })
+
+  it('un admin no le puede cambiar el correo, que sería quedarse con su cuenta', async () => {
+    const admin = await createUser(payload, ['admin'])
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    await expect(
+      editar(admin, conRol, { email: `robado-${Date.now()}@pafe.test` }),
+    ).rejects.toMatchObject(PROHIBIDO)
+  })
+
+  it('un admin sí le puede cambiar el resto', async () => {
+    const admin = await createUser(payload, ['admin'])
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    expect((await editar(admin, conRol, { name: 'Nombre nuevo' })).name).toBe('Nombre nuevo')
+  })
+
+  it('el superadmin sí le puede cambiar el correo', async () => {
+    const yo = await superadminDePrueba()
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    const correo = `nuevo-${Date.now()}@pafe.test`
+    expect((await editar(yo, conRol, { email: correo })).email).toBe(correo)
+  })
+})
+
+describe('las impersonaciones en curso no sobreviven a quien las hace', () => {
+  it('al quitarle el rol, se cierran', async () => {
+    const yo = await superadminDePrueba()
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    const familia = await createUser(payload, ['familia'])
+    const comoFamilia = cookiesDe(await impersonar(conRol, familia))
+    expect(String(await quienEs(comoFamilia))).toBe(String(familia.id))
+
+    await cambiarRoles(yo, conRol, ['profesional'])
+    expect(await quienEs(comoFamilia)).toBeUndefined()
+  })
+
+  it('al borrarle, se cierran', async () => {
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    const familia = await createUser(payload, ['familia'])
+    const comoFamilia = cookiesDe(await impersonar(conRol, familia))
+
+    await payload.delete({ collection: 'users', id: conRol.id, overrideAccess: true })
+    expect(await quienEs(comoFamilia)).toBeUndefined()
+  })
+
+  it('cambiarle otra cosa no las cierra', async () => {
+    const yo = await superadminDePrueba()
+    const conRol = await createUser(payload, ['profesional', 'impersonar'])
+    const familia = await createUser(payload, ['familia'])
+    const comoFamilia = cookiesDe(await impersonar(conRol, familia))
+
+    await cambiarRoles(yo, conRol, ['profesional', 'admin-news', 'impersonar'])
+    expect(String(await quienEs(comoFamilia))).toBe(String(familia.id))
   })
 })
 

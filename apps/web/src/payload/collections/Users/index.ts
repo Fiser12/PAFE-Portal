@@ -14,6 +14,10 @@ import {
 import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
 import { COLLECTION_SLUG_RESERVATION } from '../../../modules/catalog/collections/Reservation'
+import {
+  cerrarImpersonacionesAlBorrar,
+  cerrarImpersonacionesAlPerderElRol,
+} from './hooks/cerrarImpersonaciones'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
@@ -35,6 +39,8 @@ export const Users: CollectionConfig = {
   },
   hooks: {
     beforeChange: [preventPrivilegeEscalation],
+    afterChange: [cerrarImpersonacionesAlPerderElRol],
+    beforeDelete: [cerrarImpersonacionesAlBorrar],
   },
   admin: {
     hidden: hiddenUnlessUsuarios,
