@@ -1,4 +1,5 @@
 import { APIError, createAuthMiddleware } from 'better-auth/api'
+import type { BetterAuthPlugin } from 'better-auth'
 import { nextCookies } from 'better-auth/next-js'
 import type { CollectionConfig, Field, FieldHook } from 'payload'
 import type { PayloadAuthOptions } from 'payload-auth/better-auth'
@@ -8,9 +9,47 @@ import {
   ALL_ROLES,
   ROLE_LABELS,
   ROLE_ADMIN,
+  ROLE_IMPERSONAR,
   hiddenUnlessAdmin,
 } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
+import { impersonar } from './impersonar'
+
+/**
+ * Impersonar solo lo reparte el superadmin desde la ficha: una invitación con
+ * ese rol se lo daría a una cuenta nueva sin pasar por el hook de escalada.
+ */
+const esInvitable = (opcion: unknown) =>
+  (typeof opcion === 'string' ? opcion : (opcion as { value?: string })?.value) !== ROLE_IMPERSONAR
+
+const invitacionesSinImpersonar = ({ collection }: { collection: CollectionConfig }) =>
+  hideFromStaff({
+    collection: {
+      ...collection,
+      fields: collection.fields.map((field) =>
+        'name' in field && field.name === 'role' && field.type === 'select'
+          ? { ...field, options: field.options.filter(esInvitable) }
+          : field,
+      ),
+    },
+  })
+
+/** El desplegable del botón «Invite» de la lista de usuarios, sin impersonar */
+const botonInvitarSinImpersonar = (admin: CollectionConfig['admin']): CollectionConfig['admin'] => {
+  const descripcion = admin?.components?.Description
+  if (!descripcion || typeof descripcion !== 'object' || !('clientProps' in descripcion)) return admin
+  const props = descripcion.clientProps as { roles?: unknown[] } | undefined
+  return {
+    ...admin,
+    components: {
+      ...admin?.components,
+      Description: {
+        ...descripcion,
+        clientProps: { ...props, roles: props?.roles?.filter(esInvitable) },
+      },
+    },
+  }
+}
 
 /** Colecciones técnicas de better-auth: visibles solo para admin en el panel */
 const hideFromStaff = ({ collection }: { collection: CollectionConfig }): CollectionConfig => ({
@@ -40,6 +79,45 @@ const sendAuthEmail = async (to: string, subject: string, html: string) => {
   await payload.sendEmail({ to, subject, html })
 }
 
+/**
+ * Solo se permite el alta con contraseña si llega un token de invitación
+ * válido (el formulario de /admin/signup lo manda como query
+ * adminInviteToken); sin él, el registro queda cerrado. Réplica del
+ * middleware de requireAdminInviteForSignUp del plugin, que no se puede
+ * activar directamente: esa opción además desactiva el alta implícita con
+ * Google, que aquí es deliberada.
+ *
+ * Va como plugin y no en `hooks.before`: si alguien añade el plugin admin de
+ * better-auth, payload-auth envuelve ese hook y devuelve su resultado, que
+ * better-auth toma como respuesta de todas las rutas (nadie podría entrar).
+ */
+const soloConInvitacion = (): BetterAuthPlugin => ({
+  id: 'pafe-solo-con-invitacion',
+  hooks: {
+    before: [
+      {
+        matcher: (ctx) => ctx.path === '/sign-up/email',
+        handler: createAuthMiddleware(async (ctx) => {
+          const token =
+            ctx.headers?.get('x-admin-invite-token') ??
+            ctx.query?.adminInviteToken ??
+            ctx.body?.adminInviteToken
+          const isValidInvitation =
+            typeof token === 'string' &&
+            token.length > 0 &&
+            (await ctx.context.adapter.count({
+              model: 'admin-invitations',
+              where: [{ field: 'token', operator: 'eq', value: token }],
+            })) > 0
+          if (!isValidInvitation) {
+            throw new APIError('UNAUTHORIZED', { message: 'signup disabled' })
+          }
+        }),
+      },
+    ],
+  },
+})
+
 export const betterAuthPluginOptions: PayloadAuthOptions = {
   users: {
     slug: COLLECTION_SLUG_USER,
@@ -50,6 +128,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     defaultAdminRole: ROLE_ADMIN,
     collectionOverrides: ({ collection }) => ({
       ...collection,
+      admin: botonInvitarSinImpersonar(collection.admin),
       fields: collection.fields.map((field) =>
         'name' in field && field.name === 'role'
           ? ({
@@ -76,7 +155,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     invitations: hideFromStaff,
   },
   adminInvitations: {
-    collectionOverrides: hideFromStaff,
+    collectionOverrides: invitacionesSinImpersonar,
     // Sin serverURL en payload.config, el default del plugin genera una ruta
     // relativa (/admin/signup?token=...) y el enlace llega roto en el correo
     generateInviteUrl: ({ token }) =>
@@ -111,7 +190,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
       enabled: true,
       // OJO: no usar disableSignUp aquí — bloquearía también a los invitados
       // desde /admin/signup ("Email and password sign up is not enabled").
-      // El alta abierta con contraseña se bloquea en hooks.before (más abajo).
+      // El alta abierta con contraseña se bloquea en soloConInvitacion (arriba).
       // Cubre tanto "olvidé mi contraseña" como el alta gestionada: el staff
       // crea la cuenta y el usuario establece su contraseña desde este enlace
       sendResetPassword: async ({ user, url }) => {
@@ -139,31 +218,10 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
         trustedProviders: ['google'],
       },
     },
-    hooks: {
-      // Solo se permite el alta con contraseña si llega un token de
-      // invitación válido (el formulario de /admin/signup lo manda como
-      // query adminInviteToken); sin él, el registro queda cerrado.
-      // Réplica del middleware de requireAdminInviteForSignUp del plugin,
-      // que no se puede activar directamente: esa opción además desactiva
-      // el alta implícita con Google, que aquí es deliberada.
-      before: createAuthMiddleware(async (ctx) => {
-        if (ctx.path !== '/sign-up/email') return
-        const token =
-          ctx.headers?.get('x-admin-invite-token') ??
-          ctx.query?.adminInviteToken ??
-          ctx.body?.adminInviteToken
-        const isValidInvitation =
-          typeof token === 'string' &&
-          token.length > 0 &&
-          (await ctx.context.adapter.count({
-            model: 'admin-invitations',
-            where: [{ field: 'token', operator: 'eq', value: token }],
-          })) > 0
-        if (!isValidInvitation) {
-          throw new APIError('UNAUTHORIZED', { message: 'signup disabled' })
-        }
-      }),
-    },
-    plugins: [nextCookies()],
+    plugins: [
+      soloConInvitacion(),
+      impersonar(),
+      nextCookies(),
+    ],
   },
 }
