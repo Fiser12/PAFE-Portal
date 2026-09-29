@@ -95,7 +95,10 @@ export function VistaMensual({ semanas, mes, nombres, idioma }: Props) {
 
             <div
               className="relative grid min-h-24 grid-cols-7 content-start gap-y-0.5 pb-1"
-              style={{ gridTemplateRows: `auto repeat(${semana.carriles}, 1.25rem) auto` }}
+              style={{
+                gridTemplateRows:
+                  semana.carriles > 0 ? `auto repeat(${semana.carriles}, 1.25rem) auto` : 'auto auto',
+              }}
             >
               {semana.dias.map(({ dia, hoy }, columna) => (
                 <time
