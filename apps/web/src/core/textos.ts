@@ -36,6 +36,9 @@ const es = {
   calMes: 'Mes',
   calMesAnterior: 'Mes anterior',
   calMesSiguiente: 'Mes siguiente',
+  calTramo: 'Día {dia}/{de}',
+  calAnadirEnGoogle: 'Añadir en Google Calendar',
+  calLeyenda: 'Calendarios',
   navAbrirMenu: 'Abrir menú',
   navMenu: 'Menú de navegación',
 
@@ -217,6 +220,9 @@ const eu: Textos = {
   calMes: 'Hilabetea',
   calMesAnterior: 'Aurreko hilabetea',
   calMesSiguiente: 'Hurrengo hilabetea',
+  calTramo: '{dia}/{de} eguna',
+  calAnadirEnGoogle: 'Gehitu Google Calendar-en',
+  calLeyenda: 'Egutegiak',
   navAbrirMenu: 'Menua ireki',
   navMenu: 'Nabigazio-menua',
 
