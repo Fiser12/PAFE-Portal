@@ -24,6 +24,8 @@ export function AvisoImpersonacion() {
     const respuesta = await fetch('/api/auth/impersonar/terminar', {
       method: 'POST',
       credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
     })
     window.location.href = respuesta.ok ? '/admin/collections/users' : '/login'
   }
