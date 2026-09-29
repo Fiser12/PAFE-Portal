@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
+import { hiddenUnlessSuperadmin, isSuperAdminAccess } from '@/core/permissions'
 import { link } from '@/payload/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
@@ -7,10 +7,10 @@ export const Header: GlobalConfig = {
   slug: 'header',
   access: {
     read: () => true,
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
   },
   fields: [
     {

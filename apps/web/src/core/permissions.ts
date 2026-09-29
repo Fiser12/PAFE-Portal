@@ -129,6 +129,9 @@ export const isActiveUser = (user: MaybeUser): boolean =>
 
 export const isAdminAccess: Access = ({ req }) => isAdmin(req.user)
 
+/** Lo que aún no está operativo: ni un admin lo toca */
+export const isSuperAdminAccess: Access = ({ req }) => isSuperAdmin(req.user)
+
 export const isStaffAccess: Access = ({ req }) => isStaff(req.user)
 
 export const catalogoAccess: Access = ({ req }) => administraCatalogo(req.user)
@@ -200,6 +203,9 @@ export const staffOrOwnCaseTasksAccess: Access = ({ req }) => {
 export type HiddenFieldProps = (args: { user: PayloadRequest['user'] | ClientUser }) => boolean
 
 export const hiddenUnlessAdmin: HiddenFieldProps = ({ user }) => !isAdmin(user as MaybeUser)
+
+export const hiddenUnlessSuperadmin: HiddenFieldProps = ({ user }) =>
+  !isSuperAdmin(user as MaybeUser)
 
 export const hiddenUnlessStaff: HiddenFieldProps = ({ user }) => !isStaff(user as MaybeUser)
 

@@ -18,17 +18,17 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
+import { hiddenUnlessSuperadmin, isSuperAdminAccess } from '@/core/permissions'
 import { CatalogList } from '@/payload/blocks/CatalogList/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
     // Las páginas definen la estructura del sitio: solo admin
-    create: isAdminAccess,
-    delete: isAdminAccess,
+    create: isSuperAdminAccess,
+    delete: isSuperAdminAccess,
     read: authenticatedOrPublished,
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -38,7 +38,7 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {

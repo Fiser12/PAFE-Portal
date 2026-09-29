@@ -1,7 +1,7 @@
 import { COLLECTION_SLUG_CASES, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_FILES, COLLECTION_SLUG_GUIDED_QUESTIONNAIRES, COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_POSTS } from '@/core/collections-slugs'
 import {
-  hiddenUnlessAdmin,
-  isAdminAccess,
+  hiddenUnlessSuperadmin,
+  isSuperAdminAccess,
   staffOrOwnCaseTasksAccess,
 } from '@/core/permissions'
 import type { CollectionConfig } from 'payload'
@@ -14,17 +14,17 @@ export const Tasks: CollectionConfig = {
     plural: 'Tareas',
   },
   access: {
-    create: isAdminAccess,
-    delete: isAdminAccess,
+    create: isSuperAdminAccess,
+    delete: isSuperAdminAccess,
     // El staff ve todas las tareas; una familia solo las de sus casos
     read: staffOrOwnCaseTasksAccess,
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   hooks: {
     afterChange: [avisarAlAsignar],
   },
   admin: {
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
     defaultColumns: ['title', 'case'],
     useAsTitle: 'title',
   },
