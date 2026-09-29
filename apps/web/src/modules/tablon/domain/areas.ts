@@ -18,16 +18,59 @@ interface AreaDeclarada {
    * nadie: es lo que hacía el foro, donde solo Berriak PAFE tenía aviso.
    */
   readonly avisaA?: 'familias'
+  /** Cómo se veía en el foro antiguo, para que se distingan igual que allí */
+  readonly aspecto: AspectoDelArea
 }
 
+export type IconoDelArea = 'megafono' | 'conversacion' | 'cerebro' | 'brujula' | 'logo'
+
+export interface AspectoDelArea {
+  color: string
+  icono: IconoDelArea
+  /** Sin relleno, el icono va del color sobre blanco, como IA en el foro antiguo */
+  relleno: boolean
+}
+
+const NARANJA = '#f0a75c'
+const VERDE = '#97ac35'
+
 export const AREAS_DEL_TABLON = [
-  { value: 'berriak-pafe', label: 'Berriak PAFE', avisaA: 'familias' },
-  { value: 'partekatutako-berriak', label: 'Partekatutako Berriak' },
-  { value: 'ia', label: 'IA' },
-  { value: 'elkarrizketa-irekiak', label: 'Elkarrizketa Irekiak' },
-  { value: 'pafe-ren-elkarrizketak', label: 'PAFE-ren Elkarrizketak' },
-  { value: 'lantalde-teknikoa', label: 'LANTALDE TEKNIKOA', grupo: GRUPO_LANTALDE },
+  {
+    value: 'berriak-pafe',
+    label: 'Berriak PAFE',
+    avisaA: 'familias',
+    aspecto: { color: NARANJA, icono: 'megafono', relleno: true },
+  },
+  {
+    value: 'partekatutako-berriak',
+    label: 'Partekatutako Berriak',
+    aspecto: { color: NARANJA, icono: 'conversacion', relleno: true },
+  },
+  { value: 'ia', label: 'IA', aspecto: { color: '#987230', icono: 'cerebro', relleno: false } },
+  {
+    value: 'elkarrizketa-irekiak',
+    label: 'Elkarrizketa Irekiak',
+    aspecto: { color: VERDE, icono: 'conversacion', relleno: true },
+  },
+  {
+    value: 'pafe-ren-elkarrizketak',
+    label: 'PAFE-ren Elkarrizketak',
+    aspecto: { color: VERDE, icono: 'brujula', relleno: true },
+  },
+  {
+    value: 'lantalde-teknikoa',
+    label: 'LANTALDE TEKNIKOA',
+    grupo: GRUPO_LANTALDE,
+    aspecto: { color: '#a3d2f6', icono: 'logo', relleno: false },
+  },
 ] as const satisfies readonly AreaDeclarada[]
+
+const NEUTRO: AspectoDelArea = { color: '#64748b', icono: 'conversacion', relleno: true }
+
+export const aspectoDelArea = (valor?: string | null): AspectoDelArea => {
+  const area = (AREAS_DEL_TABLON as readonly AreaDeclarada[]).find((a) => a.value === valor)
+  return area ? { ...area.aspecto } : NEUTRO
+}
 
 export type AreaDelTablon = (typeof AREAS_DEL_TABLON)[number]['value']
 

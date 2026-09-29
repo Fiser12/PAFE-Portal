@@ -58,7 +58,13 @@ export const Adjunto: CollectionConfig = {
       unique: true,
       admin: { readOnly: true },
     },
-    { name: 'area', label: 'Área', type: 'select', options: [...AREAS_DEL_TABLON], index: true },
+    {
+      name: 'area',
+      label: 'Área',
+      type: 'select',
+      options: AREAS_DEL_TABLON.map(({ value, label }) => ({ value, label })),
+      index: true,
+    },
     {
       label: 'Texto alternativo',
       name: 'alt',

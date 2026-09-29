@@ -8,8 +8,9 @@ import { Input } from '@/components/ui/input'
 import { isActiveUser, isAdmin } from '@/core/permissions'
 import { rellenar, textosDe } from '@/core/textos'
 import { fechaLarga } from '@/modules/calendario/domain/fechas'
-import { nombreDelArea } from '@/modules/tablon/domain/areas'
+import { aspectoDelArea, nombreDelArea } from '@/modules/tablon/domain/areas'
 import { temasDelForo } from '@/modules/tablon/services'
+import { DistintivoDelArea } from '@/modules/tablon/ui/DistintivoDelArea'
 import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { cn } from '@/utilities/ui'
@@ -80,10 +81,11 @@ export default async function ForoPage({ searchParams }: Props) {
                   href={enlace({ area: opcion.value })}
                   aria-current={area === opcion.value ? 'page' : undefined}
                   className={cn(
-                    'rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-accent',
+                    'flex items-center gap-2.5 rounded-md px-2 py-2 text-sm transition-colors hover:bg-accent',
                     area === opcion.value && 'bg-primary/10 font-semibold text-primary',
                   )}
                 >
+                  <DistintivoDelArea area={opcion.value} tamano="sm" />
                   {opcion.label}
                 </Link>
               ),
@@ -133,7 +135,10 @@ export default async function ForoPage({ searchParams }: Props) {
           </div>
 
           <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-xl font-semibold">{nombreDelArea(area)}</h2>
+            <h2 className="flex items-center gap-3 text-xl font-semibold">
+              <DistintivoDelArea area={area} />
+              {nombreDelArea(area)}
+            </h2>
             <span className="text-sm tabular-nums text-muted-foreground">
               {resultado.totalDocs} {resultado.totalDocs === 1 ? t.foroTema : t.foroTemas}
             </span>
@@ -153,29 +158,22 @@ export default async function ForoPage({ searchParams }: Props) {
                 <li key={noticia.id}>
                   <Link
                     href={`/noticias/${noticia.id}`}
-                    className="group flex items-start gap-4 p-4 transition-colors hover:bg-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
+                    className="group flex items-start gap-4 border-l-4 p-4 transition-colors hover:bg-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
+                    style={{ borderLeftColor: aspectoDelArea(noticia.area).color }}
                   >
-                    <span
-                      className={cn(
-                        'mt-0.5 hidden rounded-lg p-2.5 sm:block',
-                        noticia.pinned
-                          ? 'bg-primary/10 text-primary'
-                          : 'bg-muted text-muted-foreground',
-                      )}
-                    >
-                      {noticia.pinned ? (
-                        <Pin className="h-5 w-5" aria-label={t.tablonFijada} />
-                      ) : (
-                        <MessageSquare className="h-5 w-5" aria-hidden="true" />
-                      )}
-                    </span>
+                    <DistintivoDelArea area={noticia.area} className="mt-0.5 hidden sm:inline-flex" />
                     <div className="min-w-0 flex-1">
                       <h3 className="break-words font-semibold leading-relaxed group-hover:text-primary">
                         {noticia.title}
                       </h3>
                       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         <Badge variant="outline">{nombreDelArea(noticia.area)}</Badge>
-                        {noticia.pinned && <span>{t.tablonFijada}</span>}
+                        {noticia.pinned && (
+                          <span className="inline-flex items-center gap-1 font-medium text-primary">
+                            <Pin className="h-3.5 w-3.5" aria-hidden="true" />
+                            {t.tablonFijada}
+                          </span>
+                        )}
                         <time dateTime={noticia.publishedAt}>
                           {fechaLarga(new Date(noticia.publishedAt), idioma)}
                         </time>
