@@ -36,6 +36,8 @@ const es = {
   calMes: 'Mes',
   calMesAnterior: 'Mes anterior',
   calMesSiguiente: 'Mes siguiente',
+  impersonandoA: 'Estás viendo el portal como {nombre}.',
+  impersonarVolver: 'Volver a mi cuenta',
   navAbrirMenu: 'Abrir menú',
   navMenu: 'Menú de navegación',
 
@@ -217,6 +219,8 @@ const eu: Textos = {
   calMes: 'Hilabetea',
   calMesAnterior: 'Aurreko hilabetea',
   calMesSiguiente: 'Hurrengo hilabetea',
+  impersonandoA: 'Ataria {nombre} bezala ikusten ari zara.',
+  impersonarVolver: 'Nire kontura itzuli',
   navAbrirMenu: 'Menua ireki',
   navMenu: 'Nabigazio-menua',
 

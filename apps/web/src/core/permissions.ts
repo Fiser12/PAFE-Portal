@@ -22,10 +22,21 @@ export const ROLE_TABLON = 'admin-news'
 export const ROLE_FAMILIA = 'familia'
 /** Psicólogos del equipo técnico; conserva la gestión de préstamos del rol profesional */
 export const ROLE_PROFESIONAL = 'profesional'
+/**
+ * Entrar como otra persona para ver lo que ve. No lo da ser admin: solo lo
+ * reparte el superadmin, y no sirve para entrar como un admin.
+ */
+export const ROLE_IMPERSONAR = 'impersonar'
 
 export const ADMIN_AREA_ROLES = [ROLE_CATALOGO, ROLE_USUARIOS, ROLE_TABLON]
 
-export const ALL_ROLES = [ROLE_ADMIN, ...ADMIN_AREA_ROLES, ROLE_FAMILIA, ROLE_PROFESIONAL]
+export const ALL_ROLES = [
+  ROLE_ADMIN,
+  ...ADMIN_AREA_ROLES,
+  ROLE_FAMILIA,
+  ROLE_PROFESIONAL,
+  ROLE_IMPERSONAR,
+]
 export const ADMIN_PANEL_ROLES = [ROLE_ADMIN]
 /**
  * Lo único que puede repartir quien no es admin. Los roles de gestión se
@@ -46,18 +57,20 @@ export const ROLE_LABELS: Record<string, string> = {
   [ROLE_TABLON]: 'Tablón de noticias',
   [ROLE_FAMILIA]: 'Familia',
   [ROLE_PROFESIONAL]: 'Psicólogo/a (equipo técnico)',
+  [ROLE_IMPERSONAR]: 'Impersonar usuarios',
 }
 
 export type RoleSlug = (typeof ALL_ROLES)[number]
 
-/** El campo role es un select hasMany (array), pero toleramos string por robustez */
+/** El campo role es un select hasMany (array); better-auth lo trae como texto separado por comas */
 type MaybeUser =
   (Partial<Pick<User, 'id' | 'email'>> & { role?: unknown }) | ClientUser | null | undefined
 
 export const getUserRoles = (user: MaybeUser): string[] => {
   const role = (user as { role?: unknown } | null | undefined)?.role
   if (Array.isArray(role)) return role.filter((r): r is string => typeof r === 'string')
-  if (typeof role === 'string') return [role]
+  // better-auth los guarda juntos: «admin,impersonar»
+  if (typeof role === 'string') return role.split(',').map((r) => r.trim()).filter(Boolean)
   return []
 }
 
@@ -82,6 +95,9 @@ export const administraCatalogo = (user: MaybeUser): boolean =>
 /** Dar de alta personas y asignarles el rol familia */
 export const administraUsuarios = (user: MaybeUser): boolean =>
   isAdmin(user) || hasRole(user, ROLE_USUARIOS)
+
+/** Entrar como otra persona; ni el superadmin lo tiene sin asignárselo */
+export const puedeImpersonar = (user: MaybeUser): boolean => hasRole(user, ROLE_IMPERSONAR)
 
 /** Publicar y editar en el tablón de noticias */
 export const administraTablon = (user: MaybeUser): boolean =>

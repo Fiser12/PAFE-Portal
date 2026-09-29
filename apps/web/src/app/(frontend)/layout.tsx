@@ -6,6 +6,7 @@ import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/legacy/AdminBar'
+import { AvisoImpersonacion } from '@/components/AvisoImpersonacion'
 import { IdiomaProvider } from '@/components/IdiomaProvider'
 import { Header } from '@/payload/admin_components/Header/Component'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="bg-app-surface">
         <IdiomaProvider idioma={idioma}>
+          <AvisoImpersonacion />
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
