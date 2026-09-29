@@ -8,6 +8,7 @@ import {
   isAdminAccess,
   isAdmin,
   isStaff,
+  isSuperAdmin,
   usuariosAccess,
   usuariosOrSelfAccess,
 } from '@/core/permissions'
@@ -21,6 +22,7 @@ import {
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
+const superadminFieldAccess: FieldAccess = ({ req }) => isSuperAdmin(req.user)
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
@@ -93,6 +95,7 @@ export const Users: CollectionConfig = {
       type: 'relationship',
       relationTo: COLLECTION_SLUG_CASES,
       hasMany: true,
+      access: { read: superadminFieldAccess, update: superadminFieldAccess },
     },
     {
       label: 'Grupos',

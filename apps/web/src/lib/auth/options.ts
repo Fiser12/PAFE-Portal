@@ -11,6 +11,7 @@ import {
   ROLE_ADMIN,
   ROLE_IMPERSONAR,
   hiddenUnlessAdmin,
+  hiddenUnlessSuperadmin,
 } from '@/core/permissions'
 import { getServerSideURL } from '@/utilities/getURL'
 import { impersonar } from './impersonar'
@@ -50,6 +51,12 @@ const botonInvitarSinImpersonar = (admin: CollectionConfig['admin']): Collection
     },
   }
 }
+
+/** Las tablas internas de better-auth no le dicen nada a un admin */
+const soloSuperadmin = ({ collection }: { collection: CollectionConfig }): CollectionConfig => ({
+  ...collection,
+  admin: { ...collection.admin, hidden: hiddenUnlessSuperadmin },
+})
 
 /** Colecciones técnicas de better-auth: visibles solo para admin en el panel */
 const hideFromStaff = ({ collection }: { collection: CollectionConfig }): CollectionConfig => ({
@@ -148,9 +155,9 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
       ),
     }),
   },
-  accounts: { slug: 'accounts', collectionOverrides: hideFromStaff },
-  sessions: { slug: 'sessions', collectionOverrides: hideFromStaff },
-  verifications: { slug: 'verifications', collectionOverrides: hideFromStaff },
+  accounts: { slug: 'accounts', collectionOverrides: soloSuperadmin },
+  sessions: { slug: 'sessions', collectionOverrides: soloSuperadmin },
+  verifications: { slug: 'verifications', collectionOverrides: soloSuperadmin },
   pluginCollectionOverrides: {
     invitations: hideFromStaff,
   },

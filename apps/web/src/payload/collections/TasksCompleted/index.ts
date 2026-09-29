@@ -1,8 +1,8 @@
 import { COLLECTION_SLUG_TASKS_COMPLETED, COLLECTION_SLUG_TASKS, COLLECTION_SLUG_USER, COLLECTION_SLUG_QUESTIONNAIRE_EXECUTIONS } from '@/core/collections-slugs'
 import {
-  hiddenUnlessAdmin,
+  hiddenUnlessSuperadmin,
   isActiveUser,
-  isAdminAccess,
+  isSuperAdminAccess,
   isStaff,
   staffOrOwnerAccess,
 } from '@/core/permissions'
@@ -28,12 +28,12 @@ export const TasksCompleted: CollectionConfig = {
   access: {
     create: createOwnCompletionAccess,
     // El histórico no se edita; solo un admin corrige errores
-    delete: isAdminAccess,
+    delete: isSuperAdminAccess,
     read: staffOrOwnerAccess('user'),
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
     defaultColumns: ['task', 'user', 'completedOn'],
     useAsTitle: 'id',
   },

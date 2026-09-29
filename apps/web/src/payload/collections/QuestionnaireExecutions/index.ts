@@ -4,7 +4,7 @@ import {
   COLLECTION_SLUG_TASKS,
   COLLECTION_SLUG_USER,
 } from '@/core/collections-slugs'
-import { hiddenUnlessAdmin, isAdminAccess, staffOrOwnerAccess } from '@/core/permissions'
+import { hiddenUnlessSuperadmin, isSuperAdminAccess, staffOrOwnerAccess } from '@/core/permissions'
 import { flowGraphRuntime } from '@/lib/flowgraph/runtime'
 import { parseEvents } from 'flowgraph-core'
 import { APIError, type CollectionBeforeChangeHook, type CollectionConfig } from 'payload'
@@ -81,14 +81,14 @@ export const QuestionnaireExecutions: CollectionConfig = {
   access: {
     // Las crea la server action de envío (Local API); vía REST solo un admin,
     // y siempre pasando por la validación de replay del hook.
-    create: isAdminAccess,
+    create: isSuperAdminAccess,
     // El histórico es inmutable; solo un admin corrige errores
-    delete: isAdminAccess,
+    delete: isSuperAdminAccess,
     read: staffOrOwnerAccess('user'),
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   admin: {
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
     defaultColumns: ['questionnaire', 'user', 'outcome', 'finishedAt'],
     useAsTitle: 'id',
   },

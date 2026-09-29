@@ -25,16 +25,16 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { COLLECTION_SLUG_TAXONOMY } from '@zetesis/payload-taxonomies'
-import { hiddenUnlessAdmin, isAdminAccess } from '@/core/permissions'
+import { hiddenUnlessSuperadmin, isSuperAdminAccess } from '@/core/permissions'
 import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
-    create: isAdminAccess,
-    delete: isAdminAccess,
+    create: isSuperAdminAccess,
+    delete: isSuperAdminAccess,
     read: authenticatedOrPublished,
-    update: isAdminAccess,
+    update: isSuperAdminAccess,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -50,7 +50,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     // Posts no está operativo todavía: visible solo para admin
-    hidden: hiddenUnlessAdmin,
+    hidden: hiddenUnlessSuperadmin,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
