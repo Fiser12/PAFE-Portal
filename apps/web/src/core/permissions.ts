@@ -98,6 +98,12 @@ export const administraUsuarios = (user: MaybeUser): boolean =>
 /** Entrar como otra persona; ni el superadmin lo tiene sin asignárselo */
 export const puedeImpersonar = (user: MaybeUser): boolean => hasRole(user, ROLE_IMPERSONAR)
 
+/** Al superadmin no se entra nunca; a un admin, solo el superadmin */
+export const puedeImpersonarA = (quien: MaybeUser, objetivo: MaybeUser): boolean =>
+  puedeImpersonar(quien) &&
+  !isSuperAdmin(objetivo) &&
+  (!isAdmin(objetivo) || isSuperAdmin(quien))
+
 /** Publicar y editar en el tablón de noticias */
 export const administraTablon = (user: MaybeUser): boolean =>
   isAdmin(user) || hasRole(user, ROLE_TABLON)
