@@ -8,7 +8,7 @@ import { colorDe, textoSobre } from '../domain/calendarios'
 import type { DiaDeAgenda, Entrada } from '../domain/entradas'
 import { hora, nombreDelDia, numeroDelDia } from '../domain/fechas'
 import { colocar, minutosDelDia, rangoDe, sinHora, type RangoHorario } from '../domain/rejilla'
-import { ALTO_VISTA } from './Agenda'
+import { ALTO_VISTA } from './medidas'
 
 /** Alto de una hora en la rejilla, en píxeles */
 const ALTO_HORA = 44
