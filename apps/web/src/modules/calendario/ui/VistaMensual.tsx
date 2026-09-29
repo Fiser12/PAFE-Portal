@@ -6,6 +6,7 @@ import { colorDe, textoSobre } from '../domain/calendarios'
 import type { Entrada } from '../domain/entradas'
 import { hora, nombreDelDia } from '../domain/fechas'
 import type { Barra, SemanaDelMes } from '../domain/mes'
+import { ALTO_VISTA } from './medidas'
 
 interface Props {
   semanas: SemanaDelMes[]
@@ -62,7 +63,10 @@ function EventoDelDia({ entrada, nombres }: { entrada: Entrada; nombres: Record<
 export function VistaMensual({ semanas, mes, nombres, idioma }: Props) {
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[560px] overflow-hidden rounded-lg border">
+      <div
+        className="flex min-w-[560px] flex-col overflow-hidden rounded-lg border"
+        style={{ minHeight: ALTO_VISTA }}
+      >
         <div className="grid grid-cols-7 border-b bg-muted/60">
           {semanas[0]?.dias.map(({ dia }) => (
             <div
@@ -77,7 +81,7 @@ export function VistaMensual({ semanas, mes, nombres, idioma }: Props) {
         {semanas.map((semana) => (
           <div
             key={semana.dias[0]?.dia.toISOString()}
-            className="relative border-b last:border-b-0"
+            className="relative flex-1 border-b last:border-b-0"
           >
             {/* Las casillas, detrás: bordes, días de otro mes y el de hoy */}
             <div className="absolute inset-0 grid grid-cols-7" aria-hidden>

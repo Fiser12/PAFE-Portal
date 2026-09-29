@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { CalendarDays, ChevronLeft, ChevronRight, Rows3 } from 'lucide-react'
+import { CalendarDays, ChevronLeft, ChevronRight, List, Plus, Rows3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useIdioma } from '@/components/IdiomaProvider'
@@ -19,8 +19,10 @@ import { VistaSemanal } from './VistaSemanal'
 const ZONA = 'Europe/Madrid'
 const UNA_SEMANA = 7 * 24 * 60 * 60 * 1000
 
-/** Alto de la rejilla semanal: la hora de hoy se ve sin desplazar la página */
-export const ALTO_VISTA = 420
+/** Donde se editan los calendarios mientras sigan viviendo en Google */
+const NUEVO_EN_GOOGLE = 'https://calendar.google.com/calendar/r/eventedit'
+
+type Vista = 'agenda' | 'semana' | 'mes'
 
 /** Lo que viaja del servidor al navegador: las fechas van como texto */
 export interface OcurrenciaPlana extends Omit<Ocurrencia, 'inicio' | 'fin'> {
@@ -61,13 +63,9 @@ function Leyenda({ nombres, titulo }: { nombres: Record<string, string>; titulo:
   )
 }
 
-/**
- * El esquema del calendario de Google que había antes: el mes (o la semana) a
- * la izquierda y la agenda desde hoy a la derecha, cada calendario con su color.
- */
 export function Agenda({ ocurrencias, nombres, fallidos, puedeEditar, onPeriodoChange }: Props) {
   const { idioma, t } = useIdioma()
-  const [vista, setVista] = useState<'mes' | 'semana'>('mes')
+  const [vista, setVista] = useState<Vista>('agenda')
   const [semana, setSemana] = useState(() => semanaDe(new Date(), ZONA).desde)
   const [mes, setMes] = useState(() => inicioDelDia(new Date()))
 
@@ -95,97 +93,102 @@ export function Agenda({ ocurrencias, nombres, fallidos, puedeEditar, onPeriodoC
     setSemana(semanaDe(new Date(), ZONA).desde)
     mostrarPeriodo(fecha)
   }
-  const cambiarA = (nueva: 'mes' | 'semana') => {
+  const cambiarA = (nueva: Vista) => {
     setVista(nueva)
-    mostrarPeriodo(nueva === 'mes' ? mes : semana)
+    mostrarPeriodo(nueva === 'mes' ? mes : nueva === 'semana' ? semana : inicioDelDia(new Date()))
   }
+
+  const pestanas = [
+    { vista: 'agenda', etiqueta: t.calAgenda, Icono: List },
+    { vista: 'semana', etiqueta: t.calSemana, Icono: Rows3 },
+    { vista: 'mes', etiqueta: t.calMes, Icono: CalendarDays },
+  ] as const
 
   return (
     <section className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{t.inicioCalendario}</h2>
 
-        <div className="flex gap-0.5 rounded-md border p-0.5">
-          <Button
-            variant={vista === 'mes' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => cambiarA('mes')}
-          >
-            <CalendarDays className="mr-1 h-4 w-4" />
-            {t.calMes}
-          </Button>
-          <Button
-            variant={vista === 'semana' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => cambiarA('semana')}
-          >
-            <Rows3 className="mr-1 h-4 w-4" />
-            {t.calSemana}
-          </Button>
+        <div className="flex gap-0.5 rounded-md border p-0.5" role="tablist">
+          {pestanas.map(({ vista: valor, etiqueta, Icono }) => (
+            <Button
+              key={valor}
+              role="tab"
+              aria-selected={vista === valor}
+              variant={vista === valor ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => cambiarA(valor)}
+            >
+              <Icono className="mr-1 h-4 w-4" />
+              {etiqueta}
+            </Button>
+          ))}
         </div>
 
-        <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label={vista === 'mes' ? t.calMesAnterior : t.calSemanaAnterior}
-            onClick={() => mover(-1)}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={volverAHoy}>
-            {t.calVolverAHoy}
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label={vista === 'mes' ? t.calMesSiguiente : t.calSemanaSiguiente}
-            onClick={() => mover(1)}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <span className="text-base font-semibold capitalize" aria-live="polite">
-          {mesYAnio(vista === 'mes' ? mes : semana, idioma)}
-        </span>
+        {vista !== 'agenda' && (
+          <>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={vista === 'mes' ? t.calMesAnterior : t.calSemanaAnterior}
+                onClick={() => mover(-1)}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={volverAHoy}>
+                {t.calVolverAHoy}
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={vista === 'mes' ? t.calMesSiguiente : t.calSemanaSiguiente}
+                onClick={() => mover(1)}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <span className="text-base font-semibold capitalize" aria-live="polite">
+              {mesYAnio(vista === 'mes' ? mes : semana, idioma)}
+            </span>
+          </>
+        )}
       </div>
 
       {fallidos.length > 0 && <p className="text-xs text-muted-foreground">{t.calFallidos}</p>}
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardContent className="space-y-3 p-3 sm:p-4">
-            {vista === 'mes' ? (
-              <VistaMensual
-                semanas={mensual}
-                mes={mes}
-                nombres={nombres}
-                idioma={idioma as CodigoIdioma}
-              />
-            ) : (
-              <VistaSemanal dias={semanal} nombres={nombres} idioma={idioma as CodigoIdioma} />
-            )}
-            <Leyenda nombres={nombres} titulo={t.calLeyenda} />
-          </CardContent>
-        </Card>
+      <Card>
+        <CardContent className="space-y-3 p-3 sm:p-4">
+          {vista === 'agenda' ? (
+            <ListaAgenda dias={agenda} nombres={nombres} idioma={idioma as CodigoIdioma} t={t} />
+          ) : vista === 'semana' ? (
+            <VistaSemanal dias={semanal} nombres={nombres} idioma={idioma as CodigoIdioma} />
+          ) : (
+            <VistaMensual
+              semanas={mensual}
+              mes={mes}
+              nombres={nombres}
+              idioma={idioma as CodigoIdioma}
+            />
+          )}
 
-        {/* En escritorio la agenda mide lo que el mes y se desplaza por dentro */}
-        <Card className="order-first lg:relative lg:order-none">
-          <CardContent className="h-[420px] p-3 sm:p-4 lg:absolute lg:inset-0 lg:h-auto">
-            <h3 className="mb-2 text-sm font-semibold">{t.calAgenda}</h3>
-            <div className="h-[calc(100%-1.75rem)]">
-              <ListaAgenda
-                dias={agenda}
-                nombres={nombres}
-                idioma={idioma as CodigoIdioma}
-                t={t}
-                puedeEditar={puedeEditar}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="flex items-end justify-between gap-3">
+            <Leyenda nombres={nombres} titulo={t.calLeyenda} />
+            {puedeEditar && (
+              <a
+                href={NUEVO_EN_GOOGLE}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t.calAnadirEnGoogle}
+                aria-label={t.calAnadirEnGoogle}
+                className="ml-auto inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-background shadow-sm transition-colors hover:bg-muted"
+              >
+                <Plus className="h-5 w-5" />
+              </a>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </section>
   )
 }
