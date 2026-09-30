@@ -858,6 +858,7 @@ export interface Noticia {
     | 'ia'
     | 'elkarrizketa-irekiak'
     | 'pafe-ren-elkarrizketak'
+    | 'sugerencias-del-portal'
     | 'lantalde-teknikoa';
   body?: {
     root: {
@@ -938,6 +939,7 @@ export interface Adjunto {
         | 'ia'
         | 'elkarrizketa-irekiak'
         | 'pafe-ren-elkarrizketak'
+        | 'sugerencias-del-portal'
         | 'lantalde-teknikoa'
       )
     | null;

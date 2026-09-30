@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Brain, Compass, Megaphone, MessagesSquare } from 'lucide-react'
+import { Brain, Compass, Lightbulb, Megaphone, MessagesSquare } from 'lucide-react'
 import logo from '@/components/legacy/Logo/logo.png'
 import { cn } from '@/utilities/ui'
 import { aspectoDelArea } from '../domain/areas'
@@ -9,6 +9,7 @@ const ICONOS = {
   conversacion: MessagesSquare,
   cerebro: Brain,
   brujula: Compass,
+  bombilla: Lightbulb,
 }
 
 interface Props {

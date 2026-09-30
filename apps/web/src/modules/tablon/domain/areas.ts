@@ -22,7 +22,7 @@ interface AreaDeclarada {
   readonly aspecto: AspectoDelArea
 }
 
-export type IconoDelArea = 'megafono' | 'conversacion' | 'cerebro' | 'brujula' | 'logo'
+export type IconoDelArea = 'megafono' | 'conversacion' | 'cerebro' | 'brujula' | 'logo' | 'bombilla'
 
 export interface AspectoDelArea {
   color: string
@@ -56,6 +56,11 @@ export const AREAS_DEL_TABLON = [
     value: 'pafe-ren-elkarrizketak',
     label: 'PAFE-ren Elkarrizketak',
     aspecto: { color: VERDE, icono: 'brujula', relleno: true },
+  },
+  {
+    value: 'sugerencias-del-portal',
+    label: 'Sugerencias del portal',
+    aspecto: { color: '#2b55d9', icono: 'bombilla', relleno: true },
   },
   {
     value: 'lantalde-teknikoa',

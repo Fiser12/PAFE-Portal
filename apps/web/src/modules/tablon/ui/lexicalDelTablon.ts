@@ -1,6 +1,8 @@
 import {
   BoldFeature,
+  FixedToolbarFeature,
   HeadingFeature,
+  InlineToolbarFeature,
   ItalicFeature,
   LinkFeature,
   OrderedListFeature,
@@ -20,6 +22,9 @@ import { COLLECTION_SLUG_ADJUNTO } from '@/core/collections-slugs'
  */
 export const lexicalDelTablon = lexicalEditor({
   features: [
+    // Sin barra, insertar una imagen solo se podía escribiendo «/»
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
     ParagraphFeature(),
     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
     BoldFeature(),

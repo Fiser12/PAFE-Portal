@@ -56,7 +56,7 @@ export const Adjunto: CollectionConfig = {
       label: 'Origen de la importación',
       type: 'text',
       unique: true,
-      admin: { readOnly: true },
+      admin: { readOnly: true, condition: (data) => Boolean(data?.sourceKey) },
     },
     {
       name: 'area',
