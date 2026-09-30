@@ -14,6 +14,7 @@ import * as migration_20260916_202139_tablon_completo from './20260916_202139_ta
 import * as migration_20260916_231546_presentacion_localizada from './20260916_231546_presentacion_localizada';
 import * as migration_20260923_102004_nodebb_import from './20260923_102004_nodebb_import';
 import * as migration_20260929_124622_impersonar_usuarios from './20260929_124622_impersonar_usuarios';
+import * as migration_20260930_175009_invitaciones_con_correo from './20260930_175009_invitaciones_con_correo';
 
 export const migrations = [
   {
@@ -94,6 +95,11 @@ export const migrations = [
   {
     up: migration_20260929_124622_impersonar_usuarios.up,
     down: migration_20260929_124622_impersonar_usuarios.down,
-    name: '20260929_124622_impersonar_usuarios'
+    name: '20260929_124622_impersonar_usuarios',
+  },
+  {
+    up: migration_20260930_175009_invitaciones_con_correo.up,
+    down: migration_20260930_175009_invitaciones_con_correo.down,
+    name: '20260930_175009_invitaciones_con_correo'
   },
 ];
