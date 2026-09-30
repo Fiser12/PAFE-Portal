@@ -7,23 +7,26 @@ export default function BeforeDashboard() {
     <div className="before-dashboard">
       <h2>Gestión de PAFE</h2>
       <p>Administración está reservada a Alberto y Rubén. El equipo técnico son los psicólogos.</p>
-      <h3>Invitar a una persona</h3>
+      <h3>Invitar personas</h3>
       <ol>
         <li>
-          Abre <Link href="/admin/collections/users">Usuarios</Link> y pulsa <strong>Invite User</strong>.
+          Abre <Link href="/admin/collections/users">Usuarios</Link> y pulsa{' '}
+          <strong>Invitar personas</strong>.
         </li>
         <li>
-          Selecciona <strong>Familia</strong> para las familias o <strong>Profesional</strong> para
-          los psicólogos. El formulario de invitación muestra estos nombres; la ficha del usuario
-          muestra los nombres completos.
+          Elige el rol: <strong>Familia</strong> para las familias o{' '}
+          <strong>Psicólogo/a (equipo técnico)</strong> para los psicólogos.
         </li>
         <li>
-          Introduce su correo en <strong>Email Address</strong> y pulsa <strong>Send Email</strong>.
-          La persona recibe un enlace para crear su cuenta y contraseña, y entrar al Foro.
+          Pega los correos, uno por línea o separados por comas, y pulsa{' '}
+          <strong>Enviar invitaciones</strong>. Cada persona recibe su propio enlace para crear su
+          cuenta y entrar al Foro.
         </li>
         <li>
-          Para la siguiente persona, vuelve al listado de Usuarios y abre una nueva invitación. Cada
-          enlace sirve para una sola alta.
+          Quien aún no ha usado su enlace sale en{' '}
+          <Link href="/admin/collections/admin-invitations">Invitaciones pendientes</Link>. Al
+          aceptar, deja de salir ahí y aparece en Usuarios. Para reenviar, invita otra vez a ese
+          correo.
         </li>
       </ol>
       <p>
