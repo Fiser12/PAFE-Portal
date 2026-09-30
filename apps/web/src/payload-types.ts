@@ -801,11 +801,14 @@ export interface Verification {
   updatedAt: string;
 }
 /**
+ * Quien acepta su invitación deja de salir aquí y aparece en Usuarios
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "admin-invitations".
  */
 export interface AdminInvitation {
   id: number;
+  email?: string | null;
   role: 'admin' | 'admin-catalogo' | 'admin-users' | 'admin-news' | 'familia' | 'profesional';
   token: string;
   url?: string | null;
@@ -1724,6 +1727,7 @@ export interface VerificationsSelect<T extends boolean = true> {
  * via the `definition` "admin-invitations_select".
  */
 export interface AdminInvitationsSelect<T extends boolean = true> {
+  email?: T;
   role?: T;
   token?: T;
   url?: T;

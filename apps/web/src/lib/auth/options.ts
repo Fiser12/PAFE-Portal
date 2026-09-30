@@ -13,6 +13,11 @@ import {
   hiddenUnlessAdmin,
   hiddenUnlessSuperadmin,
 } from '@/core/permissions'
+import {
+  ROLES_INVITABLES,
+  correoDeInvitacion,
+  urlDeInvitacion,
+} from '@/modules/invitaciones/domain/invitacion'
 import { getServerSideURL } from '@/utilities/getURL'
 import { impersonar } from './impersonar'
 
@@ -23,34 +28,41 @@ import { impersonar } from './impersonar'
 const esInvitable = (opcion: unknown) =>
   (typeof opcion === 'string' ? opcion : (opcion as { value?: string })?.value) !== ROLE_IMPERSONAR
 
-const invitacionesSinImpersonar = ({ collection }: { collection: CollectionConfig }) =>
+const invitacionesPendientes = ({ collection }: { collection: CollectionConfig }) =>
   hideFromStaff({
     collection: {
       ...collection,
-      fields: collection.fields.map((field) =>
-        'name' in field && field.name === 'role' && field.type === 'select'
-          ? { ...field, options: field.options.filter(esInvitable) }
-          : field,
-      ),
+      labels: { singular: 'Invitación pendiente', plural: 'Invitaciones pendientes' },
+      admin: {
+        ...collection.admin,
+        useAsTitle: 'email',
+        defaultColumns: ['email', 'role', 'createdAt'],
+        description: 'Quien acepta su invitación deja de salir aquí y aparece en Usuarios',
+      },
+      fields: [
+        { name: 'email', label: 'Correo', type: 'email', index: true, admin: { readOnly: true } },
+        ...collection.fields.map((field) =>
+          'name' in field && field.name === 'role' && field.type === 'select'
+            ? { ...field, options: field.options.filter(esInvitable) }
+            : field,
+        ),
+      ],
     },
   })
 
-/** El desplegable del botón «Invite» de la lista de usuarios, sin impersonar */
-const botonInvitarSinImpersonar = (admin: CollectionConfig['admin']): CollectionConfig['admin'] => {
-  const descripcion = admin?.components?.Description
-  if (!descripcion || typeof descripcion !== 'object' || !('clientProps' in descripcion)) return admin
-  const props = descripcion.clientProps as { roles?: unknown[] } | undefined
-  return {
-    ...admin,
-    components: {
-      ...admin?.components,
-      Description: {
-        ...descripcion,
-        clientProps: { ...props, roles: props?.roles?.filter(esInvitable) },
+/** El botón «Invite» de payload-auth repite enlace entre invitaciones: se usa el propio */
+const conInvitacionesPropias = (admin: CollectionConfig['admin']): CollectionConfig['admin'] => ({
+  ...admin,
+  components: {
+    ...admin?.components,
+    Description: {
+      path: '@/modules/invitaciones/ui/InvitarPersonas#InvitarPersonas',
+      clientProps: {
+        roles: ROLES_INVITABLES.map((value) => ({ value, label: ROLE_LABELS[value] ?? value })),
       },
     },
-  }
-}
+  },
+})
 
 /** Las tablas internas de better-auth no le dicen nada a un admin */
 const soloSuperadmin = ({ collection }: { collection: CollectionConfig }): CollectionConfig => ({
@@ -135,7 +147,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     defaultAdminRole: ROLE_ADMIN,
     collectionOverrides: ({ collection }) => ({
       ...collection,
-      admin: botonInvitarSinImpersonar(collection.admin),
+      admin: conInvitacionesPropias(collection.admin),
       fields: collection.fields.map((field) =>
         'name' in field && field.name === 'role'
           ? ({
@@ -162,23 +174,14 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     invitations: hideFromStaff,
   },
   adminInvitations: {
-    collectionOverrides: invitacionesSinImpersonar,
+    collectionOverrides: invitacionesPendientes,
     // Sin serverURL en payload.config, el default del plugin genera una ruta
     // relativa (/admin/signup?token=...) y el enlace llega roto en el correo
-    generateInviteUrl: ({ token }) =>
-      `${getServerSideURL()}/admin/signup?token=${token}&redirect=%2Fforo`,
-    // Requerido por el botón "Invite" del panel de admin: sin esta función el
-    // endpoint del plugin responde 500 ("Send invite email function not found")
+    generateInviteUrl: ({ token }) => urlDeInvitacion(getServerSideURL(), token),
+    // Requerido por el endpoint de invitaciones del plugin, aunque el panel ya no lo use
     sendInviteEmail: async ({ payload, email, url }) => {
       try {
-        await payload.sendEmail({
-          to: email,
-          subject: 'Invitación al portal de PAFE',
-          html: `<p>Hola,</p>
-           <p>Has recibido una invitación para unirte al portal de PAFE. Pulsa el siguiente enlace para crear tu cuenta:</p>
-           <p><a href="${url}">Aceptar invitación</a></p>
-           <p>Si no esperabas este correo, puedes ignorarlo.</p>`,
-        })
+        await payload.sendEmail({ to: email, ...correoDeInvitacion(url) })
         return { success: true }
       } catch (error) {
         return {
