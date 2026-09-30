@@ -4,7 +4,9 @@ import { notFound, redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { isActiveUser } from '@/core/permissions'
 import { nombreDelArea } from '@/modules/tablon/domain/areas'
+import { moderacionPara } from '@/modules/tablon/domain/moderacion'
 import { noticiaDelTablon } from '@/modules/tablon/services'
+import { ModeracionDeNoticia } from '@/modules/tablon/ui/ModeracionDeNoticia'
 import { Respuestas } from '@/modules/tablon/ui/Respuestas'
 import type { CodigoIdioma } from '@/core/localization'
 import { fechaLarga } from '@/modules/calendario/domain/fechas'
@@ -50,8 +52,14 @@ export default async function NoticiaPage({ params }: Props) {
         {area && <Badge variant="outline">{area}</Badge>}
         <span>{fecha(noticia.publishedAt, idioma)}</span>
         {noticia.sourceAuthor && <span>· {noticia.sourceAuthor}</span>}
+        {noticia.archivada && <Badge variant="secondary">{t.foroArchivadaAviso}</Badge>}
       </div>
-      <h1 className="mb-6 text-3xl font-semibold">{noticia.title}</h1>
+      <h1 className="mb-4 text-3xl font-semibold">{noticia.title}</h1>
+      <ModeracionDeNoticia
+        noticiaId={Number(noticia.id)}
+        archivada={Boolean(noticia.archivada)}
+        puede={moderacionPara(user)}
+      />
       {noticia.body && (
         <div className="prose max-w-none">
           <RichText data={noticia.body} />
