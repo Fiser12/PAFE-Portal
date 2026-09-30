@@ -1,19 +1,10 @@
-import { hashPassword } from 'better-auth/crypto'
 import type { Payload } from 'payload'
-import { ROLE_ADMIN, ROLE_CATALOGO, ROLE_FAMILIA, ROLE_TABLON, ROLE_USUARIOS } from '@/core/permissions'
 // Imports estáticos: el bundler los incluye en el build, así el seed funciona
 // también en serverless (fs.readFileSync no encuentra los archivos en Vercel)
 import librosJson from './data/libros.json'
 import juegosJson from './data/juegos.json'
 import programasJson from './data/programas.json'
 import cortosJson from './data/cortos.json'
-import {
-  computeDueDate,
-  madridDateOf,
-  tuesdayOfWeek,
-} from '@/modules/catalog/domain/loan-terms'
-
-const PASSWORD = 'test1234!'
 
 // Totales esperados del catálogo, derivados de los datos: el guard del seed
 // compara contra esto para saber si ya está todo sembrado (o completar lo
@@ -134,46 +125,6 @@ interface CortoData {
 }
 
 export async function seedMockData(payload: Payload): Promise<void> {
-  const now = new Date().toISOString()
-
-  // --- Usuarios con credenciales (PRIMERO, para poder entrar ya) ------------
-  // hashPassword de better-auth/crypto: mismo algoritmo que usa el login,
-  // y disponible en onInit (payload.betterAuth aún no lo está).
-  const passwordHash = await hashPassword(PASSWORD)
-
-  const createUser = async (email: string, name: string, role: string[]): Promise<number> => {
-    const ex = await payload.find({
-      collection: 'users',
-      where: { email: { equals: email } },
-      limit: 1,
-    })
-    if (ex.totalDocs > 0) return ex.docs[0]!.id as number
-    const user = await payload.create({
-      collection: 'users',
-      data: { email, name, role, emailVerified: true } as never,
-    })
-    await payload.create({
-      collection: 'accounts',
-      data: {
-        accountId: String(user.id),
-        providerId: 'credential',
-        user: user.id,
-        password: passwordHash,
-        createdAt: now,
-        updatedAt: now,
-      } as never,
-    })
-    return user.id as number
-  }
-
-  await createUser('admin@test.local', 'Admin Prueba', [ROLE_ADMIN])
-  await createUser('catalogo@test.local', 'Catálogo Prueba', [ROLE_CATALOGO])
-  await createUser('altas@test.local', 'Altas Prueba', [ROLE_USUARIOS])
-  await createUser('tablon@test.local', 'Tablón Prueba', [ROLE_TABLON])
-  const familiaId = await createUser('familia@test.local', 'Familia Prueba', [ROLE_FAMILIA])
-  await createUser('sinrol@test.local', 'Sin Rol Prueba', [])
-  payload.logger.info(`[seed] usuarios de prueba listos (contraseña: ${PASSWORD})`)
-
   // --- ¿Catálogo real ya sembrado? ------------------------------------------
   const realTax = await payload.find({
     collection: 'taxonomy',
@@ -228,7 +179,7 @@ export async function seedMockData(payload: Payload): Promise<void> {
     slugs.map((s) => taxIds[s]).filter((id): id is number => typeof id === 'number')
 
   // --- Grupos (name es único → upsert) --------------------------------------
-  const grupoId = await upsert(payload, 'groups', { name: 'Grupo A' }, {
+  await upsert(payload, 'groups', { name: 'Grupo A' }, {
     name: 'Grupo A',
     description: 'Grupo de prueba',
   })
@@ -297,86 +248,7 @@ export async function seedMockData(payload: Payload): Promise<void> {
   }
   payload.logger.info(`[seed] ${externalIds.length}/${cortos.length} cortometrajes`)
 
-  // --- Caso, tareas y completación (fixtures de prueba) ---------------------
-  const existingCase = await payload.find({
-    collection: 'cases',
-    where: { title: { equals: 'Caso de seguimiento — Familia Prueba' } },
-    limit: 1,
-  })
-  if (existingCase.totalDocs === 0) {
-    const caseDoc = await payload.create({
-      collection: 'cases',
-      data: { title: 'Caso de seguimiento — Familia Prueba', notes: 'Caso de ejemplo.' } as never,
-    })
-    await payload.update({
-      collection: 'users',
-      id: familiaId,
-      data: { assignedCases: [caseDoc.id], groups: [grupoId] } as never,
-    })
-
-    const task1 = await payload.create({
-      collection: 'tasks',
-      data: {
-        title: 'Completar cuestionario inicial',
-        case: [caseDoc.id],
-        rrule: { rrule: 'FREQ=WEEKLY;INTERVAL=1', datePickerInitialDate: now },
-        resources: externalIds[0] ? [{ relationTo: 'external-resources', value: externalIds[0] }] : [],
-      } as never,
-    })
-    await payload.create({
-      collection: 'tasks',
-      data: {
-        title: 'Ver un cortometraje en familia',
-        case: [caseDoc.id],
-        rrule: { rrule: 'FREQ=DAILY;INTERVAL=1', datePickerInitialDate: now },
-        resources: externalIds[1] ? [{ relationTo: 'external-resources', value: externalIds[1] }] : [],
-      } as never,
-    })
-
-    const midnight = new Date()
-    midnight.setHours(0, 0, 0, 0)
-    await payload.create({
-      collection: 'tasks-completed',
-      data: { task: task1.id, user: familiaId, completedOn: midnight.toISOString() } as never,
-    })
-  }
-
-  // --- Reservas de la familia (para probar el flujo de préstamo) ------------
-  // Dos: una pendiente de recoger y un préstamo en curso. Es el cupo máximo.
-  const existingReservations = await payload.count({ collection: 'reservation' })
-  if (existingReservations.totalDocs === 0) {
-    const today = madridDateOf(new Date())
-    const pickupDay = tuesdayOfWeek(today)
-    const [pendingItem, activeItem] = catalogIds
-
-    if (pendingItem) {
-      await payload.create({
-        collection: 'reservation',
-        data: {
-          item: pendingItem,
-          user: familiaId,
-          status: 'reservada',
-          reservationDate: now,
-        },
-      })
-    }
-
-    if (activeItem) {
-      await payload.create({
-        collection: 'reservation',
-        data: {
-          item: activeItem,
-          user: familiaId,
-          status: 'activa',
-          reservationDate: now,
-          pickupDate: `${pickupDay}T12:00:00.000Z`,
-          dueDate: `${computeDueDate(pickupDay, { penalized: false })}T12:00:00.000Z`,
-        },
-      })
-    }
-  }
-
   payload.logger.info(
-    `[seed] Cargados ${catalogIds.length} reservables y ${externalIds.length} cortos. Contraseña: ${PASSWORD}`,
+    `[seed] Cargados ${catalogIds.length} reservables y ${externalIds.length} cortos`,
   )
 }

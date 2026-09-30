@@ -19,6 +19,7 @@ import {
   cerrarImpersonacionesAlBorrar,
   cerrarImpersonacionesAlPerderElRol,
 } from './hooks/cerrarImpersonaciones'
+import { limpiarAntesDeBorrar } from './hooks/limpiarAntesDeBorrar'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
@@ -42,7 +43,7 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeChange: [preventPrivilegeEscalation],
     afterChange: [cerrarImpersonacionesAlPerderElRol],
-    beforeDelete: [cerrarImpersonacionesAlBorrar],
+    beforeDelete: [cerrarImpersonacionesAlBorrar, limpiarAntesDeBorrar],
   },
   admin: {
     hidden: hiddenUnlessUsuarios,
