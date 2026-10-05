@@ -21,6 +21,7 @@ import {
 } from './hooks/cerrarImpersonaciones'
 import { limpiarAntesDeBorrar } from './hooks/limpiarAntesDeBorrar'
 import { preventPrivilegeEscalation } from './hooks/preventPrivilegeEscalation'
+import { cerrarSuInvitacion, rolDeSuInvitacion } from './hooks/rolDeSuInvitacion'
 
 const staffFieldAccess: FieldAccess = ({ req }) => isStaff(req.user)
 const superadminFieldAccess: FieldAccess = ({ req }) => isSuperAdmin(req.user)
@@ -41,8 +42,8 @@ export const Users: CollectionConfig = {
     update: usuariosOrSelfAccess,
   },
   hooks: {
-    beforeChange: [preventPrivilegeEscalation],
-    afterChange: [cerrarImpersonacionesAlPerderElRol],
+    beforeChange: [preventPrivilegeEscalation, rolDeSuInvitacion],
+    afterChange: [cerrarImpersonacionesAlPerderElRol, cerrarSuInvitacion],
     beforeDelete: [cerrarImpersonacionesAlBorrar, limpiarAntesDeBorrar],
   },
   admin: {

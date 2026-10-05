@@ -17,6 +17,12 @@ export interface CorreosLeidos {
 
 const CORREO = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/
 
+export const normalizarCorreo = (correo: string) => correo.trim().toLowerCase()
+
+/** Las invitaciones de antes de guardar el correo valen para cualquiera */
+export const valeParaElCorreo = (invitacion: { email?: string | null }, correo: string) =>
+  !invitacion.email || normalizarCorreo(invitacion.email) === normalizarCorreo(correo)
+
 /** «Nombre <correo>» es como sale una dirección copiada de una libreta */
 const trozos = (texto: string): string[] =>
   texto
@@ -32,7 +38,7 @@ export const leerCorreos = (texto: string): CorreosLeidos => {
   const validos: string[] = []
   const invalidos: string[] = []
   for (const trozo of trozos(texto)) {
-    const normal = trozo.toLowerCase()
+    const normal = normalizarCorreo(trozo)
     if (!CORREO.test(normal)) {
       if (!invalidos.includes(trozo)) invalidos.push(trozo)
     } else if (!validos.includes(normal)) {
@@ -50,5 +56,6 @@ export const correoDeInvitacion = (url: string) => ({
   html: `<p>Hola,</p>
    <p>Has recibido una invitación para unirte al portal de PAFE. Pulsa el siguiente enlace para crear tu cuenta:</p>
    <p><a href="${url}">Aceptar invitación</a></p>
+   <p>Crea la cuenta con este mismo correo, o entra con Google si es una cuenta de Google.</p>
    <p>Si no esperabas este correo, puedes ignorarlo.</p>`,
 })

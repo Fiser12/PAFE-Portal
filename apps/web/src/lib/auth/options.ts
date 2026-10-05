@@ -17,6 +17,7 @@ import {
   ROLES_INVITABLES,
   correoDeInvitacion,
   urlDeInvitacion,
+  valeParaElCorreo,
 } from '@/modules/invitaciones/domain/invitacion'
 import { getServerSideURL } from '@/utilities/getURL'
 import { impersonar } from './impersonar'
@@ -101,8 +102,9 @@ const sendAuthEmail = async (to: string, subject: string, html: string) => {
 /**
  * Solo se permite el alta con contraseña si llega un token de invitación
  * válido (el formulario de /admin/signup lo manda como query
- * adminInviteToken); sin él, el registro queda cerrado. Réplica del
- * middleware de requireAdminInviteForSignUp del plugin, que no se puede
+ * adminInviteToken) y con el correo al que se mandó, para que una errata no
+ * deje la cuenta en un buzón que no existe; sin él, el registro queda cerrado.
+ * Réplica del middleware de requireAdminInviteForSignUp del plugin, que no se puede
  * activar directamente: esa opción además desactiva el alta implícita con
  * Google, que aquí es deliberada.
  *
@@ -121,15 +123,21 @@ const soloConInvitacion = (): BetterAuthPlugin => ({
             ctx.headers?.get('x-admin-invite-token') ??
             ctx.query?.adminInviteToken ??
             ctx.body?.adminInviteToken
-          const isValidInvitation =
-            typeof token === 'string' &&
-            token.length > 0 &&
-            (await ctx.context.adapter.count({
-              model: 'admin-invitations',
-              where: [{ field: 'token', operator: 'eq', value: token }],
-            })) > 0
-          if (!isValidInvitation) {
+          const invitacion =
+            typeof token === 'string' && token.length > 0
+              ? await ctx.context.adapter.findOne<{ email?: string | null }>({
+                  model: 'admin-invitations',
+                  where: [{ field: 'token', operator: 'eq', value: token }],
+                })
+              : null
+          if (!invitacion) {
             throw new APIError('UNAUTHORIZED', { message: 'signup disabled' })
+          }
+          if (!valeParaElCorreo(invitacion, String(ctx.body?.email ?? ''))) {
+            throw new APIError('FORBIDDEN', {
+              message:
+                'Este enlace es para otro correo: escribe el correo en el que recibiste la invitación',
+            })
           }
         }),
       },

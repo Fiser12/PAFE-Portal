@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { leerCorreos, puedeInvitar } from '@/modules/invitaciones/domain/invitacion'
+import {
+  leerCorreos,
+  puedeInvitar,
+  valeParaElCorreo,
+} from '@/modules/invitaciones/domain/invitacion'
 
 describe('la lista de correos que se pega', () => {
   it('acepta uno por línea, separados por comas, por punto y coma o por espacios', () => {
@@ -62,5 +66,27 @@ describe('quién invita y con qué rol', () => {
     expect(puedeInvitar({ email: 'f@pafe.test', role: ['familia'] }, 'familia')).toBe(false)
     expect(puedeInvitar({ email: 'u@pafe.test', role: ['admin-users'] }, 'familia')).toBe(false)
     expect(puedeInvitar(null, 'familia')).toBe(false)
+  })
+})
+
+describe('para qué correo vale una invitación', () => {
+  const para = (email: string | null) => ({ email })
+
+  it('para el correo al que se mandó', () => {
+    expect(valeParaElCorreo(para('maider@pafe.eus'), 'maider@pafe.eus')).toBe(true)
+  })
+
+  it('aunque se escriba con mayúsculas o espacios', () => {
+    expect(valeParaElCorreo(para('maider@pafe.eus'), '  Maider@PAFE.eus ')).toBe(true)
+  })
+
+  it('no para otro, por ejemplo con una errata', () => {
+    expect(valeParaElCorreo(para('m.cardenas.pafp@gmail.com'), 'm.cardenas.pafp@fmail.com')).toBe(
+      false,
+    )
+  })
+
+  it('una invitación antigua, sin correo, vale para cualquiera', () => {
+    expect(valeParaElCorreo(para(null), 'quien-sea@pafe.eus')).toBe(true)
   })
 })
