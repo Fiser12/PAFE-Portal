@@ -142,6 +142,79 @@ describe('lo que no se envía', () => {
   })
 })
 
+const conGoogle = async (email: string) => {
+  const contexto = await payload.betterAuth.$context
+  return contexto.internalAdapter.createOAuthUser(
+    { email, name: 'Con Google', emailVerified: true },
+    { providerId: 'google', accountId: `google-${email}` },
+  )
+}
+
+describe('quien entra con Google desde «Entrar», sin pasar por el enlace', () => {
+  it('con el correo invitado se queda con el rol de su invitación', async () => {
+    const email = correo('google')
+    await invitar(email, 'profesional')
+    await conGoogle(email)
+    expect(await rolesDe(email)).toEqual(['profesional'])
+  })
+
+  it('y su invitación deja de estar pendiente', async () => {
+    const email = correo('google-pendiente')
+    await invitar(email)
+    await conGoogle(email)
+    expect((await pendientesDe(email)).totalDocs).toBe(0)
+  })
+
+  it('aunque Google traiga el correo con mayúsculas', async () => {
+    const email = correo('google-mayusculas')
+    await invitar(email)
+    await conGoogle(email.toUpperCase())
+    expect(await rolesDe(email)).toEqual(['familia'])
+  })
+
+  it('sin invitación entra sin rol, como hasta ahora', async () => {
+    const email = correo('google-sin-invitacion')
+    await conGoogle(email)
+    expect(await rolesDe(email)).toEqual([])
+  })
+
+  it('no se lleva la invitación de otro correo', async () => {
+    const invitada = correo('google-invitada')
+    const otra = correo('google-otra')
+    await invitar(invitada, 'profesional')
+    await conGoogle(otra)
+    expect(await rolesDe(otra)).toEqual([])
+    expect((await pendientesDe(invitada)).totalDocs).toBe(1)
+  })
+})
+
+describe('el enlace de invitación vale solo para el correo invitado', () => {
+  it('con otro correo, por ejemplo con una errata, no se crea la cuenta', async () => {
+    const invitada = correo('invitada')
+    const errata = invitada.replace('@pafe.test', '@pafe.tset')
+    await invitar(invitada)
+    await expect(darseDeAlta(errata, tokenDe(invitada)!)).rejects.toMatchObject({
+      statusCode: 403,
+      message: expect.stringMatching(/correo en el que recibiste la invitación/),
+    })
+    expect(await rolesDe(errata)).toBeUndefined()
+    expect((await pendientesDe(invitada)).totalDocs).toBe(1)
+  })
+
+  it('el mismo correo escrito con mayúsculas sí vale', async () => {
+    const email = correo('mayusculas')
+    await invitar(email, 'profesional')
+    expect((await darseDeAlta(email.toUpperCase(), tokenDe(email)!)).status).toBe(200)
+    expect(await rolesDe(email)).toEqual(['profesional'])
+  })
+
+  it('el correo de la invitación pide crear la cuenta con ese mismo correo', async () => {
+    const email = correo('aviso')
+    await invitar(email)
+    expect(bodyOf(emailsTo(email)[0]!)).toMatch(/este mismo correo/)
+  })
+})
+
 describe('quién puede invitar', () => {
   it('quien no es admin no invita', async () => {
     for (const rol of [['familia'], ['admin-users'], ['profesional']] as const) {
