@@ -1,8 +1,7 @@
-import { equipoTecnicoAccess } from '@/core/technical-access'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { searchFields } from './fieldOverrides'
 import { beforeSyncWithSearch } from './beforeSync'
-import { hiddenUnlessSuperadmin } from '@/core/permissions'
+import { hiddenUnlessSuperadmin, isActiveUserAccess } from '@/core/permissions'
 import { COLLECTION_SLUG_CATALOG_ITEM } from '@/modules/catalog/collections/CatalogItem'
 import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_EXTERNAL_RESOURCES } from '@/core/collections-slugs'
 
@@ -18,7 +17,7 @@ export const plugin = searchPlugin({
     access: {
       // El índice incluye materiales digitales (solo para usuarios con rol),
       // así que la búsqueda global exige rol
-      read: equipoTecnicoAccess,
+      read: isActiveUserAccess,
     },
     admin: {
       hidden: hiddenUnlessSuperadmin,

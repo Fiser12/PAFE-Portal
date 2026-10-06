@@ -107,7 +107,7 @@ export const Users: CollectionConfig = {
       hasMany: true,
       admin: {
         description:
-          'lantalde-teknikoa permite acceder al equipo técnico, Catálogo y Wiki. Requiere además un rol activo.',
+          'lantalde-teknikoa da acceso a la Wiki. Requiere además un rol activo.',
       },
     },
   ],

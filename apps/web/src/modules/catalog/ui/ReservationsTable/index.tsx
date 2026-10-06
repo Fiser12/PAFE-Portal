@@ -36,7 +36,7 @@ const fetcher = async (key: [string, number | string]) => {
 
 export function ReservationsTable({ itemId }: Props) {
   const { idioma, t } = useIdioma()
-  const { user, tecnico } = useUser()
+  const { user } = useUser()
   const staff = isStaff(user)
   const router = useRouter()
 
@@ -104,7 +104,7 @@ export function ReservationsTable({ itemId }: Props) {
 
   const handleCardClick = (reservation: Reservation) => {
     // Solo navegar al libro si no es una vista de itemId específico
-    if (!itemId && tecnico && typeof reservation.item === 'object') {
+    if (!itemId && typeof reservation.item === 'object') {
       router.push(`/catalog/${reservation.item.id}`)
     }
   }
@@ -117,9 +117,7 @@ export function ReservationsTable({ itemId }: Props) {
         {reservations.map((reservation) => (
           <Card
             key={reservation.id}
-            className={
-              !itemId && tecnico ? 'cursor-pointer transition-shadow hover:shadow-md' : undefined
-            }
+            className={!itemId ? 'cursor-pointer transition-shadow hover:shadow-md' : undefined}
             onClick={() => handleCardClick(reservation)}
           >
             <CardContent className="space-y-3 p-4 sm:p-6">
@@ -128,12 +126,6 @@ export function ReservationsTable({ itemId }: Props) {
                   <h4 className="font-semibold leading-snug">
                     {itemId ? (
                       getUserEmail(reservation.user)
-                    ) : !tecnico ? (
-                      typeof reservation.item === 'object' ? (
-                        reservation.item.title
-                      ) : (
-                        t.cargando
-                      )
                     ) : (
                       <Link
                         href={`/catalog/${typeof reservation.item === 'object' ? reservation.item.id : reservation.item}`}

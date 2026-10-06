@@ -28,5 +28,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/wiki/:path*', '/catalog/:path*'],
+  matcher: ['/wiki/:path*'],
 }

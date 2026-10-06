@@ -1,5 +1,5 @@
-import { equipoTecnicoAccess, gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
-import { hiddenUnlessCatalogo } from '@/core/permissions'
+import { gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
+import { hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -12,10 +12,10 @@ export const CatalogItem: CollectionConfig = {
     plural: 'Catálogo reservable',
   },
   access: {
-    // Durante el lanzamiento, la lectura se limita a los psicólogos y Administración
+    // Lo ve toda persona con rol; lo gestiona el equipo técnico
     create: gestionarCatalogoTecnicoAccess,
     delete: gestionarCatalogoTecnicoAccess,
-    read: equipoTecnicoAccess,
+    read: isActiveUserAccess,
     update: gestionarCatalogoTecnicoAccess,
   },
   admin: {

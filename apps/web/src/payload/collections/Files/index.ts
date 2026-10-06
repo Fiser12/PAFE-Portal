@@ -1,6 +1,6 @@
-import { equipoTecnicoAccess, gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
+import { gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
 import { COLLECTION_SLUG_FILES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
-import { hiddenUnlessCatalogo } from '@/core/permissions'
+import { hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
 import { addContentHashToFile } from '@/payload/hooks/addContentHashToFileHook'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
@@ -19,7 +19,7 @@ export const Files: CollectionConfig = {
     create: gestionarCatalogoTecnicoAccess,
     delete: gestionarCatalogoTecnicoAccess,
     // Contenido del catálogo digital: solo usuarios con rol
-    read: equipoTecnicoAccess,
+    read: isActiveUserAccess,
     update: gestionarCatalogoTecnicoAccess,
   },
   admin: {
