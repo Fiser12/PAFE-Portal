@@ -1,15 +1,11 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { Badge } from '@/components/ui/badge'
 import { isActiveUser } from '@/core/permissions'
-import { nombreDelArea } from '@/modules/tablon/domain/areas'
 import { moderacionPara } from '@/modules/tablon/domain/moderacion'
 import { noticiaDelTablon } from '@/modules/tablon/services'
 import { ModeracionDeNoticia } from '@/modules/tablon/ui/ModeracionDeNoticia'
+import { CabeceraDeNoticia, CuerpoDeNoticia } from '@/modules/tablon/ui/PresentacionDeNoticia'
 import { Respuestas } from '@/modules/tablon/ui/Respuestas'
-import type { CodigoIdioma } from '@/core/localization'
-import { fechaLarga } from '@/modules/calendario/domain/fechas'
 import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { textosDe } from '@/core/textos'
@@ -17,9 +13,6 @@ import { textosDe } from '@/core/textos'
 interface Props {
   params: Promise<{ id: string }>
 }
-
-const fecha = (iso: string | null | undefined, idioma: CodigoIdioma) =>
-  iso ? fechaLarga(new Date(iso), idioma) : ''
 
 export default async function NoticiaPage({ params }: Props) {
   const { payload, user } = await getSessionUser()
@@ -38,8 +31,6 @@ export default async function NoticiaPage({ params }: Props) {
 
   if (!noticia) return notFound()
 
-  const area = nombreDelArea(noticia.area)
-
   return (
     <article className="container mx-auto max-w-3xl px-4 py-8">
       <Link
@@ -48,23 +39,14 @@ export default async function NoticiaPage({ params }: Props) {
       >
         ← {t.foroVolver}
       </Link>
-      <div className="mt-4 mb-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-        {area && <Badge variant="outline">{area}</Badge>}
-        <span>{fecha(noticia.publishedAt, idioma)}</span>
-        {noticia.sourceAuthor && <span>· {noticia.sourceAuthor}</span>}
-        {noticia.archivada && <Badge variant="secondary">{t.foroArchivadaAviso}</Badge>}
-      </div>
-      <h1 className="mb-4 text-3xl font-semibold">{noticia.title}</h1>
+      <CabeceraDeNoticia noticia={noticia} idioma={idioma} />
       <ModeracionDeNoticia
         noticiaId={Number(noticia.id)}
+        area={noticia.area}
         archivada={Boolean(noticia.archivada)}
         puede={moderacionPara(user)}
       />
-      {noticia.body && (
-        <div className="prose max-w-none">
-          <RichText data={noticia.body} />
-        </div>
-      )}
+      <CuerpoDeNoticia body={noticia.body} />
       <Respuestas
         noticiaId={Number(noticia.id)}
         usuarioId={Number(user.id)}

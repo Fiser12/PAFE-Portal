@@ -9,8 +9,10 @@ import { isActiveUser, isAdmin } from '@/core/permissions'
 import { rellenar, textosDe } from '@/core/textos'
 import { fechaLarga } from '@/modules/calendario/domain/fechas'
 import { aspectoDelArea, nombreDelArea } from '@/modules/tablon/domain/areas'
+import { moderacionPara } from '@/modules/tablon/domain/moderacion'
 import { temasDelForo } from '@/modules/tablon/services'
 import { DistintivoDelArea } from '@/modules/tablon/ui/DistintivoDelArea'
+import { CasillaDeTema, ModeracionEnLista } from '@/modules/tablon/ui/ModeracionEnLista'
 import { getIdioma } from '@/utilities/getIdioma'
 import { getSessionUser } from '@/utilities/getSessionUser'
 import { cn } from '@/utilities/ui'
@@ -153,40 +155,54 @@ export default async function ForoPage({ searchParams }: Props) {
               <p className="text-muted-foreground">{t.foroVacio}</p>
             </div>
           ) : (
-            <ul className="divide-y overflow-hidden rounded-xl border bg-card">
-              {resultado.docs.map((noticia) => (
-                <li key={noticia.id}>
-                  <Link
-                    href={`/noticias/${noticia.id}`}
-                    className="group flex items-start gap-4 border-l-4 p-4 transition-colors hover:bg-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
+            <ModeracionEnLista
+              ids={resultado.docs.map((noticia) => Number(noticia.id))}
+              area={area}
+              archivadas={archivadas}
+              puede={moderacionPara(user)}
+            >
+              <ul className="divide-y overflow-hidden rounded-xl border bg-card">
+                {resultado.docs.map((noticia) => (
+                  <li
+                    key={noticia.id}
+                    className="flex border-l-4"
                     style={{ borderLeftColor: aspectoDelArea(noticia.area).color }}
                   >
-                    <DistintivoDelArea area={noticia.area} className="mt-0.5 hidden sm:inline-flex" />
-                    <div className="min-w-0 flex-1">
-                      <h3 className="break-words font-semibold leading-relaxed group-hover:text-primary">
-                        {noticia.title}
-                      </h3>
-                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                        <Badge variant="outline">{nombreDelArea(noticia.area)}</Badge>
-                        {noticia.pinned && (
-                          <span className="inline-flex items-center gap-1 font-medium text-primary">
-                            <Pin className="h-3.5 w-3.5" aria-hidden="true" />
-                            {t.tablonFijada}
-                          </span>
-                        )}
-                        <time dateTime={noticia.publishedAt}>
-                          {fechaLarga(new Date(noticia.publishedAt), idioma)}
-                        </time>
+                    <CasillaDeTema id={Number(noticia.id)} titulo={noticia.title} />
+                    <Link
+                      href={`/noticias/${noticia.id}`}
+                      className="group flex min-w-0 flex-1 items-start gap-4 p-4 transition-colors hover:bg-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
+                    >
+                      <DistintivoDelArea
+                        area={noticia.area}
+                        className="mt-0.5 hidden sm:inline-flex"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <h3 className="break-words font-semibold leading-relaxed group-hover:text-primary">
+                          {noticia.title}
+                        </h3>
+                        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                          <Badge variant="outline">{nombreDelArea(noticia.area)}</Badge>
+                          {noticia.pinned && (
+                            <span className="inline-flex items-center gap-1 font-medium text-primary">
+                              <Pin className="h-3.5 w-3.5" aria-hidden="true" />
+                              {t.tablonFijada}
+                            </span>
+                          )}
+                          <time dateTime={noticia.publishedAt}>
+                            {fechaLarga(new Date(noticia.publishedAt), idioma)}
+                          </time>
+                        </div>
                       </div>
-                    </div>
-                    <ArrowRight
-                      className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                      <ArrowRight
+                        className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </ModeracionEnLista>
           )}
 
           {resultado.totalPages > 1 && (

@@ -7,6 +7,7 @@ import { avisarAlPublicar } from './hooks/avisarAlPublicar'
 import { borrarSusRespuestas } from './hooks/borrarSusRespuestas'
 import { leerNoticia } from '../access'
 import { camposDeOrigen } from '../origen'
+import { urlDeVistaPrevia } from '../../domain/vistaPrevia'
 
 /**
  * Entradas del tablón, que sustituye al foro. Se mantiene la estructura de
@@ -35,6 +36,9 @@ export const Noticia: CollectionConfig = {
     hidden: hiddenUnlessTablon,
     defaultColumns: ['title', 'area', 'publishedAt', 'pinned'],
     useAsTitle: 'title',
+    livePreview: {
+      url: ({ data, locale }) => urlDeVistaPrevia({ id: data?.id, locale: locale.code }),
+    },
   },
   fields: [
     ...camposDeOrigen('sourceTopicId'),

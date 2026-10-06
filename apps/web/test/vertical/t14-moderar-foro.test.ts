@@ -20,16 +20,24 @@ beforeAll(async () => {
 describe('qué puede hacer cada cual con una noticia desde el foro', () => {
   const conRol = (...role: string[]) => ({ id: 1, email: 'x@pafe.test', role })
 
-  it('administración archiva y edita', () => {
-    expect(moderacionPara(conRol('admin'))).toEqual({ archivar: true, editar: true })
+  it('administración archiva, edita y mueve de área', () => {
+    expect(moderacionPara(conRol('admin'))).toEqual({ archivar: true, editar: true, mover: true })
   })
 
   it('un psicólogo archiva, pero no edita desde el panel, que no es suyo', () => {
-    expect(moderacionPara(conRol('profesional'))).toEqual({ archivar: true, editar: false })
+    expect(moderacionPara(conRol('profesional'))).toEqual({
+      archivar: true,
+      editar: false,
+      mover: false,
+    })
   })
 
   it('una familia no modera nada', () => {
-    expect(moderacionPara(conRol('familia'))).toEqual({ archivar: false, editar: false })
+    expect(moderacionPara(conRol('familia'))).toEqual({
+      archivar: false,
+      editar: false,
+      mover: false,
+    })
   })
 })
 
