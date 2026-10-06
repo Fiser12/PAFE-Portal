@@ -556,12 +556,15 @@ export const moderarNoticias = async ({
   const seleccion = idsSeleccionados(ids)
   if (!seleccion.length) return 0
 
-  const { docs } = await payload.update({
+  const { docs, errors } = await payload.update({
     collection: COLLECTION_SLUG_NOTICIA,
     where: { id: { in: seleccion } },
     data: cambio.data,
     overrideAccess: true,
     context: { [SALTAR_AVISO]: true },
   })
+  if (errors.length) {
+    throw new Error(`No se pudieron cambiar las noticias ${errors.map((e) => e.id).join(', ')}`)
+  }
   return docs.length
 }

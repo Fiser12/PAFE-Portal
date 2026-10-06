@@ -173,3 +173,21 @@ describe('lo que llega del navegador', () => {
     ).toBe(1)
   })
 })
+
+describe('si alguna no se puede cambiar', () => {
+  it('no se da por hecho: se avisa del fallo', async () => {
+    const conFallos = {
+      update: async () => ({ docs: [{ id: 1 }], errors: [{ id: 2, message: 'falló' }] }),
+    } as unknown as Payload
+
+    await expect(
+      moderarNoticias({
+        payload: conFallos,
+        user: alberto,
+        ids: [1, 2],
+        accion: { tipo: 'archivar' },
+      }),
+    ).rejects.toThrow('2')
+  })
+})
+
