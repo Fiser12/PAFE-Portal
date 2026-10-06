@@ -30,9 +30,11 @@ export const moderarEnBloque = async (
   if (!user) return { ok: false }
   try {
     await moderarNoticias({ payload, user, ids, accion })
-    revalidatePath('/foro')
     return { ok: true }
-  } catch {
+  } catch (error) {
+    console.error('[foro] No se pudo moderar en bloque', error)
     return { ok: false }
+  } finally {
+    revalidatePath('/foro')
   }
 }

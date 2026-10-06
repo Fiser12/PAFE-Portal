@@ -55,7 +55,6 @@ export function ModeracionEnLista({ ids, area, archivadas, puede, children }: Pr
     empezar(async () => {
       const { ok } = await moderarEnBloque([...elegidas], accion)
       setFallo(!ok)
-      if (!ok) return
       setElegidas(new Set())
       router.refresh()
     })
