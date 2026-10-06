@@ -165,13 +165,13 @@ export default async function ForoPage({ searchParams }: Props) {
                 {resultado.docs.map((noticia) => (
                   <li
                     key={noticia.id}
-                    className="flex border-l-4"
+                    className="flex border-l-4 transition-colors hover:bg-accent/50"
                     style={{ borderLeftColor: aspectoDelArea(noticia.area).color }}
                   >
                     <CasillaDeTema id={Number(noticia.id)} titulo={noticia.title} />
                     <Link
                       href={`/noticias/${noticia.id}`}
-                      className="group flex min-w-0 flex-1 items-start gap-4 p-4 transition-colors hover:bg-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
+                      className="group flex min-w-0 flex-1 items-start gap-4 p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary sm:p-5"
                     >
                       <DistintivoDelArea
                         area={noticia.area}
