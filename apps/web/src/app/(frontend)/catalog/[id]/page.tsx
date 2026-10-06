@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { esEquipoTecnico } from '@/core/technical-access'
+import { isActiveUser } from '@/core/permissions'
 import { CatalogItemClient } from '@/modules/catalog/ui/DetailPage'
 import { fichaDeLaWiki } from '@/modules/catalog/domain/wikiFichas'
 import { getIdioma } from '@/utilities/getIdioma'
@@ -12,7 +12,7 @@ interface Props {
 
 export default async function CatalogItemPage({ params }: Props) {
   const { payload, user } = await getSessionUser()
-  if (!user || !(await esEquipoTecnico(payload, user))) redirect('/login')
+  if (!user || !isActiveUser(user)) redirect('/login')
 
   const catalogItem = await payload.findByID({
     collection: 'catalog-item',

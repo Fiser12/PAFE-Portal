@@ -179,7 +179,7 @@ describe('lo que cada rol puede hacer de verdad', () => {
   })
 })
 
-describe('el catálogo es material interno', () => {
+describe('el catálogo es de quien tiene rol', () => {
   const busca = (user?: Awaited<ReturnType<typeof createUser>>) =>
     payload.find({ collection: 'catalog-item', user, overrideAccess: false })
 
@@ -194,17 +194,17 @@ describe('el catálogo es material interno', () => {
     await expect(busca(sinRol)).rejects.toThrow()
   })
 
-  it('una familia no puede acceder al catálogo durante el lanzamiento', async () => {
+  it('una familia ve el catálogo', async () => {
     await createItem(payload)
     const familia = await createUser(payload, ['familia'], 'Familia Test')
-    await expect(busca(familia)).rejects.toThrow()
+    expect((await busca(familia)).totalDocs).toBeGreaterThan(0)
   })
 
-  it('el menú oculta el catálogo a las familias', () => {
+  it('el menú enseña el catálogo a las familias y lo oculta a quien no tiene rol', () => {
     const enlaces = (user: Parameters<typeof getNavItems>[0]) =>
       getNavItems(user, textosDe('es')).map((i) => i.href)
     expect(enlaces(null)).not.toContain('/catalog')
     expect(enlaces({ role: [] } as never)).not.toContain('/catalog')
-    expect(enlaces({ role: ['familia'] } as never)).not.toContain('/catalog')
+    expect(enlaces({ role: ['familia'] } as never)).toContain('/catalog')
   })
 })

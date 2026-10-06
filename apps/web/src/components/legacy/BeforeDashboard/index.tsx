@@ -36,11 +36,11 @@ export default function BeforeDashboard() {
       <h3>Permisos y grupos</h3>
       <ul>
         <li>
-          <strong>Familia:</strong> Calendario, Foro, Moodle y Área personal. Sin Catálogo, Wiki ni
+          <strong>Familia:</strong> Calendario, Foro, Catálogo, Moodle y Área personal. Sin Wiki ni
           Administración.
         </li>
         <li>
-          <strong>Psicólogo/a (equipo técnico):</strong> lo anterior más Catálogo, Wiki y el área
+          <strong>Psicólogo/a (equipo técnico):</strong> lo anterior más Wiki y el área
           LANTALDE TEKNIKOA del foro. Sin acceso al panel de Administración.
         </li>
         <li>

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
-import { middleware } from '@/middleware'
+import { config, middleware } from '@/middleware'
 
 vi.mock('better-auth/cookies', () => ({
   getSessionCookie: (request: NextRequest) =>
@@ -10,7 +10,10 @@ afterEach(() => vi.unstubAllGlobals())
 const request = (path: string, cookie = '') =>
   new NextRequest(`http://localhost:3000${path}`, { headers: { cookie } })
 
-describe('protección de Wiki y Catálogo', () => {
+describe('protección de la Wiki', () => {
+  it('solo protege la Wiki: el Catálogo es de toda persona con rol', () => {
+    expect(config.matcher).toEqual(['/wiki/:path*'])
+  })
   it('requiere iniciar sesión incluso para un archivo de la wiki', async () => {
     expect(
       (await middleware(request('/wiki/static/contentIndex.json'))).headers.get('location'),
@@ -25,7 +28,6 @@ describe('protección de Wiki y Catálogo', () => {
       '/wiki',
       '/wiki/index.html',
       '/wiki/static/contentIndex.json',
-      '/catalog/1',
     ]) {
       expect((await middleware(request(path, 'better-auth.session_token=falsa'))).status).toBe(403)
     }

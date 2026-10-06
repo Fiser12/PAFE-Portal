@@ -13,7 +13,7 @@ beforeAll(async () => {
 })
 
 describe('acceso al portal: psicólogos, familias y administración', () => {
-  it('permite Catálogo a psicólogos y administradores; deniega familias, pendientes y roles de gestión sin pertenencia', async () => {
+  it('abre el Catálogo a toda persona con rol y deja la Wiki y la gestión del catálogo al equipo técnico', async () => {
     const item = await createItem(payload)
     for (const role of [
       'familia',
@@ -26,9 +26,10 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
       const user = await createUser(payload, [role])
       const tecnico = role === 'profesional' || role === 'admin'
       expect(await esEquipoTecnico(payload, user)).toBe(tecnico)
-      const consulta = payload.find({ collection: 'catalog-item', user, overrideAccess: false })
-      if (tecnico) expect((await consulta).totalDocs).toBeGreaterThan(0)
-      else await expect(consulta).rejects.toThrow()
+      expect(
+        (await payload.find({ collection: 'catalog-item', user, overrideAccess: false }))
+          .totalDocs,
+      ).toBeGreaterThan(0)
       const edicion = payload.update({
         collection: 'catalog-item',
         id: item.id,
@@ -44,11 +45,19 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
         role === 'admin',
       )
       const urls = getNavItems(user, textosDe('es'), tecnico).map(({ href }) => href)
+      expect(urls).toContain('/catalog')
       expect(urls.includes('/wiki')).toBe(tecnico)
       expect(urls.includes('/admin')).toBe(role === 'admin')
       expect(urls).toContain('/area-personal')
     }
-    expect(await esEquipoTecnico(payload, await createUser(payload, []))).toBe(false)
+    const pendiente = await createUser(payload, [])
+    expect(await esEquipoTecnico(payload, pendiente)).toBe(false)
+    await expect(
+      payload.find({ collection: 'catalog-item', user: pendiente, overrideAccess: false }),
+    ).rejects.toThrow()
+    expect(getNavItems(pendiente, textosDe('es')).map(({ href }) => href)).not.toContain(
+      '/catalog',
+    )
     expect(await esEquipoTecnico(payload, null)).toBe(false)
   })
 
@@ -75,10 +84,9 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
     expect(await esEquipoTecnico(payload, { ...updated, role: [] })).toBe(false)
   })
 
-  it('impide que las familias creen reservas directamente por la API', async () => {
-    const user = await createUser(payload, ['familia'])
+  it('las familias reservan por la API y quien no tiene rol no', async () => {
     const item = await createItem(payload)
-    await expect(
+    const reserva = (user: Awaited<ReturnType<typeof createUser>>) =>
       payload.create({
         collection: 'reservation',
         data: {
@@ -89,14 +97,21 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
         },
         user,
         overrideAccess: false,
-      }),
-    ).rejects.toThrow()
+      })
+    expect((await reserva(await createUser(payload, ['familia']))).id).toBeDefined()
+    await expect(reserva(await createUser(payload, []))).rejects.toThrow()
   })
 
-  it('también bloquea el índice de búsqueda y los recursos descargables para familias', async () => {
-    const user = await createUser(payload, ['familia'])
+  it('las familias buscan y abren los recursos descargables; quien no tiene rol no', async () => {
+    const familia = await createUser(payload, ['familia'])
+    const pendiente = await createUser(payload, [])
     for (const collection of ['search', 'files', 'external-resources'] as const) {
-      await expect(payload.find({ collection, user, overrideAccess: false })).rejects.toThrow()
+      await expect(
+        payload.find({ collection, user: familia, overrideAccess: false }),
+      ).resolves.toBeDefined()
+      await expect(
+        payload.find({ collection, user: pendiente, overrideAccess: false }),
+      ).rejects.toThrow()
     }
   })
 })

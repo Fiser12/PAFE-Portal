@@ -90,12 +90,13 @@ y 354 archivos. El conjunto publicable es de 266 temas (231 archivados),
 ## Organización y altas
 
 El menú se ordena como Calendario, Foro, Catálogo, Moodle, Wiki, Área personal
-y Administración, mostrando solo los accesos permitidos. Catálogo y Wiki
-quedan reservados a los psicólogos y a Administración. El rol `profesional`
-identifica a los psicólogos; la pertenencia histórica al grupo
+y Administración, mostrando solo los accesos permitidos. El Catálogo lo ve y
+reserva toda persona con rol (familias y psicólogos incluidos); gestionarlo y
+la Wiki quedan reservados a los psicólogos y a Administración. El rol
+`profesional` identifica a los psicólogos; la pertenencia histórica al grupo
 `lantalde-teknikoa` también da acceso a una cuenta con rol activo. Las familias
 no deben pertenecer a ese grupo. El resto de roles de gestión no concede por
-sí solo acceso al Catálogo o Wiki.
+sí solo acceso a la Wiki.
 
 Administración requiere `admin`; debe asignarse únicamente a Alberto y Rubén.
 El código no modifica las cuentas existentes: antes de publicar hay que
@@ -121,9 +122,8 @@ instrucciones y un enlace para crear noticias. Guardar una noticia en Berriak
 PAFE con fecha ya alcanzada envía el aviso configurado a las familias.
 
 La protección de Wiki verifica la sesión y el permiso también para sus HTML,
-JSON y archivos estáticos. El catálogo comprueba acceso en sus páginas,
-colecciones e índice de búsqueda. Las nuevas reservas y la consulta de
-existencias también requieren pertenecer al equipo técnico.
+JSON y archivos estáticos. El catálogo exige un rol activo en sus páginas,
+colecciones, índice de búsqueda, reservas y consulta de existencias.
 
 Para validar con un servidor de desarrollo ya arrancado, usar
 `NEXT_DIST_DIR=.next-validation pnpm exec next build` dentro del devcontainer.

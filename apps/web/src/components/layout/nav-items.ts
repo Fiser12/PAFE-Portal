@@ -18,7 +18,7 @@ export interface NavItem {
 export function getNavItems(user: User | null, t: Textos, tecnico = false): NavItem[] {
   const items: NavItem[] = [{ label: t.navInicio, href: '/' }]
   if (isActiveUser(user)) items.push({ label: t.navForo, href: '/foro' })
-  if (tecnico) items.push({ label: t.catalogo, href: '/catalog' })
+  if (isActiveUser(user)) items.push({ label: t.catalogo, href: '/catalog' })
   if (user) {
     items.push({ label: t.navMoodle, href: 'https://moodle.pafe-formakuntza.com/', external: true })
   }
