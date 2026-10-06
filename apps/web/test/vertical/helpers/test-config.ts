@@ -5,6 +5,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { collections } from '@/payload/collections'
 import { globals } from '@/payload/globals'
 import { localization } from '@/core/localization'
+import { componentesDelPanel } from '@/payload/componentesDelPanel'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { betterAuthPluginInstance } from '@/payload/plugins/better-auth'
 import { plugin as searchPlugin } from '@/payload/plugins/search/plugin'
@@ -23,6 +24,7 @@ export const buildTestConfig = () =>
     collections,
     globals,
     localization,
+    admin: { components: componentesDelPanel },
     editor: defaultLexical,
     email: testEmailAdapter,
     plugins: [betterAuthPluginInstance, searchPlugin],

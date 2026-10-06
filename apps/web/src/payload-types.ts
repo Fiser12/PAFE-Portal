@@ -219,7 +219,7 @@ export interface User {
   reservations?: (number | Reservation)[] | null;
   assignedCases?: (number | Case)[] | null;
   /**
-   * lantalde-teknikoa permite acceder al equipo técnico, Catálogo y Wiki. Requiere además un rol activo.
+   * lantalde-teknikoa da acceso a la Wiki. Requiere además un rol activo.
    */
   groups?: (number | Group)[] | null;
   /**

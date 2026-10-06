@@ -7,6 +7,12 @@ import { COLLECTION_SLUG_NOTICIA, COLLECTION_SLUG_RESPUESTA } from '@/core/colle
 import { avisarA, idDe } from '@/modules/avisos'
 import { SALTAR_AVISO } from '../collections/Noticia/hooks/avisarAlPublicar'
 import { TablonRuleError } from '../domain/errors'
+import {
+  cambioEnBloque,
+  idsSeleccionados,
+  moderacionPara,
+  type AccionEnBloque,
+} from '../domain/moderacion'
 import { avisoDeNoticia, correoDeNoticia, destinatariosDelAviso } from '../domain/avisos'
 import {
   type AreaDelTablon,
@@ -532,3 +538,30 @@ export const archivarNoticia = (args: { payload: Payload; user: Actor; noticiaId
 
 export const desarchivarNoticia = (args: { payload: Payload; user: Actor; noticiaId: number }) =>
   cambiarArchivado({ ...args, archivada: false })
+
+/** Archivar, recuperar o mover de área varias noticias de la lista a la vez */
+export const moderarNoticias = async ({
+  payload,
+  user,
+  ids,
+  accion,
+}: {
+  payload: Payload
+  user: Actor
+  ids: readonly number[]
+  accion: AccionEnBloque
+}): Promise<number> => {
+  const cambio = cambioEnBloque(moderacionPara(user as User), accion)
+  if (!cambio.ok) throw new TablonRuleError(cambio.code)
+  const seleccion = idsSeleccionados(ids)
+  if (!seleccion.length) return 0
+
+  const { docs } = await payload.update({
+    collection: COLLECTION_SLUG_NOTICIA,
+    where: { id: { in: seleccion } },
+    data: cambio.data,
+    overrideAccess: true,
+    context: { [SALTAR_AVISO]: true },
+  })
+  return docs.length
+}

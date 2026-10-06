@@ -48,6 +48,7 @@ import { ImportSaveButton as ImportSaveButton_cdf7e044479f899a31f804427d568b36 }
 import { RowLabel as RowLabel_1166824f45c5fed9d21005e52a4af8bb } from '@/payload/admin_components/Header/RowLabel'
 import { RowLabel as RowLabel_c6ce328bb6b20cba0a9ecee290eba05d } from '@/payload/admin_components/Footer/RowLabel'
 import { LogoutButton as LogoutButton_5a568d0e24198ca3140489e0d330f424 } from 'payload-auth/better-auth/plugin/client'
+import { default as default_12061bcd32fe4383e84be7d45829070a } from '@/components/admin/VolverAlPortal'
 import { RSCRedirect as RSCRedirect_5afe2312a68aef77a0242fe42f239ed0 } from 'payload-auth/better-auth/plugin/rsc'
 import { default as default_da5a40b0456868ef1fc26ae10d841147 } from '@/components/legacy/BeforeDashboard'
 import { default as default_240372a4ee0ec01c14565f2144a2f002 } from '@/components/legacy/BeforeLogin'
@@ -111,6 +112,7 @@ export const importMap = {
   "@/payload/admin_components/Header/RowLabel#RowLabel": RowLabel_1166824f45c5fed9d21005e52a4af8bb,
   "@/payload/admin_components/Footer/RowLabel#RowLabel": RowLabel_c6ce328bb6b20cba0a9ecee290eba05d,
   "payload-auth/better-auth/plugin/client#LogoutButton": LogoutButton_5a568d0e24198ca3140489e0d330f424,
+  "@/components/admin/VolverAlPortal#default": default_12061bcd32fe4383e84be7d45829070a,
   "payload-auth/better-auth/plugin/rsc#RSCRedirect": RSCRedirect_5afe2312a68aef77a0242fe42f239ed0,
   "@/components/legacy/BeforeDashboard#default": default_da5a40b0456868ef1fc26ae10d841147,
   "@/components/legacy/BeforeLogin#default": default_240372a4ee0ec01c14565f2144a2f002,

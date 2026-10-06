@@ -10,11 +10,12 @@ import { cambiarArchivoDeNoticia } from '../actions/moderacion'
 
 interface Props {
   noticiaId: number
+  area: string
   archivada: boolean
   puede: { archivar: boolean; editar: boolean }
 }
 
-export function ModeracionDeNoticia({ noticiaId, archivada, puede }: Props) {
+export function ModeracionDeNoticia({ noticiaId, area, archivada, puede }: Props) {
   const t = useTextos()
   const router = useRouter()
   const [pendiente, empezar] = useTransition()
@@ -26,7 +27,9 @@ export function ModeracionDeNoticia({ noticiaId, archivada, puede }: Props) {
     empezar(async () => {
       const { ok } = await cambiarArchivoDeNoticia(noticiaId, !archivada)
       setFallo(!ok)
-      if (ok) router.refresh()
+      if (!ok) return
+      if (archivada) router.refresh()
+      else router.push(`/foro?area=${area}`)
     })
 
   return (

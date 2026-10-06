@@ -11,6 +11,7 @@ import { collections } from './payload/collections'
 import { globals } from './payload/globals'
 import { baseDeDatosLocal } from './core/entorno'
 import { localization } from './core/localization'
+import { componentesDelPanel } from './payload/componentesDelPanel'
 import { Users } from './payload/collections/Users'
 import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
@@ -33,14 +34,7 @@ export default buildConfig({
   },
   localization,
   admin: {
-    components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: ['@/components/legacy/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ['@/components/legacy/BeforeDashboard'],
-    },
+    components: componentesDelPanel,
     importMap: {
       baseDir: path.resolve(dirname),
     },
