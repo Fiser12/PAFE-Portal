@@ -92,9 +92,9 @@ export const invitarPersonas = async ({
 export const reenviarInvitacionPendiente = async (
   payload: Payload,
   correo: string,
-): Promise<boolean> => {
+): Promise<number | string | null> => {
   const email = normalizarCorreo(correo)
-  if (!email || (await tieneCuenta(payload, email))) return false
+  if (!email || (await tieneCuenta(payload, email))) return null
   const { docs } = await payload.find({
     collection: INVITACIONES,
     where: { email: { equals: email } },
@@ -103,10 +103,22 @@ export const reenviarInvitacionPendiente = async (
     overrideAccess: true,
   })
   const invitacion = docs[0]
-  if (!invitacion) return false
+  if (!invitacion || reenviadaHacePoco(invitacion.updatedAt)) return null
   await payload.sendEmail({
     to: email,
     ...correoDeInvitacion(urlDeInvitacion(getServerSideURL(), invitacion.token)),
   })
-  return true
+  await payload.update({
+    collection: INVITACIONES,
+    id: invitacion.id,
+    data: { email },
+    overrideAccess: true,
+  })
+  return invitacion.id
 }
+
+const MINUTOS_ENTRE_REENVIOS = 10
+
+/** Cualquiera puede pedir el enlace con un correo ajeno: sin esto se le llenaría el buzón */
+const reenviadaHacePoco = (ultimoEnvio: string) =>
+  Date.now() - new Date(ultimoEnvio).getTime() < MINUTOS_ENTRE_REENVIOS * 60 * 1000

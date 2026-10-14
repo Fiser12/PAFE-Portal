@@ -91,14 +91,20 @@ const normalizeRoleValue: FieldHook = ({ value }) => {
   return roles.filter((r) => typeof r === 'string' && (ALL_ROLES as string[]).includes(r))
 }
 
-const entraConGoogle = async (payload: Payload, userId: string | number) =>
-  (
-    await payload.count({
+/** Solo decide un aviso del correo: si falla, el correo sale igual, sin el aviso */
+const entraConGoogle = async (payload: Payload, userId: string | number) => {
+  try {
+    const { totalDocs } = await payload.count({
       collection: 'accounts',
       where: { and: [{ user: { equals: Number(userId) } }, { providerId: { equals: 'google' } }] },
       overrideAccess: true,
     })
-  ).totalDocs > 0
+    return totalDocs > 0
+  } catch (error) {
+    console.error(`[auth] No se pudo saber si el usuario ${userId} entra con Google`, error)
+    return false
+  }
+}
 
 /**
  * Solo se permite el alta con contraseña si llega un token de invitación
@@ -161,9 +167,10 @@ const invitacionAlPedirEnlace = (): BetterAuthPlugin => ({
           const email = ctx.body?.email
           if (typeof email !== 'string') return
           try {
-            await reenviarInvitacionPendiente(await payloadDelAuth(), email)
+            const invitacion = await reenviarInvitacionPendiente(await payloadDelAuth(), email)
+            if (invitacion) console.info(`[auth] Invitación ${invitacion} reenviada al pedir el enlace`)
           } catch (error) {
-            console.error('[auth] No se pudo reenviar la invitación pendiente', error)
+            console.error('[auth] No se pudo comprobar o reenviar una invitación pendiente', error)
           }
         }),
       },
@@ -239,16 +246,22 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
       // Cubre tanto "olvidé mi contraseña" como el alta gestionada: el staff
       // crea la cuenta y el usuario establece su contraseña desde este enlace
       resetPasswordTokenExpiresIn: HORAS_DEL_ENLACE * 60 * 60,
+      // better-auth se traga el error y responde «enviado»: que al menos quede rastro propio
       sendResetPassword: async ({ user, url }) => {
-        const payload = await payloadDelAuth()
-        await payload.sendEmail({
-          to: user.email,
-          ...correoDeNuevaClave({
-            nombre: user.name,
-            url,
-            conGoogle: await entraConGoogle(payload, user.id),
-          }),
-        })
+        try {
+          const payload = await payloadDelAuth()
+          await payload.sendEmail({
+            to: user.email,
+            ...correoDeNuevaClave({
+              nombre: user.name,
+              url,
+              conGoogle: await entraConGoogle(payload, user.id),
+            }),
+          })
+        } catch (error) {
+          console.error(`[auth] No se pudo enviar el enlace de contraseña al usuario ${user.id}`, error)
+          throw error
+        }
       },
     },
     socialProviders: {
