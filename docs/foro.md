@@ -99,6 +99,10 @@ no deben pertenecer a ese grupo. El resto de roles de gestión no concede por
 sí solo acceso a la Wiki.
 
 Administración requiere `admin`; debe asignarse únicamente a Alberto y Rubén.
+Los roles de gestión también entran al panel, cada uno solo a lo suyo:
+«Catálogo y préstamos» gestiona el catálogo y ve todas las reservas, «Tablón
+de noticias» el tablón y «Altas de personas» los usuarios. Un psicólogo sin
+rol de gestión no entra al panel.
 El código no modifica las cuentas existentes: antes de publicar hay que
 comprobar quién tiene ese rol y completar la pertenencia de los psicólogos.
 No ejecutar `scripts/migrar-roles.ts`: convertía `profesional` a gestión de

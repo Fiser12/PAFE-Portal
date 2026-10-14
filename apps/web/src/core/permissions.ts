@@ -105,6 +105,10 @@ export const puedeImpersonarA = (quien: MaybeUser, objetivo: MaybeUser): boolean
   (!isAdmin(objetivo) || isSuperAdmin(quien))
 
 /** Publicar y editar en el tablón de noticias */
+/** Administración entra a todo; cada rol de gestión, a su parte del panel */
+export const entraAlPanel = (user: MaybeUser): boolean =>
+  isAdmin(user) || hasRole(user, ...ADMIN_AREA_ROLES)
+
 export const administraTablon = (user: MaybeUser): boolean =>
   isAdmin(user) || hasRole(user, ROLE_TABLON)
 

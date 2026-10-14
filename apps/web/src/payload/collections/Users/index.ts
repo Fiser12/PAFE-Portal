@@ -4,9 +4,9 @@ import {
   COLLECTION_SLUG_GROUPS,
 } from '@/core/collections-slugs'
 import {
+  entraAlPanel,
   hiddenUnlessUsuarios,
   isAdminAccess,
-  isAdmin,
   isStaff,
   isSuperAdmin,
   usuariosAccess,
@@ -29,8 +29,7 @@ const superadminFieldAccess: FieldAccess = ({ req }) => isSuperAdmin(req.user)
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
   access: {
-    // Panel /admin reservado a Administración
-    admin: ({ req }) => isAdmin(req.user),
+    admin: ({ req }) => entraAlPanel(req.user),
     // Alta gestionada: el staff crea usuarios desde el panel.
     // El registro con Google usa la Local API (no pasa por aquí) y entra
     // con rol `pendiente` sin acceso a nada.
