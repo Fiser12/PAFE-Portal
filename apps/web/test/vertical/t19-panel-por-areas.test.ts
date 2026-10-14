@@ -133,3 +133,56 @@ describe('Altas de personas no puede quedarse con la cuenta de otro gestor', () 
   })
 })
 
+describe('Catálogo y préstamos sabe de quién es cada reserva y cada aviso', () => {
+  const reservaDe = async (familia: User) => {
+    const item = await createItem(payload)
+    return payload.create({
+      collection: 'reservation',
+      data: {
+        item: item.id,
+        user: familia.id,
+        status: 'reservada',
+        reservationDate: new Date().toISOString(),
+      },
+      overrideAccess: true,
+    })
+  }
+
+  it('ve el nombre de la familia que ha reservado', async () => {
+    const xabi = await createUser(payload, ['admin-catalogo'], 'Xabi')
+    const familia = await createUser(payload, ['familia'], 'Familia Etxeberria')
+    const reserva = await reservaDe(familia)
+
+    const vista = await payload.findByID({
+      collection: 'reservation',
+      id: reserva.id,
+      depth: 1,
+      user: xabi,
+      overrideAccess: false,
+    })
+
+    expect(typeof vista.user === 'object' && vista.user?.name).toBe('Familia Etxeberria')
+  })
+
+  it('pero no puede cambiar la ficha de nadie', async () => {
+    const xabi = await createUser(payload, ['admin-catalogo'], 'Xabi')
+    const familia = await createFamilia(payload)
+    await expect(
+      payload.update({
+        collection: 'users',
+        id: familia.id,
+        data: { name: 'Cambiado por Xabi' },
+        user: xabi,
+        overrideAccess: false,
+      }),
+    ).rejects.toThrow()
+  })
+
+  it('una psicóloga sin rol de gestión sigue viendo solo su propia ficha', async () => {
+    const psicologa = await createUser(payload, ['profesional'])
+    await createFamilia(payload)
+    const { docs } = await payload.find({ collection: 'users', user: psicologa, overrideAccess: false })
+    expect(docs.map((u) => u.id)).toEqual([psicologa.id])
+  })
+})
+

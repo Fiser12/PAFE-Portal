@@ -153,6 +153,13 @@ export const usuariosOrSelfAccess: Access = ({ req }) => {
   return { id: { equals: req.user.id } }
 }
 
+/** Quien lleva los préstamos necesita saber de quién es cada reserva; editar sigue siendo de Altas */
+export const leerUsuariosAccess: Access = ({ req }) => {
+  if (!req.user) return false
+  if (administraUsuarios(req.user) || hasRole(req.user, ROLE_CATALOGO)) return true
+  return { id: { equals: req.user.id } }
+}
+
 export const adminOrSelfAccess: Access = ({ req, id }) => {
   if (!req.user) return false
   if (isAdmin(req.user)) return true
