@@ -11,6 +11,7 @@ import {
   isSuperAdmin,
   usuariosAccess,
   usuariosOrSelfAccess,
+  leerUsuariosAccess,
 } from '@/core/permissions'
 import type { FieldAccess } from 'payload'
 import type { CollectionConfig } from 'payload'
@@ -35,7 +36,7 @@ export const Users: CollectionConfig = {
     // con rol `pendiente` sin acceso a nada.
     create: usuariosAccess,
     delete: isAdminAccess,
-    read: usuariosOrSelfAccess,
+    read: leerUsuariosAccess,
     // Staff puede editar usuarios (el hook impide tocar admins o escalar
     // roles); el resto solo su propio perfil
     update: usuariosOrSelfAccess,
