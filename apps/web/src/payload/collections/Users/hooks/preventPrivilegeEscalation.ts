@@ -32,8 +32,9 @@ const cambiaImpersonar = (entrantes: string[] | undefined, originales: string[])
  *   no le toca nada.
  * - Nadie que no sea admin puede cambiar roles (ni los suyos).
  * - Quien da de altas solo asigna/quita el rol familia (o deja al usuario sin
- *   rol): no puede tocar admins ni repartir roles de administración. Si
- *   pudiera, el reparto por áreas se desharía solo.
+ *   rol): no puede tocar admins ni repartir roles de administración, ni
+ *   cambiar el correo a quien tiene otro rol. Si pudiera, el reparto por
+ *   áreas se desharía solo.
  * - Un usuario normal no puede reasignarse grupos ni casos.
  *
  * La Local API (better-auth, seeds, plumbing interno) queda exenta, igual que
@@ -67,6 +68,15 @@ export const preventPrivilegeEscalation: CollectionBeforeChangeHook = async ({
   if (administraUsuarios(req.user)) {
     // Quien da de altas no puede modificar a un admin
     if (operation === 'update' && originalRoles.includes(ROLE_ADMIN)) {
+      throw new Forbidden(req.t)
+    }
+    // Ni quedarse con la cuenta de otro gestor o psicólogo cambiándole el correo
+    if (
+      operation === 'update' &&
+      String(req.user?.id) !== String(originalDoc?.id) &&
+      cambiaElCorreo(data, originalDoc) &&
+      !originalRoles.every((r) => STAFF_MANAGEABLE_ROLES.includes(r))
+    ) {
       throw new Forbidden(req.t)
     }
     // Solo puede asignar roles gestionables (familia/pendiente)

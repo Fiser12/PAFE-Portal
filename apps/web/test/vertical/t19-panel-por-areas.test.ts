@@ -107,3 +107,29 @@ describe('Catálogo y préstamos gestiona el catálogo', () => {
     expect(docs).toHaveLength(1)
   })
 })
+
+describe('Altas de personas no puede quedarse con la cuenta de otro gestor', () => {
+  const cambiarCorreo = async (quien: User, de: User) =>
+    payload.update({
+      collection: 'users',
+      id: de.id,
+      data: { email: `nuevo-${Date.now()}-${de.id}@pafe.test` },
+      user: quien,
+      overrideAccess: false,
+      req: { payloadAPI: 'REST' },
+    })
+
+  it('no cambia el correo de quien gestiona otra área o es psicólogo', async () => {
+    const altas = await createUser(payload, ['admin-users'], 'Altas')
+    for (const role of ['admin-catalogo', 'admin-news', 'admin-users', 'profesional'] as const) {
+      await expect(cambiarCorreo(altas, await createUser(payload, [role]))).rejects.toThrow()
+    }
+  })
+
+  it('sí el de una familia, que es a quien da de alta', async () => {
+    const altas = await createUser(payload, ['admin-users'], 'Altas')
+    const familia = await createFamilia(payload)
+    expect((await cambiarCorreo(altas, familia)).email).toContain('nuevo-')
+  })
+})
+
