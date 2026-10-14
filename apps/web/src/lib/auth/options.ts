@@ -12,6 +12,7 @@ import {
   ROLE_IMPERSONAR,
   hiddenUnlessAdmin,
   hiddenUnlessSuperadmin,
+  hiddenUnlessUsuarios,
 } from '@/core/permissions'
 import {
   ROLES_INVITABLES,
@@ -180,7 +181,8 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     defaultAdminRole: ROLE_ADMIN,
     collectionOverrides: ({ collection }) => ({
       ...collection,
-      admin: conInvitacionesPropias(collection.admin),
+      // payload-auth pisa el `hidden` de la colección con el suyo
+      admin: { ...conInvitacionesPropias(collection.admin), hidden: hiddenUnlessUsuarios },
       fields: collection.fields.map((field) =>
         'name' in field && field.name === 'role'
           ? ({

@@ -1,6 +1,5 @@
-import { gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
 import { COLLECTION_SLUG_EXTERNAL_RESOURCES, COLLECTION_SLUG_MEDIA } from '@/core/collections-slugs'
-import { hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
+import { catalogoAccess, hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import type { CollectionConfig } from 'payload'
 
@@ -15,11 +14,11 @@ export const ExternalResources: CollectionConfig = {
     plural: 'Recursos Externos',
   },
   access: {
-    create: gestionarCatalogoTecnicoAccess,
-    delete: gestionarCatalogoTecnicoAccess,
+    create: catalogoAccess,
+    delete: catalogoAccess,
     // Contenido del catálogo digital: solo usuarios con rol
     read: isActiveUserAccess,
-    update: gestionarCatalogoTecnicoAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',

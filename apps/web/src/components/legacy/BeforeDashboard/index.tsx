@@ -46,6 +46,10 @@ export default function BeforeDashboard() {
         <li>
           <strong>Administración:</strong> gestión completa. Reservar este rol a Alberto y Rubén.
         </li>
+        <li>
+          <strong>Catálogo y préstamos, Tablón de noticias, Altas de personas:</strong> entran a este
+          panel y ven solo su parte. Así quien lleva el catálogo puede gestionarlo y ver las reservas.
+        </li>
       </ul>
       <p>
         Los psicólogos con rol profesional ya tienen acceso al equipo técnico. El grupo{' '}

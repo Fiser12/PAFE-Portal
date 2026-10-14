@@ -13,7 +13,7 @@ beforeAll(async () => {
 })
 
 describe('acceso al portal: psicólogos, familias y administración', () => {
-  it('abre el Catálogo a toda persona con rol y deja la Wiki y la gestión del catálogo al equipo técnico', async () => {
+  it('abre el Catálogo a toda persona con rol; la Wiki es del equipo técnico y el panel, de los roles de gestión', async () => {
     const item = await createItem(payload)
     for (const role of [
       'familia',
@@ -25,6 +25,8 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
     ] as const) {
       const user = await createUser(payload, [role])
       const tecnico = role === 'profesional' || role === 'admin'
+      const gestionaCatalogo = tecnico || role === 'admin-catalogo'
+      const entraAlPanel = role !== 'familia' && role !== 'profesional'
       expect(await esEquipoTecnico(payload, user)).toBe(tecnico)
       expect(
         (await payload.find({ collection: 'catalog-item', user, overrideAccess: false }))
@@ -37,17 +39,17 @@ describe('acceso al portal: psicólogos, familias y administración', () => {
         user,
         overrideAccess: false,
       })
-      if (tecnico) expect((await edicion).title).toBe(`Material editado por ${role}`)
+      if (gestionaCatalogo) expect((await edicion).title).toBe(`Material editado por ${role}`)
       else await expect(edicion).rejects.toThrow()
 
       const adminAccess = payload.collections.users.config.access.admin
       expect(await adminAccess?.({ req: await createLocalReq({ user }, payload) })).toBe(
-        role === 'admin',
+        entraAlPanel,
       )
       const urls = getNavItems(user, textosDe('es'), tecnico).map(({ href }) => href)
       expect(urls).toContain('/catalog')
       expect(urls.includes('/wiki')).toBe(tecnico)
-      expect(urls.includes('/admin')).toBe(role === 'admin')
+      expect(urls.includes('/admin')).toBe(entraAlPanel)
       expect(urls).toContain('/area-personal')
     }
     const pendiente = await createUser(payload, [])

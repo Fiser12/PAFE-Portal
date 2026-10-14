@@ -1,5 +1,4 @@
-import { gestionarCatalogoTecnicoAccess } from '@/core/technical-access'
-import { hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
+import { catalogoAccess, hiddenUnlessCatalogo, isActiveUserAccess } from '@/core/permissions'
 import { buildTaxonomyRelationship } from '@zetesis/payload-taxonomies'
 import { CollectionConfig } from 'payload'
 
@@ -12,11 +11,11 @@ export const CatalogItem: CollectionConfig = {
     plural: 'Catálogo reservable',
   },
   access: {
-    // Lo ve toda persona con rol; lo gestiona el equipo técnico
-    create: gestionarCatalogoTecnicoAccess,
-    delete: gestionarCatalogoTecnicoAccess,
+    // Lo ve toda persona con rol; lo gestiona Catálogo y préstamos
+    create: catalogoAccess,
+    delete: catalogoAccess,
     read: isActiveUserAccess,
-    update: gestionarCatalogoTecnicoAccess,
+    update: catalogoAccess,
   },
   admin: {
     group: 'Catálogo',

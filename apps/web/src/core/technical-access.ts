@@ -1,6 +1,6 @@
 import type { Access, Payload, PayloadRequest } from 'payload'
 import type { User } from '@/payload-types'
-import { isActiveUser, isAdmin, hasRole, ROLE_PROFESIONAL, administraCatalogo } from './permissions'
+import { isActiveUser, isAdmin, hasRole, ROLE_PROFESIONAL } from './permissions'
 import { GRUPO_LANTALDE } from '@/modules/tablon/domain/areas'
 
 export async function esEquipoTecnico(
@@ -24,6 +24,3 @@ export async function esEquipoTecnico(
 }
 
 export const equipoTecnicoAccess: Access = ({ req }) => esEquipoTecnico(req.payload, req.user, req)
-
-export const gestionarCatalogoTecnicoAccess: Access = async ({ req }) =>
-  administraCatalogo(req.user) && (await esEquipoTecnico(req.payload, req.user, req))

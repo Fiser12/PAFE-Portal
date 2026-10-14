@@ -1,5 +1,5 @@
 import type { User } from '@/payload-types'
-import { isActiveUser, isAdmin } from '@/core/permissions'
+import { entraAlPanel, isActiveUser } from '@/core/permissions'
 import type { Textos } from '@/core/textos'
 
 export interface NavItem {
@@ -24,7 +24,7 @@ export function getNavItems(user: User | null, t: Textos, tecnico = false): NavI
   }
   if (tecnico) items.push({ label: t.navWiki, href: '/wiki', external: true })
   if (isActiveUser(user)) items.push({ label: t.navAreaPersonal, href: '/area-personal' })
-  if (isAdmin(user)) items.push({ label: t.navAdministracion, href: '/admin' })
+  if (entraAlPanel(user)) items.push({ label: t.navAdministracion, href: '/admin' })
   return items
 }
 
