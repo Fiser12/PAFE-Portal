@@ -7,6 +7,7 @@ import {
   correoDeInvitacion,
   esRolInvitable,
   leerCorreos,
+  normalizarCorreo,
   puedeInvitar,
   urlDeInvitacion,
 } from '../domain/invitacion'
@@ -85,4 +86,27 @@ export const invitarPersonas = async ({
     ...resultados,
     ...invalidos.map((email): ResultadoDeInvitacion => ({ email, estado: 'correo-no-valido' })),
   ]
+}
+
+/** Quien fue invitado y aún no tiene cuenta, al pedir un enlace de contraseña recibe otra vez su invitación */
+export const reenviarInvitacionPendiente = async (
+  payload: Payload,
+  correo: string,
+): Promise<boolean> => {
+  const email = normalizarCorreo(correo)
+  if (!email || (await tieneCuenta(payload, email))) return false
+  const { docs } = await payload.find({
+    collection: INVITACIONES,
+    where: { email: { equals: email } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+  const invitacion = docs[0]
+  if (!invitacion) return false
+  await payload.sendEmail({
+    to: email,
+    ...correoDeInvitacion(urlDeInvitacion(getServerSideURL(), invitacion.token)),
+  })
+  return true
 }
