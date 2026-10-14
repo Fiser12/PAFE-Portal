@@ -19,7 +19,8 @@ afterEach(() => vi.useRealTimers())
 
 let n = 0
 const correo = (quien: string) => `${quien}-${Date.now().toString(36)}-${++n}@pafe.test`
-const HORA = 60 * 60 * 1000
+const MINUTO = 60 * 1000
+const HORA = 60 * MINUTO
 
 const conContrasena = async (email: string) => {
   await payload.betterAuth.api.signUpEmail({
@@ -184,12 +185,31 @@ describe('quien todavía no ha creado su cuenta', () => {
     const email = correo('invitada')
     const token = await tokenDeInvitacion(email)
     resetEmails()
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(Date.now() + 11 * MINUTO)
 
     await pedirEnlace(email)
 
     const mensaje = ultimoCorreo(email)
     expect(mensaje?.subject).toBe('Invitación al portal de PAFE')
     expect(bodyOf(mensaje!)).toContain(`token=${token}`)
+  })
+
+  it('pero no más de una vez cada 10 minutos, para que no se pueda llenar su buzón', async () => {
+    const email = correo('buzon')
+    await tokenDeInvitacion(email)
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(Date.now() + 11 * MINUTO)
+    await pedirEnlace(email)
+    resetEmails()
+
+    await pedirEnlace(email)
+    await pedirEnlace(email)
+    expect(emailsTo(email)).toHaveLength(0)
+
+    vi.setSystemTime(Date.now() + 11 * MINUTO)
+    await pedirEnlace(email)
+    expect(emailsTo(email)).toHaveLength(1)
   })
 
   it('si nadie le ha invitado, no se le manda nada', async () => {

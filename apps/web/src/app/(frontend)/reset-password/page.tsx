@@ -38,10 +38,15 @@ function PedirOtroEnlace() {
   const pedir = async (e: React.FormEvent) => {
     e.preventDefault()
     setEnviando(true)
-    const { error } = await authClient.requestPasswordReset({ email, redirectTo: '/reset-password' })
-    setEnviando(false)
-    setFallo(Boolean(error))
-    setEnviado(!error)
+    try {
+      const { error } = await authClient.requestPasswordReset({ email, redirectTo: '/reset-password' })
+      setFallo(Boolean(error))
+      setEnviado(!error)
+    } catch {
+      setFallo(true)
+    } finally {
+      setEnviando(false)
+    }
   }
 
   if (enviado) return <Aviso tipo="ok">{t.claveOtroEnviado}</Aviso>
@@ -95,19 +100,24 @@ function ResetPasswordForm() {
       return
     }
     setLoading(true)
-    const { error: resetError } = await authClient.resetPassword({
-      newPassword: password,
-      token: token ?? undefined,
-    })
-    setLoading(false)
-    if (resetError) {
-      const motivo = motivoDelFallo(resetError)
-      if (motivo === 'enlace') setEnlaceGastado(true)
-      else setError(mensajes[motivo])
-      return
+    try {
+      const { error: resetError } = await authClient.resetPassword({
+        newPassword: password,
+        token: token ?? undefined,
+      })
+      if (resetError) {
+        const motivo = motivoDelFallo(resetError)
+        if (motivo === 'enlace') setEnlaceGastado(true)
+        else setError(mensajes[motivo])
+        return
+      }
+      setDone(true)
+      setTimeout(() => router.push('/login'), 2000)
+    } catch {
+      setError(mensajes.otro)
+    } finally {
+      setLoading(false)
     }
-    setDone(true)
-    setTimeout(() => router.push('/login'), 2000)
   }
 
   return (
