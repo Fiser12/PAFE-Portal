@@ -62,9 +62,14 @@ const es = {
   claveGuardar: 'Guardar contraseña',
   claveNoCoinciden: 'Las contraseñas no coinciden',
   claveGuardada: 'Contraseña guardada. Redirigiendo al inicio de sesión…',
-  claveEnlaceCaducado: 'El enlace no es válido o ha caducado.',
-  claveEnlaceCaducadoLargo:
-    'El enlace no es válido o ha caducado. Solicita uno nuevo desde la pantalla de inicio de sesión.',
+  claveEnlaceCaducado: 'Este enlace ya no vale: dura 24 horas y solo sirve una vez.',
+  claveOtroEnlace: 'Te mandamos otro. Escribe tu correo:',
+  claveMandarOtro: 'Mandarme otro enlace',
+  claveOtroEnviado:
+    'Si tu cuenta existe, en unos minutos te llegará un enlace nuevo. Mira también en la carpeta de spam.',
+  claveCorta: 'La contraseña tiene que tener al menos 8 caracteres.',
+  claveLarga: 'La contraseña es demasiado larga.',
+  claveErrorGuardar: 'No se ha podido guardar la contraseña. Inténtalo otra vez.',
   claveGuardando: 'Guardando…',
   claveVolver: 'Volver a iniciar sesión',
 
@@ -258,9 +263,14 @@ const eu: Textos = {
   claveGuardar: 'Gorde pasahitza',
   claveNoCoinciden: 'Pasahitzak ez datoz bat',
   claveGuardada: 'Pasahitza gorde da. Saioa hasteko orrira eramaten…',
-  claveEnlaceCaducado: 'Esteka ez da baliozkoa edo iraungi egin da.',
-  claveEnlaceCaducadoLargo:
-    'Esteka ez da baliozkoa edo iraungi egin da. Eskatu beste bat saioa hasteko pantailatik.',
+  claveEnlaceCaducado: 'Esteka honek ez du balio: 24 orduz balio du eta behin bakarrik erabil daiteke.',
+  claveOtroEnlace: 'Beste bat bidaliko dizugu. Idatzi zure helbide elektronikoa:',
+  claveMandarOtro: 'Beste esteka bat bidali',
+  claveOtroEnviado:
+    'Zure kontua badago, minutu batzuk barru esteka berri bat jasoko duzu. Begiratu spam karpetan ere.',
+  claveCorta: 'Pasahitzak gutxienez 8 karaktere izan behar ditu.',
+  claveLarga: 'Pasahitza luzeegia da.',
+  claveErrorGuardar: 'Ezin izan da pasahitza gorde. Saiatu berriro.',
   claveGuardando: 'Gordetzen…',
   claveVolver: 'Saioa hastera itzuli',
 

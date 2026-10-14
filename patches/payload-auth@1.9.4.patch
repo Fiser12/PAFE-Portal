@@ -1,0 +1,29 @@
+diff --git a/dist/better-auth/adapter/index.js b/dist/better-auth/adapter/index.js
+index 84d003483e2c0884aa60a39a726b2a22f179951e..22b1133a0a45823157f676a424cc2dc6a16198c5 100644
+--- a/dist/better-auth/adapter/index.js
++++ b/dist/better-auth/adapter/index.js
+@@ -804,6 +804,24 @@ const CREATE_QUERY_DEPTH = 0;
+                     throw error;
+                 }
+             },
++            // better-auth >=1.6 consume los tokens de un solo uso con consumeOne
++            async consumeOne ({ model, where }) {
++                const doc = await this.findOne({
++                    model,
++                    where
++                });
++                if (!doc) return null;
++                await this.delete({
++                    model,
++                    where: [
++                        {
++                            field: "id",
++                            value: doc.id
++                        }
++                    ]
++                });
++                return doc;
++            },
+             createSchema: async (options, file)=>{
+                 const schemaCode = await generateSchema(options);
+                 return {

@@ -1,7 +1,7 @@
 import { APIError, createAuthMiddleware } from 'better-auth/api'
 import type { BetterAuthPlugin } from 'better-auth'
 import { nextCookies } from 'better-auth/next-js'
-import type { CollectionConfig, Field, FieldHook } from 'payload'
+import type { CollectionConfig, Field, FieldHook, Payload } from 'payload'
 import type { PayloadAuthOptions } from 'payload-auth/better-auth'
 import { COLLECTION_SLUG_USER } from '@/core/collections-slugs'
 import {
@@ -21,6 +21,9 @@ import {
 } from '@/modules/invitaciones/domain/invitacion'
 import { getServerSideURL } from '@/utilities/getURL'
 import { impersonar } from './impersonar'
+import { HORAS_DEL_ENLACE, correoDeNuevaClave } from './nuevaClave'
+import { payloadDelAuth } from './payloadDelAuth'
+import { reenviarInvitacionPendiente } from '@/modules/invitaciones/services'
 
 /**
  * Impersonar solo lo reparte el superadmin desde la ficha: una invitación con
@@ -87,17 +90,14 @@ const normalizeRoleValue: FieldHook = ({ value }) => {
   return roles.filter((r) => typeof r === 'string' && (ALL_ROLES as string[]).includes(r))
 }
 
-/**
- * Envía email a través del adaptador de Payload (Resend en prod, consola en
- * dev). Imports dinámicos para no crear un ciclo: este fichero forma parte del
- * payload.config y en el momento del envío payload ya está inicializado.
- */
-const sendAuthEmail = async (to: string, subject: string, html: string) => {
-  const { getPayload } = await import('payload')
-  const { default: config } = await import('@payload-config')
-  const payload = await getPayload({ config })
-  await payload.sendEmail({ to, subject, html })
-}
+const entraConGoogle = async (payload: Payload, userId: string | number) =>
+  (
+    await payload.count({
+      collection: 'accounts',
+      where: { and: [{ user: { equals: Number(userId) } }, { providerId: { equals: 'google' } }] },
+      overrideAccess: true,
+    })
+  ).totalDocs > 0
 
 /**
  * Solo se permite el alta con contraseña si llega un token de invitación
@@ -138,6 +138,31 @@ const soloConInvitacion = (): BetterAuthPlugin => ({
               message:
                 'Este enlace es para otro correo: escribe el correo en el que recibiste la invitación',
             })
+          }
+        }),
+      },
+    ],
+  },
+})
+
+/**
+ * Quien todavía no ha creado su cuenta y pide «olvidé mi contraseña» no
+ * recibiría nada (better-auth no avisa de que la cuenta no existe). Si tiene
+ * una invitación pendiente, se le reenvía.
+ */
+const invitacionAlPedirEnlace = (): BetterAuthPlugin => ({
+  id: 'pafe-invitacion-al-pedir-enlace',
+  hooks: {
+    before: [
+      {
+        matcher: (ctx) => ctx.path === '/request-password-reset',
+        handler: createAuthMiddleware(async (ctx) => {
+          const email = ctx.body?.email
+          if (typeof email !== 'string') return
+          try {
+            await reenviarInvitacionPendiente(await payloadDelAuth(), email)
+          } catch (error) {
+            console.error('[auth] No se pudo reenviar la invitación pendiente', error)
           }
         }),
       },
@@ -211,15 +236,17 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
       // El alta abierta con contraseña se bloquea en soloConInvitacion (arriba).
       // Cubre tanto "olvidé mi contraseña" como el alta gestionada: el staff
       // crea la cuenta y el usuario establece su contraseña desde este enlace
+      resetPasswordTokenExpiresIn: HORAS_DEL_ENLACE * 60 * 60,
       sendResetPassword: async ({ user, url }) => {
-        await sendAuthEmail(
-          user.email,
-          'Establece tu contraseña — PAFE',
-          `<p>Hola${user.name ? ` ${user.name}` : ''},</p>
-           <p>Pulsa el siguiente enlace para establecer tu contraseña en el portal de PAFE:</p>
-           <p><a href="${url}">Establecer contraseña</a></p>
-           <p>El enlace caduca en 1 hora. Si no has solicitado este correo, puedes ignorarlo.</p>`,
-        )
+        const payload = await payloadDelAuth()
+        await payload.sendEmail({
+          to: user.email,
+          ...correoDeNuevaClave({
+            nombre: user.name,
+            url,
+            conGoogle: await entraConGoogle(payload, user.id),
+          }),
+        })
       },
     },
     socialProviders: {
@@ -238,6 +265,7 @@ export const betterAuthPluginOptions: PayloadAuthOptions = {
     },
     plugins: [
       soloConInvitacion(),
+      invitacionAlPedirEnlace(),
       impersonar(),
       nextCookies(),
     ],

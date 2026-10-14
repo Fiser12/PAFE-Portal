@@ -29,5 +29,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.5.0"
+  "packageManager": "pnpm@10.5.0",
+  "pnpm": {
+    "patchedDependencies": {
+      "payload-auth@1.9.4": "patches/payload-auth@1.9.4.patch"
+    }
+  }
 }
