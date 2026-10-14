@@ -72,8 +72,15 @@ export const Noticia: CollectionConfig = {
       type: 'date',
       required: true,
       index: true,
+      defaultValue: () => new Date().toISOString(),
       admin: {
         position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayAndTime',
+          timeFormat: 'HH:mm',
+          timeIntervals: 15,
+          displayFormat: 'd/MM/yyyy HH:mm',
+        },
         description: 'Con una fecha futura, la noticia no se muestra ni avisa hasta que llega',
       },
     },
