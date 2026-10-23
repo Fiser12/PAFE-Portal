@@ -377,6 +377,7 @@ export interface Media {
     [k: string]: unknown;
   } | null;
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -541,6 +542,7 @@ export interface File {
   title: string;
   categories?: (number | Taxonomy)[] | null;
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -948,6 +950,7 @@ export interface Adjunto {
    */
   alt?: string | null;
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1327,6 +1330,7 @@ export interface Export {
     | boolean
     | null;
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1365,6 +1369,7 @@ export interface Import {
       | null;
   };
   prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1826,6 +1831,7 @@ export interface AdjuntoSelect<T extends boolean = true> {
   area?: T;
   alt?: T;
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1997,6 +2003,7 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2255,6 +2262,7 @@ export interface FilesSelect<T extends boolean = true> {
   title?: T;
   categories?: T;
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2307,6 +2315,7 @@ export interface ExportsSelect<T extends boolean = true> {
   collectionSlug?: T;
   where?: T;
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2338,6 +2347,7 @@ export interface ImportsSelect<T extends boolean = true> {
         issueDetails?: T;
       };
   prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2722,7 +2732,10 @@ export interface TaskSchedulePublish {
           value: number | Post;
         } | null);
     global?: string | null;
-    user?: (number | null) | User;
+    user?: {
+      relationTo: 'users';
+      value: number | User;
+    } | null;
   };
   output?: unknown;
 }
