@@ -16,6 +16,7 @@ import * as migration_20260923_102004_nodebb_import from './20260923_102004_node
 import * as migration_20260929_124622_impersonar_usuarios from './20260929_124622_impersonar_usuarios';
 import * as migration_20260930_175009_invitaciones_con_correo from './20260930_175009_invitaciones_con_correo';
 import * as migration_20260930_183658_area_sugerencias_del_portal from './20260930_183658_area_sugerencias_del_portal';
+import * as migration_20261023_082435_payload_3_92 from './20261023_082435_payload_3_92';
 
 export const migrations = [
   {
@@ -106,6 +107,11 @@ export const migrations = [
   {
     up: migration_20260930_183658_area_sugerencias_del_portal.up,
     down: migration_20260930_183658_area_sugerencias_del_portal.down,
-    name: '20260930_183658_area_sugerencias_del_portal'
+    name: '20260930_183658_area_sugerencias_del_portal',
+  },
+  {
+    up: migration_20261023_082435_payload_3_92.up,
+    down: migration_20261023_082435_payload_3_92.down,
+    name: '20261023_082435_payload_3_92'
   },
 ];
