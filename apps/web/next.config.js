@@ -17,6 +17,14 @@ const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   outputFileTracingRoot: repoRoot,
   images: {
+    // Next 16 rechaza las imágenes locales con query string si no están aquí. Sin
+    // S3_PUBLIC_URL, Payload sirve las de Media como /api/media/file/x?prefix=media.
+    localPatterns: [
+      { pathname: '/**', search: '' },
+      { pathname: '/api/media/file/**', search: '?prefix=media' },
+    ],
+    // Next 16 solo admite calidad 75 por defecto; ImageMedia pide 100.
+    qualities: [75, 100],
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL, process.env.S3_PUBLIC_URL].filter(Boolean).map((item) => {
         const url = new URL(item)
