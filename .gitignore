@@ -76,3 +76,6 @@ apps/web/public/wiki/
 .backup-r2/
 *.dump
 prod.env
+
+# Lo genera Next en cada dev/build (Next 16 lo reescribe con rutas de .next)
+next-env.d.ts
