@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
-import { config, middleware } from '@/middleware'
+import { config, proxy } from '@/proxy'
 
 vi.mock('better-auth/cookies', () => ({
   getSessionCookie: (request: NextRequest) =>
@@ -16,7 +16,7 @@ describe('protección de la Wiki', () => {
   })
   it('requiere iniciar sesión incluso para un archivo de la wiki', async () => {
     expect(
-      (await middleware(request('/wiki/static/contentIndex.json'))).headers.get('location'),
+      (await proxy(request('/wiki/static/contentIndex.json'))).headers.get('location'),
     ).toBe('http://localhost:3000/login')
   })
   it('rechaza cookies inventadas y usuarios sin permiso en lugar de servir HTML o archivos', async () => {
@@ -29,13 +29,13 @@ describe('protección de la Wiki', () => {
       '/wiki/index.html',
       '/wiki/static/contentIndex.json',
     ]) {
-      expect((await middleware(request(path, 'better-auth.session_token=falsa'))).status).toBe(403)
+      expect((await proxy(request(path, 'better-auth.session_token=falsa'))).status).toBe(403)
     }
   })
   it('permite la respuesta únicamente tras verificar el permiso y evita caché compartida', async () => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({ tecnico: true }))
     vi.stubGlobal('fetch', fetcher)
-    const response = await middleware(request('/wiki/libros', 'better-auth.session_token=sesion'))
+    const response = await proxy(request('/wiki/libros', 'better-auth.session_token=sesion'))
     expect(response.headers.get('x-middleware-next')).toBe('1')
     expect(response.headers.get('cache-control')).toBe('private, no-store')
     expect(fetcher).toHaveBeenCalledWith(
@@ -49,7 +49,7 @@ describe('protección de la Wiki', () => {
   it('un fallo al verificar acceso no abre la wiki', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 500 })))
     const log = vi.spyOn(console, 'error').mockImplementation(() => {})
-    expect((await middleware(request('/wiki', 'better-auth.session_token=sesion'))).status).toBe(
+    expect((await proxy(request('/wiki', 'better-auth.session_token=sesion'))).status).toBe(
       503,
     )
     log.mockRestore()
